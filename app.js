@@ -3023,6 +3023,9 @@ async function renderAlbum2x() {
         const teamData = res.teams?.[team] || {};
         allMembers = teamData.members || [];
 
+        window._a2xMembers = allMembers;
+        window._a2xToday = res.today || today;
+
         passedMembers = allMembers.filter(m => m.passed === true);
         failedMembers = allMembers.filter(m => m.passed !== true);
         totalMembers = allMembers.length;
@@ -3398,7 +3401,10 @@ function showAlbum2xDay(date) {
 
     const members = window._a2xMembers;
     const today = window._a2xToday;
-    if (!members) return;
+    if (!members) {
+        console.error("No member data found for Album 2X click");
+        return;
+    }
 
     // Update active tab styling
     document.querySelectorAll('.a2x-day-tab').forEach(tab => {
@@ -3649,7 +3655,10 @@ function showSmDay(date) {
 
     const members = window._smTeamMembers;
     const today = window._smTeamToday;
-    if (!members) return;
+    if (!members) {
+        console.error("No member data found for Side Mission click");
+        return;
+    }
 
     const totalTracks = window._smTrackNames?.length || 4;
     const tColor = teamColor(STATE.data?.agent?.profile?.team);
