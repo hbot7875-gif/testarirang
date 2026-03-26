@@ -9739,34 +9739,96 @@ window.launchTheVoyage = function () {
   if (closeBtn) closeBtn.focus();
 
   // ── Concert Controls ──
-  const concertAb = root.querySelector('#concertArmyBomb');
-  if (concertAb) {
-    root.querySelectorAll('.cc-move-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        root.querySelectorAll('.cc-move-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        concertAb.classList.remove('move-sway', 'move-drift', 'move-ocean', 'move-stars', 'move-flutter');
-        concertAb.classList.add('move-' + btn.dataset.val);
-      });
+  let _rainbowInterval = null;
+  let _currentBPM = 80;
+  let _currentMultiplier = 4;
+  let _currentPattern = 'slow-sway';
+
+  function updatePivotAnim() {
+    const pivot = root.querySelector('#csPivot');
+    if (!pivot) return;
+    const dur = (60000 / _currentBPM) * _currentMultiplier;
+    pivot.style.animation = `cs-${_currentPattern} ${dur}ms infinite ease-in-out`;
+  }
+
+  function setStageColor(color) {
+    if (_rainbowInterval) { clearInterval(_rainbowInterval); _rainbowInterval = null; }
+    if (color === 'rainbow') {
+      const cols = ['#a855f7','#e879f9','#6366f1','#22c55e','#fbbf24','#ef4444','#3b82f6'];
+      let idx = 0;
+      _rainbowInterval = setInterval(() => {
+        root.style.setProperty('--cs-theme', cols[idx]);
+        idx = (idx + 1) % cols.length;
+      }, 500);
+    } else {
+      root.style.setProperty('--cs-theme', color);
+    }
+  }
+
+  root.querySelectorAll('.cs-pat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      root.querySelectorAll('.cs-pat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      _currentPattern = btn.dataset.val;
+      updatePivotAnim();
     });
-    root.querySelectorAll('.cc-speed-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        root.querySelectorAll('.cc-speed-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        concertAb.classList.remove('speed-slow', 'speed-medium', 'speed-fast');
-        concertAb.classList.add('speed-' + btn.dataset.val);
-      });
+  });
+
+  root.querySelectorAll('.cs-speed-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      root.querySelectorAll('.cs-speed-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      _currentMultiplier = parseFloat(btn.dataset.spd);
+      updatePivotAnim();
     });
-    root.querySelectorAll('.cc-color-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        root.querySelectorAll('.cc-color-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const colorVal = btn.style.background;
-        const uw = root.querySelector('.swim-underwater');
-        if (uw) uw.style.setProperty('--uw-glow', colorVal);
-      });
+  });
+
+  root.querySelectorAll('.cs-col-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      root.querySelectorAll('.cs-col-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      setStageColor(btn.dataset.col);
+    });
+  });
+
+  // Generate star background
+  const starContainer = root.querySelector('#csStars');
+  if (starContainer) {
+    for (let i = 0; i < 60; i++) {
+      const s = document.createElement('div');
+      s.className = 'cs-star';
+      s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*3}s;--star-size:${1+Math.random()*2}px;`;
+      starContainer.appendChild(s);
+    }
+  }
+
+  // Generate crowd rows
+  const crowd = root.querySelector('#csCrowd');
+  if (crowd) {
+    const rows = [
+      { count: 11, size: 14, opacity: 0.25, delayBase: 0 },
+      { count: 9, size: 19, opacity: 0.35, delayBase: 0.3 },
+      { count: 7, size: 24, opacity: 0.45, delayBase: 0.6 },
+    ];
+    rows.forEach((row, ri) => {
+      const rowEl = document.createElement('div');
+      rowEl.className = 'cs-crowd-row';
+      for (let i = 0; i < row.count; i++) {
+        const bomb = document.createElement('div');
+        bomb.className = 'cs-crowd-bomb';
+        const delay = (i * 0.18 + row.delayBase).toFixed(2);
+        const dur = (2.5 + Math.random() * 2).toFixed(1);
+        bomb.style.cssText = `--cb-size:${row.size}px;--cb-opacity:${row.opacity};animation-duration:${dur}s;animation-delay:${delay}s;`;
+        bomb.innerHTML = `<div class="cs-cb-sphere"></div><div class="cs-cb-handle"></div>`;
+        rowEl.appendChild(bomb);
+      }
+      crowd.appendChild(rowEl);
     });
   }
+
+  // Initial animation
+  setStageColor('#a855f7');
+  setTimeout(() => updatePivotAnim(), 100);
 
   // ── Ripple interaction ──
   const rippleArea = root.querySelector('.swim-ripple-area');
@@ -9805,18 +9867,11 @@ window.launchTheVoyage = function () {
     if (ocean) ocean.style.opacity = '0';
   }, 4500);
 
-  // Phase 5: Underwater scene appears (5000ms)
+  // Phase 5: Concert appears (5000ms) — generate bubbles and show stage
   setTimeout(() => {
     const uw = root.querySelector('.swim-underwater');
     if (uw) uw.classList.add('swim-underwater--visible');
-    generateBubbles(root.querySelector('.swim-bubbles'), 25);
   }, 5000);
-
-  // Phase 6: Army bomb lightstick appears (5800ms)
-  setTimeout(() => {
-    const ls = root.querySelector('.swim-lightstick');
-    if (ls) ls.classList.add('swim-lightstick--visible');
-  }, 5800);
 
   // Phase 7: Welcome message (6200ms)
   setTimeout(() => {
@@ -10631,6 +10686,199 @@ const VOYAGE_SWIM_CSS = `
   .swim-underwater, .swim-lightstick, .swim-welcome,
   .swim-lyrics__main, .swim-lyrics__sub, .swim-swimmer,
   .swim-exit { transition: none !important; }
+}
+
+/* ═══════════════════════════════════════════════
+   CONCERT STAGE — Army Bomb Crowd Experience
+   ═══════════════════════════════════════════════ */
+
+/* Root theme token */
+.vy-root { --cs-theme: #a855f7; }
+
+/* Override: hide old godrays and standalone lightstick */
+.swim-caustics, .swim-godray, .swim-lightstick,
+.swim-swimmers, .swim-bubbles { display: none !important; }
+
+/* Concert stage base */
+.swim-underwater {
+  background: radial-gradient(ellipse at center 35%, color-mix(in srgb, var(--cs-theme) 25%, #050508) 0%, #050508 70%) !important;
+  transition: background 1s ease !important;
+}
+
+/* ── Stars ── */
+.cs-stars { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+.cs-star {
+  position: absolute;
+  width: var(--star-size, 2px); height: var(--star-size, 2px);
+  background: #fff; border-radius: 50%; opacity: 0;
+  animation: cs-twinkle 3s ease-in-out infinite;
+  box-shadow: 0 0 4px var(--cs-theme);
+}
+@keyframes cs-twinkle { 0%,100%{opacity:0.15;transform:scale(0.8)} 50%{opacity:0.8;transform:scale(1.3)} }
+.cs-star:nth-child(3n) { animation-duration: 4.5s; }
+.cs-star:nth-child(2n) { animation-duration: 2s; }
+
+/* ── Ambient glow (soft radial, not harsh) ── */
+.cs-ambient {
+  position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background: radial-gradient(ellipse at center 40%, var(--cs-theme) 0%, transparent 65%);
+  opacity: 0.18;
+  animation: cs-breathe 4s ease-in-out infinite;
+  transition: background 1s;
+}
+@keyframes cs-breathe { 0%,100%{opacity:0.15;transform:scale(0.95)} 50%{opacity:0.23;transform:scale(1.05)} }
+
+/* ── Layout ── */
+.cs-layout {
+  position: absolute; inset: 0; z-index: 10;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: flex-start; padding: 16px 16px 0;
+  overflow: hidden;
+}
+
+/* ── Song info ── */
+.cs-song-info { text-align: center; margin-bottom: 6px; animation: cs-fade-up 0.8s forwards 0.2s; opacity: 0; }
+.cs-era-icon { font-size: 22px; animation: cs-era-pulse 3s ease-in-out infinite; text-shadow: 0 0 20px var(--cs-theme); }
+@keyframes cs-era-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+.cs-title { margin: 3px 0 0; font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 2px; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
+.cs-artist { margin: 2px 0 0; font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 1px; }
+@keyframes cs-fade-up { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── Your army bomb stage ── */
+.cs-stage { position: relative; display: flex; align-items: center; justify-content: center; height: 190px; width: 100%; margin-bottom: 2px; }
+.cs-stage-glow {
+  position: absolute; width: 220px; height: 220px; border-radius: 50%;
+  background: var(--cs-theme); filter: blur(90px); opacity: 0.22;
+  animation: cs-breathe 4s ease-in-out infinite; transition: background 1s;
+}
+
+/* Pivot element — animations applied via JS */
+.cs-pivot { transform-origin: center bottom; position: relative; cursor: default; }
+.cs-bomb { display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 12px 35px rgba(0,0,0,0.6)); }
+.cs-sphere {
+  width: 110px; height: 110px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), rgba(0,0,0,0.4));
+  border: 1.5px solid rgba(255,255,255,0.22);
+  box-shadow: inset 0 0 28px var(--cs-theme), 0 0 22px var(--cs-theme);
+  position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;
+  transition: box-shadow 0.5s;
+}
+.cs-fill { position: absolute; bottom: 0; left: 0; right: 0; height: 100%; background: linear-gradient(to top, var(--cs-theme), transparent); opacity: 0.38; transition: background 1s; }
+.cs-logo { font-size: 36px; font-weight: 700; color: #fff; z-index: 5; text-shadow: 0 0 14px var(--cs-theme); transition: text-shadow 0.5s; }
+.cs-handle {
+  width: 28px; height: 95px;
+  background: linear-gradient(90deg, #1a1a1a, #2a2a2a 40%, #111);
+  margin-top: -5px; border-radius: 0 0 12px 12px;
+  position: relative;
+}
+.cs-handle::before {
+  content: ''; position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  width: 12px; height: 18px; background: #000; border: 1px solid #333; border-radius: 6px;
+}
+
+/* Wave animations */
+@keyframes cs-slow-sway { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-9deg) translateX(-10px)} 75%{transform:rotate(9deg) translateX(10px)} }
+@keyframes cs-drift { 0%,100%{transform:translate(0,0)rotate(0)} 20%{transform:translate(12px,-16px)rotate(3deg)} 50%{transform:translate(-5px,-22px)rotate(-2deg)} 75%{transform:translate(-14px,-5px)rotate(1deg)} }
+@keyframes cs-ocean { 0%,100%{transform:translateY(0)rotate(0)} 50%{transform:translateY(-18px)rotate(4deg)} }
+@keyframes cs-stars { 0%,100%{transform:translateY(0)rotate(0)} 25%{transform:translateY(-10px)rotate(3deg)} 75%{transform:translateY(-7px)rotate(-3deg)} }
+@keyframes cs-flutter { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-5deg)translate(-2px,-2px)} 50%{transform:rotate(0)translate(0,-5px)} 75%{transform:rotate(5deg)translate(2px,-2px)} }
+
+/* ── Lyrics ── */
+.swim-lyrics {
+  text-align: center; width: 90%; margin: 4px auto; z-index: 20;
+  min-height: 42px; position: relative;
+}
+.swim-lyrics__main {
+  font-size: 16px; font-weight: 800; color: #fff; letter-spacing: 1px;
+  text-shadow: 0 0 12px var(--cs-theme);
+  animation: cs-lyric-glow 3s ease-in-out infinite;
+  transition: opacity 0.4s; line-height: 1.4;
+}
+.swim-lyrics__sub {
+  font-size: 12px; color: rgba(255,255,255,0.65); font-style: italic;
+  margin-top: 4px; line-height: 1.4;
+}
+@keyframes cs-lyric-glow { 0%,100%{opacity:0.75} 50%{opacity:1} }
+
+/* ── Crowd ── */
+.cs-crowd {
+  display: flex; flex-direction: column-reverse; align-items: center; gap: 2px;
+  width: 100%; margin-top: 2px; z-index: 5; pointer-events: none;
+}
+.cs-crowd-row { display: flex; align-items: flex-end; justify-content: center; gap: 6px; }
+.cs-crowd-bomb {
+  display: flex; flex-direction: column; align-items: center;
+  opacity: var(--cb-opacity, 0.3);
+  animation: cs-crowd-sway var(--cs-crowd-dur, 3s) ease-in-out infinite;
+}
+@keyframes cs-crowd-sway { 0%,100%{transform:rotate(0)} 30%{transform:rotate(-6deg)} 70%{transform:rotate(6deg)} }
+.cs-cb-sphere {
+  width: var(--cb-size, 16px); height: var(--cb-size, 16px); border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.18), rgba(0,0,0,0.4));
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 0 calc(var(--cb-size, 16px) * 0.6) var(--cs-theme);
+  transition: box-shadow 1s;
+}
+.cs-cb-handle {
+  width: calc(var(--cb-size, 16px) * 0.28); height: calc(var(--cb-size, 16px) * 0.8);
+  background: #1a1a1a; border-radius: 0 0 3px 3px; margin-top: -2px;
+}
+
+/* ── Controls ── */
+.cs-controls {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  width: 100%; padding: 10px 14px 34px;
+  background: linear-gradient(to top, #000 85%, transparent);
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 30;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.cs-ctrl-row { display: flex; align-items: center; justify-content: center; gap: 7px; flex-wrap: wrap; }
+.cs-pat-btn {
+  background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2);
+  color: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: 20px;
+  font-size: 11px; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.cs-pat-btn:hover { background: rgba(168,85,247,0.2); border-color: rgba(168,85,247,0.4); }
+.cs-pat-btn.active {
+  background: linear-gradient(135deg, var(--cs-theme), #7c3aed);
+  color: #fff; border-color: var(--cs-theme); font-weight: 700;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--cs-theme) 50%, transparent);
+}
+.cs-ctrl-bottom { gap: 12px; }
+.cs-speed-wrap, .cs-color-wrap { display: flex; align-items: center; gap: 5px; }
+.cs-label { font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+.cs-speed-btn {
+  background: rgba(255,255,255,0.05); border: 1px solid #333; color: #888;
+  padding: 4px 10px; border-radius: 20px; font-size: 10px; cursor: pointer; transition: all 0.2s;
+}
+.cs-speed-btn.active { background: #fff; color: #000; border-color: #fff; font-weight: 700; }
+.cs-col-btn {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.18); cursor: pointer; transition: all 0.2s; padding: 0;
+}
+.cs-col-btn:hover { transform: scale(1.2); border-color: #fff; }
+.cs-col-btn.active { transform: scale(1.25); border-color: #fff; box-shadow: 0 0 8px rgba(255,255,255,0.5); }
+.cs-col-rainbow { background: linear-gradient(135deg,#ef4444,#fbbf24,#22c55e,#3b82f6,#a855f7); font-size: 10px; display: flex; align-items: center; justify-content: center; }
+
+/* ── Water surface at top ── */
+.swim-surface { display: block !important; }
+.swim-surface__shimmer, .swim-surface__wave, .swim-ship-shadow { display: block !important; }
+
+/* ── Ripple area ── */
+.swim-ripple-area { position: absolute; inset: 0; z-index: 8; }
+
+@media (max-width: 480px) {
+  .cs-sphere { width: 88px; height: 88px; }
+  .cs-logo { font-size: 28px; }
+  .cs-handle { width: 22px; height: 72px; }
+  .cs-title { font-size: 18px; }
+  .cs-stage { height: 155px; }
+  .swim-lyrics__main { font-size: 13px; }
+  .swim-lyrics__sub { font-size: 11px; }
+  .cs-pat-btn { padding: 5px 9px; font-size: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cs-pivot, .cs-crowd-bomb, .cs-ambient, .cs-star { animation: none !important; }
 }
 `;
 
