@@ -3415,7 +3415,255 @@ function showAlbum2xDay(date) {
   // =============================================
   // ██████  SIDE MISSIONS PAGE
   // =============================================
-  
+  // ═══════════════════════════════════════════
+// SIDE MISSION TEAM MONITOR — Helpers
+// ═══════════════════════════════════════════
+
+window._smTeamMembers = null;
+window._smTeamToday = null;
+window._smTrackNames = null;
+
+async function loadSideMissionTeamMonitor(teamName, weekDates, today) {
+    const box = document.getElementById('smTeamMonitor');
+    if (!box || !teamName) return;
+
+    const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    const res = await Api.call('getSideMissionTeamStatus', {
+        week: STATE.week,
+        team: teamName,
+    }, { cache: true, ttl: 60000 });
+
+    if (!res?.success || !res.members) {
+        box.innerHTML = `<div style="text-align:center; padding:14px; color:var(--text-muted); font-size:11px;">No data available.</div>`;
+        return;
+    }
+
+    const members = res.members;
+    const totalTracks = res.totalTracks || 4;
+    const dates = res.weekDates || weekDates;
+    const serverToday = res.today || today;
+
+    window._smTeamMembers = members;
+    window._smTeamToday = serverToday;
+    window._smTrackNames = res.trackNames || [];
+
+    const dailyStats = dates.map(date => {
+        const isFuture = date > serverToday;
+        let completed = 0, exempt = 0, active = 0;
+
+        if (!isFuture) {
+            members.forEach(m => {
+                const ds = m.daily?.[date];
+                if (!ds) return;
+                if (ds.exempt || m.onLeave) { exempt++; }
+                else if (ds.passed) { completed++; }
+                active++;
+            });
+        }
+
+        return { date, completed, exempt, active, isFuture };
+    });
+
+    const weeklyPassed = members.filter(m => m.weekPassed).length;
+    const weeklyFailed = members.filter(m => !m.weekPassed).length;
+    const tColor = teamColor(teamName);
+
+    box.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h3 style="margin:0; font-size:13px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;">
+                <span style="font-size:16px;">👥</span> Squad Side Mission Monitor
+            </h3>
+            <span style="padding:4px 10px; border-radius:12px; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px;
+                background:${weeklyFailed === 0 ? 'var(--green-soft)' : 'rgba(255,255,255,0.05)'};
+                color:${weeklyFailed === 0 ? 'var(--green)' : 'var(--text-secondary)'};">
+                ${weeklyFailed === 0 ? 'All Clear ✓' : weeklyFailed + ' at risk'}
+            </span>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">
+                <span>Weekly Chain Intact</span>
+                <span style="color:#fff; font-family:var(--font-mono);">${weeklyPassed}/${members.length}</span>
+            </div>
+            <div class="pbar" style="height:5px;">
+                <div class="pfill" style="width:${members.length ? (weeklyPassed / members.length) * 100 : 0}%; background:${weeklyFailed === 0 ? 'var(--green)' : tColor};"></div>
+            </div>
+        </div>
+
+        <div style="font-size:9px; color:var(--text-muted); margin-bottom:8px; font-weight:700;">Tap a day to inspect:</div>
+        <div style="display:flex; gap:4px; margin-bottom:16px; overflow-x:auto; padding-bottom:4px;">
+            ${dates.map((date, i) => {
+                const isToday = date === serverToday;
+                const isFuture = date > serverToday;
+                const ds = dailyStats[i];
+                const activeNonExempt = ds.active - ds.exempt;
+                const allDone = !isFuture && activeNonExempt > 0 && ds.completed >= activeNonExempt;
+
+                return `
+                    <button onclick="showSmDay('${date}')"
+                        class="sm-day-tab${isToday ? ' sm-day-tab--active' : ''}"
+                        data-date="${date}"
+                        ${isFuture ? 'disabled' : ''}
+                        style="
+                            flex:1; min-width:44px; padding:8px 4px; border-radius:8px;
+                            border:1px solid ${isToday ? tColor : 'var(--border-light)'};
+                            background:${isToday ? tColor + '15' : 'var(--bg-lifted)'};
+                            color:${isFuture ? 'var(--text-ghost)' : '#fff'};
+                            cursor:${isFuture ? 'not-allowed' : 'pointer'};
+                            text-align:center; font-size:9px; font-weight:800; text-transform:uppercase;
+                            opacity:${isFuture ? '0.35' : '1'}; transition:all 0.2s;
+                        ">
+                        <div>${DAYS[new Date(date).getDay()]}</div>
+                        <div style="font-size:7px; color:var(--text-muted); margin-top:2px;">${date.slice(5)}</div>
+                        ${!isFuture ? `
+                            <div style="margin-top:4px; font-size:10px;">
+                                ${allDone
+                                    ? '<span style="color:var(--green);">✓</span>'
+                                    : `<span style="color:var(--red-core);">${ds.completed}/${activeNonExempt}</span>`
+                                }
+                            </div>
+                        ` : ''}
+                    </button>
+                `;
+            }).join('')}
+        </div>
+
+        <div id="smDailyView">
+            ${renderSmDayMembers(members, serverToday, serverToday, totalTracks)}
+        </div>
+    `;
+}
+
+function renderSmDayMembers(members, date, today, totalTracks) {
+    const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const isFuture = date > today;
+    if (isFuture) {
+        return `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:11px;">Future date — no data yet</div>`;
+    }
+
+    const dayCompleted = [];
+    const dayFailed = [];
+    const dayExempt = [];
+
+    members.forEach(m => {
+        const ds = m.daily?.[date];
+        if (!ds) {
+            dayFailed.push({ name: m.name, tracksDone: 0, totalTracks, missingTracks: [] });
+            return;
+        }
+        if (ds.exempt || m.onLeave) {
+            dayExempt.push({ name: m.name });
+        } else if (ds.passed) {
+            dayCompleted.push({ name: m.name, tracksDone: ds.tracksDone });
+        } else {
+            dayFailed.push({
+                name: m.name,
+                tracksDone: ds.tracksDone,
+                totalTracks: ds.totalTracks,
+                missingTracks: ds.missingTracks || [],
+            });
+        }
+    });
+
+    const activeCount = members.length - dayExempt.length;
+    const completionPct = activeCount > 0 ? Math.round((dayCompleted.length / activeCount) * 100) : 0;
+    const isToday = date === today;
+    const dayLabel = isToday ? 'Today' : `${DAYS[new Date(date).getDay()]} ${date.slice(5)}`;
+
+    return `
+        <div style="margin-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">
+                <span>${dayLabel}</span>
+                <span style="color:#fff; font-family:var(--font-mono);">${dayCompleted.length}/${activeCount} active</span>
+            </div>
+            <div class="pbar" style="height:5px; margin-bottom:4px;">
+                <div class="pfill" style="width:${completionPct}%; background:${completionPct === 100 ? 'var(--green)' : 'var(--red-core)'};"></div>
+            </div>
+            ${dayExempt.length > 0 ? `<div style="font-size:9px; color:var(--text-ghost); margin-bottom:4px;">${dayExempt.length} on leave (exempt)</div>` : ''}
+        </div>
+
+        ${dayFailed.length > 0 ? `
+            <div style="background:var(--red-whisper); border:1px solid var(--red-border); border-radius:8px; padding:12px; margin-bottom:10px;">
+                <div style="color:var(--red-core); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">
+                    ${isToday ? '🚨 Not Yet Completed Today' : '✗ Missed This Day'} (${dayFailed.length})
+                </div>
+                <div style="display:flex; flex-direction:column; gap:6px; max-height:200px; overflow-y:auto;">
+                    ${dayFailed.slice(0, 50).map(m => `
+                        <div style="display:flex; align-items:center; justify-content:space-between; padding:6px 10px; background:rgba(255,20,95,0.06); border:1px solid rgba(255,20,95,0.12); border-radius:6px;">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <span style="font-size:10px; color:var(--red-core);">✗</span>
+                                <span style="font-size:10px; color:#fff; font-weight:700;">${displayName(m.name)}</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <span style="font-size:9px; color:var(--text-muted); font-family:var(--font-mono);">${m.tracksDone}/${m.totalTracks}</span>
+                                ${m.missingTracks.length > 0 && m.missingTracks.length <= 3 ? `
+                                    <span style="font-size:8px; color:var(--red-core); max-width:120px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${m.missingTracks.join(', ')}">
+                                        Missing: ${m.missingTracks.join(', ')}
+                                    </span>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `).join('')}
+                    ${dayFailed.length > 50 ? `<span style="font-size:10px; color:var(--text-muted); padding:4px;">+${dayFailed.length - 50} more</span>` : ''}
+                </div>
+            </div>
+        ` : ''}
+
+        ${dayCompleted.length > 0 ? `
+            <div style="background:var(--green-soft); border:1px solid var(--green-border); border-radius:8px; padding:12px; margin-bottom:10px;">
+                <div style="color:var(--green); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">
+                    ✅ All ${totalTracks} Tracks Done (${dayCompleted.length})
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px; max-height:150px; overflow-y:auto;">
+                    ${dayCompleted.slice(0, 50).map(m => `
+                        <span style="display:inline-flex; align-items:center; gap:4px; padding:4px 10px; background:rgba(0,255,102,0.05); border:1px solid rgba(0,255,102,0.15); border-radius:6px; font-size:10px; color:#fff;">
+                            ✓ ${displayName(m.name)}
+                        </span>
+                    `).join('')}
+                    ${dayCompleted.length > 50 ? `<span style="font-size:10px; color:var(--text-muted); padding:4px;">+${dayCompleted.length - 50} more</span>` : ''}
+                </div>
+            </div>
+        ` : ''}
+
+        ${dayExempt.length > 0 ? `
+            <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:8px; padding:10px;">
+                <div style="color:var(--text-muted); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+                    💤 Exempt (${dayExempt.length})
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                    ${dayExempt.map(m => `
+                        <span style="display:inline-flex; align-items:center; gap:4px; padding:3px 8px; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:6px; font-size:9px; color:var(--text-ghost);">
+                            — ${displayName(m.name)}
+                        </span>
+                    `).join('')}
+                </div>
+            </div>
+        ` : ''}
+    `;
+}
+
+function showSmDay(date) {
+    const container = document.getElementById('smDailyView');
+    if (!container) return;
+
+    const members = window._smTeamMembers;
+    const today = window._smTeamToday;
+    if (!members) return;
+
+    const totalTracks = window._smTrackNames?.length || 4;
+    const tColor = teamColor(STATE.data?.agent?.profile?.team);
+
+    document.querySelectorAll('.sm-day-tab').forEach(tab => {
+        const tabDate = tab.getAttribute('data-date');
+        const isActive = tabDate === date;
+        tab.classList.toggle('sm-day-tab--active', isActive);
+        tab.style.borderColor = isActive ? tColor : 'var(--border-light)';
+        tab.style.background = isActive ? tColor + '15' : 'var(--bg-lifted)';
+    });
+
+    container.innerHTML = renderSmDayMembers(members, date, today, totalTracks);
+}
   function renderSideMissions() {
     if (!STATE.data) return;
     const container = $('smContent');
