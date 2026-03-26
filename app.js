@@ -9315,15 +9315,44 @@ function renderMagicShip() {
 // ─────────────────────────────────────────────
 
 const SWIM_LYRICS = [
-  { main: 'Swim, swim', sub: '' },
-  { main: 'Water falling off your skin', sub: '' },
-  { main: 'I could spend a lifetime watching you', sub: '' },
-  { main: 'I just wanna dive', sub: 'I just wanna dive' },
-  { main: 'Bad world, gone away', sub: 'I still wake up in this mad world' },
-  { main: "So easy, don't make it so hard", sub: 'I just wanna get lost' },
-  { main: 'Splash, drift', sub: 'I make waves with my two fins' },
-  { main: "Under here, we don't chase the time", sub: '' },
-  { main: 'Turn my face from the land', sub: 'I just wanna dive' },
+  { main: 'Swim, swim', sub: 'Water falling off your skin' },
+  { main: 'Swim, swim', sub: 'I could spend a lifetime watching you' },
+  { main: 'Swim, swim', sub: 'This is how it all begins' },
+  { main: 'Swim, swim', sub: 'I just wanna dive, I just wanna dive' },
+
+  { main: 'Bad world, gone away', sub: 'and I still wake up in this mad world' },
+  { main: 'Name a place that I could breathe', sub: 'on this map, world' },
+  { main: "Lookin' like a goody, goody", sub: 'in this bad world, bad world' },
+  { main: "Don't know how to act, girl", sub: "I'm in the deep, tell me where the hell you at, girl?" },
+  { main: "Oh, you ain't even gotta love me bad, girl", sub: "You know that I'm never holdin' back, girl. Yeah" },
+
+  { main: "So easy, don't make it so hard", sub: 'Nights like these, I just wanna get lost' },
+  { main: 'Right here with the moon and the sharks', sub: "I ain't gotta think 'bout a thing, baby, I just" },
+
+  { main: 'Swim, swim', sub: 'Water falling off your skin' },
+  { main: 'Swim, swim', sub: 'I could spend a lifetime watching you' },
+  { main: 'Swim (Swim), swim (Swim)', sub: 'This is how it all begins' },
+  { main: 'Swim, swim', sub: 'I just wanna dive, I just wanna dive' },
+
+  { main: 'Water, water so deep, water so deep', sub: "Take it off the ground, I ain't never gettin' cold feet" },
+  { main: 'Yeah, you know me, yeah, you know me', sub: "Sittin' on the shore, now I'm ready for the whole sea" },
+  { main: "I can feel the high waves comin' (Yeah)", sub: "Why you run away? You can run in (Yeah)" },
+  { main: "Salt on my tongue, she's stunnin' (Oh)", sub: "You're the only place that I wanna be, yeah" },
+
+  { main: 'Swim, swim', sub: 'Water falling off your skin' },
+  { main: 'Swim, swim', sub: 'I could spend a lifetime watching you' },
+  { main: 'Swim (Swim), swim (Swim)', sub: 'This is how it all begins' },
+  { main: 'Swim, swim', sub: 'I just wanna dive, I just wanna dive' },
+
+  { main: 'Splash (Splash), drift (Drift)', sub: 'I make waves with my two fins (Two fins)' },
+  { main: 'Splash (Woo), drip (Drip)', sub: 'I just wanna take it across the line' },
+  { main: "Under here, we don't chase the time", sub: "Baby, everything can't be so sad (So sad)" },
+  { main: 'Turn my face from the land', sub: 'I just wanna dive, I just wanna dive' },
+
+  { main: 'Swim, swim', sub: 'Water falling off your skin' },
+  { main: 'Swim, swim', sub: 'I could spend a lifetime watching you' },
+  { main: 'Swim (Swim), swim (Swim)', sub: 'Let it all begin' },
+  { main: 'Swim, swim', sub: 'I just wanna dive, I just wanna dive' }
 ];
 
 const SWIM_PHASES = ['calm', 'deep', 'warm', 'bright'];
@@ -9577,37 +9606,83 @@ window.launchTheVoyage = function () {
     </div>
 
     <!-- ═══ UNDERWATER CONCERT ═══ -->
-    <div class="swim-underwater swim-underwater--hidden">
+    <div class="swim-underwater swim-underwater--hidden" style="--uw-glow: #b366ff;">
+      <!-- Magic Effects -->
       <div class="swim-surface">
         <div class="swim-surface__shimmer"></div>
         <div class="swim-surface__wave"></div>
         <div class="swim-ship-shadow"></div>
       </div>
-
       <div class="swim-caustics"></div>
-
       <div class="swim-godray swim-godray--1"></div>
       <div class="swim-godray swim-godray--2"></div>
       <div class="swim-godray swim-godray--3"></div>
       <div class="swim-godray swim-godray--4"></div>
-
       <div class="swim-bubbles"></div>
-
-      <div class="swim-lightstick">
-        <div class="swim-lightstick__globe"></div>
-        <div class="swim-lightstick__handle"></div>
-        <div class="swim-lightstick__rays"></div>
-      </div>
-
       <div class="swim-swimmers"></div>
 
-      <div class="swim-welcome swim-welcome--hidden">
-        <div class="swim-welcome__text">Agent ${escHtml(agentName)}, you've arrived at SWIM</div>
-      </div>
+      <!-- Concert UI: Title -->
+      <div class="concert-scene">
+        <div class="concert-top-title">
+          <div class="concert-icon">🌸</div>
+          <h2>Swim</h2>
+          <p>BTS • Arirang Wave</p>
+        </div>
+        
+        <!-- Interactive Army Bomb -->
+        <div class="concert-ab-container">
+          <div id="concertArmyBomb" class="concert-ab color-purple speed-medium move-sway">
+            <div class="cab-globe">
+              <div class="cab-logo"></div>
+              <div class="cab-light"></div>
+            </div>
+            <div class="cab-neck"></div>
+            <div class="cab-handle">
+              <div class="cab-button"></div>
+            </div>
+            <div class="cab-base"></div>
+            <div class="cab-glow"></div>
+          </div>
+          <div class="cab-lyric-hint">"I just wanna dive"</div>
+        </div>
 
-      <div class="swim-lyrics">
-        <div class="swim-lyrics__main"></div>
-        <div class="swim-lyrics__sub"></div>
+        <div class="swim-welcome swim-welcome--hidden">
+          <div class="swim-welcome__text">Agent \${escHtml(agentName)}, you've arrived at SWIM</div>
+        </div>
+
+        <!-- Lyrics Area -->
+        <div class="swim-lyrics" style="position:relative; bottom: 10px; margin: 15px auto;">
+          <div class="swim-lyrics__main"></div>
+          <div class="swim-lyrics__sub"></div>
+        </div>
+
+        <!-- Controls Panel -->
+        <div class="concert-controls">
+          <div class="cc-row cc-move">
+            <button class="cc-btn cc-move-btn active" data-val="sway">〰 Sway</button>
+            <button class="cc-btn cc-move-btn" data-val="drift">🍂 Drift</button>
+            <button class="cc-btn cc-move-btn" data-val="ocean">🌊 Ocean</button>
+            <button class="cc-btn cc-move-btn" data-val="stars">✨ Stars</button>
+            <button class="cc-btn cc-move-btn" data-val="flutter">🦋 Flutter</button>
+          </div>
+          <div class="cc-row cc-speed-color">
+            <div class="cc-speed">
+              <span>SPEED:</span>
+              <button class="cc-btn cc-btn-small cc-speed-btn" data-val="slow">Slow</button>
+              <button class="cc-btn cc-btn-small cc-speed-btn active" data-val="medium">Medium</button>
+              <button class="cc-btn cc-btn-small cc-speed-btn" data-val="fast">Fast</button>
+            </div>
+            <div class="cc-colors">
+              <span>Color:</span>
+              <button class="cc-color-btn active" data-val="purple" style="background:#b366ff"></button>
+              <button class="cc-color-btn" data-val="pink" style="background:#ff66b3"></button>
+              <button class="cc-color-btn" data-val="blue" style="background:#66a3ff"></button>
+              <button class="cc-color-btn" data-val="green" style="background:#66ff66"></button>
+              <button class="cc-color-btn" data-val="orange" style="background:#ffb366"></button>
+              <button class="cc-color-btn" data-val="rainbow" style="background:linear-gradient(45deg,red,orange,yellow,green,blue,purple)"></button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="swim-ripple-area"></div>
@@ -9662,6 +9737,36 @@ window.launchTheVoyage = function () {
   function onEsc(e) { if (e.key === 'Escape') closeVoyage(); }
   document.addEventListener('keydown', onEsc);
   if (closeBtn) closeBtn.focus();
+
+  // ── Concert Controls ──
+  const concertAb = root.querySelector('#concertArmyBomb');
+  if (concertAb) {
+    root.querySelectorAll('.cc-move-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        root.querySelectorAll('.cc-move-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        concertAb.classList.remove('move-sway', 'move-drift', 'move-ocean', 'move-stars', 'move-flutter');
+        concertAb.classList.add('move-' + btn.dataset.val);
+      });
+    });
+    root.querySelectorAll('.cc-speed-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        root.querySelectorAll('.cc-speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        concertAb.classList.remove('speed-slow', 'speed-medium', 'speed-fast');
+        concertAb.classList.add('speed-' + btn.dataset.val);
+      });
+    });
+    root.querySelectorAll('.cc-color-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        root.querySelectorAll('.cc-color-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const colorVal = btn.style.background;
+        const uw = root.querySelector('.swim-underwater');
+        if (uw) uw.style.setProperty('--uw-glow', colorVal);
+      });
+    });
+  }
 
   // ── Ripple interaction ──
   const rippleArea = root.querySelector('.swim-ripple-area');
@@ -10613,7 +10718,6 @@ const VOYAGE_SHIP_CSS = `
   .vy-player { padding: 14px 14px 30px; }
   .vy-player-label { font-size: 9px; letter-spacing: 1.5px; margin-bottom: 8px; }
 }
-
 @media (max-height: 500px) and (orientation: landscape) {
   .vy-arirang-ship { width: 160px; height: 110px; }
   .vy-ship-container { margin-top: 0; }
@@ -10622,6 +10726,75 @@ const VOYAGE_SHIP_CSS = `
   .vy-ocean { height: 30%; }
   .vy-player { padding: 10px 14px 20px; }
 }
+
+/* ── Interactive Concert UI ── */
+.concert-scene {
+  position: absolute; inset: 0; z-index: 25;
+  display: flex; flex-direction: column; align-items: center; pointer-events: none;
+}
+.concert-top-title { margin-top: 40px; text-align: center; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); pointer-events: auto; }
+.concert-top-title .concert-icon { font-size: 24px; animation: pulse 2s infinite; text-shadow: 0 0 15px rgba(255,100,200,0.8); }
+.concert-top-title h2 { margin: 5px 0 0; font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 800; letter-spacing: 2px; }
+.concert-top-title p { margin: 2px 0 0; font-size: 11px; color: rgba(255,255,255,0.7); letter-spacing: 1px; }
+
+.concert-ab-container { position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; pointer-events: auto; margin-top: 20px; }
+.cab-lyric-hint { margin-top: 20px; font-size: 12px; font-weight: 700; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); font-family: 'Orbitron', sans-serif; letter-spacing: 1px; }
+
+/* Concert Army Bomb */
+.concert-ab { position: relative; width: 140px; height: 260px; transition: transform 0.5s; z-index: 10; margin-bottom: 20px; }
+.cab-globe {
+  position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+  width: 140px; height: 140px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.5);
+  box-shadow: inset 0 0 40px rgba(255,255,255,0.8), 0 0 50px var(--uw-glow, #a78bfa);
+  background: radial-gradient(circle at 35% 25%, rgba(255,255,255,0.9), rgba(255,255,255,0.4) 40%, rgba(0,0,0,0.4));
+  overflow: hidden; z-index: 2; transition: box-shadow 0.6s ease;
+}
+.cab-light { position: absolute; inset: 0; background: var(--uw-glow, #a78bfa); opacity: 0.35; filter: blur(8px); mix-blend-mode: overlay; transition: background 0.6s ease; }
+.cab-logo { width: 46px; height: 70px; margin: 35px auto 0; position: relative; opacity: 0.9; }
+.cab-logo::before, .cab-logo::after { content: ''; position: absolute; top: 0; width: 20px; height: 100%; border: 3px solid rgba(0,0,0,0.7); background: linear-gradient(180deg, #fff, #bbb); }
+.cab-logo::before { left: 0; clip-path: polygon(0 0, 100% 18%, 100% 100%, 0 82%); }
+.cab-logo::after { right: 0; clip-path: polygon(0 18%, 100% 0, 100% 82%, 0 100%); }
+
+.cab-neck { position: absolute; left: 50%; top: 135px; transform: translateX(-50%); width: 66px; height: 16px; border-radius: 8px; background: linear-gradient(180deg, #888, #444); border: 1px solid rgba(255,255,255,0.2); z-index: 1; }
+.cab-handle { position: absolute; left: 50%; top: 145px; transform: translateX(-50%); width: 54px; height: 105px; border-radius: 14px; background: linear-gradient(180deg, #222, #050505); border: 1px solid rgba(255,255,255,0.1); z-index: 0; box-shadow: inset 0 0 15px rgba(255,255,255,0.05); }
+.cab-button { position: absolute; right: 20px; top: 8px; width: 24px; height: 16px; border-radius: 14px; transform: rotate(-30deg); background: #111; border: 1px solid rgba(255,255,255,0.2); }
+.cab-button::after { content: ''; position: absolute; right: 4px; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: var(--uw-glow, #a78bfa); box-shadow: 0 0 10px var(--uw-glow, #a78bfa); transition: background 0.6s ease, box-shadow 0.6s ease; }
+.cab-base { position: absolute; left: 50%; top: 245px; transform: translateX(-50%); width: 62px; height: 16px; border-radius: 8px; background: linear-gradient(180deg, #111, #000); border: 1px solid rgba(255,255,255,0.1); z-index: 1; }
+.cab-glow { position: absolute; left: 50%; top: 70px; transform: translateX(-50%); width: 300px; height: 300px; background: var(--uw-glow, #a78bfa); filter: blur(80px); opacity: 0.15; z-index: -1; transition: background 0.6s; pointer-events: none; }
+
+/* Move Animations */
+@keyframes cabSway { 0%,100%{transform:rotate(-8deg);} 50%{transform:rotate(8deg);} }
+@keyframes cabDrift { 0%,100%{transform:translateX(-15px) rotate(-10deg) translateY(0);} 50%{transform:translateX(15px) rotate(10deg) translateY(-10px);} }
+@keyframes cabOcean { 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-20px) scale(1.05);} }
+@keyframes cabStars { 0%,100%{transform:translateY(-8px) rotate(-3deg); filter:brightness(1);} 50%{transform:translateY(8px) rotate(3deg); filter:brightness(1.5);} }
+@keyframes cabFlutter { 0%,100%{transform:scale(1) rotate(0);} 10%,30%,50%,70%,90%{transform:scale(1.05) rotate(2deg);} 20%,40%,60%,80%{transform:scale(0.95) rotate(-2deg);} }
+
+.move-sway { animation: cabSway 2s ease-in-out infinite; }
+.move-drift { animation: cabDrift 4s ease-in-out infinite; }
+.move-ocean { animation: cabOcean 3s ease-in-out infinite; }
+.move-stars { animation: cabStars 1.5s ease-in-out infinite; }
+.move-flutter { animation: cabFlutter 4s linear infinite; }
+
+.speed-slow { animation-duration: 4s !important; }
+.speed-medium { animation-duration: 2s !important; }
+.speed-fast { animation-duration: 0.9s !important; }
+
+/* Concert Controls */
+.concert-controls { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 25px; padding: 15px 20px; pointer-events: auto; background: rgba(0,0,0,0.5); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); z-index: 30; }
+.cc-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.cc-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #ccc; padding: 6px 12px; border-radius: 20px; font-size: 11px; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-weight: 500; }
+.cc-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+.cc-btn.active { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.5); color: #fff; font-weight: 700; box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+.cc-speed, .cc-colors { display: flex; align-items: center; gap: 6px; }
+.cc-speed span, .cc-colors span { font-size: 10px; color: #aaa; letter-spacing: 1px; font-weight: 700; margin-right: 2px; }
+.cc-btn-small { padding: 4px 8px; font-size: 10px; }
+.cc-color-btn { width: 18px; height: 18px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: transform 0.2s; padding: 0; outline: none; margin: 0 2px; }
+.cc-color-btn:hover { transform: scale(1.2); }
+.cc-color-btn.active { border-color: #fff; transform: scale(1.3); box-shadow: 0 0 8px rgba(255,255,255,0.6); }
+
+/* Remove old lightstick static */
+.swim-lightstick { display: none !important; }
 `;
 // Auto-inject page styles on load
 ensureMagicShipStyles();
