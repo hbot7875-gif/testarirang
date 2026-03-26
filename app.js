@@ -3417,105 +3417,373 @@ function showAlbum2xDay(date) {
   // =============================================
   
   function renderSideMissions() {
-      if (!STATE.data) return;
-      const container = $('smContent');
-      if (!container) return;
-  
-      const sm = STATE.data.agent.sideMissions;
-      const today = sm?.today || getKSTDateString();
-  
-      let html = renderGuide('sidemissions') || '';
-      html += renderNarrativeCard('sideMission');
-  
-      if (!sm?.tracks) {
-          html += `<div class="glass-card" style="padding:40px; text-align:center; color:var(--text-muted); font-size:12px;">No side missions assigned this week.</div>`;
-          container.innerHTML = html;
-          return;
-      }
-  
-      // Header Status
-      html += `
-          <div class="archive-card" style="padding:20px; text-align:center; margin-bottom:24px; border-top:4px solid ${sm.weekFullyPassed ? 'var(--green)' : 'var(--courage-amber)'}; background:linear-gradient(135deg, rgba(255,149,0,0.05), var(--bg-panel));">
-              <div style="font-size:32px; margin-bottom:12px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));">🛡️</div>
-              <div style="font-size:14px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; font-family:'Orbitron', sans-serif;">Survival Protocol</div>
-              
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; max-width:300px; margin:0 auto;">
-                  <div style="padding:12px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.05); border-radius:8px;">
-                      <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Today's Status</div>
-                      <div style="font-size:11px; font-weight:800; color:${sm.todayAllPassed ? 'var(--green)' : 'var(--courage-amber)'};">${sm.todayAllPassed ? '✓ SECURED' : '⚠️ PENDING'}</div>
-                  </div>
-                  <div style="padding:12px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.05); border-radius:8px;">
-                      <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Weekly Status</div>
-                      <div style="font-size:11px; font-weight:800; color:${sm.weekFullyPassed ? 'var(--green)' : 'var(--red-core)'};">${sm.weekFullyPassed ? '✓ ON TRACK' : '🚨 GAPS DETECTED'}</div>
-                  </div>
-              </div>
-              
-              <p style="color:var(--text-muted); font-size:10px; margin:16px 0 0; line-height:1.5;">
-                  Failing Side Missions affects the entire team.<br>Do not break the chain.
-              </p>
-          </div>
-      `;
-  
-      // 7-Day Track Heatmaps
-      html += `<div style="display:flex; flex-direction:column; gap:16px;">`;
-      
-      sm.tracks.forEach(track => {
-          const wDone = (track.weeklyTotal || 0) >= (track.weeklyRequired || 20);
-          const wPct = Math.min(100, ((track.weeklyTotal || 0) / (track.weeklyRequired || 20)) * 100);
-          
-          html += `
-              <div class="glass-card" style="padding:16px; border-left:3px solid ${wDone ? 'var(--green)' : 'var(--courage-amber)'};">
-                  
-                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-                      <div style="font-size:13px; font-weight:700; color:#fff;">${sanitize(track.name)}</div>
-                      <div style="display:flex; align-items:center; gap:8px;">
-                          <span style="font-family:'Share Tech Mono', monospace; font-size:11px; font-weight:800; color:${wDone ? 'var(--green)' : 'var(--text-muted)'};">
-                              ${track.weeklyTotal || 0}/${track.weeklyRequired || 20}
-                          </span>
-                          <div style="width:40px; height:4px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden;">
-                              <div style="height:100%; width:${wPct}%; background:${wDone ? 'var(--green)' : 'var(--courage-amber)'};"></div>
-                          </div>
-                      </div>
-                  </div>
-  
-                  <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:6px;">
-                      ${(sm.weekDates || []).map((date, i) => {
-                          const d = track.daily?.[date];
-                          const count = d?.count ?? 0;
-                          const passed = d?.passed ?? false;
-                          const isFuture = date > today;
-                          const isToday = date === today;
-                          
-                          let bg = 'rgba(255,255,255,0.02)';
-                          let border = 'var(--border-subtle)';
-                          let color = 'var(--text-muted)';
-                          let text = count;
-  
-                          if (isFuture) {
-                              bg = 'transparent'; border = 'transparent'; text = '—'; 
-                          } else if (passed) {
-                              bg = 'var(--green-soft)'; border = 'var(--green-border)'; color = 'var(--green)'; text = '✓';
-                          } else if (isToday && count > 0) {
-                              bg = 'rgba(255,149,0,0.1)'; border = 'rgba(255,149,0,0.3)'; color = 'var(--courage-amber)';
-                          } else if (!passed && !isFuture && !isToday) {
-                              bg = 'var(--red-whisper)'; border = 'var(--red-border)'; color = 'var(--red-core)'; text = '✗';
-                          }
-  
-                          return `
-                              <div style="text-align:center; padding:8px 2px; background:${bg}; border:1px solid ${border}; border-radius:6px; ${isToday ? 'box-shadow:0 0 10px rgba(255,149,0,0.1);' : ''}">
-                                  <div style="font-size:8px; font-weight:800; color:var(--text-ghost); text-transform:uppercase; margin-bottom:4px;">${DAYS[i]}</div>
-                                  <div style="font-family:'Share Tech Mono', monospace; font-size:11px; font-weight:900; color:${color};">${text}</div>
-                              </div>
-                          `;
-                      }).join('')}
-                  </div>
-              </div>
-          `;
-      });
-  
-      html += `</div>`;
-      container.innerHTML = html;
-  }
+    if (!STATE.data) return;
+    const container = $('smContent');
+    if (!container) return;
+
+    const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const sm = STATE.data.agent.sideMissions;
+    const today = sm?.today || getKSTDateString();
+    const isOnLeave = STATE.data.agent.onLeave || false;
+    const teamName = STATE.data?.agent?.profile?.team;
+
+    let html = renderGuide('sidemissions') || '';
+    html += renderNarrativeCard('sideMission');
+
+    if (!sm?.tracks || sm.tracks.length === 0) {
+        html += `<div class="glass-card" style="padding:40px; text-align:center; color:var(--text-muted); font-size:12px;">No side missions assigned this week.</div>`;
+        container.innerHTML = html;
+        return;
+    }
+
+    const weekDates = sm.weekDates || [];
+    const todayIndex = weekDates.indexOf(today);
+    const daysElapsed = todayIndex >= 0 ? todayIndex + 1 : weekDates.filter(d => d <= today).length;
+    const daysTotal = weekDates.length;
+
+    // ═══════════════════════════════════
+    // 1. HEADER STATUS
+    // ═══════════════════════════════════
+    html += `
+        <div class="archive-card" style="padding:20px; text-align:center; margin-bottom:24px; border-top:4px solid ${sm.weekFullyPassed ? 'var(--green)' : 'var(--courage-amber)'}; background:linear-gradient(135deg, rgba(255,149,0,0.05), var(--bg-panel));">
+            <div style="font-size:32px; margin-bottom:12px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));">🛡️</div>
+            <div style="font-size:14px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; font-family:'Orbitron', sans-serif;">Survival Protocol</div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; max-width:300px; margin:0 auto;">
+                <div style="padding:12px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.05); border-radius:8px;">
+                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Today</div>
+                    <div style="font-size:11px; font-weight:800; color:${isOnLeave ? 'var(--text-muted)' : (sm.todayAllPassed ? 'var(--green)' : 'var(--courage-amber)')};">
+                        ${isOnLeave ? 'EXEMPT' : (sm.todayAllPassed ? '✓ SECURED' : '⚠️ PENDING')}
+                    </div>
+                </div>
+                <div style="padding:12px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.05); border-radius:8px;">
+                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Week</div>
+                    <div style="font-size:11px; font-weight:800; color:${sm.weekFullyPassed ? 'var(--green)' : 'var(--red-core)'};">
+                        ${sm.weekFullyPassed ? '✓ ON TRACK' : '🚨 GAPS'}
+                    </div>
+                </div>
+            </div>
+            
+            <p style="color:var(--text-muted); font-size:10px; margin:16px 0 0; line-height:1.5;">
+                Each track: <strong style="color:#fff;">1+ daily</strong> + <strong style="color:#fff;">${sm.tracks[0]?.weeklyRequired || 20} weekly</strong>. No exceptions.
+            </p>
+        </div>
+    `;
+
+    // ═══════════════════════════════════
+    // 2. TODAY'S CHECKLIST
+    // ═══════════════════════════════════
+    const todayTracks = sm.tracks.map(t => {
+        const d = t.daily?.[today];
+        const count = d?.count ?? 0;
+        const passed = d?.passed ?? false;
+        return { name: t.name, artist: t.artist, count, passed };
+    });
+    const todayDoneCount = todayTracks.filter(t => t.passed).length;
+    const todayTotal = todayTracks.length;
+
+    if (!isOnLeave) {
+        html += `
+            <div class="glass-card" style="padding:16px; margin-bottom:24px; border-top:3px solid ${todayDoneCount === todayTotal ? 'var(--green)' : 'var(--courage-amber)'};">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                    <div style="font-size:12px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:16px;">🎯</span> Today's Checklist
+                    </div>
+                    <span style="font-family:var(--font-mono); font-size:11px; font-weight:800; color:${todayDoneCount === todayTotal ? 'var(--green)' : 'var(--courage-amber)'};">
+                        ${todayDoneCount}/${todayTotal}
+                    </span>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    ${todayTracks.map(t => `
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:${t.passed ? 'rgba(0,255,102,0.04)' : 'rgba(255,149,0,0.04)'}; border:1px solid ${t.passed ? 'var(--green-border)' : 'rgba(255,149,0,0.15)'}; border-radius:8px;">
+                            <div style="font-size:14px; flex-shrink:0;">
+                                ${t.passed
+                                    ? '<span style="color:var(--green);">✓</span>'
+                                    : '<span style="color:var(--courage-amber); animation:pulse-dot 2s infinite;">○</span>'
+                                }
+                            </div>
+                            <div style="flex:1; min-width:0;">
+                                <div style="font-size:12px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                    ${sanitize(t.name)}
+                                </div>
+                                <div style="font-size:9px; color:var(--text-muted);">${sanitize(t.artist)}</div>
+                            </div>
+                            <div style="font-family:var(--font-mono); font-size:11px; font-weight:800; color:${t.passed ? 'var(--green)' : (t.count > 0 ? 'var(--courage-amber)' : 'var(--text-ghost)')}; flex-shrink:0;">
+                                ${t.count} ${t.count === 1 ? 'stream' : 'streams'}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                ${todayDoneCount < todayTotal ? `
+                    <div style="margin-top:12px; text-align:center; font-size:10px; color:var(--courage-amber); font-weight:700; animation:pulse-dot 2s infinite;">
+                        ${todayTotal - todayDoneCount} track${todayTotal - todayDoneCount > 1 ? 's' : ''} need at least 1 stream today
+                    </div>
+                ` : `
+                    <div style="margin-top:12px; text-align:center; font-size:10px; color:var(--green); font-weight:800;">
+                        ✓ All tracks streamed today — chain intact
+                    </div>
+                `}
+            </div>
+        `;
+    }
+
+    // ═══════════════════════════════════
+    // 3. PER-TRACK CARDS
+    //    Daily Chain + Weekly Total + Streak + Pace
+    // ═══════════════════════════════════
+    html += `
+        <div style="font-size:10px; color:var(--text-ghost); font-weight:900; letter-spacing:4px; text-transform:uppercase; margin-bottom:12px; margin-left:4px;">
+            [ // Track Dossiers ]
+        </div>
+        <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:24px;">
+    `;
+
+    sm.tracks.forEach(track => {
+        const weeklyReq = track.weeklyRequired || 20;
+        const weeklyTotal = track.weeklyTotal || 0;
+        const weeklyPct = Math.min(100, (weeklyTotal / weeklyReq) * 100);
+        const weeklyDone = weeklyTotal >= weeklyReq;
+        const remaining = Math.max(0, weeklyReq - weeklyTotal);
+
+        // Streak calculation
+        let currentStreak = 0;
+        let longestStreak = 0;
+        let tempStreak = 0;
+        let chainBroken = false;
+
+        for (const date of weekDates) {
+            if (date > today) continue;
+            const d = track.daily?.[date];
+            const passed = d?.passed ?? false;
+
+            if (passed) {
+                tempStreak++;
+                if (tempStreak > longestStreak) longestStreak = tempStreak;
+            } else {
+                if (tempStreak > 0) chainBroken = true;
+                tempStreak = 0;
+            }
+        }
+        currentStreak = tempStreak;
+
+        // Pace
+        const expectedByNow = daysElapsed > 0 ? Math.round((weeklyReq / daysTotal) * daysElapsed) : 0;
+        const paceStatus = weeklyTotal >= expectedByNow ? 'ahead' : 'behind';
+        const paceDiff = Math.abs(weeklyTotal - expectedByNow);
+        const daysRemaining = daysTotal - daysElapsed;
+        const neededPerDay = daysRemaining > 0 ? Math.ceil(remaining / daysRemaining) : remaining;
+
+        // Streak display
+        let streakHtml;
+        if (isOnLeave) {
+            streakHtml = `<span style="font-size:9px; color:var(--text-muted);">Exempt</span>`;
+        } else if (currentStreak > 0) {
+            streakHtml = `<span style="font-size:10px; color:var(--green); font-weight:800;">🔥 ${currentStreak}-day streak</span>`;
+        } else if (chainBroken) {
+            streakHtml = `<span style="font-size:10px; color:var(--red-core); font-weight:700;">💀 Chain broken</span>`;
+        } else {
+            streakHtml = `<span style="font-size:10px; color:var(--text-muted);">⏳ Not started</span>`;
+        }
+
+        html += `
+            <div class="glass-card" style="padding:16px; border-left:3px solid ${track.weekPassed ? 'var(--green)' : 'var(--courage-amber)'};">
+
+                <!-- Track Header -->
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                    <div>
+                        <div style="font-size:13px; font-weight:800; color:#fff;">${sanitize(track.name)}</div>
+                        <div style="font-size:9px; color:var(--text-muted); margin-top:2px;">${sanitize(track.artist)}</div>
+                    </div>
+                    ${streakHtml}
+                </div>
+
+                <!-- DAILY CHAIN -->
+                <div style="margin-bottom:16px;">
+                    <div style="font-size:9px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:8px;">
+                        📅 Daily Chain · 1+ per day
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:4px;">
+                        ${weekDates.map(date => {
+                            const d = track.daily?.[date];
+                            const count = d?.count ?? 0;
+                            const passed = d?.passed ?? false;
+                            const isFuture = date > today;
+                            const isToday = date === today;
+
+                            let bg, border, color, text, opacity = '1', extraStyle = '';
+
+                            if (isFuture) {
+                                bg = 'rgba(255,255,255,0.02)'; border = 'var(--border-subtle)';
+                                color = 'var(--text-ghost)'; text = '·'; opacity = '0.4';
+                            } else if (isOnLeave) {
+                                bg = 'rgba(255,255,255,0.03)'; border = 'rgba(255,255,255,0.08)';
+                                color = 'var(--text-ghost)'; text = '—';
+                            } else if (passed) {
+                                bg = 'var(--green-soft)'; border = 'var(--green-border)';
+                                color = 'var(--green)'; text = '✓';
+                            } else if (isToday) {
+                                bg = 'rgba(255,149,0,0.1)'; border = 'rgba(255,149,0,0.35)';
+                                color = 'var(--courage-amber)'; text = count > 0 ? count : '!';
+                                extraStyle = 'box-shadow:0 0 8px rgba(255,149,0,0.15);';
+                            } else {
+                                // Past failed — dimmed
+                                bg = 'rgba(255,20,95,0.06)'; border = 'rgba(255,20,95,0.12)';
+                                color = 'rgba(255,20,95,0.5)'; text = '✗'; opacity = '0.6';
+                            }
+
+                            return `
+                                <div style="text-align:center; padding:8px 2px; background:${bg}; border:1px solid ${border}; border-radius:6px; opacity:${opacity}; ${extraStyle}">
+                                    <div style="font-size:7px; font-weight:900; color:var(--text-ghost); text-transform:uppercase; margin-bottom:3px;">
+                                        ${DAYS[new Date(date).getDay()]}
+                                    </div>
+                                    <div style="font-family:var(--font-mono); font-size:11px; font-weight:900; color:${color};">
+                                        ${text}
+                                    </div>
+                                    ${!isFuture && !isOnLeave && passed ? `<div style="font-size:7px; color:var(--text-ghost); margin-top:2px;">${count}</div>` : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <!-- WEEKLY TOTAL -->
+                <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <div style="font-size:9px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1.5px;">
+                            📊 Weekly Total · ${weeklyReq} required
+                        </div>
+                        <span style="font-family:var(--font-mono); font-size:11px; font-weight:900; color:${weeklyDone ? 'var(--green)' : '#fff'};">
+                            ${weeklyTotal}/${weeklyReq}
+                        </span>
+                    </div>
+
+                    <div class="pbar" style="height:6px; margin-bottom:6px;">
+                        <div class="pfill" style="width:${weeklyPct}%; background:${weeklyDone ? 'var(--green)' : 'var(--courage-amber)'}; box-shadow:0 0 6px ${weeklyDone ? 'var(--green)' : 'var(--courage-amber)'};"></div>
+                    </div>
+
+                    ${!isOnLeave && !weeklyDone ? `
+                        <div style="font-size:9px; color:${paceStatus === 'ahead' ? 'var(--green)' : 'var(--courage-amber)'}; font-weight:700;">
+                            ${paceStatus === 'ahead'
+                                ? `↑ ${paceDiff} ahead of pace`
+                                : `↓ ${paceDiff} behind — need ~${neededPerDay}/day for ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}`
+                            }
+                        </div>
+                    ` : ''}
+                    ${weeklyDone ? `<div style="font-size:9px; color:var(--green); font-weight:800;">✓ Weekly target reached</div>` : ''}
+                    ${isOnLeave ? `<div style="font-size:9px; color:var(--text-muted); font-weight:700;">Exempt — on leave</div>` : ''}
+                </div>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+
+    // ═══════════════════════════════════
+    // 4. OVERVIEW MATRIX
+    // ═══════════════════════════════════
+    html += `
+        <div class="glass-card" style="padding:16px; margin-bottom:24px; overflow-x:auto;">
+            <div style="font-size:12px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; margin-bottom:14px;">
+                📋 Overview Matrix
+            </div>
+            <div style="display:grid; grid-template-columns:1fr repeat(7, minmax(32px, 1fr)) 60px; gap:3px; min-width:400px;">
+                
+                <!-- Header -->
+                <div style="font-size:8px; color:var(--text-ghost); font-weight:800; padding:6px 4px; display:flex; align-items:flex-end;">Track</div>
+                ${weekDates.map(d => {
+                    const isToday = d === today;
+                    return `<div style="text-align:center; font-size:7px; font-weight:900; color:${isToday ? 'var(--red-core)' : 'var(--text-ghost)'}; padding:6px 0; text-transform:uppercase; ${isToday ? 'background:rgba(255,20,95,0.08); border-radius:4px;' : ''}">
+                        ${DAYS[new Date(d).getDay()]}<br><span style="font-size:6px; color:var(--text-ghost);">${d.slice(8)}</span>
+                    </div>`;
+                }).join('')}
+                <div style="text-align:center; font-size:7px; font-weight:900; color:var(--text-ghost); padding:6px 0; text-transform:uppercase;">Total</div>
+
+                <!-- Rows -->
+                ${sm.tracks.map(track => {
+                    const weeklyReq = track.weeklyRequired || 20;
+                    const weeklyDone = (track.weeklyTotal || 0) >= weeklyReq;
+
+                    let rowHtml = `
+                        <div style="font-size:9px; font-weight:700; color:var(--text-secondary); padding:6px 4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; border-bottom:1px solid var(--border-subtle); display:flex; align-items:center;" title="${sanitize(track.name)} — ${sanitize(track.artist)}">
+                            ${sanitize(track.name)}
+                        </div>
+                    `;
+
+                    weekDates.forEach(date => {
+                        const d = track.daily?.[date];
+                        const count = d?.count ?? 0;
+                        const passed = d?.passed ?? false;
+                        const isFuture = date > today;
+                        const isToday = date === today;
+
+                        let cellBg, cellColor, cellText;
+
+                        if (isFuture) {
+                            cellBg = 'transparent'; cellColor = 'var(--text-ghost)'; cellText = '·';
+                        } else if (isOnLeave) {
+                            cellBg = 'rgba(255,255,255,0.02)'; cellColor = 'var(--text-ghost)'; cellText = '—';
+                        } else if (passed) {
+                            cellBg = 'rgba(0,255,102,0.08)'; cellColor = 'var(--green)'; cellText = count;
+                        } else if (isToday) {
+                            cellBg = 'rgba(255,149,0,0.08)'; cellColor = 'var(--courage-amber)'; cellText = count || '!';
+                        } else {
+                            cellBg = 'rgba(255,20,95,0.05)'; cellColor = 'rgba(255,20,95,0.5)'; cellText = count || '✗';
+                        }
+
+                        rowHtml += `
+                            <div style="text-align:center; font-family:var(--font-mono); font-size:9px; font-weight:800; color:${cellColor}; background:${cellBg}; border-radius:3px; padding:6px 0; border-bottom:1px solid var(--border-subtle);">
+                                ${cellText}
+                            </div>
+                        `;
+                    });
+
+                    rowHtml += `
+                        <div style="text-align:center; font-family:var(--font-mono); font-size:10px; font-weight:900; color:${weeklyDone ? 'var(--green)' : '#fff'}; padding:6px 0; border-bottom:1px solid var(--border-subtle);">
+                            ${track.weeklyTotal || 0}<span style="color:var(--text-ghost);">/${weeklyReq}</span>
+                        </div>
+                    `;
+
+                    return rowHtml;
+                }).join('')}
+            </div>
+        </div>
+    `;
+
+    // ═══════════════════════════════════════════
+    // 5. TEAM DAILY MONITOR (async loaded)
+    // ═══════════════════════════════════════════
+    html += `
+        <div id="smTeamMonitor" class="glass-card" style="padding:20px; margin-bottom:24px; border-top:3px solid ${teamColor(teamName)};">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3 style="margin:0; font-size:13px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:16px;">👥</span> Squad Side Mission Monitor
+                </h3>
+                <span style="font-size:9px; color:var(--text-muted); font-family:var(--font-mono);">
+                    Loading...
+                </span>
+            </div>
+            <div style="text-align:center; padding:16px; color:var(--text-muted); font-size:11px;">
+                Fetching team status...
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = html;
+
+    // ── Async: Load team monitor ──
+    loadSideMissionTeamMonitor(teamName, weekDates, today).catch(() => {
+        const box = document.getElementById('smTeamMonitor');
+        if (box) {
+            box.innerHTML = `
+                <div style="text-align:center; color:var(--fail); font-size:11px; padding:14px;">
+                    Failed to load team side mission data.
+                </div>
+            `;
+        }
+    });
+}
   
   
   // =============================================
