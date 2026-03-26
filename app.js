@@ -2985,236 +2985,432 @@ async function renderAlbumGoals() {
   // =============================================
   // ██████  ALBUM 2X PAGE (7-Day Dopamine Grid)
   // =============================================
-  async function renderAlbum2x() {
-      const container = $('album2xContent');
-      if (!container) return;
-  
-      const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  
-      const team = STATE.data?.agent?.profile?.team || 'Unknown';
-      const currentWeek = STATE.week || 'Week 1';
-  
-      const REQUIRED = CONFIG.ALBUM_CHALLENGE?.REQUIRED_STREAMS || 2;
-      const CHALLENGE_NAME = 'ARIRANG 2X';
-      const BADGE_NAME = CONFIG.ALBUM_CHALLENGE?.BADGE_NAME || '2X Master';
-  
-      const teamTracks = CONFIG.ARIRANG_TRACKS || [];
-      const currentTeamColor = teamColor(team);
-      const today = STATE.data?.agent?.sideMissions?.today || getKSTDateString();
-  
-      showPageLoading(container);
-  
-      let a2xData = {};
-      let passedMembers = [];
-      let failedMembers = [];
-      let totalMembers = 0;
-  
-      try {
-          const res = await Api.call('getAlbum2xStatus', {
-              week: currentWeek,
-              team: team,
-              agentNo: STATE.agentNo
-          }, { cache: true, ttl: 60_000 });
-  
-          a2xData = res || {};
-  
-          const teamData = res.teams?.[team] || {};
-          const allMembers = teamData.members || [];
-  
-          passedMembers = allMembers.filter(m => m.passed === true);
-          failedMembers = allMembers.filter(m => m.passed !== true);
-          totalMembers = allMembers.length;
-  
-      } catch (e) {
-          a2xData = { dailyGrid: STATE.data?.agent?.album2xStatus?.dailyGrid || {} };
-      }
-  
-      // Safety check for dates
-      const dates = getWeekDates(currentWeek);
-      
-          
-  
-      const isUserExempt = STATE.data?.agent?.onLeave || false;
-      const isWeekComplete = STATE.data?.agent?.album2xStatus?.weeklyPassed || false;
-  
-      // Calculate today's progress
-      let todayPassedCount = 0;
-      teamTracks.forEach(track => {
-          const cell = STATE.data?.agent?.album2xStatus?.dailyGrid?.[today]?.[track];
-          if (cell?.passed || String(cell?.count).toLowerCase() === 'exempt') {
-              todayPassedCount++;
-          }
-      });
-  
-      const todayPct = teamTracks.length ? Math.round((todayPassedCount / teamTracks.length) * 100) : 0;
-      const isTodayComplete = todayPassedCount >= teamTracks.length;
-  
-      let html = `
-          ${renderGuide('album2x') || ''}
-          ${renderNarrativeCard('album2x')}`;
-  
-      const teamAllComplete = totalMembers > 0 && passedMembers.length === totalMembers;
-  
-      html += `
-          <!-- 1. TODAY'S TARGET (Dopamine Hero Box) -->
-          <div class="archive-card" style="padding:24px; text-align:center; margin-bottom:24px; border-top:4px solid ${isUserExempt ? 'var(--text-muted)' : (isTodayComplete ? 'var(--green)' : 'var(--red-core)')};">
-              <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:3px; margin-bottom:12px;">Today's Target</div>
-  
-              <div style="font-size:48px; margin-bottom:12px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));">
-                  ${isUserExempt ? '👻' : (isTodayComplete ? '🎉' : '💿')}
-              </div>
-  
-              <div style="font-size:40px; font-weight:900; font-family:'Share Tech Mono', monospace; color:${isUserExempt ? 'var(--text-muted)' : (isTodayComplete ? 'var(--green)' : '#fff')}; line-height:1; text-shadow:0 0 20px ${isUserExempt ? 'transparent' : (isTodayComplete ? 'rgba(0,255,102,0.4)' : 'rgba(255,255,255,0.2)')};">
-                  ${todayPassedCount}/${teamTracks.length}
-              </div>
-              <p style="color:var(--text-muted); font-size:11px; text-transform:uppercase; letter-spacing:2px; margin:8px 0 20px;">Tracks Streamed Today</p>
-  
-              <div class="pbar" style="height:12px; max-width:260px; margin:0 auto; background:rgba(255,255,255,0.05);">
-                  <div class="pfill ${isTodayComplete ? 'green' : ''}" style="width:${todayPct}%; ${!isTodayComplete && !isUserExempt ? 'background:var(--red-core)' : ''}; box-shadow:0 0 10px ${isTodayComplete ? 'var(--green)' : 'var(--red-core)'};"></div>
-              </div>
-  
-              ${isUserExempt ? `
-                  <div style="margin-top:20px; font-size:11px; color:var(--text-secondary); font-weight:700; letter-spacing:1px;">GHOST PROTOCOL: EXEMPT</div>
-              ` : isTodayComplete ? `
-                  <div style="margin-top:20px; font-size:11px; color:var(--green); font-weight:800; letter-spacing:1px;">✓ DAILY TARGET SECURED</div>
-              ` : `
-                  <div style="margin-top:20px; font-size:11px; color:var(--red-core); font-weight:700; letter-spacing:1px; animation:pulse-dot 2s infinite;">ACTION REQUIRED</div>
-              `}
-          </div>
-  
-          <!-- 2. THE 7-DAY HEATMAP (Grid) -->
-          <div class="glass-card" style="padding:20px 16px; margin-bottom:24px; overflow-x:auto;">
-              <div style="font-size:12px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; margin-bottom:16px;">📅 Weekly Heatmap</div>
-  
-              <div style="display:grid; grid-template-columns:120px repeat(7, minmax(36px, 1fr)); gap:4px; min-width:400px;">
-                  <!-- Header Row (Days) -->
-                  <div style="padding:8px; font-size:9px; color:var(--text-ghost); font-weight:800; text-transform:uppercase; letter-spacing:1px; display:flex; align-items:flex-end;">Track</div>
-                  ${dates.map((d, i) => {
-                      const isToday = d === today;
-                      return `
-                          <div style="text-align:center; padding:8px 0; background:${isToday ? 'rgba(255,20,95,0.1)' : 'var(--bg-lifted)'}; border-radius:6px; border:1px solid ${isToday ? 'var(--red-core)' : 'transparent'};">
-                              <div style="font-size:8px; font-weight:900; color:${isToday ? 'var(--red-core)' : 'var(--text-muted)'}; text-transform:uppercase; margin-bottom:4px;">${DAYS[new Date(d).getDay()] || 'D' + (i + 1)}</div>
-                          </div>
-                      `;
-                  }).join('')}
-  
-                  <!-- Track Rows -->
-                  ${teamTracks.map(track => {
-                      let rowHtml = `
-                          <div style="padding:8px; font-size:10px; font-weight:700; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; border-bottom:1px solid var(--border-subtle);">
-                              ${sanitize(track)}
-                          </div>
-                      `;
-  
-                      dates.forEach(d => {
-                          const cell = STATE.data?.agent?.album2xStatus?.dailyGrid?.[d]?.[track];
-                          const isFuture = d > today;
-                          const isExemptCell = String(cell?.count).toLowerCase() === 'exempt';
-  
-                          let bg = 'rgba(255,255,255,0.02)';
-                          let border = 'var(--border-subtle)';
-                          let color = 'var(--text-muted)';
-                          let text = cell?.count || '0';
-                          let opacity = '1';
-  
-                          if (isFuture) {
-                              bg = 'transparent';
-                              border = 'transparent';
-                              text = '—';
-                              opacity = '0.3';
-                          } else if (isExemptCell) {
-                              bg = 'rgba(255,255,255,0.05)';
-                              border = 'rgba(255,255,255,0.1)';
-                              color = 'var(--text-ghost)';
-                              text = '-';
-                          } else if (cell?.passed) {
-                              bg = 'var(--green-soft)';
-                              border = 'var(--green-border)';
-                              color = 'var(--green)';
-                              text = '✓';
-                          } else if (d === today && cell?.count > 0) {
-                              bg = 'var(--red-whisper)';
-                              border = 'var(--red-border)';
-                              color = 'var(--red-core)';
-                              text = cell.count;
-                          }
-  
-                          rowHtml += `
-                              <div style="display:flex; align-items:center; justify-content:center; background:${bg}; border:1px solid ${border}; border-radius:4px; font-family:'Share Tech Mono', monospace; font-size:10px; font-weight:800; color:${color}; margin-bottom:4px; opacity:${opacity};">
-                                  ${text}
-                              </div>
-                          `;
-                      });
-                      return rowHtml;
-                  }).join('')}
-              </div>
-  
-              <!-- Weekly Completion Badge -->
-              ${isWeekComplete ? `
-                  <div style="margin-top:20px; padding:12px; background:var(--green-soft); border:1px solid var(--green-border); border-radius:8px; text-align:center;">
-                      <div style="font-size:20px; margin-bottom:4px;">🎖️</div>
-                      <div style="color:var(--green); font-size:12px; font-weight:900; letter-spacing:2px; text-transform:uppercase;">${BADGE_NAME} EARNED</div>
-                  </div>
-              ` : ''}
-          </div>
-  
-          <!-- 3. TEAM INTELLIGENCE -->
-          <div class="glass-card" style="padding:20px; border-top:3px solid ${teamAllComplete ? 'var(--green)' : currentTeamColor};">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                  <h3 style="margin:0; font-size:13px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;">
-                      <span style="font-size:16px;">👥</span> Team ${sanitize(team).replace('Team ', '')}
-                  </h3>
-                  <span style="padding:4px 10px; border-radius:12px; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; background:${teamAllComplete ? 'var(--green-soft)' : 'rgba(255,255,255,0.05)'}; color:${teamAllComplete ? 'var(--green)' : 'var(--text-secondary)'};">
-                      ${totalMembers === 0 ? 'Loading' : teamAllComplete ? 'All Passed ✓' : failedMembers.length + ' Pending'}
-                  </span>
-              </div>
-  
-              ${totalMembers === 0 ? `
-                  <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:11px;">Loading team intelligence...</div>
-              ` : `
-                  <div style="margin-bottom:20px;">
-                      <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
-                          <span>Team Weekly Completion</span>
-                          <span style="color:#fff; font-family:'Share Tech Mono', monospace;">${passedMembers.length}/${totalMembers}</span>
-                      </div>
-                      <div class="pbar" style="height:6px;">
-                          <div class="pfill ${teamAllComplete ? 'green' : ''}" style="width:${totalMembers ? (passedMembers.length / totalMembers) * 100 : 0}%; ${!teamAllComplete ? 'background:' + currentTeamColor : ''}"></div>
-                      </div>
-                  </div>
-  
-                  ${failedMembers.length > 0 ? `
-                      <div style="background:var(--red-whisper); border:1px solid var(--red-border); border-radius:8px; padding:12px; margin-bottom:12px;">
-                          <div style="color:var(--red-core); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">🚨 Agents Action Required (${failedMembers.length})</div>
-                          <div style="display:flex; flex-wrap:wrap; gap:6px; max-height:150px; overflow-y:auto;">
-                              ${failedMembers.slice(0, 50).map(m => `
-                                  <span style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(255,20,95,0.1); border:1px solid rgba(255,20,95,0.2); border-radius:6px; font-size:10px; color:#fff;">
-                                      ✗ ${displayName(m.name)}
-                                  </span>
-                              `).join('')}
-                              ${failedMembers.length > 50 ? '<span style="font-size:10px; color:var(--text-muted); padding:4px;">+' + (failedMembers.length - 50) + ' more</span>' : ''}
-                          </div>
-                      </div>
-                  ` : ''}
-  
-                  ${passedMembers.length > 0 ? `
-                      <div style="background:var(--green-soft); border:1px solid var(--green-border); border-radius:8px; padding:12px;">
-                          <div style="color:var(--green); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">✅ Secured Agents (${passedMembers.length})</div>
-                          <div style="display:flex; flex-wrap:wrap; gap:6px; max-height:150px; overflow-y:auto;">
-                              ${passedMembers.slice(0, 50).map(m => `
-                                  <span style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(0,255,102,0.05); border:1px solid rgba(0,255,102,0.15); border-radius:6px; font-size:10px; color:#fff;">
-                                      ✓ ${displayName(m.name)}
-                                  </span>
-                              `).join('')}
-                              ${passedMembers.length > 50 ? '<span style="font-size:10px; color:var(--text-muted); padding:4px;">+' + (passedMembers.length - 50) + ' more</span>' : ''}
-                          </div>
-                      </div>
-                  ` : ''}
-              `}
-          </div>
-      `;
-  
-      container.innerHTML = html;
-  }
+async function renderAlbum2x() {
+    const container = $('album2xContent');
+    if (!container) return;
+
+    const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    const team = STATE.data?.agent?.profile?.team || 'Unknown';
+    const currentWeek = STATE.week || 'Week 1';
+
+    const REQUIRED = CONFIG.ALBUM_CHALLENGE?.REQUIRED_STREAMS || 2;
+    const CHALLENGE_NAME = 'ARIRANG 2X';
+    const BADGE_NAME = CONFIG.ALBUM_CHALLENGE?.BADGE_NAME || '2X Master';
+
+    const teamTracks = CONFIG.ARIRANG_TRACKS || [];
+    const currentTeamColor = teamColor(team);
+    const today = STATE.data?.agent?.sideMissions?.today || getKSTDateString();
+
+    showPageLoading(container);
+
+    let a2xData = {};
+    let allMembers = [];
+    let passedMembers = [];
+    let failedMembers = [];
+    let totalMembers = 0;
+    let weekDates = getWeekDates(currentWeek);
+
+    try {
+        const res = await Api.call('getAlbum2xStatus', {
+            week: currentWeek,
+            team: team,
+            agentNo: STATE.agentNo
+        }, { cache: true, ttl: 60_000 });
+
+        a2xData = res || {};
+
+        const teamData = res.teams?.[team] || {};
+        allMembers = teamData.members || [];
+
+        passedMembers = allMembers.filter(m => m.passed === true);
+        failedMembers = allMembers.filter(m => m.passed !== true);
+        totalMembers = allMembers.length;
+
+        // Use server-provided dates if available
+        if (res.weekDates) weekDates = res.weekDates;
+
+    } catch (e) {
+        a2xData = { dailyGrid: STATE.data?.agent?.album2xStatus?.dailyGrid || {} };
+    }
+
+    const isUserExempt = STATE.data?.agent?.onLeave || false;
+    const isWeekComplete = STATE.data?.agent?.album2xStatus?.weeklyPassed || false;
+
+    // Calculate today's progress (personal)
+    let todayPassedCount = 0;
+    teamTracks.forEach(track => {
+        const cell = STATE.data?.agent?.album2xStatus?.dailyGrid?.[today]?.[track];
+        if (cell?.passed || String(cell?.count).toLowerCase() === 'exempt') {
+            todayPassedCount++;
+        }
+    });
+
+    const todayPct = teamTracks.length ? Math.round((todayPassedCount / teamTracks.length) * 100) : 0;
+    const isTodayComplete = todayPassedCount >= teamTracks.length;
+
+    let html = `
+        ${renderGuide('album2x') || ''}
+        ${renderNarrativeCard('album2x')}`;
+
+    const teamAllComplete = totalMembers > 0 && passedMembers.length === totalMembers;
+
+    // ═══════════════════════════════
+    // 1. TODAY'S TARGET (Personal)
+    // ═══════════════════════════════
+    html += `
+        <div class="archive-card" style="padding:24px; text-align:center; margin-bottom:24px; border-top:4px solid ${isUserExempt ? 'var(--text-muted)' : (isTodayComplete ? 'var(--green)' : 'var(--red-core)')};">
+            <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:3px; margin-bottom:12px;">Today's Target</div>
+
+            <div style="font-size:48px; margin-bottom:12px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));">
+                ${isUserExempt ? '👻' : (isTodayComplete ? '🎉' : '💿')}
+            </div>
+
+            <div style="font-size:40px; font-weight:900; font-family:'Share Tech Mono', monospace; color:${isUserExempt ? 'var(--text-muted)' : (isTodayComplete ? 'var(--green)' : '#fff')}; line-height:1; text-shadow:0 0 20px ${isUserExempt ? 'transparent' : (isTodayComplete ? 'rgba(0,255,102,0.4)' : 'rgba(255,255,255,0.2)')};">
+                ${todayPassedCount}/${teamTracks.length}
+            </div>
+            <p style="color:var(--text-muted); font-size:11px; text-transform:uppercase; letter-spacing:2px; margin:8px 0 20px;">Tracks Streamed Today</p>
+
+            <div class="pbar" style="height:12px; max-width:260px; margin:0 auto; background:rgba(255,255,255,0.05);">
+                <div class="pfill ${isTodayComplete ? 'green' : ''}" style="width:${todayPct}%; ${!isTodayComplete && !isUserExempt ? 'background:var(--red-core)' : ''}; box-shadow:0 0 10px ${isTodayComplete ? 'var(--green)' : 'var(--red-core)'};"></div>
+            </div>
+
+            ${isUserExempt ? `
+                <div style="margin-top:20px; font-size:11px; color:var(--text-secondary); font-weight:700; letter-spacing:1px;">GHOST PROTOCOL: EXEMPT</div>
+            ` : isTodayComplete ? `
+                <div style="margin-top:20px; font-size:11px; color:var(--green); font-weight:800; letter-spacing:1px;">✓ DAILY TARGET SECURED</div>
+            ` : `
+                <div style="margin-top:20px; font-size:11px; color:var(--red-core); font-weight:700; letter-spacing:1px; animation:pulse-dot 2s infinite;">ACTION REQUIRED</div>
+            `}
+        </div>
+    `;
+
+    // ═══════════════════════════════
+    // 2. WEEKLY HEATMAP (Personal)
+    // ═══════════════════════════════
+    html += `
+        <div class="glass-card" style="padding:20px 16px; margin-bottom:24px; overflow-x:auto;">
+            <div style="font-size:12px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; margin-bottom:16px;">📅 Weekly Heatmap</div>
+
+            <div style="display:grid; grid-template-columns:120px repeat(7, minmax(36px, 1fr)); gap:4px; min-width:400px;">
+                <div style="padding:8px; font-size:9px; color:var(--text-ghost); font-weight:800; text-transform:uppercase; letter-spacing:1px; display:flex; align-items:flex-end;">Track</div>
+                ${weekDates.map((d, i) => {
+                    const isToday = d === today;
+                    return `
+                        <div style="text-align:center; padding:8px 0; background:${isToday ? 'rgba(255,20,95,0.1)' : 'var(--bg-lifted)'}; border-radius:6px; border:1px solid ${isToday ? 'var(--red-core)' : 'transparent'};">
+                            <div style="font-size:8px; font-weight:900; color:${isToday ? 'var(--red-core)' : 'var(--text-muted)'}; text-transform:uppercase; margin-bottom:4px;">${DAYS[new Date(d).getDay()] || 'D' + (i + 1)}</div>
+                        </div>
+                    `;
+                }).join('')}
+
+                ${teamTracks.map(track => {
+                    let rowHtml = `
+                        <div style="padding:8px; font-size:10px; font-weight:700; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; border-bottom:1px solid var(--border-subtle);">
+                            ${sanitize(track)}
+                        </div>
+                    `;
+
+                    weekDates.forEach(d => {
+                        const cell = STATE.data?.agent?.album2xStatus?.dailyGrid?.[d]?.[track];
+                        const isFuture = d > today;
+                        const isExemptCell = String(cell?.count).toLowerCase() === 'exempt';
+
+                        let bg = 'rgba(255,255,255,0.02)';
+                        let border = 'var(--border-subtle)';
+                        let color = 'var(--text-muted)';
+                        let text = cell?.count || '0';
+                        let opacity = '1';
+
+                        if (isFuture) {
+                            bg = 'transparent'; border = 'transparent'; text = '—'; opacity = '0.3';
+                        } else if (isExemptCell) {
+                            bg = 'rgba(255,255,255,0.05)'; border = 'rgba(255,255,255,0.1)'; color = 'var(--text-ghost)'; text = '-';
+                        } else if (cell?.passed) {
+                            bg = 'var(--green-soft)'; border = 'var(--green-border)'; color = 'var(--green)'; text = '✓';
+                        } else if (d === today && cell?.count > 0) {
+                            bg = 'var(--red-whisper)'; border = 'var(--red-border)'; color = 'var(--red-core)'; text = cell.count;
+                        }
+
+                        rowHtml += `
+                            <div style="display:flex; align-items:center; justify-content:center; background:${bg}; border:1px solid ${border}; border-radius:4px; font-family:'Share Tech Mono', monospace; font-size:10px; font-weight:800; color:${color}; margin-bottom:4px; opacity:${opacity};">
+                                ${text}
+                            </div>
+                        `;
+                    });
+                    return rowHtml;
+                }).join('')}
+            </div>
+
+            ${isWeekComplete ? `
+                <div style="margin-top:20px; padding:12px; background:var(--green-soft); border:1px solid var(--green-border); border-radius:8px; text-align:center;">
+                    <div style="font-size:20px; margin-bottom:4px;">🎖️</div>
+                    <div style="color:var(--green); font-size:12px; font-weight:900; letter-spacing:2px; text-transform:uppercase;">${BADGE_NAME} EARNED</div>
+                </div>
+            ` : ''}
+        </div>
+    `;
+
+    // ═══════════════════════════════════════════
+    // 3. ✅ NEW: DAILY TEAM MONITOR (Day Picker)
+    // ═══════════════════════════════════════════
+    if (allMembers.length > 0 && allMembers[0]?.daily) {
+
+        // Calculate daily team stats
+        const dailyTeamStats = weekDates.map(date => {
+            const isFuture = date > today;
+            let completed = 0;
+            let exempt = 0;
+            let active = 0;
+
+            if (!isFuture) {
+                allMembers.forEach(m => {
+                    const dayStatus = m.daily?.[date];
+                    if (!dayStatus) return;
+                    if (dayStatus.exempt || m.onLeave) { exempt++; }
+                    else if (dayStatus.passed) { completed++; }
+                    active++;
+                });
+            }
+
+            return { date, completed, exempt, active, isFuture };
+        });
+
+        html += `
+            <div class="glass-card" style="padding:20px; margin-bottom:24px; border-top:3px solid ${currentTeamColor};">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                    <h3 style="margin:0; font-size:13px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:16px;">📊</span> Daily Team Monitor
+                    </h3>
+                    <span style="font-size:9px; color:var(--text-muted); font-family:var(--font-mono);">
+                        Tap a day to inspect
+                    </span>
+                </div>
+
+                <!-- Day Selector Tabs -->
+                <div style="display:flex; gap:4px; margin-bottom:16px; overflow-x:auto; padding-bottom:4px;">
+                    ${weekDates.map((date, i) => {
+                        const isToday = date === today;
+                        const isFuture = date > today;
+                        const ds = dailyTeamStats[i];
+                        const allDone = !isFuture && ds.active > 0 && (ds.completed + ds.exempt) >= ds.active;
+
+                        return `
+                            <button onclick="showAlbum2xDay('${date}')"
+                                class="a2x-day-tab${isToday ? ' a2x-day-tab--active' : ''}"
+                                data-date="${date}"
+                                ${isFuture ? 'disabled' : ''}
+                                style="
+                                    flex:1; min-width:44px; padding:8px 4px; border-radius:8px; border:1px solid ${isToday ? currentTeamColor : 'var(--border-light)'};
+                                    background:${isToday ? currentTeamColor + '15' : 'var(--bg-lifted)'};
+                                    color:${isFuture ? 'var(--text-ghost)' : '#fff'};
+                                    cursor:${isFuture ? 'not-allowed' : 'pointer'};
+                                    text-align:center; font-size:9px; font-weight:800; text-transform:uppercase;
+                                    opacity:${isFuture ? '0.35' : '1'}; transition:all 0.2s;
+                                ">
+                                <div>${DAYS[new Date(date).getDay()]}</div>
+                                <div style="font-size:7px; color:var(--text-muted); margin-top:2px;">${date.slice(5)}</div>
+                                ${!isFuture ? `
+                                    <div style="margin-top:4px; font-size:10px;">
+                                        ${allDone ? '<span style="color:var(--green);">✓</span>' : `<span style="color:var(--red-core);">${ds.completed}/${ds.active - ds.exempt}</span>`}
+                                    </div>
+                                ` : ''}
+                            </button>
+                        `;
+                    }).join('')}
+                </div>
+
+                <!-- Daily Members List (default: today) -->
+                <div id="a2xDailyView">
+                    ${renderAlbum2xDayMembers(allMembers, today, today)}
+                </div>
+            </div>
+        `;
+    }
+
+    // ═══════════════════════════════════════
+    // 4. TEAM WEEKLY INTELLIGENCE (existing)
+    // ═══════════════════════════════════════
+    html += `
+        <div class="glass-card" style="padding:20px; border-top:3px solid ${teamAllComplete ? 'var(--green)' : currentTeamColor};">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="margin:0; font-size:13px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:16px;">👥</span> Team ${sanitize(team).replace('Team ', '')} — Weekly
+                </h3>
+                <span style="padding:4px 10px; border-radius:12px; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; background:${teamAllComplete ? 'var(--green-soft)' : 'rgba(255,255,255,0.05)'}; color:${teamAllComplete ? 'var(--green)' : 'var(--text-secondary)'};">
+                    ${totalMembers === 0 ? 'Loading' : teamAllComplete ? 'All Passed ✓' : failedMembers.length + ' Pending'}
+                </span>
+            </div>
+
+            ${totalMembers === 0 ? `
+                <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:11px;">Loading team intelligence...</div>
+            ` : `
+                <div style="margin-bottom:20px;">
+                    <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+                        <span>Team Weekly Completion</span>
+                        <span style="color:#fff; font-family:'Share Tech Mono', monospace;">${passedMembers.length}/${totalMembers}</span>
+                    </div>
+                    <div class="pbar" style="height:6px;">
+                        <div class="pfill ${teamAllComplete ? 'green' : ''}" style="width:${totalMembers ? (passedMembers.length / totalMembers) * 100 : 0}%; ${!teamAllComplete ? 'background:' + currentTeamColor : ''}"></div>
+                    </div>
+                </div>
+
+                ${failedMembers.length > 0 ? `
+                    <div style="background:var(--red-whisper); border:1px solid var(--red-border); border-radius:8px; padding:12px; margin-bottom:12px;">
+                        <div style="color:var(--red-core); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">
+                            🚨 Agents Action Required (${failedMembers.length})
+                        </div>
+                        <div style="display:flex; flex-wrap:wrap; gap:6px; max-height:150px; overflow-y:auto;">
+                            ${failedMembers.slice(0, 50).map(m => `
+                                <span style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(255,20,95,0.1); border:1px solid rgba(255,20,95,0.2); border-radius:6px; font-size:10px; color:#fff;">
+                                    ✗ ${displayName(m.name)}
+                                </span>
+                            `).join('')}
+                            ${failedMembers.length > 50 ? '<span style="font-size:10px; color:var(--text-muted); padding:4px;">+' + (failedMembers.length - 50) + ' more</span>' : ''}
+                        </div>
+                    </div>
+                ` : ''}
+
+                ${passedMembers.length > 0 ? `
+                    <div style="background:var(--green-soft); border:1px solid var(--green-border); border-radius:8px; padding:12px;">
+                        <div style="color:var(--green); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">
+                            ✅ Secured Agents (${passedMembers.length})
+                        </div>
+                        <div style="display:flex; flex-wrap:wrap; gap:6px; max-height:150px; overflow-y:auto;">
+                            ${passedMembers.slice(0, 50).map(m => `
+                                <span style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(0,255,102,0.05); border:1px solid rgba(0,255,102,0.15); border-radius:6px; font-size:10px; color:#fff;">
+                                    ✓ ${displayName(m.name)}
+                                </span>
+                            `).join('')}
+                            ${passedMembers.length > 50 ? '<span style="font-size:10px; color:var(--text-muted); padding:4px;">+' + (passedMembers.length - 50) + ' more</span>' : ''}
+                        </div>
+                    </div>
+                ` : ''}
+            `}
+        </div>
+    `;
+
+    container.innerHTML = html;
+}
+// ═══ Render a single day's member status ═══
+function renderAlbum2xDayMembers(allMembers, date, today) {
+    const isFuture = date > today;
+    if (isFuture) {
+        return `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:11px;">Future date — no data yet</div>`;
+    }
+
+    const dayCompleted = [];
+    const dayFailed = [];
+    const dayExempt = [];
+
+    allMembers.forEach(m => {
+        const dayStatus = m.daily?.[date];
+        if (!dayStatus) {
+            dayFailed.push({ name: m.name, tracksDone: 0, totalTracks: dayStatus?.totalTracks || 0 });
+            return;
+        }
+        if (dayStatus.exempt || m.onLeave) {
+            dayExempt.push({ name: m.name });
+        } else if (dayStatus.passed) {
+            dayCompleted.push({ name: m.name });
+        } else {
+            dayFailed.push({ name: m.name, tracksDone: dayStatus.tracksDone, totalTracks: dayStatus.totalTracks });
+        }
+    });
+
+    const activeCount = allMembers.length - dayExempt.length;
+    const completionPct = activeCount > 0 ? Math.round((dayCompleted.length / activeCount) * 100) : 0;
+
+    const isToday = date === today;
+    const dayLabel = isToday ? 'Today' : new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
+    return `
+        <div style="margin-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+                <span>${dayLabel} — ${date}</span>
+                <span style="color:#fff; font-family:var(--font-mono);">${dayCompleted.length}/${activeCount} active</span>
+            </div>
+            <div class="pbar" style="height:5px; margin-bottom:4px;">
+                <div class="pfill" style="width:${completionPct}%; background:${completionPct === 100 ? 'var(--green)' : 'var(--red-core)'}; box-shadow:0 0 8px ${completionPct === 100 ? 'var(--green)' : 'var(--red-core)'};"></div>
+            </div>
+            ${dayExempt.length > 0 ? `
+                <div style="font-size:9px; color:var(--text-ghost); margin-bottom:4px;">${dayExempt.length} on leave (exempt)</div>
+            ` : ''}
+        </div>
+
+        ${dayFailed.length > 0 ? `
+            <div style="background:var(--red-whisper); border:1px solid var(--red-border); border-radius:8px; padding:12px; margin-bottom:10px;">
+                <div style="color:var(--red-core); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">
+                    ${isToday ? '🚨 Not Yet Completed Today' : '✗ Did Not Complete'} (${dayFailed.length})
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px; max-height:150px; overflow-y:auto;">
+                    ${dayFailed.slice(0, 50).map(m => `
+                        <span style="display:inline-flex; align-items:center; gap:4px; padding:4px 10px; background:rgba(255,20,95,0.1); border:1px solid rgba(255,20,95,0.2); border-radius:6px; font-size:10px; color:#fff;">
+                            ✗ ${displayName(m.name)}
+                            ${m.totalTracks > 0 ? `<span style="font-size:8px; color:var(--text-muted); font-family:var(--font-mono);">${m.tracksDone}/${m.totalTracks}</span>` : ''}
+                        </span>
+                    `).join('')}
+                    ${dayFailed.length > 50 ? `<span style="font-size:10px; color:var(--text-muted); padding:4px;">+${dayFailed.length - 50} more</span>` : ''}
+                </div>
+            </div>
+        ` : ''}
+
+        ${dayCompleted.length > 0 ? `
+            <div style="background:var(--green-soft); border:1px solid var(--green-border); border-radius:8px; padding:12px;">
+                <div style="color:var(--green); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">
+                    ✅ Completed (${dayCompleted.length})
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px; max-height:150px; overflow-y:auto;">
+                    ${dayCompleted.slice(0, 50).map(m => `
+                        <span style="display:inline-flex; align-items:center; gap:4px; padding:4px 10px; background:rgba(0,255,102,0.05); border:1px solid rgba(0,255,102,0.15); border-radius:6px; font-size:10px; color:#fff;">
+                            ✓ ${displayName(m.name)}
+                        </span>
+                    `).join('')}
+                    ${dayCompleted.length > 50 ? `<span style="font-size:10px; color:var(--text-muted); padding:4px;">+${dayCompleted.length - 50} more</span>` : ''}
+                </div>
+            </div>
+        ` : ''}
+
+        ${dayExempt.length > 0 ? `
+            <div style="margin-top:10px; background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:8px; padding:10px;">
+                <div style="color:var(--text-muted); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+                    💤 Exempt / On Leave (${dayExempt.length})
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                    ${dayExempt.map(m => `
+                        <span style="display:inline-flex; align-items:center; gap:4px; padding:3px 8px; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:6px; font-size:9px; color:var(--text-ghost);">
+                            — ${displayName(m.name)}
+                        </span>
+                    `).join('')}
+                </div>
+            </div>
+        ` : ''}
+    `;
+}
+
+// ═══ Day tab click handler ═══
+// Store members data globally for tab switching
+window._a2xMembers = null;
+window._a2xToday = null;
+
+function showAlbum2xDay(date) {
+    const container = document.getElementById('a2xDailyView');
+    if (!container) return;
+
+    const members = window._a2xMembers;
+    const today = window._a2xToday;
+    if (!members) return;
+
+    // Update active tab styling
+    document.querySelectorAll('.a2x-day-tab').forEach(tab => {
+        const tabDate = tab.getAttribute('data-date');
+        const isActive = tabDate === date;
+        tab.classList.toggle('a2x-day-tab--active', isActive);
+        tab.style.borderColor = isActive ? (teamColor(STATE.data?.agent?.profile?.team) || 'var(--red-core)') : 'var(--border-light)';
+        tab.style.background = isActive ? (teamColor(STATE.data?.agent?.profile?.team) || 'var(--red-core)') + '15' : 'var(--bg-lifted)';
+    });
+
+    container.innerHTML = renderAlbum2xDayMembers(members, date, today);
+}
   
   // =============================================
   // ██████  SIDE MISSIONS PAGE
