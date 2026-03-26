@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join — The Arirang Mission | HopeTracker</title>
+
+  <meta name="description"
+    content="Join The Arirang Mission — BTS' biggest streaming journey of 2026. 7 teams. 17 weeks. Every stream counts.">
+  <meta name="theme-color" content="#080810">
+  <meta property="og:title" content="Join — The Arirang Mission | BTS 2026">
+  <meta property="og:description" content="7 teams. 17 weeks. Begin your chapter. Stream ARIRANG together.">
+  <meta property="og:image" content="bts-og.jpg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Join — The Arirang Mission">
+  <meta name="twitter:image" content="bts-og.jpg">
+
+  <link rel="preload" href="bts-bg.jpg" as="image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&family=Inter:wght@400;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --crimson: #e83a5d;
+      --crimson-glow: rgba(232, 58, 93, 0.5);
+      --crimson-soft: rgba(232, 58, 93, 0.12);
+      --purple: #7c3aed;
+      --purple-glow: rgba(124, 58, 237, 0.08);
+      --gold: #d4a853;
+      --gold-soft: rgba(212, 168, 83, 0.08);
+      --bg-dark: #080810;
+      --panel-bg: rgba(255, 255, 255, 0.02);
+      --border-light: rgba(255, 255, 255, 0.08);
+      --text-main: #f0eef5;
+      --text-muted: #9994b0;
+      --text-dim: #5c5775;
+      --green: #4ade80;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Montserrat', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* ==================== LEFT PANEL ==================== */
+    .visual-panel {
+      width: 40%;
+      height: 100vh;
+      position: relative;
+      background-color: #050508;
+    }
+
+    .bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center bottom;
+      opacity: 0.75;
+      filter: grayscale(10%);
+    }
+
+    .visual-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        linear-gradient(to right, rgba(8, 8, 16, 0) 50%, var(--bg-dark) 100%),
+        linear-gradient(to top, var(--bg-dark) 0%, rgba(8, 8, 16, 0) 40%);
+      pointer-events: none;
+    }
+
+    /* Ambient glow layer */
+    .visual-ambient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse 40% 30% at 30% 70%, rgba(232, 58, 93, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 30% 30% at 60% 40%, var(--purple-glow) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .visual-text {
+      position: absolute;
+      bottom: 50px;
+      left: 50px;
+      z-index: 2;
+    }
+
+    .catchphrase {
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 6px;
+      color: var(--text-main);
+      font-style: italic;
+      text-shadow: 0 0 20px var(--crimson-glow), 0 4px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    .catchphrase span {
+      color: var(--crimson);
+      text-shadow: 0 0 15px var(--crimson-glow);
+    }
+
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    .particle.crimson {
+      background: var(--crimson);
+      box-shadow: 0 0 8px var(--crimson);
+    }
+
+    .particle.purple {
+      background: var(--purple);
+      box-shadow: 0 0 8px var(--purple);
+    }
+
+    .particle.gold {
+      background: var(--gold);
+      box-shadow: 0 0 6px var(--gold);
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 0.7;
+      }
+
+      80% {
+        opacity: 0.3;
+      }
+
+      100% {
+        transform: translateY(-10vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    /* ==================== RIGHT PANEL ==================== */
+    .ui-panel {
+      width: 60%;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 60px 80px;
+      background: var(--bg-dark);
+      display: flex;
+      flex-direction: column;
+      scrollbar-width: thin;
+      scrollbar-color: var(--crimson) transparent;
+    }
+
+    .ui-panel::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .ui-panel::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .ui-panel::-webkit-scrollbar-thumb {
+      background: var(--crimson);
+      border-radius: 10px;
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ==================== HEADER ==================== */
+    .top-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--crimson-soft);
+      border: 1px solid rgba(232, 58, 93, 0.2);
+      color: var(--crimson);
+      border-radius: 30px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--crimson);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--crimson);
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.2;
+      }
+    }
+
+    .header-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .header-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    /* Welcome message */
+    .header-welcome {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.7;
+      margin-bottom: 30px;
+      max-width: 480px;
+    }
+
+    .header-welcome .hl {
+      color: var(--purple);
+      font-weight: 600;
+    }
+
+    .header-welcome .gold {
+      color: var(--gold);
+    }
+
+    /* ==================== STATS ==================== */
+    .stats-row {
+      display: flex;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      margin-bottom: 40px;
+    }
+
+    .stat {
+      flex: 1;
+      text-align: center;
+      padding: 15px 10px;
+      border-right: 1px solid var(--border-light);
+    }
+
+    .stat:last-child {
+      border-right: none;
+    }
+
+    .stat-val {
+      font-family: 'Space Mono', monospace;
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .stat-val.loading {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+      color: transparent;
+      min-width: 40px;
+      display: inline-block;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    .stat-lbl {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--crimson);
+      margin-top: 4px;
+      font-weight: 700;
+    }
+
+    /* ==================== FORM SECTIONS ==================== */
+    .form-section {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    /* Subtle left accent on sections */
+    .form-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--crimson), var(--purple));
+      border-radius: 3px 0 0 3px;
+      opacity: 0.4;
+    }
+
+    .section-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--crimson);
+      margin-bottom: 6px;
+      display: block;
+      letter-spacing: 2px;
+      border-bottom: 1px solid rgba(232, 58, 93, 0.15);
+      padding-bottom: 10px;
+    }
+
+    .section-hint {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 18px;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+    }
+
+    label .req {
+      color: var(--crimson);
+    }
+
+    label .hint {
+      font-weight: 400;
+      font-size: 9px;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--text-dim);
+      margin-left: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      border-radius: 6px;
+      font-family: 'Space Mono', monospace;
+      transition: all 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--crimson);
+      background: rgba(0, 0, 0, 0.6);
+      box-shadow: 0 0 0 3px rgba(232, 58, 93, 0.08);
+    }
+
+    input.valid {
+      border-color: var(--green);
+    }
+
+    input.invalid {
+      border-color: var(--crimson);
+    }
+
+    input::placeholder {
+      color: #3a3850;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .status-msg {
+      font-size: 10px;
+      margin-top: 6px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: none;
+      text-transform: uppercase;
+    }
+
+    .status-msg.show {
+      display: block;
+    }
+
+    .status-msg.ok {
+      color: var(--green);
+    }
+
+    .status-msg.err {
+      color: var(--crimson);
+    }
+
+    .pw-wrap {
+      position: relative;
+    }
+
+    .pw-toggle {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 48px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .pw-toggle:hover {
+      color: #fff;
+    }
+
+    .lfm-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .lfm-row input {
+      flex: 1;
+    }
+
+    .add-btn,
+    .remove-btn {
+      width: 50px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .add-btn:hover,
+    .remove-btn:hover {
+      border-color: var(--crimson);
+      color: var(--crimson);
+      background: var(--crimson-soft);
+    }
+
+    .lfm-help {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    .lfm-help a {
+      color: var(--crimson);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .lfm-help a:hover {
+      text-decoration: underline;
+    }
+
+    /* ==================== TEAMS ==================== */
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .team-btn {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      color: var(--text-muted);
+      padding: 16px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .team-btn:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .team-btn.selected {
+      border-color: var(--crimson);
+      background: var(--crimson-soft);
+      color: #fff;
+      box-shadow: inset 0 0 20px rgba(232, 58, 93, 0.08);
+    }
+
+    .team-btn.full-width {
+      grid-column: 1 / -1;
+      border-style: dashed;
+    }
+
+    .t-name {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .t-ref {
+      font-size: 10px;
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    .t-count {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--crimson);
+      margin-top: 6px;
+    }
+
+    .team-btn.selected .t-name {
+      color: var(--crimson);
+    }
+
+    .auto-info {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px dashed rgba(255, 255, 255, 0.06);
+      line-height: 1.6;
+    }
+
+    .auto-info strong {
+      color: var(--text-main);
+    }
+
+    /* ==================== RULES ==================== */
+    .rules-box {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-left: 3px solid;
+      border-image: linear-gradient(180deg, var(--crimson), var(--purple)) 1;
+      border-radius: 0 6px 6px 0;
+      padding: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 11px;
+      color: #bbb;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+    }
+
+    .rules-box::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .rules-box::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .rules-box h4 {
+      color: var(--crimson);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .rules-box ul {
+      padding-left: 15px;
+    }
+
+    .rules-box li {
+      margin-bottom: 6px;
+    }
+
+    .rules-box strong {
+      color: var(--text-main);
+    }
+
+    .rules-box .warn {
+      color: var(--crimson);
+      font-weight: 600;
+    }
+
+    /* Encouragement note inside rules */
+    .rules-encourage {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--purple);
+      font-style: italic;
+      font-size: 11px;
+    }
+
+    .agree-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      cursor: pointer;
+      padding: 10px 0;
+    }
+
+    .agree-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      accent-color: var(--crimson);
+      cursor: pointer;
+      margin-top: 2px;
+    }
+
+    .agree-row span {
+      font-size: 12px;
+      color: #ddd;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    /* ==================== SUBMIT ==================== */
+    .submit-btn {
+      width: 100%;
+      padding: 22px;
+      background: linear-gradient(135deg, var(--crimson), #c93058);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 900;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      position: relative;
+      transition: all 0.3s;
+      box-shadow: 0 10px 25px rgba(232, 58, 93, 0.2);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      background: linear-gradient(135deg, #f04070, var(--crimson));
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(232, 58, 93, 0.35);
+    }
+
+    .submit-btn:disabled {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-dim);
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .submit-btn:focus-visible {
+      outline: 2px solid var(--crimson);
+      outline-offset: 3px;
+    }
+
+    .submit-btn.loading {
+      color: transparent;
+    }
+
+    .submit-btn.loading::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      margin: -10px 0 0 -10px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ==================== TOAST ==================== */
+    .toast {
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      background: rgba(8, 8, 16, 0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--crimson);
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 11px;
+      z-index: 1000;
+      transform: translateX(120%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border-left: 4px solid var(--crimson);
+      max-width: 90vw;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    /* ==================== SUCCESS ==================== */
+    #successScreen {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #successScreen h1 {
+      font-size: 32px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--green);
+      margin-bottom: 5px;
+    }
+
+    #successScreen .sub {
+      color: var(--text-muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .id-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-light);
+      border-top: 4px solid var(--crimson);
+      border-radius: 12px;
+      padding: 40px;
+      margin: 40px 0;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .id-number {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      color: #fff;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 4px;
+      display: block;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+    }
+
+    .id-team {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-top: 15px;
+      color: var(--crimson);
+    }
+
+    .save-warning {
+      background: rgba(232, 58, 93, 0.04);
+      border: 1px solid rgba(232, 58, 93, 0.15);
+      border-radius: 8px;
+      padding: 25px;
+      margin: 20px 0;
+      text-align: left;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #ccc;
+    }
+
+    .save-warning strong {
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .cred {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .cred:last-of-type {
+      border-bottom: none;
+    }
+
+    .cred-l {
+      color: var(--text-dim);
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    .cred-v {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      color: var(--crimson);
+    }
+
+    /* Success welcome note */
+    .success-welcome {
+      margin-top: 20px;
+      padding: 16px;
+      background: var(--purple-glow);
+      border: 1px solid rgba(124, 58, 237, 0.12);
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    .success-welcome .hl {
+      color: var(--purple);
+      font-weight: 600;
+    }
+
+    /* ==================== FOOTER CREDIT ==================== */
+    .form-footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .form-footer .love {
+      display: block;
+      margin-top: 6px;
+      color: var(--purple);
+      font-style: italic;
+      text-transform: none;
+      letter-spacing: 1px;
+      font-size: 10px;
+      opacity: 0.6;
+    }
+
+    /* ==================== ACCESSIBILITY ==================== */
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .particle {
+        display: none;
+      }
+    }
+
+    /* ==================== MOBILE ==================== */
+    @media (max-width: 1024px) {
+      body {
+        flex-direction: column;
+        overflow-y: auto;
+      }
+
+      .visual-panel {
+        width: 100%;
+        height: 35vh;
+        min-height: 300px;
+      }
+
+      .visual-overlay {
+        background: linear-gradient(to bottom, rgba(8, 8, 16, 0) 30%, var(--bg-dark) 100%);
+      }
+
+      .ui-panel {
+        width: 100%;
+        height: auto;
+        padding: 40px 20px;
+        overflow-y: visible;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .visual-panel {
+        min-height: 240px;
+      }
+
+      .visual-text {
+        bottom: 30px;
+        left: 20px;
+      }
+
+      .catchphrase {
+        letter-spacing: 3px;
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- LEFT SIDE -->
+  <div class="visual-panel" role="img" aria-label="BTS promotional image">
+    <img src="bts-bg.jpg" alt="BTS — The Arirang Mission 2026" class="bg-image" loading="eager" fetchpriority="high"
+      decoding="async">
+    <div class="visual-overlay" aria-hidden="true"></div>
+    <div class="visual-ambient" aria-hidden="true"></div>
+    <div class="particles" id="particles" aria-hidden="true"></div>
+    <div class="visual-text">
+      <div class="catchphrase">Let's <span>swim</span><br>together.</div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="ui-panel">
+    <div class="form-container">
+
+      <div id="formSection">
+        <div class="top-badge"><span class="live-dot"></span> Registration Open</div>
+
+        <h1 class="header-title">Begin Your Chapter</h1>
+        <div class="header-sub">The Arirang Mission • 2026</div>
+
+        <!-- NEW: Warm welcome -->
+        <p class="header-welcome">
+          Whether you're a experienced streamer or just starting — <span class="hl">you are welcome here.</span>
+          Join a team, stream at your own pace, and <span class="gold">move with the current.</span> 💜
+        </p>
+
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-val loading" id="totalAgents" aria-live="polite">—</div>
+            <div class="stat-lbl">Enlisted</div>
+          </div>
+          <div class="stat">
+            <div class="stat-val">7</div>
+            <div class="stat-lbl">Teams</div>
+          </div>
+          <div class="stat">
+            <div class="stat-val">14</div>
+            <div class="stat-lbl">Tracks</div>
+          </div>
+        </div>
+
+        <form onsubmit="return false;">
+
+          <div class="form-section">
+            <span class="section-num">01 // YOUR IDENTITY</span>
+            <div class="section-hint">Use your Instagram username. This will be your display name on leaderboards so
+              team leads can contact you.</div>
+
+            <div class="form-group">
+              <label>Instagram Username <span class="req">*</span> <span class="hint">(without @)</span></label>
+              <input type="text" id="instagram" placeholder="e.g. jungkook_97" required maxlength="30"
+                autocomplete="off" oninput="checkIG()">
+              <div class="status-msg" id="igStatus"></div>
+            </div>
+
+            <div class="form-group">
+              <label>Security Key <span class="req">*</span> <span class="hint">(min 4 chars — your login
+                  password)</span></label>
+              <div class="pw-wrap">
+                <input type="password" id="password" placeholder="Create password" required minlength="4"
+                  maxlength="50">
+                <button type="button" class="pw-toggle" onclick="togglePw()"
+                  aria-label="Toggle password visibility">👁</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Confirm Security Key <span class="req">*</span></label>
+              <input type="password" id="confirmPw" placeholder="Re-enter password" required oninput="checkPwMatch()">
+              <div class="status-msg" id="pwStatus"></div>
+            </div>
+          </div>
+
+
+          <!-- 02: TRACKING -->
+          <div class="form-section">
+            <span class="section-num">02 // STREAM TRACKING</span>
+            <div class="section-hint">Connect your Last.fm so we can track your streams automatically. Don't have one?
+              It takes 30 seconds.</div>
+
+            <div class="lfm-help">
+              <a href="https://www.last.fm/join" target="_blank" rel="noopener">Create Last.fm Account →</a>
+              &nbsp;|&nbsp;
+              <a href="https://www.last.fm/settings/applications" target="_blank" rel="noopener">Connect Spotify →</a>
+            </div>
+            <div id="lfmList">
+              <div class="lfm-row">
+                <input type="text" class="lfm-input" placeholder="Last.fm username" required oninput="checkLFM(this)">
+                <button type="button" class="add-btn" onclick="addLFM()" title="Add another account">+</button>
+              </div>
+            </div>
+            <div class="status-msg" id="lfmStatus"></div>
+          </div>
+
+          <!-- 03: TEAM -->
+          <div class="form-section">
+            <span class="section-num">03 // FIND YOUR CURRENT</span>
+            <div class="section-hint">Each team is named after a BTS member's solo journey. Choose one or let us place
+              you where you're needed most.</div>
+
+            <div class="team-grid" id="teamGrid">
+              <div class="team-btn full-width selected" onclick="setTeam('auto', this)">
+                <div class="t-name">⚡ AUTO-ASSIGN</div>
+                <div class="t-ref">We'll place you where the current needs you</div>
+              </div>
+              <div class="team-btn" onclick="setTeam('Team MONO', this)">
+                <div class="t-name">MONO</div>
+                <div class="t-ref">RM</div>
+                <div class="t-count"></div>
+              </div>
+              <div class="team-btn" onclick="setTeam('Team Happy', this)">
+                <div class="t-name">HAPPY</div>
+                <div class="t-ref">Jin</div>
+                <div class="t-count"></div>
+              </div>
+              <div class="team-btn" onclick="setTeam('Team D-Day', this)">
+                <div class="t-name">D-DAY</div>
+                <div class="t-ref">Agust D</div>
+                <div class="t-count"></div>
+              </div>
+              <div class="team-btn" onclick="setTeam('Team Hopeworld', this)">
+                <div class="t-name">HOPEWORLD</div>
+                <div class="t-ref">J-Hope</div>
+                <div class="t-count"></div>
+              </div>
+              <div class="team-btn" onclick="setTeam('Team Muse', this)">
+                <div class="t-name">MUSE</div>
+                <div class="t-ref">Jimin</div>
+                <div class="t-count"></div>
+              </div>
+              <div class="team-btn" onclick="setTeam('Team Layover', this)">
+                <div class="t-name">LAYOVER</div>
+                <div class="t-ref">V</div>
+                <div class="t-count"></div>
+              </div>
+              <div class="team-btn" onclick="setTeam('Team Golden', this)">
+                <div class="t-name">GOLDEN</div>
+                <div class="t-ref">Jungkook</div>
+                <div class="t-count"></div>
+              </div>
+            </div>
+
+            <div class="auto-info" id="autoInfo">
+              <strong>What is Auto-Assign?</strong> We place you in the team with the fewest members to keep things
+              balanced. Your team becomes your unit — they'll have your back. <strong>Teams are permanent after
+                registration.</strong>
+            </div>
+            <input type="hidden" id="selectedTeam" value="auto">
+          </div>
+
+          <!-- 04: BRIEFING -->
+          <div class="form-section">
+            <span class="section-num">04 // MISSION BRIEFING</span>
+            <div class="section-hint">Read through the mission structure. Don't worry — your team and helpers will guide
+              you every step of the way.</div>
+
+            <div class="rules-box">
+              <h4>What You'll Be Doing</h4>
+              <ul>
+                <li><strong>Arirang 2X:</strong> Stream every ARIRANG track <span class="warn">2x per day</span> (14
+                  tracks × 2 = 28 streams daily)</li>
+                <li><strong>Arirang Unit:</strong> 2 team-specific tracks, <span class="warn">25x each per week</span>
+                </li>
+                <li><strong>Side Missions:</strong> 4 survival tracks, <span class="warn">20x/week each</span> — must
+                  stream every day</li>
+                <li><strong>Attendance:</strong> Share your Spotify Recents screenshot each week</li>
+                <li><strong>Fair Play:</strong> No looping or fake playlists. 3+ confirmed reports = team penalized</li>
+                <li><strong>Survival:</strong> If side missions fail twice, your team may be dissolved — but you'll be
+                  reassigned to continue</li>
+              </ul>
+              <div class="rules-encourage">
+                💜 New to streaming missions? Don't worry. Your team will help you learn the rhythm. Start with today —
+                the current will carry you forward.
+              </div>
+            </div>
+
+            <label class="agree-row">
+              <input type="checkbox" id="agreeRules" onchange="updateBtn()">
+              <span>I'm ready to begin this chapter. I'll stream with my team and move with the mission — at my own
+                pace.</span>
+            </label>
+          </div>
+
+          <button type="button" class="submit-btn" id="submitBtn" disabled onclick="submitRegistration()">
+            Begin Your Mission
+          </button>
+
+        </form>
+      </div>
+
+      <!-- SUCCESS -->
+      <div id="successScreen">
+        <h1>Welcome, Agent</h1>
+        <p class="sub">Your chapter begins now</p>
+
+        <div class="id-card">
+          <span class="id-number" id="agentId">AGENT001</span>
+          <div class="id-team" id="teamResult">UNIT: TEAM MONO</div>
+        </div>
+
+        <div class="save-warning">
+          <strong>⚠️ SAVE YOUR CREDENTIALS</strong><br><br>
+          <div class="cred"><span class="cred-l">Agent ID</span><span class="cred-v" id="credId">AGENT001</span></div>
+          <div class="cred"><span class="cred-l">Password</span><span class="cred-v">Your created password</span></div>
+          <br>📸 <strong>Screenshot or save immediately.</strong> Passwords cannot be recovered.
+        </div>
+
+        <div class="success-welcome">
+          <span class="hl">You're not alone in the current.</span> Your team is waiting for you.
+          Stream at your own pace. Every note counts. 💜
+        </div>
+
+        <a href="dashboard.html" class="submit-btn"
+          style="text-align:center; display:block; text-decoration:none; margin-top:20px;">
+          Enter Mission Control
+        </a>
+      </div>
+
+      <div class="form-footer">
+        HopeTracker • Arirang Edition • 2026
+        <span class="love">"Every story begins with a song." 💜</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // 1. FIXED: Added the missing CONFIG object
+    const CONFIG = {
+      API: 'https://xyivyebbafqwthvlwzlm.supabase.co/functions/v1/arirang-btsbackend',
+      ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh5aXZ5ZWJiYWZxd3Rodmx3emxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NDY0MTUsImV4cCI6MjA4ODUyMjQxNX0.K-ysUclHXprTAtsW6bp6HoVcq4tSr1m-4xiZXkrIpn4'
+    };
+
+    let igTimer = null;
+    let lfmTimer = null;
+
+    // Particles — warm tones
+    function createParticles() {
+      const container = document.getElementById('particles');
+      if (!container) return;
+      const types = ['crimson', 'purple', 'gold'];
+      const isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2;
+      const count = isLowEnd ? 8 : 20;
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle ' + types[Math.floor(Math.random() * types.length)];
+        const size = (Math.random() * 3 + 1) + 'px';
+        p.style.cssText = `left:${Math.random() * 100}%;width:${size};height:${size};animation-duration:${8 + Math.random() * 15}s;animation-delay:${Math.random() * 5}s;`;
+        fragment.appendChild(p);
+      }
+      container.appendChild(fragment);
+    }
+    createParticles();
+
+    async function api(params) {
+      const controller = new AbortController();                        // ← from v1
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+      try {
+        const r = await fetch(CONFIG.API, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': CONFIG.ANON_KEY,                                 // ← from v2 (centralized)
+            'Authorization': `Bearer ${CONFIG.ANON_KEY}`,
+          },
+          body: JSON.stringify(params),
+          signal: controller.signal,                                   // ← from v1
+        });
+        clearTimeout(timeoutId);
+
+        if (!r.ok) {                                                   // ← NEW: catch HTTP errors
+          return { success: false, error: `Server error (${r.status})` };
+        }
+
+        return await r.json();
+      } catch (e) {
+        clearTimeout(timeoutId);                                       // ← from v1
+        return {
+          success: false,
+          error: e.name === 'AbortError' ? 'Request timed out' : 'Network error'  // ← from v1
+        };
+      }
+    }
+
+    async function init() {
+      const totalEl = document.getElementById('totalAgents');
+      try {
+        const d = await api({ action: 'getTeamSizes' });
+        if (!d.success) return;
+        let total = 0;
+        const teamMap = { 'Team MONO': 'MONO', 'Team Happy': 'HAPPY', 'Team D-Day': 'D-DAY', 'Team Hopeworld': 'HOPEWORLD', 'Team Muse': 'MUSE', 'Team Layover': 'LAYOVER', 'Team Golden': 'GOLDEN' };
+        d.teams.forEach(t => {
+          total += t.count;
+          const shortName = teamMap[t.team];
+          if (!shortName) return;
+          document.querySelectorAll('.team-btn').forEach(btn => {
+            const nameEl = btn.querySelector('.t-name');
+            if (nameEl && nameEl.textContent.includes(shortName)) {
+              const countEl = btn.querySelector('.t-count');
+              if (countEl) countEl.textContent = t.count + ' agent' + (t.count !== 1 ? 's' : '');
+            }
+          });
+        });
+        if (totalEl) totalEl.textContent = total;
+      } catch (e) { console.log('Team sizes not loaded:', e); }
+      finally { if (totalEl) totalEl.classList.remove('loading'); }
+    }
+    init();
+
+    function setTeam(team, el) {
+      document.querySelectorAll('.team-btn').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('selectedTeam').value = team;
+      document.getElementById('autoInfo').style.display = team === 'auto' ? 'block' : 'none';
+    }
+
+    function checkIG() {
+      const input = document.getElementById('instagram');
+      const status = document.getElementById('igStatus');
+      const val = input.value.trim().replace(/@/g, '');
+      if (!val) { status.className = 'status-msg'; input.className = ''; return; }
+      clearTimeout(igTimer);
+      igTimer = setTimeout(async () => {
+        status.textContent = 'CHECKING...'; status.className = 'status-msg show';
+        const d = await api({ action: 'checkInstagramAvailable', instagram: val });
+        if (d.available) { status.textContent = '✓ AVAILABLE'; status.className = 'status-msg show ok'; input.className = 'valid'; }
+        else { status.textContent = '✗ ALREADY REGISTERED'; status.className = 'status-msg show err'; input.className = 'invalid'; }
+      }, 600);
+    }
+
+    function checkLFM(input) {
+      const status = document.getElementById('lfmStatus');
+      const val = input.value.trim();
+      if (!val) { status.className = 'status-msg'; input.classList.remove('valid', 'invalid'); return; }
+      clearTimeout(lfmTimer);
+      lfmTimer = setTimeout(async () => {
+        status.textContent = 'VERIFYING...'; status.className = 'status-msg show';
+        const d = await api({ action: 'checkLastFmValid', username: val });
+        if (d.valid) {
+          const n = d.displayName || d.username;
+          const p = d.playcount ? ` — ${Number(d.playcount).toLocaleString()} streams` : '';
+          status.textContent = `✓ VERIFIED: ${n}${p}`; status.className = 'status-msg show ok';
+          input.classList.remove('invalid'); input.classList.add('valid');
+        } else {
+          status.textContent = '✗ USER NOT FOUND'; status.className = 'status-msg show err';
+          input.classList.remove('valid'); input.classList.add('invalid');
+        }
+      }, 800);
+    }
+
+    function addLFM() {
+      const list = document.getElementById('lfmList');
+      if (list.querySelectorAll('.lfm-row').length >= 3) { toast('Maximum 3 accounts allowed'); return; }
+      const row = document.createElement('div');
+      row.className = 'lfm-row';
+      row.innerHTML = `<input type="text" class="lfm-input" placeholder="Additional username" oninput="checkLFM(this)"><button type="button" class="remove-btn" onclick="this.parentElement.remove()">−</button>`;
+      list.appendChild(row);
+    }
+
+    function togglePw() {
+      const pw = document.getElementById('password');
+      const cpw = document.getElementById('confirmPw');
+      const t = pw.type === 'password' ? 'text' : 'password';
+      pw.type = t; cpw.type = t;
+    }
+
+    function checkPwMatch() {
+      const pw = document.getElementById('password').value;
+      const cpw = document.getElementById('confirmPw');
+      const status = document.getElementById('pwStatus');
+      if (!cpw.value) { status.className = 'status-msg'; cpw.className = ''; return; }
+      if (pw === cpw.value) { status.textContent = '✓ MATCH CONFIRMED'; status.className = 'status-msg show ok'; cpw.className = 'valid'; }
+      else { status.textContent = '✗ DOES NOT MATCH'; status.className = 'status-msg show err'; cpw.className = 'invalid'; }
+    }
+
+    function updateBtn() {
+      document.getElementById('submitBtn').disabled = !document.getElementById('agreeRules').checked;
+    }
+
+    async function submitRegistration() {
+      const btn = document.getElementById('submitBtn');
+      if (btn.disabled) return;
+
+      // 1. Get the IG handle
+      const ig = document.getElementById('instagram').value.trim().replace(/@/g, '').toLowerCase();
+      const pw = document.getElementById('password').value;
+      const cpw = document.getElementById('confirmPw').value;
+      const team = document.getElementById('selectedTeam').value;
+
+      const lfms = [];
+      document.querySelectorAll('.lfm-input').forEach(i => {
+        const v = i.value.trim();
+        if (v) lfms.push(v);
+      });
+
+      // 2. Validation
+      if (!ig || ig.length < 2) { toast('Enter your Instagram username'); return; }
+      if (document.getElementById('instagram').classList.contains('invalid')) { toast('This Instagram is already registered'); return; }
+      if (pw.length < 4) { toast('Security Key needs 4+ characters'); return; }
+      if (pw !== cpw) { toast('Security Keys do not match'); return; }
+      if (lfms.length === 0) { toast('Link at least one Last.fm account'); return; }
+
+      btn.classList.add('loading'); btn.disabled = true;
+
+      // 3. Send to Backend
+      const d = await api({
+        action: 'registerAgent',
+        name: ig,          // We now send the IG handle as the 'name' (display name)
+        instagram: ig,     // And as the lookup handle
+        password: pw,
+        lastFmUsernames: lfms,
+        teamPreference: team === 'auto' ? null : team,
+      });
+
+      btn.classList.remove('loading');
+
+      if (d.success) {
+        document.getElementById('formSection').style.display = 'none';
+        document.getElementById('agentId').textContent = d.agent.agentNo;
+        document.getElementById('credId').textContent = d.agent.agentNo;
+        document.getElementById('teamResult').textContent = 'UNIT: ' + d.agent.team.toUpperCase();
+        document.getElementById('successScreen').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        toast(d.error || 'Registration failed');
+        btn.disabled = false;
+      }
+    }
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 4000);
+    }
+  </script>
+</body>
+
+</html>
