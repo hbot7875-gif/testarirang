@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Arirang Mission | HopeTracker</title>
+
+  <!-- SEO & Social -->
+  <meta name="description" content="7 teams. 17 weeks. 1 winner. Join the BTS ARIRANG streaming battle — the biggest comeback mission of 2026.">
+  <meta name="theme-color" content="#080810">
+  <meta property="og:title" content="The Arirang Mission | BTS Comeback 2026">
+  <meta property="og:description" content="Become an agent. Stream daily. Protect your unit. Climb the global ranks.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Arirang Mission | BTS 2026">
+
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="preload" href="bts-bg.jpg" as="image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --crimson: #e83a5d;
+      --crimson-glow: rgba(232, 58, 93, 0.5);
+      --crimson-soft: rgba(232, 58, 93, 0.15);
+      --purple: #7c3aed;
+      --purple-glow: rgba(124, 58, 237, 0.08);
+      --gold: #d4a853;
+      --gold-soft: rgba(212, 168, 83, 0.12);
+      --bg-dark: #080810;
+      --text-main: #f0eef5;
+      --text-muted: #9994b0;
+      --text-dim: #5c5775;
+      --glass-panel: rgba(8, 8, 16, 0.6);
+      --glass-card: rgba(255, 255, 255, 0.02);
+      --border-light: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.05);
+      --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* ==================== FIXED BACKGROUND ==================== */
+    .fixed-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-color: var(--bg-dark);
+      overflow: hidden;
+    }
+
+    .bg-image {
+      width: 50vw;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.9;
+    }
+
+    .bg-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        linear-gradient(to right, rgba(8,8,16,0) 30%, rgba(8,8,16,0.85) 48%, var(--bg-dark) 100%),
+        linear-gradient(to top, var(--bg-dark) 0%, rgba(8,8,16,0) 30%);
+    }
+
+    /* Ambient glows (new) */
+    .bg-ambient {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse 40% 40% at 70% 30%, var(--purple-glow) 0%, transparent 70%),
+        radial-gradient(ellipse 30% 30% at 85% 70%, var(--crimson-soft) 0%, transparent 60%),
+        radial-gradient(ellipse 20% 20% at 60% 80%, var(--gold-soft) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .particles {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    .particle.crimson { background: var(--crimson); box-shadow: 0 0 8px var(--crimson); }
+    .particle.purple { background: var(--purple); box-shadow: 0 0 8px var(--purple); }
+    .particle.gold { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      15%  { opacity: 0.7; }
+      80%  { opacity: 0.3; }
+      100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+    }
+
+    /* ==================== LAYOUT ==================== */
+    .layout-wrapper {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .visual-panel {
+      width: 45%;
+      height: 100%;
+      position: relative;
+    }
+
+    .visual-text {
+      position: absolute;
+      bottom: 50px;
+      left: 50px;
+      z-index: 2;
+    }
+
+    .catchphrase {
+      font-size: clamp(22px, 2.5vw, 32px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 6px;
+      color: var(--text-main);
+      font-style: italic;
+      text-shadow: 0 0 20px var(--crimson-glow), 0 4px 10px rgba(0,0,0,0.8);
+    }
+
+    .catchphrase span { color: var(--crimson); text-shadow: 0 0 15px var(--crimson-glow); }
+
+    /* ==================== UI PANEL ==================== */
+    .ui-panel {
+      width: 55%;
+      height: 100%;
+      overflow-y: auto;
+      padding: 60px 80px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: var(--glass-panel);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-left: 1px solid var(--border-light);
+      box-shadow: -10px 0 40px rgba(0,0,0,0.8);
+      scrollbar-width: thin;
+      scrollbar-color: var(--crimson) transparent;
+    }
+
+    .ui-panel::-webkit-scrollbar { width: 6px; }
+    .ui-panel::-webkit-scrollbar-track { background: transparent; }
+    .ui-panel::-webkit-scrollbar-thumb { background: var(--crimson); border-radius: 10px; }
+
+    .scroll-indicator { display: none; }
+
+    /* ==================== BADGE ==================== */
+    .top-badge {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--crimson-soft);
+      border: 1px solid rgba(232, 58, 93, 0.2);
+      backdrop-filter: blur(10px);
+      color: var(--crimson);
+      border-radius: 30px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+      animation: fadeIn 1s ease both;
+    }
+
+    .live-dot {
+      width: 6px; height: 6px;
+      background: var(--crimson);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--crimson);
+      animation: blink 2s infinite;
+    }
+
+    /* ==================== TITLE ==================== */
+    .title-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 8px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      animation: fadeIn 1s ease 0.2s both;
+    }
+
+    .title-main {
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      line-height: 1;
+      color: #fff;
+      animation: fadeIn 1s ease 0.3s both;
+    }
+
+    .title-edition {
+      font-size: 14px;
+      letter-spacing: 12px;
+      text-transform: uppercase;
+      color: var(--crimson);
+      font-weight: 800;
+      margin-bottom: 30px;
+      text-shadow: 0 0 15px var(--crimson-glow);
+      animation: fadeIn 1s ease 0.4s both;
+    }
+
+    /* Warm welcome line (new) */
+    .welcome-line {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      line-height: 1.8;
+      max-width: 420px;
+      animation: fadeIn 1s ease 0.45s both;
+    }
+
+    .welcome-line .hl { color: var(--purple); font-weight: 600; }
+    .welcome-line .gold { color: var(--gold); }
+
+    /* ==================== COUNTDOWN ==================== */
+    .countdown {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 40px;
+      animation: fadeIn 1s ease 0.5s both;
+    }
+
+    .cd-block { display: flex; flex-direction: column; }
+
+    .cd-num {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+      min-width: 2ch;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .cd-num.ready { opacity: 1; }
+
+    .cd-lbl {
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-top: 6px;
+      font-weight: 800;
+    }
+
+    .countdown-active {
+      padding: 16px 24px;
+      background: var(--crimson-soft);
+      border: 1px solid rgba(232, 58, 93, 0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      margin-bottom: 40px;
+      animation: fadeIn 1s ease 0.5s both, pulseBorder 2s infinite;
+      text-align: center;
+    }
+
+    .countdown-active .era-label {
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .countdown-active .era-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--crimson);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+
+    @keyframes pulseBorder {
+      0%, 100% { border-color: rgba(232, 58, 93, 0.3); box-shadow: 0 0 0 rgba(232, 58, 93, 0); }
+      50% { border-color: rgba(232, 58, 93, 0.6); box-shadow: 0 0 20px rgba(232, 58, 93, 0.1); }
+    }
+
+    /* ==================== ACTIONS ==================== */
+    .actions {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 50px;
+      animation: fadeIn 1s ease 0.6s both;
+    }
+
+    .btn {
+      padding: 18px 30px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-align: center;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      flex: 1;
+      max-width: 250px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--crimson);
+      outline-offset: 3px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--crimson), #c93058);
+      color: #fff;
+      border: 1px solid var(--crimson);
+      box-shadow: 0 10px 20px rgba(232, 58, 93, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #f04070, var(--crimson));
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(232, 58, 93, 0.35);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .btn-secondary:hover {
+      background: var(--purple-glow);
+      border-color: var(--purple);
+      transform: translateY(-2px);
+    }
+
+    /* ==================== DASHBOARD GRID ==================== */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      animation: fadeIn 1s ease 0.8s both;
+    }
+
+    .data-card {
+      background: var(--glass-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .data-card:hover {
+      border-color: rgba(232, 58, 93, 0.2);
+      background: rgba(255, 255, 255, 0.03);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 15px rgba(232, 58, 93, 0.04);
+    }
+
+    .card-header {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .card-header::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: var(--crimson);
+      margin-right: 10px;
+      border-radius: 1px;
+      box-shadow: 0 0 8px var(--crimson);
+    }
+
+    .stat-row { display: flex; justify-content: space-between; margin-bottom: 15px; }
+    .stat-row:last-child { margin-bottom: 0; }
+
+    .stat-val {
+      font-family: 'Space Mono', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .stat-lbl {
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .stat-val.loading {
+      background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+      color: transparent;
+      min-width: 50px;
+      display: inline-block;
+    }
+
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+    .intel-grid { display: flex; gap: 24px; font-size: 12px; color: #ccc; line-height: 1.8; flex-wrap: wrap; }
+    .intel-col { flex: 1; min-width: 200px; }
+    .intel-label { color: var(--crimson); font-size: 11px; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; margin-bottom: 6px; display: block; }
+    .intel-tagline { margin-top: 12px; font-weight: 800; color: var(--crimson); font-size: 11px; letter-spacing: 2px; }
+
+    .teams-container { display: flex; flex-direction: column; gap: 8px; }
+
+    .team-row {
+      padding: 12px 14px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ddd;
+      transition: all 0.2s;
+      cursor: default;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .team-row:hover {
+      border-color: rgba(232, 58, 93, 0.3);
+      background: rgba(232, 58, 93, 0.06);
+      color: #fff;
+      transform: translateX(4px);
+    }
+
+    .team-count {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+
+    .team-row:hover .team-count { color: var(--crimson); }
+
+    .how-grid { display: flex; gap: 20px; margin-top: 4px; }
+
+    .how-step {
+      flex: 1;
+      text-align: center;
+      padding: 16px 12px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      transition: all 0.3s;
+    }
+
+    .how-step:hover {
+      border-color: rgba(232, 58, 93, 0.2);
+      background: rgba(232, 58, 93, 0.04);
+    }
+
+    .how-num { font-family: 'Space Mono', monospace; font-size: 20px; font-weight: 700; color: var(--crimson); margin-bottom: 10px; }
+    .how-title { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; color: #fff; }
+    .how-desc { font-size: 10px; color: var(--text-muted); line-height: 1.6; }
+
+    .lyric-quote {
+      margin-top: 40px;
+      padding: 20px;
+      border-left: 3px solid;
+      border-image: linear-gradient(180deg, var(--crimson), var(--purple)) 1;
+      background: linear-gradient(90deg, rgba(232, 58, 93, 0.04) 0%, transparent 100%);
+      border-radius: 0 12px 12px 0;
+      font-size: 12px;
+      color: #ccc;
+      font-style: italic;
+      animation: fadeIn 1s ease 0.9s both;
+    }
+
+    .lyric-quote .hl { color: var(--crimson); text-shadow: 0 0 12px var(--crimson-glow); font-weight: 800; font-style: normal; }
+    .lyric-quote .source { display: block; margin-top: 8px; font-style: normal; color: var(--crimson); font-size: 9px; letter-spacing: 2px; font-weight: 800; }
+
+    /* Warm footer (updated) */
+    .footer {
+      margin-top: 50px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-light);
+      font-size: 9px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-align: center;
+      animation: fadeIn 1s ease 1s both;
+    }
+
+    .footer .love { display: block; margin-top: 6px; color: var(--purple); font-style: italic; text-transform: none; letter-spacing: 1px; font-size: 10px; opacity: 0.7; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      .particle { display: none; }
+      .cd-num { opacity: 1 !important; }
+    }
+
+    /* ==================== MOBILE ==================== */
+    @media (max-width: 1024px) {
+      .layout-wrapper { flex-direction: column; overflow-y: auto; height: auto; min-height: 100vh; }
+      .visual-panel { width: 100%; height: 50vh; min-height: 350px; flex-shrink: 0; }
+      .bg-image { width: 100vw; transform: scale(1.4) translateY(-12%); }
+      .bg-overlay { background: linear-gradient(to bottom, rgba(8,8,16,0) 30%, rgba(8,8,16,0.85) 80%, var(--bg-dark) 100%); }
+      .ui-panel {
+        width: 100%; height: auto; padding: 50px 24px 40px; overflow-y: visible; flex-shrink: 0;
+        margin-top: -40px; border-radius: 32px 32px 0 0; border-top: 1px solid rgba(255, 255, 255, 0.1); border-left: none;
+        background: rgba(8, 8, 16, 0.7); backdrop-filter: blur(30px); box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.9);
+      }
+      .scroll-indicator { display: block; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 40px; height: 5px; background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .actions { flex-direction: column; }
+      .btn { max-width: 100%; }
+      .how-grid { flex-direction: column; }
+      .intel-grid { flex-direction: column; gap: 16px; }
+      .catchphrase { font-size: 14px; letter-spacing: 3px; }
+      .visual-text { left: 24px; bottom: 50px; }
+    }
+
+    @media (max-width: 480px) {
+      .visual-panel { height: 45vh; min-height: 320px; }
+      .title-edition { letter-spacing: 6px; }
+      .countdown { gap: 12px; }
+      .cd-lbl { font-size: 8px; letter-spacing: 2px; }
+      .bg-image { transform: scale(1.5) translateY(-14%); }
+      .welcome-line { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FIXED BACKGROUND -->
+  <div class="fixed-bg" aria-hidden="true">
+    <img src="bts-bg.jpg" alt="" class="bg-image" loading="eager" fetchpriority="high" decoding="async">
+    <div class="bg-overlay"></div>
+    <div class="bg-ambient"></div>
+    <div class="particles" id="particles"></div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="layout-wrapper">
+
+    <!-- LEFT SIDE -->
+    <div class="visual-panel" aria-hidden="true">
+      <div class="visual-text">
+        <div class="catchphrase">Let's <span>swim</span><br>together.</div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="ui-panel">
+      <div class="scroll-indicator" aria-hidden="true"></div>
+
+      <div class="top-badge" aria-label="System status"><span class="live-dot" aria-hidden="true"></span> HopeTracker</div>
+
+      <p class="title-sub">BTS Comeback 2026</p>
+      <h1 class="title-main">The Arirang</h1>
+      <div class="title-edition">— Mission —</div>
+
+      <!-- NEW: Warm welcome line -->
+      <p class="welcome-line">
+        A new chapter begins. <span class="gold">Move with the current.</span> 💜
+      </p>
+
+      <!-- Countdown (same logic) -->
+      <div class="countdown" id="countdown" role="timer" aria-label="Countdown to battle start">
+        <div class="cd-block">
+          <div class="cd-num" id="cdDays" aria-label="Days">00</div>
+          <div class="cd-lbl" aria-hidden="true">Days</div>
+        </div>
+        <div class="cd-block">
+          <div class="cd-num" id="cdHours" aria-label="Hours">00</div>
+          <div class="cd-lbl" aria-hidden="true">Hours</div>
+        </div>
+        <div class="cd-block">
+          <div class="cd-num" id="cdMins" aria-label="Minutes">00</div>
+          <div class="cd-lbl" aria-hidden="true">Mins</div>
+        </div>
+        <div class="cd-block">
+          <div class="cd-num" id="cdSecs" aria-label="Seconds">00</div>
+          <div class="cd-lbl" aria-hidden="true">Secs</div>
+        </div>
+      </div>
+
+      <nav class="actions" aria-label="Main actions">
+        <a href="register.html" class="btn btn-primary">Begin Your Chapter</a>
+        <a href="dashboard.html" class="btn btn-secondary">Agent Login</a>
+      </nav>
+
+      <div class="dashboard-grid">
+
+        <!-- Mission Intel (updated copy) -->
+        <div class="data-card" style="grid-column: 1 / -1;">
+          <div class="card-header">Mission Intel</div>
+          <div class="intel-grid">
+            <div class="intel-col">
+              <span class="intel-label">Objective</span>
+              Stream BTS ARIRANG daily. Complete survival missions with your team.
+              Earn badges, climb the global ranks, and keep your unit alive.
+            </div>
+            <div class="intel-col">
+              <span class="intel-label">The Current</span>
+              Every team faces the same waves. Side missions test discipline.
+              Teams that stream together rise. Teams that fall behind face elimination.
+              <div class="intel-tagline">7 TEAMS ENTER. SWIM OR SINK.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Status -->
+        <div class="data-card">
+          <div class="card-header">Live Status</div>
+          <div class="stat-row">
+            <div>
+              <div class="stat-val loading" id="agentCount" aria-live="polite">—</div>
+              <div class="stat-lbl">Active Agents</div>
+            </div>
+          </div>
+          <div class="stat-row" style="margin-top: 20px;">
+            <div><div class="stat-val">7</div><div class="stat-lbl">Units</div></div>
+            <div><div class="stat-val">17</div><div class="stat-lbl">Weeks</div></div>
+          </div>
+        </div>
+
+        <!-- Teams -->
+        <div class="data-card">
+          <div class="card-header">The 7 Units</div>
+          <div class="teams-container">
+            <div class="team-row"><span>Team MONO</span><span class="team-count" data-team="team mono">—</span></div>
+            <div class="team-row"><span>Team HAPPY</span><span class="team-count" data-team="team happy">—</span></div>
+            <div class="team-row"><span>Team D-DAY</span><span class="team-count" data-team="team d-day">—</span></div>
+            <div class="team-row"><span>Team HOPEWORLD</span><span class="team-count" data-team="team hopeworld">—</span></div>
+            <div class="team-row"><span>Team MUSE</span><span class="team-count" data-team="team muse">—</span></div>
+            <div class="team-row"><span>Team LAYOVER</span><span class="team-count" data-team="team layover">—</span></div>
+            <div class="team-row"><span>Team GOLDEN</span><span class="team-count" data-team="team golden">—</span></div>
+          </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="data-card" style="grid-column: 1 / -1;">
+          <div class="card-header">How It Works</div>
+          <div class="how-grid">
+            <div class="how-step"><div class="how-num">01</div><div class="how-title">Join</div><div class="how-desc">Register &amp; link your Last.fm to track streams</div></div>
+            <div class="how-step"><div class="how-num">02</div><div class="how-title">Stream</div><div class="how-desc">Complete daily missions — 2X album, unit tracks &amp; survival</div></div>
+            <div class="how-step"><div class="how-num">03</div><div class="how-title">Rise</div><div class="how-desc">Keep your team alive. Level up. Win the week.</div></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quote (updated) -->
+      <div class="lyric-quote">
+        "We were only seven. But we have <span class="hl">you all</span> now."
+        <span class="source">— BTS, We Are Bulletproof: The Eternal</span>
+      </div>
+
+      <footer class="footer">
+        Powered by HopeTracker • ARIRANG Edition • 2026
+        <span class="love">"Every story begins with a song." 💜</span>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const CONFIG = {
+      API_URL: 'https://xyivyebbafqwthvlwzlm.supabase.co/functions/v1/arirang-btsbackend',
+      SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh5aXZ5ZWJiYWZxd3Rodmx3emxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NDY0MTUsImV4cCI6MjA4ODUyMjQxNX0.K-ysUclHXprTAtsW6bp6HoVcq4tSr1m-4xiZXkrIpn4',
+      BATTLE_START: new Date('2026-03-22T00:00:00+05:30').getTime(),
+      FALLBACK_AGENT_COUNT: '280+',
+    };
+
+    /* ==================== COUNTDOWN (Your exact logic) ==================== */
+    const CountdownManager = {
+      _intervalId: null,
+      _elements: null,
+
+      _getElements() {
+        if (!this._elements) {
+          this._elements = {
+            days: document.getElementById('cdDays'),
+            hours: document.getElementById('cdHours'),
+            mins: document.getElementById('cdMins'),
+            secs: document.getElementById('cdSecs'),
+            container: document.getElementById('countdown'),
+          };
+        }
+        return this._elements;
+      },
+
+      start() {
+        this.update();
+        this._intervalId = setInterval(() => this.update(), 1000);
+      },
+
+      update() {
+        const els = this._getElements();
+        const diff = CONFIG.BATTLE_START - Date.now();
+        if (diff <= 0) { this.showActive(els); return; }
+
+        const d = Math.floor(diff / 86_400_000);
+        const h = Math.floor((diff % 86_400_000) / 3_600_000);
+        const m = Math.floor((diff % 3_600_000) / 60_000);
+        const s = Math.floor((diff % 60_000) / 1_000);
+
+        els.days.textContent = String(d).padStart(2, '0');
+        els.hours.textContent = String(h).padStart(2, '0');
+        els.mins.textContent = String(m).padStart(2, '0');
+        els.secs.textContent = String(s).padStart(2, '0');
+
+        els.days.classList.add('ready');
+        els.hours.classList.add('ready');
+        els.mins.classList.add('ready');
+        els.secs.classList.add('ready');
+      },
+
+      showActive(els) {
+        clearInterval(this._intervalId);
+        els.container.className = 'countdown-active';
+        els.container.innerHTML = `
+          <span class="era-label">THE WAIT IS OVER</span>
+          <span class="era-title">A New Era Has Begun</span>
+        `;
+      },
+    };
+
+    /* ==================== PARTICLES (Warm tones) ==================== */
+    function createParticles() {
+      const container = document.getElementById('particles');
+      if (!container) return;
+
+      const isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2;
+      const isMobile = window.innerWidth < 768;
+      const count = isLowEnd ? 8 : isMobile ? 15 : 30;
+      const types = ['crimson', 'purple', 'gold'];
+
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle ' + types[Math.floor(Math.random() * types.length)];
+        const size = (Math.random() * 3 + 1) + 'px';
+        p.style.cssText = `left:${Math.random()*100}%;width:${size};height:${size};animation-duration:${8+Math.random()*15}s;animation-delay:${Math.random()*5}s;`;
+        fragment.appendChild(p);
+      }
+      container.appendChild(fragment);
+    }
+
+   async function loadStats(retries = 2) {
+  const agentEl = document.getElementById('agentCount');
+
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      const res = await fetch(CONFIG.API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': CONFIG.SUPABASE_ANON_KEY,              // ✅ fixed
+          'Authorization': `Bearer ${CONFIG.SUPABASE_ANON_KEY}`,  // ✅ fixed
+        },
+        body: JSON.stringify({ action: 'getTeamSizes' }),
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      if (data.success && data.teams) {
+        let total = 0;
+        data.teams.forEach(t => {
+          total += t.count || 0;
+          const slug = t.team.trim().toLowerCase();
+          document.querySelectorAll('[data-team]').forEach(el => {
+            if (el.dataset.team.trim().toLowerCase() === slug) {
+              el.textContent = t.count + (t.count === 1 ? ' agent' : ' agents');
+            }
+          });
+        });
+        if (agentEl) agentEl.textContent = total.toLocaleString();
+        agentEl?.classList.remove('loading');
+        return;
+      }
+      throw new Error('Invalid response');
+    } catch (err) {
+      if (attempt === retries) {
+        if (agentEl) {
+          agentEl.textContent = CONFIG.FALLBACK_AGENT_COUNT;
+          agentEl.classList.remove('loading');
+        }
+      } else {
+        await new Promise(r => setTimeout(r, 1500 * (attempt + 1)));
+      }
+    }
+  }
+}
+    /* ==================== INIT ==================== */
+    CountdownManager.start();
+    createParticles();
+    loadStats();
+  </script>
+</body>
+</html>
