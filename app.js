@@ -1254,6 +1254,19 @@ setTimeout(checkHTOnboarding, 2500); // Show popup after dash loads
         showToast(d.error || 'Failed to load dashboard', 'error');
         return;
       }
+
+      // Normalize backend payload shape (backend returns agent row; UI expects agent.profile.*)
+      if (d.agent && !d.agent.profile) {
+        const raw = d.agent
+        d.agent = {
+          ...raw,
+          profile: {
+            name: raw.name || raw.display_name || raw.agent_no || STATE.agentNo || 'Agent',
+            team: raw.team || raw.team_name || 'Unknown',
+            agentNo: raw.agent_no || STATE.agentNo,
+          },
+        }
+      }
   
       // Update state
       STATE.data = d;
@@ -1374,7 +1387,7 @@ setTimeout(checkHTOnboarding, 2500); // Show popup after dash loads
       }
     } catch (e) {
       if (btn) btn.textContent = '✗ ERROR';
-      showToast('Sync failed', 'error');
+      showToast(e?.message || 'Sync failed', 'error');
     }
   
     // Reset button after 5s
@@ -6783,31 +6796,31 @@ function showSmDay(date) {
           </div>
         `;
       } else {
-        // Today's personal daily scrobbles per track (from backend-exposed field)
+        // ✅ CORRECT: today's per-track scrobbles from goal_daily_scrobbles (via backend)
         const todayDailyScrobbles = STATE.data?.agent?.todayTrackScrobbles || {};
-        const DAILY_TARGET = 22; // track goal daily requirement
 
         html += tasks.map(task => {
           const id = `t148_${task.name.replace(/[^a-zA-Z0-9]/g, '')}`;
           const pct = task.teamGoal > 0 ? Math.min(100, (task.teamCurrent / task.teamGoal) * 100) : 0;
-          
+
           const isUrgentTask = isUrgent || pct > 95;
-          const dailyText = isUrgentTask 
-              ? `<span style="color:var(--red-core); font-weight:900;">⚠️ PUSH NOW</span>` 
+          const dailyText = isUrgentTask
+              ? `<span style="color:var(--red-core); font-weight:900;">⚠️ PUSH NOW</span>`
               : `<span style="color:var(--courage-amber); font-family:'Share Tech Mono', monospace;">${task.daily}/DAY</span>`;
-          
+
           const label = `${task.type} <strong>${sanitize(task.name)}</strong> <span style="color:var(--text-muted);">×${task.total}</span> — ${dailyText}`;
-          
-          // Auto-tick if team goal is done OR if personal daily streams for this track reached DAILY_TARGET
+
+          // Agent's streams today for this specific track (exact, from goal_daily_scrobbles)
           const personalTodayCount = Object.entries(todayDailyScrobbles).reduce((sum, [trackName, count]) => {
-            // Normalize match: lowercase compare
             if (trackName.toLowerCase().includes(task.name.toLowerCase()) || task.name.toLowerCase().includes(trackName.toLowerCase())) {
               return sum + Number(count);
             }
             return sum;
           }, 0);
-          const autoChecked = pct >= 100 || personalTodayCount >= DAILY_TARGET;
-          
+
+          // ✅ Ticks when agent hits their daily fair share today (or team goal is 100%)
+          const autoChecked = pct >= 100 || personalTodayCount >= task.daily;
+
           return render148Task(id, label, autoChecked, pct, `${fmt(task.teamCurrent)}/${fmt(task.teamGoal)}`, false);
         }).join('');
       }
