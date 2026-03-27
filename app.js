@@ -6783,6 +6783,10 @@ function showSmDay(date) {
           </div>
         `;
       } else {
+        // Today's personal daily scrobbles per track (from backend-exposed field)
+        const todayDailyScrobbles = STATE.data?.agent?.todayTrackScrobbles || {};
+        const DAILY_TARGET = 22; // track goal daily requirement
+
         html += tasks.map(task => {
           const id = `t148_${task.name.replace(/[^a-zA-Z0-9]/g, '')}`;
           const pct = task.teamGoal > 0 ? Math.min(100, (task.teamCurrent / task.teamGoal) * 100) : 0;
@@ -6793,7 +6797,17 @@ function showSmDay(date) {
               : `<span style="color:var(--courage-amber); font-family:'Share Tech Mono', monospace;">${task.daily}/DAY</span>`;
           
           const label = `${task.type} <strong>${sanitize(task.name)}</strong> <span style="color:var(--text-muted);">×${task.total}</span> — ${dailyText}`;
-          const autoChecked = pct >= 100;
+          
+          // Auto-tick if team goal is done OR if personal daily streams for this track reached DAILY_TARGET
+          const personalTodayCount = Object.entries(todayDailyScrobbles).reduce((sum, [trackName, count]) => {
+            // Normalize match: lowercase compare
+            if (trackName.toLowerCase().includes(task.name.toLowerCase()) || task.name.toLowerCase().includes(trackName.toLowerCase())) {
+              return sum + Number(count);
+            }
+            return sum;
+          }, 0);
+          const autoChecked = pct >= 100 || personalTodayCount >= DAILY_TARGET;
+          
           return render148Task(id, label, autoChecked, pct, `${fmt(task.teamCurrent)}/${fmt(task.teamGoal)}`, false);
         }).join('');
       }
@@ -8501,9 +8515,10 @@ window.logoutPoliceModern = function() {
     if (!a) return;
   
     const pol = a.policeStatus || {};
+    const resultsReleased = pol.resultsReleased === true;
     
-    // Calculate Strikes
-    const reports = pol.confirmedReports || 0;
+    // If results not released yet, always show 0 to the user
+    const reports = resultsReleased ? (pol.confirmedReports || 0) : 0;
     const max = pol.maxAllowed || 3;
     const severity = reports === 0 ? 'clean' : reports < max ? 'warning' : 'exceeded';
     
@@ -8535,6 +8550,19 @@ window.logoutPoliceModern = function() {
   
     let html = renderGuide('police') || '';
     html += renderNarrativeCard('police') || '';
+
+    // If results haven't been released by admin yet, show a notice
+    if (!resultsReleased) {
+      html += `
+        <div style="padding:14px 18px; border-radius:12px; margin-bottom:20px; background:rgba(255,149,0,0.06); border:1px solid rgba(255,149,0,0.2); display:flex; gap:12px; align-items:center;">
+          <span style="font-size:20px;">\uD83D\uDD12</span>
+          <div>
+            <div style="font-size:11px; font-weight:800; color:var(--courage-amber); text-transform:uppercase; letter-spacing:1px;">Results Pending</div>
+            <div style="font-size:11px; color:var(--text-secondary); margin-top:3px;">Police reports are reviewed by admin on Sunday. Your record will be finalised when results are officially released.</div>
+          </div>
+        </div>
+      `;
+    }
   
     // 1. MAIN STATUS CARD
     html += `
@@ -9606,84 +9634,83 @@ window.launchTheVoyage = function () {
     </div>
 
     <!-- ═══ UNDERWATER CONCERT ═══ -->
-    <div class="swim-underwater swim-underwater--hidden" style="--uw-glow: #b366ff;">
-      <!-- Magic Effects -->
+    <div class="swim-underwater swim-underwater--hidden" id="concertStage">
+
+      <!-- Starfield background -->
+      <div class="cs-stars" id="csStars"></div>
+
+      <!-- Soft ambient glow -->
+      <div class="cs-ambient"></div>
+
+      <!-- Water surface shimmer from ship above -->
       <div class="swim-surface">
         <div class="swim-surface__shimmer"></div>
         <div class="swim-surface__wave"></div>
         <div class="swim-ship-shadow"></div>
       </div>
-      <div class="swim-caustics"></div>
-      <div class="swim-godray swim-godray--1"></div>
-      <div class="swim-godray swim-godray--2"></div>
-      <div class="swim-godray swim-godray--3"></div>
-      <div class="swim-godray swim-godray--4"></div>
-      <div class="swim-bubbles"></div>
-      <div class="swim-swimmers"></div>
 
-      <!-- Concert UI: Title -->
-      <div class="concert-scene">
-        <div class="concert-top-title">
-          <div class="concert-icon">🌸</div>
-          <h2>Swim</h2>
-          <p>BTS • Arirang Wave</p>
+      <!-- Concert Stage Layout -->
+      <div class="cs-layout">
+
+        <!-- Song info -->
+        <div class="cs-song-info">
+          <div class="cs-era-icon">🌸</div>
+          <h2 class="cs-title">Swim</h2>
+          <p class="cs-artist">BTS • Arirang Wave</p>
         </div>
-        
-        <!-- Interactive Army Bomb -->
-        <div class="concert-ab-container">
-          <div id="concertArmyBomb" class="concert-ab color-purple speed-medium move-sway">
-            <div class="cab-globe">
-              <div class="cab-logo"></div>
-              <div class="cab-light"></div>
+
+        <!-- Your army bomb (foreground, controllable) -->
+        <div class="cs-stage">
+          <div class="cs-stage-glow"></div>
+          <div class="cs-pivot" id="csPivot">
+            <div class="cs-bomb">
+              <div class="cs-sphere">
+                <div class="cs-fill"></div>
+                <span class="cs-logo">⟭⟬</span>
+              </div>
+              <div class="cs-handle"></div>
             </div>
-            <div class="cab-neck"></div>
-            <div class="cab-handle">
-              <div class="cab-button"></div>
-            </div>
-            <div class="cab-base"></div>
-            <div class="cab-glow"></div>
           </div>
-          <div class="cab-lyric-hint">"I just wanna dive"</div>
         </div>
 
-        <div class="swim-welcome swim-welcome--hidden">
-          <div class="swim-welcome__text">Agent \${escHtml(agentName)}, you've arrived at SWIM</div>
-        </div>
-
-        <!-- Lyrics Area -->
-        <div class="swim-lyrics" style="position:relative; bottom: 10px; margin: 15px auto;">
+        <!-- Lyrics area -->
+        <div class="swim-lyrics">
           <div class="swim-lyrics__main"></div>
           <div class="swim-lyrics__sub"></div>
         </div>
 
-        <!-- Controls Panel -->
-        <div class="concert-controls">
-          <div class="cc-row cc-move">
-            <button class="cc-btn cc-move-btn active" data-val="sway">〰 Sway</button>
-            <button class="cc-btn cc-move-btn" data-val="drift">🍂 Drift</button>
-            <button class="cc-btn cc-move-btn" data-val="ocean">🌊 Ocean</button>
-            <button class="cc-btn cc-move-btn" data-val="stars">✨ Stars</button>
-            <button class="cc-btn cc-move-btn" data-val="flutter">🦋 Flutter</button>
+        <!-- Crowd army bombs (JS-generated) -->
+        <div class="cs-crowd" id="csCrowd"></div>
+
+        <!-- Controls -->
+        <div class="cs-controls">
+          <div class="cs-ctrl-row cs-ctrl-patterns">
+            <button class="cs-pat-btn active" data-val="slow-sway">〰️ Sway</button>
+            <button class="cs-pat-btn" data-val="drift">🪐 Drift</button>
+            <button class="cs-pat-btn" data-val="ocean">🌊 Ocean</button>
+            <button class="cs-pat-btn" data-val="stars">✨ Stars</button>
+            <button class="cs-pat-btn" data-val="flutter">🦋 Flutter</button>
           </div>
-          <div class="cc-row cc-speed-color">
-            <div class="cc-speed">
-              <span>SPEED:</span>
-              <button class="cc-btn cc-btn-small cc-speed-btn" data-val="slow">Slow</button>
-              <button class="cc-btn cc-btn-small cc-speed-btn active" data-val="medium">Medium</button>
-              <button class="cc-btn cc-btn-small cc-speed-btn" data-val="fast">Fast</button>
+          <div class="cs-ctrl-row cs-ctrl-bottom">
+            <div class="cs-speed-wrap">
+              <span class="cs-label">Speed:</span>
+              <button class="cs-speed-btn" data-spd="8">Slow</button>
+              <button class="cs-speed-btn active" data-spd="4">Medium</button>
+              <button class="cs-speed-btn" data-spd="1">Fast</button>
             </div>
-            <div class="cc-colors">
-              <span>Color:</span>
-              <button class="cc-color-btn active" data-val="purple" style="background:#b366ff"></button>
-              <button class="cc-color-btn" data-val="pink" style="background:#ff66b3"></button>
-              <button class="cc-color-btn" data-val="blue" style="background:#66a3ff"></button>
-              <button class="cc-color-btn" data-val="green" style="background:#66ff66"></button>
-              <button class="cc-color-btn" data-val="orange" style="background:#ffb366"></button>
-              <button class="cc-color-btn" data-val="rainbow" style="background:linear-gradient(45deg,red,orange,yellow,green,blue,purple)"></button>
+            <div class="cs-color-wrap">
+              <span class="cs-label">Color:</span>
+              <button class="cs-col-btn active" data-col="#a855f7" style="background:#a855f7"></button>
+              <button class="cs-col-btn" data-col="#e879f9" style="background:#e879f9"></button>
+              <button class="cs-col-btn" data-col="#6366f1" style="background:#6366f1"></button>
+              <button class="cs-col-btn" data-col="#22c55e" style="background:#22c55e"></button>
+              <button class="cs-col-btn" data-col="#fbbf24" style="background:#fbbf24"></button>
+              <button class="cs-col-btn cs-col-rainbow" data-col="rainbow">🌈</button>
             </div>
           </div>
         </div>
-      </div>
+
+      </div><!-- /cs-layout -->
 
       <div class="swim-ripple-area"></div>
     </div>
