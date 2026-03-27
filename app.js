@@ -3276,7 +3276,7 @@ async function renderAlbum2x() {
                 ${passedMembers.length > 0 ? `
                     <div style="background:var(--green-soft); border:1px solid var(--green-border); border-radius:8px; padding:12px;">
                         <div style="color:var(--green); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">
-                            ✅ Perfect Streak till today (${passedMembers.length})
+                            ✅ Secured Agents (${passedMembers.length})
                         </div>
                         <div style="display:flex; flex-wrap:wrap; gap:6px; max-height:150px; overflow-y:auto;">
                             ${passedMembers.slice(0, 50).map(m => `
@@ -9662,11 +9662,12 @@ window.launchTheVoyage = function () {
         <!-- Your army bomb (foreground, controllable) -->
         <div class="cs-stage">
           <div class="cs-stage-glow"></div>
+          <div class="cs-pulse-ring" id="csPulseRing"></div>
           <div class="cs-pivot" id="csPivot">
             <div class="cs-bomb">
               <div class="cs-sphere">
                 <div class="cs-fill"></div>
-                <span class="cs-logo">⟭⟬</span>
+                <span class="cs-logo" id="csBombLogo">⟭⟬</span>
               </div>
               <div class="cs-handle"></div>
             </div>
@@ -9682,35 +9683,68 @@ window.launchTheVoyage = function () {
         <!-- Crowd army bombs (JS-generated) -->
         <div class="cs-crowd" id="csCrowd"></div>
 
-        <!-- Controls -->
+        <!-- ── ENHANCED CONTROLS ── -->
         <div class="cs-controls">
-          <div class="cs-ctrl-row cs-ctrl-patterns">
-            <button class="cs-pat-btn active" data-val="slow-sway">〰️ Sway</button>
-            <button class="cs-pat-btn" data-val="drift">🪐 Drift</button>
-            <button class="cs-pat-btn" data-val="ocean">🌊 Ocean</button>
-            <button class="cs-pat-btn" data-val="stars">✨ Stars</button>
-            <button class="cs-pat-btn" data-val="flutter">🦋 Flutter</button>
+          <div class="cs-tab-bar">
+            <button class="cs-tab active" data-tab="wave">〰 Wave</button>
+            <button class="cs-tab" data-tab="color">🎨 Color</button>
+            <button class="cs-tab" data-tab="style">✦ Style</button>
           </div>
-          <div class="cs-ctrl-row cs-ctrl-bottom">
-            <div class="cs-speed-wrap">
-              <span class="cs-label">Speed:</span>
-              <button class="cs-speed-btn" data-spd="8">Slow</button>
-              <button class="cs-speed-btn active" data-spd="4">Medium</button>
-              <button class="cs-speed-btn" data-spd="1">Fast</button>
+          <!-- Wave tab -->
+          <div class="cs-tab-panel active" id="csTabWave">
+            <div class="cs-ctrl-row">
+              <button class="cs-pat-btn active" data-val="slow-sway">〰〰 Sway</button>
+              <button class="cs-pat-btn" data-val="drift">🌊〰 Drift</button>
+              <button class="cs-pat-btn" data-val="ocean">🌊🌊 Ocean</button>
+              <button class="cs-pat-btn" data-val="stars">✦ Stars</button>
+              <button class="cs-pat-btn" data-val="flutter">〰✦ Flutter</button>
             </div>
-            <div class="cs-color-wrap">
-              <span class="cs-label">Color:</span>
+            <div class="cs-ctrl-row" style="margin-top:6px;">
+              <span class="cs-label">Speed:</span>
+              <button class="cs-speed-btn" data-spd="8">〰 Slow</button>
+              <button class="cs-speed-btn active" data-spd="4">〰〰 Mid</button>
+              <button class="cs-speed-btn" data-spd="1.5">〰〰〰 Fast</button>
+            </div>
+          </div>
+          <!-- Color tab -->
+          <div class="cs-tab-panel" id="csTabColor">
+            <div class="cs-ctrl-row cs-color-grid">
               <button class="cs-col-btn active" data-col="#a855f7" style="background:#a855f7"></button>
               <button class="cs-col-btn" data-col="#e879f9" style="background:#e879f9"></button>
               <button class="cs-col-btn" data-col="#6366f1" style="background:#6366f1"></button>
+              <button class="cs-col-btn" data-col="#3b82f6" style="background:#3b82f6"></button>
               <button class="cs-col-btn" data-col="#22c55e" style="background:#22c55e"></button>
               <button class="cs-col-btn" data-col="#fbbf24" style="background:#fbbf24"></button>
+              <button class="cs-col-btn" data-col="#ef4444" style="background:#ef4444"></button>
+              <button class="cs-col-btn" data-col="#f97316" style="background:#f97316"></button>
+              <button class="cs-col-btn" data-col="#ffffff" style="background:#fff"></button>
               <button class="cs-col-btn cs-col-rainbow" data-col="rainbow">🌈</button>
+            </div>
+          </div>
+          <!-- Style tab — emoji logo picker -->
+          <div class="cs-tab-panel" id="csTabStyle">
+            <div class="cs-label" style="margin-bottom:6px;">Bomb Logo:</div>
+            <div class="cs-ctrl-row cs-logo-grid">
+              <button class="cs-logo-btn active" data-logo="⟭⟬">⟭⟬</button>
+              <button class="cs-logo-btn" data-logo="💜">💜</button>
+              <button class="cs-logo-btn" data-logo="🌊">🌊</button>
+              <button class="cs-logo-btn" data-logo="⭐">⭐</button>
+              <button class="cs-logo-btn" data-logo="🌸">🌸</button>
+              <button class="cs-logo-btn" data-logo="⚡">⚡</button>
+              <button class="cs-logo-btn" data-logo="🎵">🎵</button>
+              <button class="cs-logo-btn" data-logo="✨">✨</button>
             </div>
           </div>
         </div>
 
       </div><!-- /cs-layout -->
+
+      <!-- FINALE: ARMY flash overlay (triggered on arrival) -->
+      <div class="cs-finale-overlay" id="csFinaleOverlay">
+        <div class="cs-finale-flash"></div>
+        <div class="cs-finale-text">ARMY</div>
+        <div class="cs-finale-sub">YOU HAVE ARRIVED</div>
+      </div>
 
       <div class="swim-ripple-area"></div>
     </div>
@@ -9781,7 +9815,7 @@ window.launchTheVoyage = function () {
   function setStageColor(color) {
     if (_rainbowInterval) { clearInterval(_rainbowInterval); _rainbowInterval = null; }
     if (color === 'rainbow') {
-      const cols = ['#a855f7','#e879f9','#6366f1','#22c55e','#fbbf24','#ef4444','#3b82f6'];
+      const cols = ['#a855f7','#e879f9','#6366f1','#22c55e','#fbbf24','#ef4444','#3b82f6','#f97316'];
       let idx = 0;
       _rainbowInterval = setInterval(() => {
         root.style.setProperty('--cs-theme', cols[idx]);
@@ -9792,6 +9826,18 @@ window.launchTheVoyage = function () {
     }
   }
 
+  // Tab switching
+  root.querySelectorAll('.cs-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      root.querySelectorAll('.cs-tab').forEach(t => t.classList.remove('active'));
+      root.querySelectorAll('.cs-tab-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      const panel = root.querySelector(`#csTab${tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1)}`);
+      if (panel) panel.classList.add('active');
+    });
+  });
+
+  // Wave / pattern buttons
   root.querySelectorAll('.cs-pat-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       root.querySelectorAll('.cs-pat-btn').forEach(b => b.classList.remove('active'));
@@ -9801,6 +9847,7 @@ window.launchTheVoyage = function () {
     });
   });
 
+  // Speed buttons
   root.querySelectorAll('.cs-speed-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       root.querySelectorAll('.cs-speed-btn').forEach(b => b.classList.remove('active'));
@@ -9810,11 +9857,22 @@ window.launchTheVoyage = function () {
     });
   });
 
+  // Color buttons
   root.querySelectorAll('.cs-col-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       root.querySelectorAll('.cs-col-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       setStageColor(btn.dataset.col);
+    });
+  });
+
+  // Logo / emoji picker
+  root.querySelectorAll('.cs-logo-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      root.querySelectorAll('.cs-logo-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const logo = root.querySelector('#csBombLogo');
+      if (logo) logo.textContent = btn.dataset.logo;
     });
   });
 
@@ -9829,31 +9887,24 @@ window.launchTheVoyage = function () {
     }
   }
 
-  // Generate crowd rows
+  // Generate crowd row (single tight row for impact)
   const crowd = root.querySelector('#csCrowd');
   if (crowd) {
-    const rows = [
-      { count: 11, size: 14, opacity: 0.25, delayBase: 0 },
-      { count: 9, size: 19, opacity: 0.35, delayBase: 0.3 },
-      { count: 7, size: 24, opacity: 0.45, delayBase: 0.6 },
-    ];
-    rows.forEach((row, ri) => {
-      const rowEl = document.createElement('div');
-      rowEl.className = 'cs-crowd-row';
-      for (let i = 0; i < row.count; i++) {
-        const bomb = document.createElement('div');
-        bomb.className = 'cs-crowd-bomb';
-        const delay = (i * 0.18 + row.delayBase).toFixed(2);
-        const dur = (2.5 + Math.random() * 2).toFixed(1);
-        bomb.style.cssText = `--cb-size:${row.size}px;--cb-opacity:${row.opacity};animation-duration:${dur}s;animation-delay:${delay}s;`;
-        bomb.innerHTML = `<div class="cs-cb-sphere"></div><div class="cs-cb-handle"></div>`;
-        rowEl.appendChild(bomb);
-      }
-      crowd.appendChild(rowEl);
-    });
+    const crowdRow = document.createElement('div');
+    crowdRow.className = 'cs-crowd-row';
+    for (let i = 0; i < 13; i++) {
+      const bomb = document.createElement('div');
+      bomb.className = 'cs-crowd-bomb cs-crowd-dark'; // start dark for ignition effect
+      const size = 14 + Math.floor(i % 4) * 3;
+      const delay = (i * 0.15).toFixed(2);
+      bomb.style.cssText = `--cb-size:${size}px;animation-duration:${(2.5+Math.random()*1.5).toFixed(1)}s;animation-delay:${delay}s;`;
+      bomb.innerHTML = `<div class="cs-cb-sphere"></div><div class="cs-cb-handle"></div>`;
+      crowdRow.appendChild(bomb);
+    }
+    crowd.appendChild(crowdRow);
   }
 
-  // Initial animation
+  // Initial setup
   setStageColor('#a855f7');
   setTimeout(() => updatePivotAnim(), 100);
 
@@ -9894,37 +9945,57 @@ window.launchTheVoyage = function () {
     if (ocean) ocean.style.opacity = '0';
   }, 4500);
 
-  // Phase 5: Concert appears (5000ms) — generate bubbles and show stage
+  // ══════════════════════════════════════════════════
+  //  CONCERT FINALE REVEAL SEQUENCE (5000ms → 7500ms)
+  // ══════════════════════════════════════════════════
+
+  // Phase 5A: Concert stage appears (5000ms)
   setTimeout(() => {
     const uw = root.querySelector('.swim-underwater');
     if (uw) uw.classList.add('swim-underwater--visible');
   }, 5000);
 
-  // Phase 7: Welcome message (6200ms)
+  // Phase 5B: ARMY flash burst (5200ms) — white explosion
   setTimeout(() => {
-    const welcome = root.querySelector('.swim-welcome');
-    if (welcome) welcome.classList.remove('swim-welcome--hidden');
-    setTimeout(() => { if (welcome) welcome.classList.add('swim-welcome--fading'); }, 3000);
-  }, 6200);
+    const overlay = root.querySelector('#csFinaleOverlay');
+    if (overlay) overlay.classList.add('cs-finale-overlay--active');
+  }, 5200);
 
-  // Phase 8: Lyrics start cycling (7000ms)
+  // Phase 5C: Crowd ignition — bombs light up left → right wave (5500ms)
+  setTimeout(() => {
+    const crowdBombs = root.querySelectorAll('.cs-crowd-bomb');
+    crowdBombs.forEach((bomb, i) => {
+      setTimeout(() => {
+        bomb.classList.remove('cs-crowd-dark');
+        bomb.classList.add('cs-crowd-ignite');
+      }, i * 100);
+    });
+  }, 5500);
+
+  // Phase 5D: YOUR bomb wakes up — 3 pulse rings (6000ms)
+  setTimeout(() => {
+    const ring = root.querySelector('#csPulseRing');
+    if (ring) ring.classList.add('cs-pulse-ring--active');
+    // Remove ring after 3 pulses
+    setTimeout(() => { if (ring) ring.classList.remove('cs-pulse-ring--active'); }, 2400);
+  }, 6000);
+
+  // Phase 5E: ARMY text fades out (6500ms)
+  setTimeout(() => {
+    const overlay = root.querySelector('#csFinaleOverlay');
+    if (overlay) overlay.classList.add('cs-finale-overlay--done');
+  }, 6500);
+
+  // Phase 6: Lyrics start cycling (7000ms)
   setTimeout(() => { lyricInterval = startLyricCycle(root); }, 7000);
 
-  // Phase 9: Swimmers appear (7500ms)
-  setTimeout(() => {
-    generateSwimmers(root.querySelector('.swim-swimmers'));
-    setTimeout(() => {
-      root.querySelectorAll('.swim-swimmer').forEach(s => s.classList.add('swim-swimmer--visible'));
-    }, 100);
-  }, 7500);
-
-  // Phase 10: Spotify player (8500ms)
+  // Phase 7: Spotify player (8000ms)
   setTimeout(() => {
     const pl = root.querySelector('.vy-player');
     if (pl) pl.classList.remove('vy-player--hidden');
-  }, 8500);
+  }, 8000);
 
-  // Phase 11: Color shift cycle (starts at 12s, shifts every 15s)
+  // Phase 8: Color shift cycle (starts at 12s, shifts every 15s)
   setTimeout(() => {
     colorInterval = setInterval(() => {
       const uw = root.querySelector('.swim-underwater');
@@ -10906,6 +10977,107 @@ const VOYAGE_SWIM_CSS = `
 }
 @media (prefers-reduced-motion: reduce) {
   .cs-pivot, .cs-crowd-bomb, .cs-ambient, .cs-star { animation: none !important; }
+}
+
+/* ══ TAB BAR ══ */
+.cs-tab-bar { display:flex; gap:4px; justify-content:center; margin-bottom:8px; }
+.cs-tab {
+  flex:1; padding:6px 4px; border-radius:10px; border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.5);
+  font-size:11px; cursor:pointer; transition:all 0.2s; font-weight:600;
+}
+.cs-tab.active {
+  background: linear-gradient(135deg, var(--cs-theme), rgba(0,0,0,0.4));
+  color:#fff; border-color:var(--cs-theme);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--cs-theme) 40%, transparent);
+}
+.cs-tab-panel { display:none; }
+.cs-tab-panel.active { display:block; }
+
+/* ══ COLOR GRID ══ */
+.cs-color-grid { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
+.cs-color-grid .cs-col-btn { width:26px; height:26px; }
+
+/* ══ LOGO GRID ══ */
+.cs-logo-grid { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
+.cs-logo-btn {
+  width:38px; height:38px; border-radius:10px; font-size:20px; cursor:pointer;
+  background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.1);
+  display:flex; align-items:center; justify-content:center; transition:all 0.2s;
+}
+.cs-logo-btn:hover { transform:scale(1.15); border-color:rgba(255,255,255,0.3); }
+.cs-logo-btn.active {
+  background:rgba(255,255,255,0.12); border-color:var(--cs-theme);
+  box-shadow:0 0 10px color-mix(in srgb, var(--cs-theme) 50%, transparent);
+}
+
+/* ══ CROWD — DARK & IGNITE STATES ══ */
+.cs-crowd-dark .cs-cb-sphere {
+  background: rgba(30,30,40,0.8);
+  box-shadow: none;
+  opacity: 0.2;
+  transition: all 0.4s ease;
+}
+.cs-crowd-ignite .cs-cb-sphere {
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.25), var(--cs-theme) 60%, rgba(0,0,0,0.3));
+  box-shadow: 0 0 calc(var(--cb-size, 16px) * 1.2) var(--cs-theme), inset 0 0 6px rgba(255,255,255,0.2);
+  opacity: 1;
+  transition: all 0.4s ease;
+}
+.cs-crowd-ignite { opacity:0.7 !important; }
+
+/* ══ PULSE RING (Your bomb wakes up) ══ */
+.cs-pulse-ring {
+  position: absolute; width: 140px; height: 140px; border-radius: 50%;
+  border: 2px solid var(--cs-theme); pointer-events: none;
+  opacity: 0; z-index: 25;
+}
+.cs-pulse-ring--active {
+  animation: cs-pulse-expand 0.8s ease-out 3;
+}
+@keyframes cs-pulse-expand {
+  0%  { transform: scale(0.8); opacity: 0.9; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* ══ FINALE OVERLAY ══ */
+.cs-finale-overlay {
+  position: absolute; inset: 0; z-index: 50;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  pointer-events: none; opacity: 0; transition: opacity 0.3s;
+}
+.cs-finale-overlay--active { opacity: 1; }
+.cs-finale-overlay--done {
+  opacity: 0; transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+.cs-finale-flash {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.95) 0%, rgba(168,85,247,0.6) 40%, transparent 75%);
+  animation: cs-flash-burst 1.2s ease-out forwards;
+}
+@keyframes cs-flash-burst {
+  0%  { opacity: 1; transform: scale(0.5); }
+  30% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0; transform: scale(1.8); }
+}
+.cs-finale-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 64px; font-weight: 900; color: #fff;
+  letter-spacing: 12px; z-index: 51;
+  text-shadow: 0 0 40px var(--cs-theme), 0 0 80px rgba(255,255,255,0.5);
+  animation: cs-army-appear 1.4s ease-out forwards;
+}
+@keyframes cs-army-appear {
+  0%  { transform: scale(2.5); opacity: 0; }
+  30% { opacity: 1; }
+  70% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.85); opacity: 0.9; }
+}
+.cs-finale-sub {
+  font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7);
+  letter-spacing: 4px; text-transform: uppercase; margin-top: 8px; z-index: 51;
+  animation: cs-fade-up 1s ease forwards 0.4s; opacity: 0;
 }
 `;
 
