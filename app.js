@@ -3276,7 +3276,7 @@ async function renderAlbum2x() {
                 ${passedMembers.length > 0 ? `
                     <div style="background:var(--green-soft); border:1px solid var(--green-border); border-radius:8px; padding:12px;">
                         <div style="color:var(--green); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">
-                            ✅ Perfect Streak till today (${passedMembers.length})
+                            ✅ Secured Agents (${passedMembers.length})
                         </div>
                         <div style="display:flex; flex-wrap:wrap; gap:6px; max-height:150px; overflow-y:auto;">
                             ${passedMembers.slice(0, 50).map(m => `
@@ -9683,61 +9683,61 @@ window.launchTheVoyage = function () {
         <!-- Crowd army bombs (JS-generated) -->
         <div class="cs-crowd" id="csCrowd"></div>
 
-        <!-- ── ENHANCED CONTROLS ── -->
-        <div class="cs-controls">
-          <div class="cs-tab-bar">
-            <button class="cs-tab active" data-tab="wave">〰 Wave</button>
-            <button class="cs-tab" data-tab="color">🎨 Color</button>
-            <button class="cs-tab" data-tab="style">✦ Style</button>
+      </div><!-- /cs-layout -->
+
+      <!-- ── ENHANCED CONTROLS (direct child of swim-underwater, always visible) ── -->
+      <div class="cs-controls">
+        <div class="cs-tab-bar">
+          <button class="cs-tab active" data-tab="wave">〰 Wave</button>
+          <button class="cs-tab" data-tab="color">🎨 Color</button>
+          <button class="cs-tab" data-tab="style">✦ Style</button>
+        </div>
+        <!-- Wave tab -->
+        <div class="cs-tab-panel active" id="csTabWave">
+          <div class="cs-ctrl-row">
+            <button class="cs-pat-btn active" data-val="slow-sway">〰〰 Sway</button>
+            <button class="cs-pat-btn" data-val="drift">🌊〰 Drift</button>
+            <button class="cs-pat-btn" data-val="ocean">🌊🌊 Ocean</button>
+            <button class="cs-pat-btn" data-val="stars">✦ Stars</button>
+            <button class="cs-pat-btn" data-val="flutter">〰✦ Flutter</button>
           </div>
-          <!-- Wave tab -->
-          <div class="cs-tab-panel active" id="csTabWave">
-            <div class="cs-ctrl-row">
-              <button class="cs-pat-btn active" data-val="slow-sway">〰〰 Sway</button>
-              <button class="cs-pat-btn" data-val="drift">🌊〰 Drift</button>
-              <button class="cs-pat-btn" data-val="ocean">🌊🌊 Ocean</button>
-              <button class="cs-pat-btn" data-val="stars">✦ Stars</button>
-              <button class="cs-pat-btn" data-val="flutter">〰✦ Flutter</button>
-            </div>
-            <div class="cs-ctrl-row" style="margin-top:6px;">
-              <span class="cs-label">Speed:</span>
-              <button class="cs-speed-btn" data-spd="8">〰 Slow</button>
-              <button class="cs-speed-btn active" data-spd="4">〰〰 Mid</button>
-              <button class="cs-speed-btn" data-spd="1.5">〰〰〰 Fast</button>
-            </div>
-          </div>
-          <!-- Color tab -->
-          <div class="cs-tab-panel" id="csTabColor">
-            <div class="cs-ctrl-row cs-color-grid">
-              <button class="cs-col-btn active" data-col="#a855f7" style="background:#a855f7"></button>
-              <button class="cs-col-btn" data-col="#e879f9" style="background:#e879f9"></button>
-              <button class="cs-col-btn" data-col="#6366f1" style="background:#6366f1"></button>
-              <button class="cs-col-btn" data-col="#3b82f6" style="background:#3b82f6"></button>
-              <button class="cs-col-btn" data-col="#22c55e" style="background:#22c55e"></button>
-              <button class="cs-col-btn" data-col="#fbbf24" style="background:#fbbf24"></button>
-              <button class="cs-col-btn" data-col="#ef4444" style="background:#ef4444"></button>
-              <button class="cs-col-btn" data-col="#f97316" style="background:#f97316"></button>
-              <button class="cs-col-btn" data-col="#ffffff" style="background:#fff"></button>
-              <button class="cs-col-btn cs-col-rainbow" data-col="rainbow">🌈</button>
-            </div>
-          </div>
-          <!-- Style tab — emoji logo picker -->
-          <div class="cs-tab-panel" id="csTabStyle">
-            <div class="cs-label" style="margin-bottom:6px;">Bomb Logo:</div>
-            <div class="cs-ctrl-row cs-logo-grid">
-              <button class="cs-logo-btn active" data-logo="⟭⟬">⟭⟬</button>
-              <button class="cs-logo-btn" data-logo="💜">💜</button>
-              <button class="cs-logo-btn" data-logo="🌊">🌊</button>
-              <button class="cs-logo-btn" data-logo="⭐">⭐</button>
-              <button class="cs-logo-btn" data-logo="🌸">🌸</button>
-              <button class="cs-logo-btn" data-logo="⚡">⚡</button>
-              <button class="cs-logo-btn" data-logo="🎵">🎵</button>
-              <button class="cs-logo-btn" data-logo="✨">✨</button>
-            </div>
+          <div class="cs-ctrl-row" style="margin-top:6px;">
+            <span class="cs-label">Speed:</span>
+            <button class="cs-speed-btn" data-spd="8">〰 Slow</button>
+            <button class="cs-speed-btn active" data-spd="4">〰〰 Mid</button>
+            <button class="cs-speed-btn" data-spd="1.5">〰〰〰 Fast</button>
           </div>
         </div>
-
-      </div><!-- /cs-layout -->
+        <!-- Color tab -->
+        <div class="cs-tab-panel" id="csTabColor">
+          <div class="cs-ctrl-row cs-color-grid">
+            <button class="cs-col-btn active" data-col="#a855f7" style="background:#a855f7"></button>
+            <button class="cs-col-btn" data-col="#e879f9" style="background:#e879f9"></button>
+            <button class="cs-col-btn" data-col="#6366f1" style="background:#6366f1"></button>
+            <button class="cs-col-btn" data-col="#3b82f6" style="background:#3b82f6"></button>
+            <button class="cs-col-btn" data-col="#22c55e" style="background:#22c55e"></button>
+            <button class="cs-col-btn" data-col="#fbbf24" style="background:#fbbf24"></button>
+            <button class="cs-col-btn" data-col="#ef4444" style="background:#ef4444"></button>
+            <button class="cs-col-btn" data-col="#f97316" style="background:#f97316"></button>
+            <button class="cs-col-btn" data-col="#ffffff" style="background:#fff"></button>
+            <button class="cs-col-btn cs-col-rainbow" data-col="rainbow">🌈</button>
+          </div>
+        </div>
+        <!-- Style tab — emoji logo picker -->
+        <div class="cs-tab-panel" id="csTabStyle">
+          <div class="cs-label" style="margin-bottom:6px;">Bomb Logo:</div>
+          <div class="cs-ctrl-row cs-logo-grid">
+            <button class="cs-logo-btn active" data-logo="⟭⟬">⟭⟬</button>
+            <button class="cs-logo-btn" data-logo="💜">💜</button>
+            <button class="cs-logo-btn" data-logo="🌊">🌊</button>
+            <button class="cs-logo-btn" data-logo="⭐">⭐</button>
+            <button class="cs-logo-btn" data-logo="🌸">🌸</button>
+            <button class="cs-logo-btn" data-logo="⚡">⚡</button>
+            <button class="cs-logo-btn" data-logo="🎵">🎵</button>
+            <button class="cs-logo-btn" data-logo="✨">✨</button>
+          </div>
+        </div>
+      </div>
 
       <!-- FINALE: ARMY flash overlay (triggered on arrival) -->
       <div class="cs-finale-overlay" id="csFinaleOverlay">
@@ -9747,21 +9747,19 @@ window.launchTheVoyage = function () {
       </div>
 
       <div class="swim-ripple-area"></div>
+      <!-- Spotify player — pinned inside concert flex column -->
+      <div class="vy-player vy-player--hidden" style="flex-shrink:0;width:100%;z-index:31;">
+        <iframe class="vy-player-iframe" title="Spotify — SWIM"
+          src="https://open.spotify.com/embed/track/68lbSrXDORS51pmyjZv712?utm_source=generator&theme=0"
+          width="100%" height="80" frameBorder="0" allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"></iframe>
+      </div>
     </div>
 
     <!-- ═══ EXIT OVERLAY ═══ -->
     <div class="swim-exit">
       <div class="swim-exit__light"></div>
-    </div>
-
-    <!-- ═══ SPOTIFY PLAYER ═══ -->
-    <div class="vy-player vy-player--hidden">
-      <div class="vy-player-label">🎧 YOUR BOARDING PASS TO SWIM</div>
-      <iframe class="vy-player-iframe" title="Spotify — SWIM"
-        src="https://open.spotify.com/embed/track/68lbSrXDORS51pmyjZv712?utm_source=generator&theme=0"
-        width="100%" height="80" frameBorder="0" allowfullscreen=""
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
     </div>
   `;
 
@@ -10801,6 +10799,10 @@ const VOYAGE_SWIM_CSS = `
 .swim-underwater {
   background: radial-gradient(ellipse at center 35%, color-mix(in srgb, var(--cs-theme) 25%, #050508) 0%, #050508 70%) !important;
   transition: background 1s ease !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  position: relative !important;
 }
 
 /* ── Stars ── */
@@ -10828,25 +10830,27 @@ const VOYAGE_SWIM_CSS = `
 
 /* ── Layout ── */
 .cs-layout {
-  position: absolute; inset: 0; z-index: 10;
+  position: relative; z-index: 10;
   display: flex; flex-direction: column; align-items: center;
-  justify-content: flex-start; padding: 16px 16px 0;
-  overflow: hidden;
+  flex: 1; min-height: 0;
+  padding: 10px 12px 0;
+  overflow-y: auto; overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ── Song info ── */
-.cs-song-info { text-align: center; margin-bottom: 6px; animation: cs-fade-up 0.8s forwards 0.2s; opacity: 0; }
-.cs-era-icon { font-size: 22px; animation: cs-era-pulse 3s ease-in-out infinite; text-shadow: 0 0 20px var(--cs-theme); }
+.cs-song-info { text-align: center; margin-bottom: 4px; animation: cs-fade-up 0.8s forwards 0.2s; opacity: 0; flex-shrink: 0; }
+.cs-era-icon { font-size: 18px; animation: cs-era-pulse 3s ease-in-out infinite; text-shadow: 0 0 20px var(--cs-theme); }
 @keyframes cs-era-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
-.cs-title { margin: 3px 0 0; font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 2px; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
-.cs-artist { margin: 2px 0 0; font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 1px; }
+.cs-title { margin: 2px 0 0; font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 800; color: #fff; letter-spacing: 2px; }
+.cs-artist { margin: 1px 0 0; font-size: 10px; color: rgba(255,255,255,0.6); letter-spacing: 1px; }
 @keyframes cs-fade-up { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
 
 /* ── Your army bomb stage ── */
-.cs-stage { position: relative; display: flex; align-items: center; justify-content: center; height: 190px; width: 100%; margin-bottom: 2px; }
+.cs-stage { position: relative; display: flex; align-items: center; justify-content: center; height: 145px; width: 100%; flex-shrink: 0; }
 .cs-stage-glow {
-  position: absolute; width: 220px; height: 220px; border-radius: 50%;
-  background: var(--cs-theme); filter: blur(90px); opacity: 0.22;
+  position: absolute; width: 160px; height: 160px; border-radius: 50%;
+  background: var(--cs-theme); filter: blur(70px); opacity: 0.22;
   animation: cs-breathe 4s ease-in-out infinite; transition: background 1s;
 }
 
@@ -10854,24 +10858,23 @@ const VOYAGE_SWIM_CSS = `
 .cs-pivot { transform-origin: center bottom; position: relative; cursor: default; }
 .cs-bomb { display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 12px 35px rgba(0,0,0,0.6)); }
 .cs-sphere {
-  width: 110px; height: 110px; border-radius: 50%;
+  width: 85px; height: 85px; border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), rgba(0,0,0,0.4));
   border: 1.5px solid rgba(255,255,255,0.22);
-  box-shadow: inset 0 0 28px var(--cs-theme), 0 0 22px var(--cs-theme);
+  box-shadow: inset 0 0 22px var(--cs-theme), 0 0 18px var(--cs-theme);
   position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;
   transition: box-shadow 0.5s;
 }
-.cs-fill { position: absolute; bottom: 0; left: 0; right: 0; height: 100%; background: linear-gradient(to top, var(--cs-theme), transparent); opacity: 0.38; transition: background 1s; }
-.cs-logo { font-size: 36px; font-weight: 700; color: #fff; z-index: 5; text-shadow: 0 0 14px var(--cs-theme); transition: text-shadow 0.5s; }
+.cs-fill { position: absolute; inset: 0; background: linear-gradient(to top, var(--cs-theme), transparent); opacity: 0.38; transition: background 1s; }
+.cs-logo { font-size: 28px; font-weight: 700; color: #fff; z-index: 5; text-shadow: 0 0 14px var(--cs-theme); transition: text-shadow 0.5s; }
 .cs-handle {
-  width: 28px; height: 95px;
+  width: 22px; height: 72px;
   background: linear-gradient(90deg, #1a1a1a, #2a2a2a 40%, #111);
-  margin-top: -5px; border-radius: 0 0 12px 12px;
-  position: relative;
+  margin-top: -4px; border-radius: 0 0 10px 10px; position: relative;
 }
 .cs-handle::before {
-  content: ''; position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
-  width: 12px; height: 18px; background: #000; border: 1px solid #333; border-radius: 6px;
+  content: ''; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  width: 10px; height: 14px; background: #000; border: 1px solid #333; border-radius: 5px;
 }
 
 /* Wave animations */
@@ -10883,25 +10886,25 @@ const VOYAGE_SWIM_CSS = `
 
 /* ── Lyrics ── */
 .swim-lyrics {
-  text-align: center; width: 90%; margin: 4px auto; z-index: 20;
-  min-height: 42px; position: relative;
+  text-align: center; width: 95%; margin: 2px auto; z-index: 20;
+  min-height: 36px; flex-shrink: 0;
 }
 .swim-lyrics__main {
-  font-size: 16px; font-weight: 800; color: #fff; letter-spacing: 1px;
+  font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 1px;
   text-shadow: 0 0 12px var(--cs-theme);
   animation: cs-lyric-glow 3s ease-in-out infinite;
-  transition: opacity 0.4s; line-height: 1.4;
+  line-height: 1.4;
 }
 .swim-lyrics__sub {
-  font-size: 12px; color: rgba(255,255,255,0.65); font-style: italic;
-  margin-top: 4px; line-height: 1.4;
+  font-size: 11px; color: rgba(255,255,255,0.65); font-style: italic;
+  margin-top: 2px; line-height: 1.4;
 }
 @keyframes cs-lyric-glow { 0%,100%{opacity:0.75} 50%{opacity:1} }
 
 /* ── Crowd ── */
 .cs-crowd {
   display: flex; flex-direction: column-reverse; align-items: center; gap: 2px;
-  width: 100%; margin-top: 2px; z-index: 5; pointer-events: none;
+  width: 100%; margin: 2px 0; z-index: 5; pointer-events: none; flex-shrink: 0;
 }
 .cs-crowd-row { display: flex; align-items: flex-end; justify-content: center; gap: 6px; }
 .cs-crowd-bomb {
@@ -10924,11 +10927,11 @@ const VOYAGE_SWIM_CSS = `
 
 /* ── Controls ── */
 .cs-controls {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  width: 100%; padding: 10px 14px 34px;
-  background: linear-gradient(to top, #000 85%, transparent);
-  position: absolute; bottom: 0; left: 0; right: 0; z-index: 30;
-  border-top: 1px solid rgba(255,255,255,0.05);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  width: 100%; padding: 8px 10px 10px;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 85%, transparent);
+  flex-shrink: 0; z-index: 30;
+  border-top: 1px solid rgba(255,255,255,0.07);
 }
 .cs-ctrl-row { display: flex; align-items: center; justify-content: center; gap: 7px; flex-wrap: wrap; }
 .cs-pat-btn {
