@@ -3276,7 +3276,7 @@ async function renderAlbum2x() {
                 ${passedMembers.length > 0 ? `
                     <div style="background:var(--green-soft); border:1px solid var(--green-border); border-radius:8px; padding:12px;">
                         <div style="color:var(--green); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">
-                            ✅ Secured Agents (${passedMembers.length})
+                            ✅ Perfect Streak till today (${passedMembers.length})
                         </div>
                         <div style="display:flex; flex-wrap:wrap; gap:6px; max-height:150px; overflow-y:auto;">
                             ${passedMembers.slice(0, 50).map(m => `
