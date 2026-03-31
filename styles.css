@@ -8,6 +8,9 @@
    Visual DNA: Spy Archive × Glass UI × Vinyl
    ============================================= */
 
+/* ── PREMIUM ELITE AGENT FONTS ── */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=Rajdhani:wght@600;700&display=swap');
+
 :root {
   /* Night / Mission Base */
   --bg-abyss:       #050508;
@@ -1235,10 +1238,12 @@ body::before {
 }
 
 .stat-box .sv {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 22px;
+  font-weight: 700;
   color: #fff;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  letter-spacing: -1px;
   line-height: 1;
 }
 
@@ -1254,6 +1259,7 @@ body::before {
   letter-spacing: 2px;
   color: var(--text-muted);
   margin-top: 0;
+  opacity: 0.8;
 }
 
 
@@ -4899,10 +4905,15 @@ img {
 .label-tag, .section-label, .ticker-label, .btn-red, .btn-outline {
     text-transform: uppercase !important;
 }
-/* ── GLASS DOSSIER HEADER (PREMIUM LUXURY SPA) ── */
+/* ── ELITE SPY DOSSIER CARD ── */
 .profile-agent-card {
     position: relative;
     background: rgba(20, 20, 35, 0.4);
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: center;
     backdrop-filter: blur(20px);
     border: 2px solid rgba(255, 255, 255, 0.2);
     border-left: 5px solid var(--team-color);
@@ -4915,39 +4926,39 @@ img {
         0 0 40px var(--team-color, rgba(255, 20, 95, 0.25));
 }
 
-/* Animated inner rim glow */
+/* Top Left Targeting Bracket */
 .profile-agent-card::before {
     content: "";
     position: absolute;
-    inset: 0;
-    border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: radial-gradient(ellipse at 100% 0%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+    top: 15px; left: 15px;
+    width: 20px; height: 20px;
+    border-top: 2px solid var(--team-color);
+    border-left: 2px solid var(--team-color);
+    border-radius: 0;
     pointer-events: none;
-    animation: shimmer-card 8s ease-in-out infinite;
+    z-index: 10;
 }
 
-/* Premium tech glow in corner */
+/* Bottom Right Targeting Bracket */
 .profile-agent-card::after {
     content: "";
     position: absolute;
-    top: -30px; right: -30px;
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, var(--team-color) 0%, transparent 70%);
-    filter: blur(60px);
-    opacity: 0.4;
+    bottom: 15px; right: 15px;
+    width: 20px; height: 20px;
+    border-bottom: 2px solid var(--team-color);
+    border-right: 2px solid var(--team-color);
+    border-radius: 0;
     pointer-events: none;
-    animation: pulse-glow 4s ease-in-out infinite;
+    z-index: 10;
 }
 
-@keyframes shimmer-card {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}
-
-@keyframes pulse-glow {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.1); }
+/* Agent Name "Glass Decryption" Display */
+.profile-agent-card .name-display {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px var(--team-color);
 }
 
 /* ── HOLOGRAPHIC CIRCULAR BADGES (FIXED COLORS) ── */
