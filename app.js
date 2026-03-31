@@ -489,55 +489,58 @@ function getWeekDates(weekLabel) {
   // ↑↑↑ Timers object CLOSED here — nothing else inside it ↑↑↑
   
   
-  // ── Loading Screen Quote Rotation ──
-  (function initLoadingQuotes() {
+  // ── BEST: Combined V3 ──
+(function initLoadingQuotes() {
     const quotes = document.querySelectorAll('.wisdom-quote');
     if (quotes.length === 0) return;
-  
-    let currentIndex = 0;
-  
+
+    // V2: Random start
+    let currentIndex = Math.floor(Math.random() * quotes.length);
+    quotes.forEach(q => q.classList.remove('active'));
+    quotes[currentIndex].classList.add('active');
+
     Timers.setInterval('loading-quotes', () => {
-      const loading = document.getElementById('loading');
-      if (!loading || loading.style.display === 'none' || loading.style.opacity === '0') {
-        Timers.clearInterval('loading-quotes');
-        return;
-      }
-  
-      quotes[currentIndex].classList.remove('active');
-      currentIndex = (currentIndex + 1) % quotes.length;
-      quotes[currentIndex].classList.add('active');
-    }, 3500);
-  })();
-  
-  
-  // ── Hide Loading Screen ──
-  function hideLoadingScreen() {
-    Timers.clearInterval('loading-quotes');
-  
+        const loading = document.getElementById('loading');
+        // V1: Proper cleanup
+        if (!loading || loading.style.display === 'none' || loading.style.opacity === '0') {
+            Timers.clearInterval('loading-quotes');
+            return;
+        }
+        quotes[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % quotes.length;
+        quotes[currentIndex].classList.add('active');
+    }, 3000);
+})();
+
+function hideLoadingScreen() {
     const loading = document.getElementById('loading');
     if (!loading) return;
-  
+
+    // V1: Clear interval first
+    Timers.clearInterval('loading-quotes');
+
+    // V1: Fill progress bar to 100%
     const fill = loading.querySelector('.loading-progress-fill');
     if (fill) {
-      fill.style.animation = 'none';
-      fill.style.width = '100%';
-      fill.style.transition = 'width 0.3s ease';
+        fill.style.animation = 'none';
+        fill.style.width = '100%';
+        fill.style.transition = 'width 0.3s ease';
     }
-  
+
     const status = loading.querySelector('.loading-status');
     if (status) status.textContent = 'Mission Dashboard Ready';
-  
+
     setTimeout(() => {
-      loading.style.opacity = '0';
-      loading.addEventListener('transitionend', () => {
-        loading.style.display = 'none';
-      }, { once: true });
-  
-      setTimeout(() => {
-        if (loading.parentNode) loading.style.display = 'none';
-      }, 1000);
+        loading.style.opacity = '0';
+        // V2: Kill pointer events immediately
+        loading.style.pointerEvents = 'none';
+
+        // V2: Simple timeout for final removal
+        setTimeout(() => {
+            if (loading.parentNode) loading.style.display = 'none';
+        }, 600);
     }, 400);
-  }
+}
   // =============================================
   // ██████  NEW IN v2.0: API CLIENT
   // =============================================
