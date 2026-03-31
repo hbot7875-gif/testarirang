@@ -4662,26 +4662,47 @@ h1, h2, h3, h4, .page-title, .brand-name, .login-title {
   margin-bottom: 20px;
   display: flex;
   align-items: center;
+  position: relative; /* NEW: Needed for the fade mask */
+}
+
+/* NEW: Smooth fade-out on the right edge */
+.agency-ticker-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 80px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--bg-abyss) 100%  /* Fades into your background color */
+  );
+  z-index: 5;
+  pointer-events: none;
 }
 
 .ticker-label {
+  position: relative;           /* NEW: Makes z-index work properly */
+  z-index: 10;                  /* NEW: Higher than fade mask and text */
+  flex-shrink: 0;
   background: var(--red-core);
   color: #fff;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 900;
-  padding: 2px 10px;
-  margin: 0 15px;
+  padding: 4px 12px;            /* UPDATED: Slightly more padding */
+  margin: 0 10px;               /* UPDATED: Tighter margin */
   border-radius: 4px;
   text-transform: uppercase;
-  z-index: 2;
-  flex-shrink: 0;
+  box-shadow: 8px 0 15px var(--bg-abyss); /* NEW: Hides text peeking behind label */
 }
 
 .ticker-content {
   display: flex;
   white-space: nowrap;
   animation: tickerMove 30s linear infinite;
+  padding-left: 20px;           /* NEW: Gap so text doesn't start touching the label */
 }
 
 @keyframes tickerMove {
