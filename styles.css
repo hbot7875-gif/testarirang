@@ -567,6 +567,7 @@ body::before {
     radial-gradient(ellipse at 80% 20%, rgba(167,139,250,0.02) 0%, transparent 50%),
     radial-gradient(ellipse at 50% 80%, rgba(215,177,134,0.02) 0%, transparent 50%),
     repeating-radial-gradient(circle at 50% 50%, transparent 0px, transparent 40px, rgba(255,255,255,0.008) 40px, rgba(255,255,255,0.008) 41px);
+  opacity: 0.5;
   pointer-events: none;
   z-index: 0;
 }
@@ -792,12 +793,17 @@ body::before {
   top: 0; left: 0; bottom: 0;
   width: var(--sidebar-w);
   background: var(--bg-panel);
-  border-right: 1px solid var(--border-subtle);
+  border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+  box-shadow: none !important;
   z-index: var(--z-sidebar);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   transition: transform 0.35s var(--ease-out);
+}
+
+body, html {
+  overflow-x: hidden !important;
 }
 
 .sidebar-scroll {
@@ -5261,15 +5267,28 @@ img {
 
 /* \u2500\u2500 WELCOME BANNER (ELITE HQ HEADER) \u2500\u2500 */
 .welcome-banner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 24px;
+    padding: 24px 30px;
     background: linear-gradient(135deg, rgba(20, 20, 30, 0.8), rgba(10, 10, 15, 0.6));
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-left: 4px solid var(--red-core);
     border-radius: 16px;
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.welcome-text-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.welcome-text-group p {
+    margin-bottom: 4px;
 }
 
 .welcome-text-group p:first-child {
@@ -5286,7 +5305,7 @@ img {
     font-size: 22px;
     color: #fff;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-    margin: 0 0 6px 0;
+    margin: 0 0 8px 0;
 }
 
 .welcome-tag {
@@ -5299,6 +5318,36 @@ img {
     font-size: 10px;
     color: var(--wave-foam);
     letter-spacing: 1px;
+}
+
+/* ── LIVE BROADCAST TICKER (No Overlap) ── */
+.agency-ticker-wrap {
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.ticker-label {
+    position: relative;
+    z-index: 5;
+    flex-shrink: 0;
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: #ff0033;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.ticker-content {
+    padding-left: 20px;
+    flex: 1;
+    overflow: hidden;
 }
 
 /* \u2500\u2500 TARGET / PROGRESS TRACKING (SCI-FI NEON) \u2500\u2500 */
