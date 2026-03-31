@@ -1217,16 +1217,26 @@ body::before {
 }
 
 
-/* ── MINIMALIST DATA STRIPS ── */
+/* ── MINIMALIST DATA STRIPS WITH HOVER EFFECTS ── */
 .stat-box {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 15px 5px;
+  padding: 12px 20px;
+  border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.stat-box:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--team-color);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px var(--team-color, rgba(255, 20, 95, 0.2));
 }
 
 .stat-box::before {
@@ -4959,6 +4969,58 @@ img {
     text-transform: uppercase;
     letter-spacing: 3px;
     text-shadow: 0 0 15px var(--team-color);
+    font-size: 1.3rem;
+}
+
+/* Radar Graphic (Right Side) */
+.profile-agent-card .radar-box {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* Spinning Scan Line */
+.profile-agent-card .radar-box::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--team-color) 0%, transparent 30%);
+    animation: radar-spin 4s linear infinite;
+}
+
+@keyframes radar-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Page Title Styling (Digital Tab) */
+#page-profile h2 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 5px;
+    color: #fff;
+    border-left: 5px solid var(--red-core);
+    padding-left: 15px;
+    text-transform: uppercase;
+    margin-bottom: 0;
+    font-weight: 700;
+}
+
+#page-profile .page-subtitle {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--text-muted);
+    font-size: 10px;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 /* ── HOLOGRAPHIC CIRCULAR BADGES (FIXED COLORS) ── */
