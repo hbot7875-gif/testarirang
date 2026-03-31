@@ -4651,77 +4651,53 @@ h1, h2, h3, h4, .page-title, .brand-name, .login-title {
   background: rgba(255, 20, 95, 0.05);
   border: 1px solid rgba(255, 20, 95, 0.2);
 }
-/* ── AGENCY BROADCAST TICKER (FIXED) ── */
+/* ── AGENCY BROADCAST TICKER ── */
 .agency-ticker-wrap {
-    width: 100%;
-    background: rgba(255, 20, 95, 0.05);
-    border: 1px solid var(--red-border);
-    border-radius: 8px;
-    padding: 8px 0;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    /* REMOVED overflow:hidden from here */
+  width: 100%;
+  overflow: hidden;
+  background: rgba(255, 20, 95, 0.05);
+  border: 1px solid var(--red-border);
+  border-radius: 8px;
+  padding: 8px 0;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .ticker-label {
-    flex-shrink: 0;
-    background: var(--red-core);
-    color: #fff;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 900;
-    padding: 4px 12px;
-    margin-left: 12px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    z-index: 10;
-}
-
-/* NEW: Separate scroll container */
-.ticker-scroll-area {
-    flex: 1;
-    overflow: hidden;       /* Text is trapped inside HERE only */
-    position: relative;
-    margin: 0 10px;
-}
-
-/* Smooth fade on the right edge */
-.ticker-scroll-area::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 60px;
-    background: linear-gradient(
-        to right,
-        transparent 0%,
-        var(--bg-abyss) 100%
-    );
-    z-index: 5;
-    pointer-events: none;
+  background: var(--red-core);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 900;
+  padding: 2px 10px;
+  margin: 0 15px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  z-index: 2;
+  flex-shrink: 0;
 }
 
 .ticker-content {
-    display: flex;
-    white-space: nowrap;
-    animation: tickerMove 30s linear infinite;
+  display: flex;
+  white-space: nowrap;
+  animation: tickerMove 30s linear infinite;
 }
 
 @keyframes tickerMove {
-    0%   { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
 }
 
 .ticker-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-right: 50px;
-    font-size: 11px;
-    color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 50px;
+  font-size: 11px;
+  color: var(--text-secondary);
 }
+
 /* ── HERO STAT BLOCKS ── */
 .hero-stats-grid {
   display: grid;
