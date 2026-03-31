@@ -1217,16 +1217,19 @@ body::before {
 }
 
 
-/* ── MINIMALIST DATA STRIPS WITH HOVER EFFECTS ── */
+/* ── MINIMALIST DATA STRIPS (STACKED VERTICALLY) ── */
 .stat-box {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 12px 20px;
+  padding: 20px 10px;
   border-radius: 8px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -1263,13 +1266,14 @@ body::before {
 .stat-box .sv.green  { color: var(--green); }
 .stat-box .sv.white  { color: var(--text-primary); }
 
-.stat-box .sl {
+.stat-box .sl, .stat-box .h-stat-lbl {
   font-size: 9px;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--text-muted);
   margin-top: 0;
   opacity: 0.8;
+  text-align: center;
 }
 
 
@@ -4959,14 +4963,30 @@ img {
     margin-top: 12px;
 }
 
-/* Agent Name "Glass Decryption" Display */
+/* Agent Name "Glass Decryption" Display (BULLETPROOF) */
 .profile-agent-card .name-display {
+    /* 1. Use the narrower tech font */
     font-family: 'Rajdhani', sans-serif;
     font-weight: 700;
+    
+    /* 2. Keep the spy theme by forcing all-caps */
     text-transform: uppercase;
-    letter-spacing: 3px;
-    text-shadow: 0 0 15px var(--team-color);
-    font-size: 1.3rem;
+    
+    /* 3. Tighten spacing to fit long names */
+    letter-spacing: 1.5px;
+    
+    /* 4. Fluid sizing: scales between 1.2rem (mobile) and 1.8rem (desktop) */
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    
+    /* 5. Tighten the glow so it's readable */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    
+    /* 6. LONG NAME SAFETY NETS (CRUCIAL) */
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.2;
+    text-align: center;
 }
 
 /* Top Left Targeting Bracket */
@@ -5221,14 +5241,14 @@ img {
 
 .profile-pfp-large .online-dot {
     position: absolute;
-    bottom: clamp(2px, 1vw, 5px);
-    right: clamp(2px, 1vw, 5px);
-    width: clamp(10px, 2.5vw, 16px);
-    height: clamp(10px, 2.5vw, 16px);
+    bottom: 8px;
+    right: 8px;
+    width: 14px;
+    height: 14px;
     background: var(--green);
-    border: 2px solid #0E0E14;
+    border: 3px solid #0E0E14;
     border-radius: 50%;
-    box-shadow: 0 0 8px var(--green);
+    box-shadow: 0 0 6px var(--green);
     z-index: 10;
 }
 /* ── PROFILE PAGE SECTIONS ── */
