@@ -920,22 +920,61 @@ body, html {
   justify-content: center;
 }
 
+/* Agent Name — clean and premium */
 .sb-agent-name {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-family: var(--font-body) !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    letter-spacing: 0.3px !important;
+    text-transform: none !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+    display: block;
 }
 
+/* Meta row — Team + ID on one clean line */
 .sb-agent-meta {
-  font-size: 0.5625rem;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 3px;
+    flex-wrap: nowrap;
+}
+
+/* Team tag pill */
+.sb-agent-team {
+    font-family: var(--font-mono) !important;
+    font-size: 9px !important;
+    font-weight: 700;
+    color: var(--team-color, var(--red-core));
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+/* Dot separator */
+.sb-agent-meta-sep {
+    width: 3px;
+    height: 3px;
+    background: var(--text-ghost);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Agent ID */
+.sb-agent-id {
+    font-family: var(--font-mono) !important;
+    font-size: 9px !important;
+    color: var(--text-ghost);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
 }
 
 /* Nav sections */
