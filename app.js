@@ -1716,7 +1716,8 @@ async function renderHome() {
           <span class="ticker-item">⚡ 148 Protocol recalculating strategic scrobble share...</span>
         </div>
       </div>
-    `;
+    </div>
+  `;
 
     // ═══════════════════════════════════════
     // 3. STREAK BANNER
