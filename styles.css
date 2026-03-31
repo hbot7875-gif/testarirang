@@ -1214,14 +1214,14 @@ body::before {
 }
 
 
-/* ── STAT BOXES ── */
+/* ── MINIMALIST DATA STRIPS ── */
 .stat-box {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
-  padding: 14px 12px;
-  text-align: center;
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 15px 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
   overflow: hidden;
 }
@@ -1230,15 +1230,15 @@ body::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--red-core), transparent);
-  opacity: 0.3;
+  height: 0;
+  display: none;
 }
 
 .stat-box .sv {
-  font-size: 1.25rem;
-  font-weight: 900;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 22px;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
   line-height: 1;
 }
 
@@ -1249,11 +1249,11 @@ body::before {
 .stat-box .sv.white  { color: var(--text-primary); }
 
 .stat-box .sl {
-  font-size: 0.5625rem;
-  color: var(--text-muted);
+  font-size: 9px;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin-top: 4px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  margin-top: 0;
 }
 
 
@@ -2797,7 +2797,7 @@ body::before {
     max-width: 860px;
     margin: 0 auto;
     overflow-y: auto;
-    height: 100vh;
+    max-height: 100vh;
   }
 }
 
@@ -4899,30 +4899,32 @@ img {
 .label-tag, .section-label, .ticker-label, .btn-red, .btn-outline {
     text-transform: uppercase !important;
 }
-/* ── NEW AGENT DOSSIER CARD ── */
+/* ── GLASS DOSSIER HEADER (Premium Glassmorphism) ── */
 .profile-agent-card {
-    background: linear-gradient(135deg, rgba(20,20,25,0.9) 0%, rgba(10,10,15,0.95) 100%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-left: 5px solid var(--team-color) !important;
-    border-radius: 20px !important;
-    padding: 24px !important;
     position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--team-color);
+    padding: 30px;
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Subtle Scanline effect on the card */
+/* Subtle Tech Glow in the corner */
 .profile-agent-card::after {
     content: "";
     position: absolute;
-    inset: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-    background-size: 100% 2px, 3px 100%;
+    top: -50px; right: -50px;
+    width: 150px; height: 150px;
+    background: var(--team-color);
+    filter: blur(80px);
+    opacity: 0.2;
     pointer-events: none;
 }
 
-/* ── HOLOGRAPHIC CIRCULAR BADGES ── */
+/* ── HOLOGRAPHIC CIRCULAR BADGES (FIXED COLORS) ── */
 .badge-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
@@ -4942,9 +4944,22 @@ img {
     border-radius: 50%;
     position: relative;
     padding: 3px;
-    background: conic-gradient(from 0deg, #ff0000, #ff00ff, #0000ff, #00ffff, #00ff00, #ffff00, #ff0000);
-    animation: rotateHolo 4s linear infinite;
     box-shadow: 0 0 15px rgba(255,255,255,0.1);
+    overflow: hidden; /* Important: clips the spinning background */
+    /* Removed the hue-rotate animation from here so it doesn't affect the image */
+}
+
+/* We put the rainbow gradient on a layer BEHIND the image and spin it */
+.holo-circle::before {
+    content: '';
+    position: absolute;
+    top: -50%; 
+    left: -50%;
+    width: 200%; 
+    height: 200%;
+    background: conic-gradient(from 0deg, #ff0000, #ff00ff, #0000ff, #00ffff, #00ff00, #ffff00, #ff0000);
+    animation: spinHoloBorder 4s linear infinite;
+    z-index: 0;
 }
 
 /* The actual photo inside the badge */
@@ -4955,7 +4970,7 @@ img {
     background: #000;
     overflow: hidden;
     position: relative;
-    z-index: 2;
+    z-index: 2; /* Keeps image above the spinning rainbow border */
     border: 1px solid rgba(0,0,0,0.5);
 }
 
@@ -4963,7 +4978,7 @@ img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: contrast(1.1) brightness(1.05); /* Makes both cute/hot pics pop */
+    filter: contrast(1.1) brightness(1.05); /* Safe filters, won't mess up colors */
 }
 
 /* Glass shine overlay on badge */
@@ -4987,9 +5002,10 @@ img {
     text-transform: uppercase;
 }
 
-@keyframes rotateHolo {
-    from { filter: hue-rotate(0deg); }
-    to { filter: hue-rotate(360deg); }
+/* New animation that physically spins the border instead of shifting the hue */
+@keyframes spinHoloBorder {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 /* ── UNIVERSAL COMPACT LIST FIX ── */
 
@@ -5052,34 +5068,38 @@ img {
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.05);
 }
-/* ── LARGE PFP (Profile Page) ── */
+/* ── BIOMETRIC PFP SCANNER (Premium High-Tech) ── */
 .profile-pfp-large {
-    width: clamp(60px, 15vw, 85px);
-    height: clamp(60px, 15vw, 85px);
     position: relative;
-    flex-shrink: 0;
+    width: 110px;
+    height: 110px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    border: 3px solid var(--team-color, var(--red-border));
-    background: var(--bg-deep);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    padding: 5px;
 }
 
 .profile-pfp-large img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 100%; height: 100%;
     border-radius: 50%;
+    object-fit: cover;
+    filter: contrast(1.1);
+}
+
+/* Active Scanner Ring (Spinning) */
+.profile-pfp-large::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top: 2px solid var(--team-color);
+    animation: premium-spin 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 .profile-pfp-large .online-dot {
     position: absolute;
-    /* Pushed slightly inward so it sits ON the border, not past it */
     bottom: clamp(2px, 1vw, 5px);
     right: clamp(2px, 1vw, 5px);
-    /* Slightly smaller on mobile so it doesn't overwhelm the circle */
     width: clamp(10px, 2.5vw, 16px);
     height: clamp(10px, 2.5vw, 16px);
     background: var(--green);
@@ -5088,39 +5108,4 @@ img {
     box-shadow: 0 0 8px var(--green);
     z-index: 10;
 }
-/* ── LARGE PFP (Profile Page) ── */
-.profile-pfp-large {
-    width: clamp(60px, 15vw, 85px);
-    height: clamp(60px, 15vw, 85px);
-    position: relative;
-    flex-shrink: 0;
-    border-radius: 50%;
-    border: 3px solid var(--team-color, var(--red-border));
-    background: var(--bg-deep);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-.profile-pfp-large img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-}
-
-.profile-pfp-large .online-dot {
-    position: absolute;
-    /* Pushed slightly inward so it sits ON the border, not past it */
-    bottom: clamp(2px, 1vw, 5px);
-    right: clamp(2px, 1vw, 5px);
-    /* Slightly smaller on mobile so it doesn't overwhelm the circle */
-    width: clamp(10px, 2.5vw, 16px);
-    height: clamp(10px, 2.5vw, 16px);
-    background: var(--green);
-    border: 2px solid #0E0E14;
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--green);
-    z-index: 10;
-}
+/* ── PROFILE PAGE SECTIONS ── */
