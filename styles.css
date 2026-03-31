@@ -5320,35 +5320,7 @@ img {
     letter-spacing: 1px;
 }
 
-/* ── LIVE BROADCAST TICKER (No Overlap) ── */
-.agency-ticker-wrap {
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-}
 
-.ticker-label {
-    position: relative;
-    z-index: 5;
-    flex-shrink: 0;
-    background: rgba(255, 0, 0, 0.1);
-    border: 1px solid rgba(255, 0, 0, 0.3);
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 9px;
-    color: #ff0033;
-    text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.ticker-content {
-    padding-left: 20px;
-    flex: 1;
-    overflow: hidden;
-}
 
 /* \u2500\u2500 TARGET / PROGRESS TRACKING (SCI-FI NEON) \u2500\u2500 */
 .target-item {
@@ -5493,9 +5465,4 @@ img {
     border-radius: 8px;
 }
 
-/* ── SPEED UP TICKER ── */
-.ticker-content {
-    display: flex;
-    white-space: nowrap;
-    animation: tickerMove 15s linear infinite; /* Faster speed */
-}
+
