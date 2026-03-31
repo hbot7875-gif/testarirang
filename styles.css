@@ -5503,5 +5503,79 @@ img {
     padding: 20px 10px;
     border-radius: 8px;
 }
+/* ── MOBILE BATTLEFIELD FIX ── */
+@media (max-width: 768px) {
 
+  /* Tighten the card padding */
+  .battle-card {
+    padding: 12px 14px;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  /* Shrink the rank number */
+  .battle-rank-big {
+    font-size: 16px !important;
+    width: 20px;
+  }
+
+  /* Shrink the team logo */
+  .battle-pfp-mid {
+    width: 36px !important;
+    height: 36px !important;
+    margin: 0 8px !important;
+  }
+
+  /* Team name smaller */
+  .team-name-text {
+    font-size: 13px !important;
+  }
+
+  /* Agent count smaller */
+  .agent-count {
+    font-size: 8px !important;
+  }
+
+  /* THE KEY FIX: Make pills smaller and stop them wrapping */
+  .mission-status-strip {
+    display: flex;
+    flex-wrap: nowrap !important;  /* Force single line */
+    gap: 4px !important;
+    margin-top: 6px;
+    overflow-x: auto;             /* Scroll horizontally if needed */
+    scrollbar-width: none;        /* Hide scrollbar Firefox */
+    -ms-overflow-style: none;     /* Hide scrollbar IE */
+  }
+
+  /* Hide scrollbar Chrome */
+  .mission-status-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Shrink each pill */
+  .ms-pill {
+    padding: 3px 5px !important;
+    gap: 2px !important;
+    font-size: 9px !important;
+    flex-shrink: 0;              /* Prevent pills from squishing */
+    border-radius: 4px !important;
+  }
+
+  .ms-icon {
+    font-size: 9px !important;
+  }
+
+  .ms-check {
+    font-size: 9px !important;
+  }
+
+  /* XP display */
+  .xp-val {
+    font-size: 14px !important;
+  }
+
+  .xp-lbl {
+    font-size: 7px !important;
+  }
+}
 
