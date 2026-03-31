@@ -2083,31 +2083,59 @@ body::before {
 }
 
 
-/* ── STREAK WIDGET ── */
+/* ── ELITE STREAK WIDGET ── */
 .streak-box {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px;
-  background: var(--bg-lifted);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: rgba(0, 255, 102, 0.03);
+  border: 1px solid rgba(0, 255, 102, 0.2);
+  border-radius: 12px;
 }
 
-.streak-fire { font-size: 1.5rem; }
+.streak-info-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.streak-fire { 
+  font-size: 1.5rem;
+  animation: subtle-pulse 2s ease-in-out infinite;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
 
 .streak-num {
-  font-size: 1.75rem;
+  font-size: 32px;
   font-weight: 900;
   font-family: 'JetBrains Mono', monospace;
-  color: var(--text-primary);
+  color: #fff;
   line-height: 1;
 }
 
 .streak-label {
-  font-size: 0.5625rem;
+  font-size: 12px;
   color: var(--text-muted);
   text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: var(--font-ui);
+}
+
+.streak-status {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
+  padding: 6px 12px;
+  background: rgba(0, 255, 102, 0.1);
+  border-radius: 4px;
+}
   letter-spacing: 0.1em;
 }
 
@@ -5173,15 +5201,147 @@ img {
     margin-bottom: 6px;
 }
 
-/* Compact Card for Squad Standings */
+/* Compact Card for Squad Standings (ELITE DASHBOARD) */
 .battle-card {
     display: flex;
     align-items: center;
-    padding: 10px 14px;
-    background: #0E0E14;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
+    border-left: 4px solid var(--team-color, #444);
+    border-radius: 12px;
     margin-bottom: 8px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.battle-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    transform: translateX(4px);
+}
+
+/* Highlight the user's team */
+.battle-card.is-me {
+    background: rgba(255, 20, 95, 0.05);
+    border: 1px solid rgba(255, 20, 95, 0.3);
+    border-left: 4px solid var(--red-core);
+    box-shadow: 0 0 20px rgba(255, 20, 95, 0.1);
+}
+
+/* Mission Status Strip */
+.mission-status-strip {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+
+/* Tech Pills for Mission Icons */
+.ms-pill {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+}
+
+.ms-check.pass {
+    color: var(--green);
+    text-shadow: 0 0 5px var(--green);
+}
+
+.ms-check.fail {
+    color: var(--fail);
+    opacity: 0.5;
+}
+
+/* \u2500\u2500 WELCOME BANNER (ELITE HQ HEADER) \u2500\u2500 */
+.welcome-banner {
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.8), rgba(10, 10, 15, 0.6));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 4px solid var(--red-core);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.welcome-text-group p:first-child {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--text-muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+}
+
+.welcome-text-group h2 {
+    font-family: var(--font-ui);
+    font-size: 22px;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    margin: 0 0 6px 0;
+}
+
+.welcome-tag {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--wave-foam);
+    letter-spacing: 1px;
+}
+
+/* \u2500\u2500 TARGET / PROGRESS TRACKING (SCI-FI NEON) \u2500\u2500 */
+.target-item {
+    margin-bottom: 16px;
+}
+
+.target-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.target-meta .label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: var(--font-mono);
+}
+
+.target-meta .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.target-bar-bg {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.target-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00b09b, #96c93d);
+    box-shadow: 0 0 10px rgba(150, 201, 61, 0.4);
+    border-radius: 4px;
+    transition: width 0.3s ease;
 }
 
 /* Clean text for names */
