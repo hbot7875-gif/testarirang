@@ -88,12 +88,38 @@ const CONFIG = {
     'Like Animals'
   ],
 
-  SIDE_MISSION_TRACKS: [
-    { name: 'Wild Flower',                          artist: 'RM',      weeklyReq: 20 },
-    { name: "Don't Say You Love Me",                artist: 'BTS',     weeklyReq: 20 },
-    { name: 'Haegeum',                              artist: 'Agust D', weeklyReq: 20 },
-    { name: "Killin' It Girl (feat. GloRilla)",     artist: 'BTS',     weeklyReq: 20 },
-  ],
+  SIDE_MISSION_TRACKS:[
+    { 
+      name: 'Wild Flower',                          
+      artist: 'RM',      
+      weeklyReq: 20, 
+      aliases:['Wild Flower (with 조유진)', '야생화', '야생화 Wild Flower', '야생화 Wild Flower (with 조유진)', 'Wild Flower (with youjeen)'] 
+    },
+    { 
+      name: "Don't Say You Love Me",                
+      artist: 'BTS',     
+      weeklyReq: 20,
+      aliases:['Dont Say You Love Me', 'DSYLM']
+    },
+    { 
+      name: 'Haegeum',                              
+      artist: 'Agust D', 
+      weeklyReq: 20,
+      aliases: ['해금', '해금 Haegeum'] 
+    },
+    { 
+      name: "Killin' It Girl (feat. GloRilla)",     
+      artist: 'J-Hope',     
+      weeklyReq: 20, 
+      aliases:[
+        "Killin' It Girl", 
+        "Killin It Girl", 
+        "Killing It Girl", 
+        "Killin' It Girl - feat. GloRilla",
+        "Killin' It Girl (Solo Version)" 
+      ] 
+    }
+  ], // <-- Notice this comma right here!
 
   // Requirements
   ALBUM_2X_DAILY:         2,
@@ -196,31 +222,31 @@ const CONFIG = {
 const MISSION_NARRATIVES = {
   trackGoals: {
     member: '🐨', memberName: 'Namjoon', meaning: 'Strategy', icon: '🎯', color: '#b8c5d6',
-    bridge: "In a vast ocean, the one who knows where to swim reaches shore first. Don't scatter your energy — focus streams on your priority tracks and hit the targets that matter most.",
+    bridge: "\"I need the whole fandom to jump. Don't put your phone down, let's get it to number one. Keep your eyes on the priority tracks in the front. The goals are high, if we bein' blunt. Focus your strategy and let the numbers jump (Hey!)\"",
   },
   albumGoals: {
     member: '🐿️', memberName: 'Hobi', meaning: 'Energy', icon: '💿', color: '#ff6d3a',
-    bridge: "14 tracks need sustained energy, not bursts. Stream the full ARIRANG album top-to-bottom — Hobi poured his brightness into every line, so don't skip a single one.",
+    bridge: "\"Watch this, watch this stream goin' hooligan. We pop out, we streamin' the full album again (ooh). Ha-ha-ha-ha-ha-ha-ha-ha-ha-ha-ha-ha-ha-ha, hooligan. Watch this, watch all 14 tracks goin' hooligan (ooh). Hobi poured his energy into every beat, so don't skip a single one!\"",
   },
   album2x: {
     member: '🐥', memberName: 'Jimin', meaning: 'Rhythm', icon: '🔁', color: '#d946a8',
-    bridge: "The ocean doesn't stop between waves — neither should you. Stream every ARIRANG track at least twice today. Morning and night, keep the current flowing.",
+    bridge: "\"Streams go psycho, might take us viral. We go full streamer tonight (Ah-ah-ah-ah). The charts go crazy like Britney, baby, so hit me with it one more time!\" Stream every ARIRANG track at least twice today. Morning and night, keep the rhythm flowing.",
   },
   arirangUnit: {
     member: '🐻', memberName: 'Taehyung', meaning: 'Unity', icon: '⚡', color: '#42a5f5',
-    bridge: "You're never swimming alone. Your unit has assigned tracks that only your team covers — stream them hard to keep each other afloat.",
+    bridge: "\"Kerosene, dopamine, streaming-induced. Teamwork and unity, yeah, the things we choose. Show me streams, show me love, make us bulletproof!\" You're never streaming alone. Your unit has assigned tracks that only your team covers — stream them hard to keep each other afloat.",
   },
   sideMission: {
     member: '🐰', memberName: 'Jungkook', meaning: 'Survival', icon: '🛡️', color: '#e5a528',
-    bridge: "Main missions drain energy, but survival means covering all fronts. Don't skip your 4 side tracks this week — push through the fatigue.",
+    bridge: "\"If you wanna be animals, baby, we can be animals. Eat these side tracks 'til your heart is full. If you want, you can have it all!\" We go all night, so don't you close your eyes until all 4 side tracks are cleared. Let’s show them we want it all.",
   },
   attendance: {
     member: '🐹', memberName: 'Jin', meaning: 'Duty', icon: '📋', color: '#ff2d78',
-    bridge: "A ship cannot sail if the crew is missing. Finding balance means showing up for your members. Upload your Spotify Recents to prove you are on board every week.",
+    bridge: "\"You call, and I run. Through dark days, we'll find the sun. I don't care how far it is, I'm ready to be with you!\" A ship cannot sail if the crew is missing. Finding balance means showing up for your members. Just wait for the dawn, and upload your Spotify Recents to prove you are on board every week.",
   },
   police: {
     member: '🐱', memberName: 'Yoongi', meaning: 'Discipline', icon: '👮', color: '#c62828',
-    bridge: "No shortcuts, no cheating. Taking the easy way would ruin everything we built.",
+    bridge: "\"Swim, swim, this is how it all begins. I just wanna dive, I just wanna dive.\" But we're in the deep now, so no shortcuts and no cheating in this bad world. \"You know that we never holdin' back.\" Taking the easy way would ruin everything we built. Keep your streams clean and keep swimming!",
   },
 };
 
@@ -292,7 +318,7 @@ const ARMY_BOMB_BADGES = [
   
   const STATE = {
     agentNo:      null,
-    week:         'Week 1',
+    week:         null,
     weeks:        [],
     data:         null,
     page:         'home',
@@ -885,6 +911,11 @@ function getWeekDates(weekLabel) {
       STATE.isAdmin = STATE.agentNo === CONFIG.ADMIN_AGENT_NO;
       restoreAdminSession();
       
+      const savedNotifs = localStorage.getItem('arirang_notif_state_' + STATE.agentNo);
+      if (savedNotifs) {
+        try { STATE.lastChecked = Object.assign(STATE.lastChecked, JSON.parse(savedNotifs)); } catch(e) {}
+      }
+      
       // Logged in! Now go to app/lock logic
       initApp();
     } catch (e) {
@@ -913,6 +944,11 @@ function getWeekDates(weekLabel) {
         STATE.agentNo = agent.agentNo || agent.agent_no;
         STATE.isAdmin = STATE.agentNo === CONFIG.ADMIN_AGENT_NO;
         localStorage.setItem('arirang_agent', JSON.stringify(agent));
+        
+        const savedNotifs = localStorage.getItem('arirang_notif_state_' + STATE.agentNo);
+        if (savedNotifs) {
+          try { STATE.lastChecked = Object.assign(STATE.lastChecked, JSON.parse(savedNotifs)); } catch(e) {}
+        }
         if (err) err.textContent = '';
         initApp();
       } else {
@@ -1109,7 +1145,15 @@ function getWeekDates(weekLabel) {
     startOnlinePolling();
     loadDashboard();
     setupVisibilityHandler();
-setTimeout(checkHTOnboarding, 2500); // Show popup after dash loads
+
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.substring(1);
+      if (hash && hash !== STATE.page && document.getElementById('page-' + hash)) {
+        goTo(hash);
+      }
+    });
+
+    setTimeout(checkHTOnboarding, 2500); // Show popup after dash loads
 }
   
   
@@ -1196,6 +1240,10 @@ setTimeout(checkHTOnboarding, 2500); // Show popup after dash loads
       closeSidebar();
     }
   
+    if (window.location.hash !== '#' + page) {
+      history.replaceState(null, null, '#' + page);
+    }
+  
     STATE.page = page;
   
     // Hide all pages, show target
@@ -1254,19 +1302,6 @@ setTimeout(checkHTOnboarding, 2500); // Show popup after dash loads
         showToast(d.error || 'Failed to load dashboard', 'error');
         return;
       }
-
-      // Normalize backend payload shape (backend returns agent row; UI expects agent.profile.*)
-      if (d.agent && !d.agent.profile) {
-        const raw = d.agent
-        d.agent = {
-          ...raw,
-          profile: {
-            name: raw.name || raw.display_name || raw.agent_no || STATE.agentNo || 'Agent',
-            team: raw.team || raw.team_name || 'Unknown',
-            agentNo: raw.agent_no || STATE.agentNo,
-          },
-        }
-      }
   
       // Update state
       STATE.data = d;
@@ -1280,8 +1315,13 @@ setTimeout(checkHTOnboarding, 2500); // Show popup after dash loads
       // Setup week selector
       setupWeekSelector();
   
-      // Render home page
-      renderHome();
+      // Route based on URL hash or fallback to home
+      let startPage = 'home';
+      const hash = window.location.hash.substring(1);
+      if (hash && document.getElementById('page-' + hash)) {
+        startPage = hash;
+      }
+      goTo(startPage);
   
       // Start countdown
       startCountdown();
@@ -1387,7 +1427,7 @@ setTimeout(checkHTOnboarding, 2500); // Show popup after dash loads
       }
     } catch (e) {
       if (btn) btn.textContent = '✗ ERROR';
-      showToast(e?.message || 'Sync failed', 'error');
+      showToast('Sync failed', 'error');
     }
   
     // Reset button after 5s
@@ -2444,12 +2484,13 @@ async function updateActivityWidget() {
                     </div>
                     <div style="flex: 1;">
                         <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); letter-spacing: 2px;">FILE # ${a.agentNo || STATE.agentNo}</div>
-                        <div style="font-size: 22px; font-weight: 900; color: #fff; font-family: var(--font-display); line-height: 1.1; margin: 4px 0;">${sanitize(p.name || 'Agent')}</div>
+                        <div class="name-display" style="font-size: 22px; font-weight: 900; color: #fff; line-height: 1.1; margin: 4px 0;">${sanitize(p.name || 'Agent')}</div>
                         <div style="display: flex; gap: 10px; margin-top: 8px;">
                             <span class="micro-tag" style="color: ${tColor}; border-color: ${tColor}">${team.toUpperCase()}</span>
                             <span class="micro-tag" style="color: var(--wave-foam); border-color: var(--wave-foam)">RANK #${a.rank || '—'}</span>
                         </div>
                     </div>
+                    <div class="radar-box"></div>
                 </div>
             </div>
         `;
@@ -2478,7 +2519,10 @@ async function updateActivityWidget() {
                     <div class="sl">Album Streams</div>
                 </div>
                 <div class="stat-box">
-                    <div class="sv ${album2xStatus.passed ? 'green' : 'red'}">${album2xStatus.passed ? '✓' : '✗'}</div>
+                    <div class="sv ${album2xStatus.passed ? 'green' : 'red'}" style="font-size: 10px;">${album2xStatus.passed ? 
+                        `<span style="color:var(--green); font-family:var(--font-mono); font-size:10px; border:1px solid var(--green); padding:2px 8px; border-radius:4px; background:rgba(0,255,0,0.1);">[✓] SECURED</span>` : 
+                        `<span style="color:var(--fail); font-family:var(--font-mono); font-size:10px; border:1px solid var(--fail); padding:2px 8px; border-radius:4px; background:rgba(255,0,0,0.1); animation:pulse 2s infinite;">[!] PENDING_ACTION</span>`
+                    }</div>
                     <div class="sl">2X Status</div>
                 </div>
             </div>
@@ -3126,9 +3170,11 @@ async function renderAlbum2x() {
                         </div>
                     `;
 
+                    const joinDate = STATE.data?.agent?.joinDate || '2000-01-01';
                     weekDates.forEach(d => {
                         const cell = STATE.data?.agent?.album2xStatus?.dailyGrid?.[d]?.[track];
                         const isFuture = d > today;
+                        const isPreJoin = d < joinDate;
                         const isExemptCell = String(cell?.count).toLowerCase() === 'exempt';
 
                         let bg = 'rgba(255,255,255,0.02)';
@@ -3137,7 +3183,9 @@ async function renderAlbum2x() {
                         let text = cell?.count || '0';
                         let opacity = '1';
 
-                        if (isFuture) {
+                        if (isPreJoin) {
+                            bg = 'rgba(255,255,255,0.05)'; border = 'rgba(255,255,255,0.1)'; color = 'var(--text-ghost)'; text = '👋'; opacity = '0.5';
+                        } else if (isFuture) {
                             bg = 'transparent'; border = 'transparent'; text = '—'; opacity = '0.3';
                         } else if (isExemptCell) {
                             bg = 'rgba(255,255,255,0.05)'; border = 'rgba(255,255,255,0.1)'; color = 'var(--text-ghost)'; text = '-';
@@ -3324,8 +3372,8 @@ function renderAlbum2xDayMembers(allMembers, date, today) {
             dayFailed.push({ name: m.name, tracksDone: 0, totalTracks: dayStatus?.totalTracks || 0 });
             return;
         }
-        if (dayStatus.exempt || m.onLeave) {
-            dayExempt.push({ name: m.name });
+        if (dayStatus.exempt || m.onLeave || dayStatus.preJoin) {
+            dayExempt.push({ name: m.name, isPreJoin: dayStatus.preJoin });
         } else if (dayStatus.passed) {
             dayCompleted.push({ name: m.name });
         } else {
@@ -3349,7 +3397,18 @@ function renderAlbum2xDayMembers(allMembers, date, today) {
                 <div class="pfill" style="width:${completionPct}%; background:${completionPct === 100 ? 'var(--green)' : 'var(--red-core)'}; box-shadow:0 0 8px ${completionPct === 100 ? 'var(--green)' : 'var(--red-core)'};"></div>
             </div>
             ${dayExempt.length > 0 ? `
-                <div style="font-size:9px; color:var(--text-ghost); margin-bottom:4px;">${dayExempt.length} on leave (exempt)</div>
+                <div style="margin-top:10px; background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:8px; padding:10px;">
+                    <div style="color:var(--text-muted); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+                        💤 Exempt / Pre-Enlistment (${dayExempt.length})
+                    </div>
+                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                        ${dayExempt.map(m => `
+                            <span style="display:inline-flex; align-items:center; gap:4px; padding:3px 8px; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:6px; font-size:9px; color:var(--text-ghost);">
+                                ${m.isPreJoin ? '👋' : '—'} ${displayName(m.name)}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
             ` : ''}
         </div>
 
@@ -3571,8 +3630,8 @@ function renderSmDayMembers(members, date, today, totalTracks) {
             dayFailed.push({ name: m.name, tracksDone: 0, totalTracks, missingTracks: [] });
             return;
         }
-        if (ds.exempt || m.onLeave) {
-            dayExempt.push({ name: m.name });
+        if (ds.exempt || m.onLeave || ds.preJoin) {
+            dayExempt.push({ name: m.name, isPreJoin: ds.preJoin });
         } else if (ds.passed) {
             dayCompleted.push({ name: m.name, tracksDone: ds.tracksDone });
         } else {
@@ -3599,7 +3658,20 @@ function renderSmDayMembers(members, date, today, totalTracks) {
             <div class="pbar" style="height:5px; margin-bottom:4px;">
                 <div class="pfill" style="width:${completionPct}%; background:${completionPct === 100 ? 'var(--green)' : 'var(--red-core)'};"></div>
             </div>
-            ${dayExempt.length > 0 ? `<div style="font-size:9px; color:var(--text-ghost); margin-bottom:4px;">${dayExempt.length} on leave (exempt)</div>` : ''}
+            ${dayExempt.length > 0 ? `
+                <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:8px; padding:10px;">
+                    <div style="color:var(--text-muted); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+                        💤 Exempt / Pre-Enlistment (${dayExempt.length})
+                    </div>
+                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                        ${dayExempt.map(m => `
+                            <span style="display:inline-flex; align-items:center; gap:4px; padding:3px 8px; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:6px; font-size:9px; color:var(--text-ghost);">
+                                ${m.isPreJoin ? '👋' : '—'} ${displayName(m.name)}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : ''}
         </div>
 
         ${dayFailed.length > 0 ? `
@@ -3876,15 +3948,20 @@ function showSmDay(date) {
                     </div>
                     <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:4px;">
                         ${weekDates.map(date => {
+                            const joinDate = STATE.data?.agent?.joinDate || '2000-01-01';
                             const d = track.daily?.[date];
                             const count = d?.count ?? 0;
                             const passed = d?.passed ?? false;
                             const isFuture = date > today;
                             const isToday = date === today;
+                            const isPreJoin = date < joinDate;
 
                             let bg, border, color, text, opacity = '1', extraStyle = '';
 
-                            if (isFuture) {
+                            if (isPreJoin) {
+                                bg = 'rgba(255,255,255,0.03)'; border = 'rgba(255,255,255,0.08)';
+                                color = 'var(--text-ghost)'; text = '👋';
+                            } else if (isFuture) {
                                 bg = 'rgba(255,255,255,0.02)'; border = 'var(--border-subtle)';
                                 color = 'var(--text-ghost)'; text = '·'; opacity = '0.4';
                             } else if (isOnLeave) {
@@ -3982,15 +4059,19 @@ function showSmDay(date) {
                     `;
 
                     weekDates.forEach(date => {
+                        const joinDate = STATE.data?.agent?.joinDate || '2000-01-01';
                         const d = track.daily?.[date];
                         const count = d?.count ?? 0;
                         const passed = d?.passed ?? false;
                         const isFuture = date > today;
                         const isToday = date === today;
+                        const isPreJoin = date < joinDate;
 
                         let cellBg, cellColor, cellText;
 
-                        if (isFuture) {
+                        if (isPreJoin) {
+                            cellBg = 'rgba(255,255,255,0.02)'; cellColor = 'var(--text-ghost)'; cellText = '👋';
+                        } else if (isFuture) {
                             cellBg = 'transparent'; cellColor = 'var(--text-ghost)'; cellText = '·';
                         } else if (isOnLeave) {
                             cellBg = 'rgba(255,255,255,0.02)'; cellColor = 'var(--text-ghost)'; cellText = '—';
@@ -4514,9 +4595,50 @@ function showSmDay(date) {
   
   
   // =============================================
-  // ██████  NOTIFICATIONS
+  // ██████  NOTIFICATIONS & WEB PUSH
   // =============================================
   // v2.0: Debounced, won't stack, visibility-aware.
+
+  const VAPID_PUBLIC_KEY = 'BLaBF_JxPyDPSd-76mhZxFnvyxcHCY-bdNSKKFjLlLsAWxJkAGYx4_LffeSqpNSwyF1ajVLX7Z_iz_b2TCuIbQQ';
+
+  function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  }
+
+  async function subscribeToPushNotifications() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      showToast('Push not supported by this browser/device', 'error');
+      return;
+    }
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      const existingSub = await registration.pushManager.getSubscription();
+      if (existingSub) {
+        showToast('Push Already Enabled!', 'info');
+        await Api.call('savePushSubscription', { agentNo: STATE.agentNo, subscription: existingSub }, { dedupe: false, cache: false });
+        return;
+      }
+      
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+      });
+      
+      const d = await Api.call('savePushSubscription', { agentNo: STATE.agentNo, subscription }, { dedupe: false, cache: false });
+      if (d.success) showToast('Push Alerts Enabled!', 'success');
+      else showToast(d.error || 'Subscription registration failed (Waiting on Supabase)', 'error');
+    } catch (e) {
+      console.error(e);
+      showToast('Push permission denied', 'error');
+    }
+  }
   
   /** Minimum ms between notification checks */
   const NOTIF_COOLDOWN = 60_000;
@@ -4532,7 +4654,9 @@ function showSmDay(date) {
     _lastNotifCheckTime = Date.now();
   
     try {
-      const notifications = [];
+      // Keep existing one-time notifications
+      const notifications = (STATE.notifications || []).filter(n => n.isOneTime);
+      const cleared = STATE.lastChecked.clearedReminders || [];
   
       // ── 1. Badge check ──
       const xp = parseInt(STATE.data.agent?.stats?.totalXP) || 0;
@@ -4543,10 +4667,12 @@ function showSmDay(date) {
         STATE.lastChecked._badgesInitialized = true;
       } else if (currentBadges > (STATE.lastChecked.badges || 0)) {
         notifications.push({
+          id: 'badge_' + currentBadges,
           type: 'badge', icon: '🎖️',
           title: 'New Badge!',
           message: `You reached ${currentBadges * 50} XP!`,
           priority: 'high',
+          isOneTime: true
         });
         STATE.lastChecked.badges = currentBadges;
       }
@@ -4556,10 +4682,11 @@ function showSmDay(date) {
       if (STATE.lastChecked.songOfDay !== todayKST) {
         try {
           const sotd = await Api.call('getSongOfDay', {}, { cache: true, ttl: 300_000, silent: true });
-          if (sotd.success) {
+          if (sotd.success && sotd.song) {
             const answered = localStorage.getItem(`sotd_answered_${STATE.agentNo}_${todayKST}`);
-            if (!answered) {
+            if (!answered && !cleared.includes('sotd_' + todayKST)) {
               notifications.push({
+                id: 'sotd_' + todayKST,
                 type: 'sotd', icon: '🎬',
                 title: 'Song of the Day!',
                 message: 'New puzzle available!',
@@ -4570,8 +4697,9 @@ function showSmDay(date) {
       }
   
       // ── 3. Warning check ──
-      if (STATE.data.team?.warningStatus?.hasWarning) {
+      if (STATE.data.team?.warningStatus?.hasWarning && !cleared.includes('warning_' + todayKST)) {
         notifications.push({
+          id: 'warning_' + todayKST,
           type: 'warning', icon: '⚠️',
           title: 'Team At Risk!',
           message: `Recovery: ${STATE.data.team.warningStatus.daysAchieved}/${STATE.data.team.warningStatus.daysRequired} days`,
@@ -4579,7 +4707,7 @@ function showSmDay(date) {
         });
       }
   
-      // ── 4. ATTENDANCE WINDOW REMINDER (NEW) ──
+      // ── 4. ATTENDANCE WINDOW REMINDER ──
       const kstNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
       const kstDay = kstNow.getDay(); 
       const kstHour = kstNow.getHours();
@@ -4591,8 +4719,9 @@ function showSmDay(date) {
   
       const hasSubmitted = STATE.data?.agent?.attendance?.submitted;
   
-      if (isWindowOpen && !hasSubmitted) {
+      if (isWindowOpen && !hasSubmitted && !cleared.includes('attn_wk_' + STATE.week)) {
         notifications.push({
+          id: 'attn_wk_' + STATE.week,
           type: 'attendance', icon: '📸',
           title: 'Attendance Required',
           message: 'The 24hr window is open. Drop your screenshot in the GC!',
@@ -4600,8 +4729,104 @@ function showSmDay(date) {
         });
       }
   
+      // ── 5. NEW PLAYLIST CHECK ──
+      try {
+        const plData = await Api.call('getPlaylists', {}, { cache: true, ttl: 300_000, silent: true });
+        if (plData.playlists) {
+          const plCount = plData.playlists.length;
+          if (!STATE.lastChecked._plInitialized) {
+            STATE.lastChecked.playListCount = plCount;
+            STATE.lastChecked._plInitialized = true;
+          } else if (plCount > (STATE.lastChecked.playListCount || 0)) {
+            notifications.push({
+              id: 'pl_' + Date.now(),
+              type: 'playlist', icon: '🎵',
+              title: 'New Playlist Available!',
+              message: 'A new official playlist has been added.',
+              priority: 'normal',
+              isOneTime: true
+            });
+            STATE.lastChecked.playListCount = plCount;
+          }
+        }
+      } catch { /* silent */ }
+  
+      // ── 6. NEW SECRET MISSION CHECK ──
+      const myTeam = STATE.data?.agent?.profile?.team;
+      if (myTeam) {
+        try {
+          const mData = await Api.call('getTeamSecretMissions', { team: myTeam, agentNo: STATE.agentNo, week: STATE.week }, { cache: true, ttl: 300_000, silent: true });
+          if (mData.active) {
+            const mCount = mData.active.length;
+            if (!STATE.lastChecked._missionBaselineSet) {
+              STATE.lastChecked.missionCount = mCount;
+              STATE.lastChecked._missionBaselineSet = true;
+            } else if (mCount > (STATE.lastChecked.missionCount || 0)) {
+              notifications.push({
+                id: 'sm_' + Date.now(),
+                type: 'secret_mission', icon: '🕵️',
+                title: 'New Secret Mission!',
+                message: 'A new classified operation is active for your team.',
+                priority: 'high',
+                isOneTime: true
+              });
+              STATE.lastChecked.missionCount = mCount;
+            }
+          }
+        } catch { /* silent */ }
+      }
+  
+      // ── 7. ARIRANG 2X END OF DAY REMINDER ──
+      if (kstHour >= 21 && !cleared.includes('a2x_' + todayKST)) {
+        const a2xPassed = STATE.data?.agent?.album2xStatus?.weeklyPassed;
+        if (!a2xPassed) {
+          const dailyGrid = STATE.data?.agent?.album2xStatus?.dailyGrid?.[todayKST] || {};
+          let isTodayDone = true;
+          // Fallback array if ARIRANG_TRACKS isn't available
+          const tracks = CONFIG.ARIRANG_TRACKS || [
+            "Intro : Persona", "Boy With Luv", "Make It Right", "Jamais Vu", "Dionysus",
+            "Interlude : Shadow", "Black Swan", "Filter", "My Time", "Louder than bombs",
+            "ON", "UGH!", "00:00 (Zero O'Clock)", "Inner Child", "Friends", "Moon",
+            "Respect", "We are Bulletproof : the Eternal", "Outro : Ego"
+          ];
+          for (let i = 0; i < tracks.length; i++) {
+            const t = tracks[i];
+            if (dailyGrid[t] !== 'Exempt' && (dailyGrid[t] || 0) < 2) {
+              isTodayDone = false;
+              break;
+            }
+          }
+          if (!isTodayDone) {
+            notifications.push({
+              id: 'a2x_' + todayKST,
+              type: 'album2x_reminder', icon: '⏰',
+              title: 'Arirang 2X Reminder',
+              message: 'Day is ending soon! Complete your 2X streams before midnight KST.',
+              priority: 'high'
+            });
+          }
+        }
+      }
+  
+      // ── 8. STREAK END OF DAY WARNING ──
+      if (kstHour >= 21 && !cleared.includes('streak_' + todayKST)) {
+        try {
+          const strk = await Api.call('getStreakData', { agentNo: STATE.agentNo }, { cache: true, ttl: 300_000, silent: true });
+          if (strk.success && strk.streak && !strk.streak.todayCompleted) {
+            notifications.push({
+              id: 'streak_' + todayKST,
+              type: 'streak_reminder', icon: '🔥',
+              title: 'Streak at Risk!',
+              message: 'Stream 10+ tracks before midnight KST to keep your streak!',
+              priority: 'high'
+            });
+          }
+        } catch { /* silent */ }
+      }
+  
       STATE.notifications = notifications;
       updateNotificationUI();
+      saveNotificationState();
   
       // Show popup toast for first notification (once per session)
       if (notifications.length > 0 && !STATE.hasShownPopupThisSession) {
@@ -4669,7 +4894,7 @@ function showSmDay(date) {
         </div>
         ${notifs.length > 0 ? `
           <div style="padding:10px;border-top:1px solid var(--border-light);">
-            <button onclick="STATE.notifications=[];updateNotificationUI();this.closest('div[style]').parentElement.remove();showToast('Cleared','success')" style="width:100%;padding:10px;background:none;border:1px solid var(--red-main);color:var(--red-main);cursor:pointer;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:1px;border-radius:4px;">Clear All</button>
+            <button onclick="STATE.lastChecked = STATE.lastChecked || {}; STATE.lastChecked.clearedReminders = [...(STATE.lastChecked.clearedReminders||[]), ...(STATE.notifications||[]).map(n=>n.id).filter(Boolean)]; STATE.notifications=[]; saveNotificationState(); updateNotificationUI(); this.closest('div[style]').parentElement.remove(); showToast('Cleared','success')" style="width:100%;padding:10px;background:none;border:1px solid var(--red-main);color:var(--red-main);cursor:pointer;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:1px;border-radius:4px;">Clear All</button>
           </div>
         ` : ''}
       </div>
@@ -4701,6 +4926,9 @@ function showSmDay(date) {
     window.addEventListener('focus', () => {
       checkNotifications();
     });
+
+    // Periodic check every 60s
+    Timers.setInterval('notif-periodic', checkNotifications, 60000);
   }
   
   
@@ -5176,17 +5404,20 @@ function showSmDay(date) {
     }
   
     container.innerHTML = `
-      <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">
         You have <strong>${allBadges.length}</strong> badge${allBadges.length !== 1 ? 's' : ''} • ${fmt(xp)} XP total
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:10px;">
+      <div class="badge-grid">
         ${allBadges.map(b => {
-          const borderColor = b.type === 'achievement' ? '#ffd700' : 'var(--border-light)';
           return `
-            <div style="text-align:center;padding:8px;background:var(--panel-bg);border:1px solid ${borderColor};border-radius:6px;">
-              <img src="${b.imageUrl}" style="width:60px;height:60px;border-radius:8px;border:2px solid ${borderColor};"
-                onerror="this.style.display='none'" loading="lazy" alt="${sanitize(b.name)}">
-              <div style="font-size:9px;color:var(--text-muted);margin-top:4px;">${b.type === 'achievement' ? '✨ ' : ''}${b.name}</div>
+            <div class="holo-badge-container">
+              <div class="holo-circle">
+                <div class="holo-inner">
+                  <img src="${b.imageUrl}" alt="${sanitize(b.name)}" onerror="this.style.display='none'" loading="lazy">
+                  <div class="holo-shine"></div>
+                </div>
+              </div>
+              <div class="badge-label">${b.type === 'achievement' ? '✨ ' : ''}${sanitize(b.name)}</div>
             </div>`;
         }).join('')}
       </div>
@@ -5715,6 +5946,7 @@ function showSmDay(date) {
           { key: 'leaves',  icon: '💤', label: 'Leave'   },
           { key: 'history', icon: '📜', label: 'History' },
           { key: 'system',  icon: '⚙️', label: 'System'  },
+          { key: 'agents',  icon: '👤', label: 'Agents'  },
       ];
   
       const panel = document.createElement('div');
@@ -5771,6 +6003,7 @@ function showSmDay(date) {
       leaves:  loadLeavesAdmin,
       history: loadMissionHistory,
       system:  renderAdminSystemTab,
+      agents:  renderAdminAgentsTab,
   };
   
   function switchAdminTab(tabName, btnElement) {
@@ -5879,6 +6112,88 @@ function showSmDay(date) {
           <div id="create-result" style="margin-top:16px; text-align:center;"></div>`;
   }
   
+  // ==================== TAB: AGENTS ====================
+  function renderAdminAgentsTab(container) {
+      container.innerHTML = `
+          <div class="archive-card" style="margin-bottom:24px;">
+              <div style="font-size:12px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:2px; margin-bottom:16px;">👤 AGENT MANAGEMENT</div>
+              <p style="font-size:11px; color:var(--text-muted); margin-bottom:24px; line-height:1.5;">Impersonate any agent to view their dashboard securely, or permanently delete an agent if they have ghosted.</p>
+              
+              <div style="margin-bottom:24px;">
+                  <label class="label-tag" style="display:block; margin-bottom:6px;">Target Agent No.</label>
+                  <input type="text" id="admin-target-agent" class="input-field" placeholder="e.g. 054">
+              </div>
+              
+              <div style="display:flex; gap:12px;">
+                  <button type="button" onclick="adminImpersonateAgent()" class="btn-primary" style="flex:1; padding:12px; font-size:12px;">🎭 Impersonate</button>
+                  <button type="button" onclick="adminDeleteAgent()" class="btn-red" style="flex:1; padding:12px; font-size:12px;">🗑️ Delete Agent</button>
+              </div>
+          </div>
+      `;
+  }
+
+  async function adminImpersonateAgent() {
+      let agNo = $('admin-target-agent')?.value?.trim();
+      if (!agNo) return showToast('Enter an Agent No', 'error');
+      agNo = agNo.padStart(3, '0');
+      
+      const prev = STATE.agentNo;
+      STATE.agentNo = agNo;
+      
+      Loading.show();
+      try {
+          const d = await Api.call('getDashboardData', { agentNo: agNo }, { cache: false });
+          if (d.success) {
+              STATE.data = d;
+              STATE.isAdmin = false;
+              if (typeof updateSidebarAgent === 'function') updateSidebarAgent(d.agent);
+              localStorage.setItem('arirang_agent', JSON.stringify({
+                 agentNo: agNo,
+                 profile: d.agent.profile,
+                 stats: d.agent.stats
+              }));
+              showToast('Impersonating Agent ' + agNo, 'success');
+              if (typeof closeAdminPanel === 'function') closeAdminPanel();
+              goTo('home');
+          } else {
+              STATE.agentNo = prev;
+              showToast(d.error || 'Agent not found', 'error');
+          }
+      } catch (e) {
+          STATE.agentNo = prev;
+          showToast('Network error', 'error');
+      } finally {
+          Loading.hide();
+      }
+  }
+
+  async function adminDeleteAgent() {
+      let agNo = $('admin-target-agent')?.value?.trim();
+      if (!agNo) return showToast('Enter an Agent No', 'error');
+      agNo = agNo.padStart(3, '0');
+      
+      if (!confirm('🛑 CRITICAL WARNING 🛑\\nAre you absolutely sure you want to PERMANENTLY delete Agent ' + agNo + '?\\n\\nThis wipes all their history, badges, and team contributions instantly.')) return;
+      
+      Loading.show();
+      try {
+          const d = await Api.call('adminDeleteAgent', { 
+              agentNo: agNo, 
+              adminKey: 'BTSSYNC2024' // Core password mapped from index.ts
+          }, { dedupe: false, cache: false });
+          
+          if (d.success) {
+              showToast('Agent ' + agNo + ' has been permanently deleted', 'success');
+              $('admin-target-agent').value = '';
+          } else {
+              showToast(d.error || 'Failed to delete agent', 'error');
+          }
+      } catch (e) {
+          showToast('Network error check logs', 'error');
+      } finally {
+          Loading.hide();
+      }
+  }
+
   function selectMissionType(element, type) {
       document.querySelectorAll('.mission-type-option').forEach(el => {
           el.style.background = 'rgba(255,255,255,0.02)';
@@ -6586,20 +6901,20 @@ function showSmDay(date) {
   const RM_CONFIG = {
     IMAGE: 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/6c9cf38a7be372187ebd244d19a5e0357d4983c8/team%20pfps/baed0eb48e6ac22807df156ce76d8b4f.jpg',
     QUOTES: [
-      "No agent left behind. Check the list.",
-      "Efficiency is key. Focus on the gaps.",
-      "I've identified who needs support.",
-      "Teamwork makes the dream work.",
-      "The numbers don't lie. Stream smart.",
-      "Every stream is a step closer.",
-      "148 streams of consciousness.",
-      "Calculate. Execute. Dominate.",
-      "Your daily mission is clear.",
-      "We're not just streaming. We're building.",
-      "Focus on what matters most today.",
-      "Small consistent actions win wars.",
+      "Yeah, we the mess, gonna get a bigger mop here.",
+      "This that K, gotta get a better pop here.",
+      "You gon' hear this one playin' 'round the clock, yeah.",
+      "'Round the clock, clock, clock, clock.",
+      "Everything lit, it's fire, everything big, it's fire.",
+      "She wanna dance on fire, everything gas, it's fire.",
+      "Don't stand too close, too close to fire.",
+      "Oh, we can go all night (Go all night).",
+      "Yeah, we should go all night, all night.",
+      "Hold up, chill, and take a bubble bath, bae.",
+      "Do the math and go, just say what you say.",
+      "Came back for what's mine, we don't stop.",
     ],
-  };
+};
   
   function getTodoKey() {
     return `p148_${STATE.agentNo}_${new Date().toDateString()}`;
@@ -6812,7 +7127,12 @@ function showSmDay(date) {
 
           // Agent's streams today for this specific track (exact, from goal_daily_scrobbles)
           const personalTodayCount = Object.entries(todayDailyScrobbles).reduce((sum, [trackName, count]) => {
-            if (trackName.toLowerCase().includes(task.name.toLowerCase()) || task.name.toLowerCase().includes(trackName.toLowerCase())) {
+            const trackLower = trackName.toLowerCase();
+            const taskNameLower = task.name.toLowerCase();
+            const aliases = task.aliases || [];
+            const matchesName = trackLower.includes(taskNameLower) || taskNameLower.includes(trackLower);
+            const matchesAlias = aliases.some(alias => trackLower.includes(alias.toLowerCase()) || alias.toLowerCase().includes(trackLower));
+            if (matchesName || matchesAlias) {
               return sum + Number(count);
             }
             return sum;
@@ -11514,6 +11834,7 @@ const EXPORTS = {
     showNotificationCenter,
     checkHTOnboarding,
     dismissHT,
+    subscribeToPushNotifications,
 
     // ── Magic Ship ──
     launchTheVoyage,
@@ -11541,6 +11862,9 @@ const EXPORTS = {
     adminGenerateUnits,
     adminReleaseResults,
     smartUpdateStatus,
+    renderAdminAgentsTab,
+    adminImpersonateAgent,
+    adminDeleteAgent,
 
     // ── Effects ──
     fireConfetti,
