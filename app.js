@@ -144,6 +144,21 @@ const CONFIG = {
     this._badgePoolCache = pool;
     return pool;
   },
+  // Tactical Badge System (BTS 2.0 Set)
+  TACTICAL_BADGE_REPO: 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/main/2.0badges/',
+  TOTAL_TACTICAL_IMAGES: 61,
+
+  get TACTICAL_POOL() {
+    if (this._tacticalPoolCache) return this._tacticalPoolCache;
+    const pool = [];
+    for (let i = 1; i <= this.TOTAL_TACTICAL_IMAGES; i++) {
+      // Matches: BTS2.0- (1).jpg, BTS2.0- (2).jpg, etc.
+      // We use %20 to represent the space in the filename for the URL
+      pool.push(`${this.TACTICAL_BADGE_REPO}BTS2.0-%20(${i}).jpg`); 
+    }
+    this._tacticalPoolCache = pool;
+    return pool;
+  },
 
   // Battle dates
   BATTLE_START:    '2026-03-22T00:00:00+05:30',
@@ -2668,6 +2683,37 @@ async function updateActivityWidget() {
             `;
         }
 
+        // --- 3.5 TACTICAL BADGES ---
+        const coolBadges = (STATE.week !== 'Week 1' && STATE.week !== 'Week 2') 
+            ? getTacticalBadges(STATE.agentNo, currentWeekXP) 
+            : [];
+
+        if (coolBadges.length > 0) {
+            html += `
+                <div style="display:flex; align-items:center; gap:12px; margin:24px 0 16px 0;">
+                    <div style="font-size:16px;">🛡️</div>
+                    <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Classified Merits</div>
+                    <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(74,144,164,0.3), transparent);"></div>
+                </div>
+
+                <div class="glass-card" style="padding:16px; margin-bottom:24px;">
+                    <div class="tactical-grid">
+                        ${coolBadges.map(b => `
+                            <div class="tactical-card-container">
+                                <div class="tactical-card">
+                                    <div class="tactical-inner">
+                                        <img src="${b.imageUrl}" alt="Badge">
+                                    </div>
+                                    <div class="tactical-shine"></div>
+                                </div>
+                                <div class="tactical-label">MERIT ${b.name.split(' ')[1]}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
         // --- 4. GHOST PROTOCOL (LEAVE) ---
         html += `
             <div class="archive-card" style="margin-bottom:24px; border-color:${isExempt ? 'var(--text-muted)' : 'var(--courage-amber)'}; background:${isExempt ? 'var(--bg-panel)' : 'rgba(255,149,0,0.03)'};">
@@ -4574,6 +4620,28 @@ function showSmDay(date) {
   
     return badges.reverse(); // Most recent first
   }
+
+  /**
+   * Get Elite Tactical Badges (1 per 100 XP)
+   */
+  function getTacticalBadges(agentNo, totalXP) {
+    const badges = [];
+    const count = Math.floor(totalXP / 100);
+    const pool = CONFIG.TACTICAL_POOL;
+
+    for (let i = 1; i <= count; i++) {
+      // We use a different salt ("TACTICAL") so they are different from standard badges
+      let seed = 0;
+      const str = String(agentNo).toUpperCase() + "TACTICAL" + i;
+      for (let c = 0; c < str.length; c++) seed += str.charCodeAt(c);
+
+      badges.push({
+        name: `Elite ${i}`,
+        imageUrl: pool[Math.abs(seed) % pool.length]
+      });
+    }
+    return badges.reverse();
+  }
   
   /**
    * Get Album 2X achievement badge if earned this week.
@@ -5951,6 +6019,7 @@ function showSmDay(date) {
           { key: 'history', icon: '📜', label: 'History' },
           { key: 'system',  icon: '⚙️', label: 'System'  },
           { key: 'agents',  icon: '👤', label: 'Agents'  },
+          { key: 'badges',  icon: '🎖️', label: 'Badges'  },
       ];
   
       const panel = document.createElement('div');
@@ -6008,6 +6077,7 @@ function showSmDay(date) {
       history: loadMissionHistory,
       system:  renderAdminSystemTab,
       agents:  renderAdminAgentsTab,
+      badges:  renderAdminBadgesTab,
   };
   
   function switchAdminTab(tabName, btnElement) {
@@ -6027,6 +6097,34 @@ function showSmDay(date) {
   
       const renderer = TAB_RENDERERS[tabName];
       if (renderer) renderer(container);
+  }
+  
+  // ==================== TAB: TACTICAL BADGES PREVIEW ====================
+
+  function renderAdminBadgesTab(container) {
+      const pool = CONFIG.TACTICAL_POOL;
+      let html = \`
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+              <h3 style="margin:0; font-family:'Orbitron',sans-serif; color:var(--wave-foam);">TACTICAL BADGES PREVIEW</h3>
+              <span style="font-size:12px; color:var(--text-muted);">\${pool.length} Badges Loaded</span>
+          </div>
+          <div class="glass-card" style="padding:16px;">
+              <div class="tactical-grid">
+                  \${pool.map((url, i) => \`
+                      <div class="tactical-card-container">
+                          <div class="tactical-card">
+                              <div class="tactical-inner">
+                                  <img src="\${url}" alt="Badge \${i+1}" loading="lazy">
+                              </div>
+                              <div class="tactical-shine"></div>
+                          </div>
+                          <div class="tactical-label">MERIT \${i+1}</div>
+                      </div>
+                  \`).join('')}
+              </div>
+          </div>
+      \`;
+      container.innerHTML = html;
   }
   
   // ==================== TAB: CREATE MISSION ====================
