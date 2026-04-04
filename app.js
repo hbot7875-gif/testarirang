@@ -6103,27 +6103,27 @@ function showSmDay(date) {
 
   function renderAdminBadgesTab(container) {
       const pool = CONFIG.TACTICAL_POOL;
-      let html = \`
+      let html = `
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
               <h3 style="margin:0; font-family:'Orbitron',sans-serif; color:var(--wave-foam);">TACTICAL BADGES PREVIEW</h3>
-              <span style="font-size:12px; color:var(--text-muted);">\${pool.length} Badges Loaded</span>
+              <span style="font-size:12px; color:var(--text-muted);">${pool.length} Badges Loaded</span>
           </div>
           <div class="glass-card" style="padding:16px;">
               <div class="tactical-grid">
-                  \${pool.map((url, i) => \`
+                  ${pool.map((url, i) => `
                       <div class="tactical-card-container">
                           <div class="tactical-card">
                               <div class="tactical-inner">
-                                  <img src="\${url}" alt="Badge \${i+1}" loading="lazy">
+                                  <img src="${url}" alt="Badge ${i+1}" loading="lazy">
                               </div>
                               <div class="tactical-shine"></div>
                           </div>
-                          <div class="tactical-label">MERIT \${i+1}</div>
+                          <div class="tactical-label">MERIT ${i+1}</div>
                       </div>
-                  \`).join('')}
+                  `).join('')}
               </div>
           </div>
-      \`;
+      `;
       container.innerHTML = html;
   }
   
