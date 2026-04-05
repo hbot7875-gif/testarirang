@@ -6323,14 +6323,15 @@ img {
 .tactical-card {
   width: 95px;
   height: 95px;
-  background: #09090b; /* Deep slate background */
-  border: 1px solid rgba(255, 255, 255, 0.15); /* Subtle Silver/Slate-Grey */
+  background: #020202; /* Very dark background to make gold pop */
+  border: 3px solid rgba(212, 175, 55, 0.7); /* Thicker gold border */
   border-radius: 4px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15); /* Faint gold outer glow */
   transition: all 0.3s ease;
 }
 
@@ -6380,9 +6381,9 @@ img {
 }
 
 .tactical-card:hover {
-  border-color: rgba(255, 255, 255, 0.4); /* Slightly brighter silver on hover */
+  border-color: rgba(212, 175, 55, 1);
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); /* Soft dark drop shadow, not a glow */
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.25), 0 0 15px rgba(212, 175, 55, 0.2); /* Enhanced soft gold glow on hover */
 }
 
 .tactical-label {
