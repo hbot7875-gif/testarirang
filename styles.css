@@ -6323,43 +6323,110 @@ img {
 .tactical-card {
   width: 90px;
   height: 110px;
-  background: #0a0a0c; /* Deep slate black */
-  /* Remove the solid border, use a very faint one */
-  border: 1px solid rgba(255, 255, 255, 0.05); 
+  background: #0a0a0c;
+  border: none;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Layered crimson glow — this is what makes it feel alive */
+  box-shadow:
+    0 0 0 1.5px rgba(220, 30, 50, 0.8),     /* sharp crisp red edge */
+    0 0 0 3px   rgba(220, 30, 50, 0.15),    /* soft second ring */
+    0 0 18px    rgba(220, 30, 50, 0.25),    /* inner bloom */
+    0 0 45px    rgba(220, 30, 50, 0.08),    /* wide ambient */
+    0 12px 35px rgba(0, 0, 0, 0.7);         /* depth */
+
+  animation: arirangPulse 2.5s ease-in-out infinite;
 }
 
-/* Add Tactical Corners */
-.tactical-card::before, .tactical-card::after {
-  content: "";
+/* Breathing pulse — like a live broadcast signal */
+@keyframes arirangPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 1.5px rgba(220, 30, 50, 0.7),
+      0 0 0 3px   rgba(220, 30, 50, 0.1),
+      0 0 15px    rgba(220, 30, 50, 0.2),
+      0 0 40px    rgba(220, 30, 50, 0.06),
+      0 12px 35px rgba(0, 0, 0, 0.7);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1.5px rgba(232, 58, 93, 1),
+      0 0 0 4px   rgba(232, 58, 93, 0.2),
+      0 0 25px    rgba(232, 58, 93, 0.35),
+      0 0 60px    rgba(232, 58, 93, 0.12),
+      0 12px 35px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* TOP EDGE — Arirang broadcast bar */
+.tactical-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2.5px;
+  background: linear-gradient(90deg,
+    transparent      0%,
+    rgba(220,30,50,0.6)  10%,
+    rgba(232,58,93,1)    30%,
+    #ff6b8a          50%,   /* hot white-red peak */
+    rgba(232,58,93,1)    70%,
+    rgba(220,30,50,0.6)  90%,
+    transparent      100%
+  );
+  z-index: 10;
+  animation: topBarLive 2.5s ease-in-out infinite;
+}
+
+@keyframes topBarLive {
+  0%, 100% { opacity: 0.7; filter: blur(0px); }
+  50%       { opacity: 1;   filter: blur(0.5px);
+              box-shadow: 0 0 12px rgba(232,58,93,0.9); }
+}
+
+/* BOTTOM EDGE — dimmer echo */
+.tactical-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(232,58,93,0.3) 30%,
+    rgba(232,58,93,0.5) 50%,
+    rgba(232,58,93,0.3) 70%,
+    transparent
+  );
+  z-index: 10;
+}
+
+/* Tactical corners — RED not gold */
+.tactical-card-container .tactical-card .corner-tl,
+.tactical-card-container .tactical-card .corner-br {
   position: absolute;
   width: 10px;
   height: 10px;
-  border: 1.5px solid var(--red-core); /* Mission Red */
-  z-index: 5;
-  pointer-events: none;
-  opacity: 0.5;
+  border: 1.5px solid #e83a5d;
+  z-index: 15;
   transition: all 0.3s ease;
+  box-shadow: 0 0 6px rgba(232,58,93,0.4);
 }
 
-/* Top Left Corner */
-.tactical-card::before {
+.tactical-card-container .tactical-card .corner-tl {
   top: 5px; left: 5px;
   border-right: none; border-bottom: none;
 }
 
-/* Bottom Right Corner */
-.tactical-card::after {
+.tactical-card-container .tactical-card .corner-br {
   bottom: 5px; right: 5px;
   border-left: none; border-top: none;
 }
 
+/* Inner — subtle red grid instead of white */
 .tactical-inner {
   width: 100%;
   height: 100%;
@@ -6367,71 +6434,102 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Technical Grid Pattern */
-  background-image: 
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-image:
+    linear-gradient(rgba(232,58,93,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,58,93,0.03) 1px, transparent 1px);
   background-size: 10px 10px;
+  position: relative;
   z-index: 2;
+}
+
+/* Red shimmer overlay on image */
+.tactical-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(232,58,93,0) 0%,
+    rgba(232,58,93,0.05) 35%,
+    rgba(255,100,130,0.10) 50%,
+    rgba(232,58,93,0.05) 65%,
+    rgba(232,58,93,0) 100%
+  );
+  animation: redShimmer 5s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 3;
+}
+
+@keyframes redShimmer {
+  0%   { transform: translateX(-25px); opacity: 0.2; }
+  100% { transform: translateX(25px);  opacity: 0.7; }
 }
 
 .tactical-inner img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  /* Add a "Light Box" shadow to the photo itself */
   filter: drop-shadow(0 0 10px rgba(0,0,0,1));
   z-index: 2;
-  transition: transform 0.3s ease, object-fit 0.3s ease, filter 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-.tactical-card-container:hover img {
-  transform: scale(1.15);
-  object-fit: cover;
-  filter: drop-shadow(0 0 15px rgba(255,20,95,0.4));
-}
-
-/* Active Pulse Scanning Line */
+/* Scan line — red, not white */
 .tactical-shine {
   position: absolute;
   top: -100%;
   left: 0;
   width: 100%;
   height: 10px;
-  background: var(--red-core);
-  filter: blur(8px);
-  opacity: 0.3;
-  z-index: 3;
-  animation: tacticalScan 4s infinite ease-in-out;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(232,58,93,0.6),
+    rgba(255,120,150,0.4),
+    rgba(232,58,93,0.6),
+    transparent
+  );
+  filter: blur(6px);
+  opacity: 0.5;
+  z-index: 8;
+  animation: arirangScan 3s infinite ease-in-out;
 }
 
-@keyframes tacticalScan {
-  0% { top: -10%; }
-  25% { top: 110%; }
+@keyframes arirangScan {
+  0%   { top: -10%; }
+  30%  { top: 110%; }
   100% { top: 110%; }
 }
 
-.tactical-card:hover {
+/* Hover */
+.tactical-card-container:hover .tactical-card {
   transform: translateY(-5px);
-  box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.9),
-    0 0 20px var(--glow-mid); 
-  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 0 0 1.5px rgba(232, 58, 93, 1),
+    0 0 0 4px   rgba(232, 58, 93, 0.25),
+    0 0 30px    rgba(232, 58, 93, 0.4),
+    0 0 70px    rgba(232, 58, 93, 0.15),
+    0 15px 45px rgba(0, 0, 0, 0.9);
 }
 
-.tactical-card-container:hover .tactical-card::before,
-.tactical-card-container:hover .tactical-card::after {
-  opacity: 1;
+.tactical-card-container:hover img {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 15px rgba(232,58,93,0.5));
+}
+
+.tactical-card-container:hover .tactical-card .corner-tl,
+.tactical-card-container:hover .tactical-card .corner-br {
   width: 14px;
   height: 14px;
   border-width: 2px;
-  box-shadow: 0 0 10px var(--glow-strong);
+  box-shadow: 0 0 12px rgba(232,58,93,0.8);
 }
 
+/* Label */
 .tactical-label {
   font-family: 'Share Tech Mono', monospace;
   font-size: 8px;
-  color: var(--text-ghost);
+  color: rgba(232, 58, 93, 0.4);
   margin-top: 6px;
   text-transform: uppercase;
+  letter-spacing: 2px;
 }
