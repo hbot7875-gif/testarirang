@@ -6321,32 +6321,57 @@ img {
 }
 
 .tactical-card {
-  width: 95px;
-  height: 95px;
-  /* Deep textured background */
-  background: linear-gradient(135deg, #1a0508 0%, #000 100%);
-  border: 3px solid rgba(255, 20, 95, 0.5); /* Deep translucent Arirang red */
-  border-radius: 6px;
+  width: 90px;
+  height: 110px;
+  background: #0a0a0c; /* Deep slate black */
+  /* Remove the solid border, use a very faint one */
+  border: 1px solid rgba(255, 255, 255, 0.05); 
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Complex shadows: deep outer drop shadow, strong faint red glow, inner depth */
-  box-shadow: 
-    0 4px 10px rgba(0, 0, 0, 0.8),
-    0 0 15px var(--glow-soft),
-    inset 0 0 15px var(--glow-soft); /* inner red ambient light */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Add Tactical Corners */
+.tactical-card::before, .tactical-card::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid var(--red-core); /* Mission Red */
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+/* Top Left Corner */
+.tactical-card::before {
+  top: 5px; left: 5px;
+  border-right: none; border-bottom: none;
+}
+
+/* Bottom Right Corner */
+.tactical-card::after {
+  bottom: 5px; right: 5px;
+  border-left: none; border-top: none;
 }
 
 .tactical-inner {
   width: 100%;
   height: 100%;
-  padding: 6px; /* Reduced padding */
+  padding: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Technical Grid Pattern */
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 10px 10px;
   z-index: 2;
 }
 
@@ -6354,44 +6379,53 @@ img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  transform: scale(1.05); 
-  filter: drop-shadow(0 0 8px rgba(0,0,0,1));
-  transition: transform 0.3s ease, object-fit 0.3s ease;
+  /* Add a "Light Box" shadow to the photo itself */
+  filter: drop-shadow(0 0 10px rgba(0,0,0,1));
+  z-index: 2;
+  transition: transform 0.3s ease, object-fit 0.3s ease, filter 0.3s ease;
 }
 
 .tactical-card-container:hover img {
-  transform: scale(1.2);
+  transform: scale(1.15);
   object-fit: cover;
+  filter: drop-shadow(0 0 15px rgba(255,20,95,0.4));
 }
 
-/* Metallic Red Scan-line Shine */
+/* Active Pulse Scanning Line */
 .tactical-shine {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    -45deg,
-    transparent 40%,
-    rgba(255, 20, 95, 0.3) 50%, /* Arirang red shimmer instead of gold */
-    transparent 60%
-  );
-  background-size: 200% 200%;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: var(--red-core);
+  filter: blur(8px);
+  opacity: 0.3;
   z-index: 3;
-  animation: tacticalShimmer 5s infinite;
+  animation: tacticalScan 4s infinite ease-in-out;
 }
 
-@keyframes tacticalShimmer {
-  0% { background-position: 200% 200%; }
-  20% { background-position: -100% -100%; }
-  100% { background-position: -100% -100%; }
+@keyframes tacticalScan {
+  0% { top: -10%; }
+  25% { top: 110%; }
+  100% { top: 110%; }
 }
 
 .tactical-card:hover {
-  border-color: var(--red-core); /* Brighter red on hover */
   transform: translateY(-5px);
   box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.8),
-    0 0 25px var(--glow-strong), /* intense outer red glow */
-    inset 0 0 20px var(--glow-mid); 
+    0 15px 35px rgba(0, 0, 0, 0.9),
+    0 0 20px var(--glow-mid); 
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.tactical-card-container:hover .tactical-card::before,
+.tactical-card-container:hover .tactical-card::after {
+  opacity: 1;
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+  box-shadow: 0 0 10px var(--glow-strong);
 }
 
 .tactical-label {
