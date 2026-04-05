@@ -5470,13 +5470,15 @@ function showSmDay(date) {
   
     const xp = parseInt(STATE.data?.agent?.stats?.totalXP) || 0;
     const levelBadges = getLevelBadges(STATE.agentNo, xp);
+    const tacticalBadges = typeof getTacticalBadges === 'function' ? getTacticalBadges(STATE.agentNo, xp) : [];
+    
+    // Attempt to pull Album 2X badge for current week
     const album2xBadge = getAlbum2xBadge(STATE.agentNo, STATE.week);
   
-    const allBadges = [];
-    if (album2xBadge) allBadges.push(album2xBadge);
-    allBadges.push(...levelBadges);
+    const classicBadges = [...levelBadges];
+    if (album2xBadge) classicBadges.push(album2xBadge);
   
-    if (allBadges.length === 0) {
+    if (classicBadges.length === 0 && tacticalBadges.length === 0) {
       container.innerHTML = `
         <div style="text-align:center;padding:30px;">
           <div style="font-size:36px;margin-bottom:10px;">🎖️</div>
@@ -5486,25 +5488,54 @@ function showSmDay(date) {
       return;
     }
   
-    container.innerHTML = `
+    let html = `
       <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">
-        You have <strong>${allBadges.length}</strong> badge${allBadges.length !== 1 ? 's' : ''} • ${fmt(xp)} XP total
+        You have <strong>${classicBadges.length + tacticalBadges.length}</strong> badge${(classicBadges.length + tacticalBadges.length) !== 1 ? 's' : ''} • ${fmt(xp)} XP total
       </div>
-      <div class="badge-grid">
-        ${allBadges.map(b => {
-          return `
+    `;
+
+    if (classicBadges.length > 0) {
+      html += `
+        <div style="margin-bottom:16px; font-family:'Orbitron',sans-serif; color:var(--wave-foam); font-size:12px; letter-spacing:1px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px;">
+          STANDARD CLEARANCES
+        </div>
+        <div class="badge-grid" style="margin-bottom:24px;">
+          ${classicBadges.map(b => `
             <div class="holo-badge-container">
               <div class="holo-circle">
                 <div class="holo-inner">
-                  <img src="${b.imageUrl}" alt="${sanitize(b.name)}" onerror="this.style.display='none'" loading="lazy">
+                  <img src="${b.imageUrl}" alt="${sanitize(b.name)}" onerror="this.style.display='none'" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
                   <div class="holo-shine"></div>
                 </div>
               </div>
               <div class="badge-label">${b.type === 'achievement' ? '✨ ' : ''}${sanitize(b.name)}</div>
-            </div>`;
-        }).join('')}
-      </div>
-    `;
+            </div>`).join('')}
+        </div>
+      `;
+    }
+
+    if (tacticalBadges.length > 0) {
+      html += `
+        <div style="margin-bottom:16px; font-family:'Orbitron',sans-serif; color:var(--red-core); font-size:12px; letter-spacing:1px; border-bottom:1px solid rgba(255,20,95,0.3); padding-bottom:6px;">
+          CLASSIFIED MERITS
+        </div>
+        <div class="tactical-grid">
+          ${tacticalBadges.map((badge, i) => `
+            <div class="tactical-card-container">
+                <div class="tactical-card">
+                    <div class="tactical-inner">
+                        <img src="${badge.imageUrl}" alt="${sanitize(badge.name)}" loading="lazy">
+                    </div>
+                    <div class="tactical-shine"></div>
+                </div>
+                <div class="tactical-label" style="color:var(--red-core);">${sanitize(badge.name)}</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    container.innerHTML = html;
   }
   
   
@@ -6113,15 +6144,39 @@ function showSmDay(date) {
   // ==================== TAB: TACTICAL BADGES PREVIEW ====================
 
   function renderAdminBadgesTab(container) {
-      const pool = CONFIG.TACTICAL_POOL;
+      const tacticalPool = CONFIG.TACTICAL_POOL;
+      const holoPool = CONFIG.BADGE_POOL;
+      
       let html = `
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-              <h3 style="margin:0; font-family:'Orbitron',sans-serif; color:var(--wave-foam);">TACTICAL BADGES PREVIEW</h3>
-              <span style="font-size:12px; color:var(--text-muted);">${pool.length} Badges Loaded</span>
+              <h3 style="margin:0; font-family:'Orbitron',sans-serif; color:var(--wave-foam);">CLASSIC BADGES PREVIEW</h3>
+              <span style="font-size:12px; color:var(--text-muted);">${holoPool.length} Badges Loaded</span>
           </div>
+          
+          <div class="glass-card" style="padding:16px; margin-bottom:30px;">
+              <div class="badge-grid">
+                  ${holoPool.map((url, i) => `
+                      <div class="holo-badge-container">
+                          <div class="holo-circle">
+                              <div class="holo-inner">
+                                  <img src="${url}" loading="lazy" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+                                  <div class="holo-shine"></div>
+                              </div>
+                          </div>
+                          <div class="badge-label">BADGE ${i+1}</div>
+                      </div>
+                  `).join('')}
+              </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+              <h3 style="margin:0; font-family:'Orbitron',sans-serif; color:var(--red-core);">CLASSIFIED MERITS PREVIEW</h3>
+              <span style="font-size:12px; color:var(--text-muted);">${tacticalPool.length} Badges Loaded</span>
+          </div>
+          
           <div class="glass-card" style="padding:16px;">
               <div class="tactical-grid">
-                  ${pool.map((url, i) => `
+                  ${tacticalPool.map((url, i) => `
                       <div class="tactical-card-container">
                           <div class="tactical-card">
                               <div class="tactical-inner">
@@ -6129,7 +6184,7 @@ function showSmDay(date) {
                               </div>
                               <div class="tactical-shine"></div>
                           </div>
-                          <div class="tactical-label">MERIT ${i+1}</div>
+                          <div class="tactical-label" style="color:var(--red-core);">MERIT ${i+1}</div>
                       </div>
                   `).join('')}
               </div>
