@@ -2702,6 +2702,8 @@ async function updateActivityWidget() {
                         ${coolBadges.map(b => `
                             <div class="tactical-card-container">
                                 <div class="tactical-card">
+                                    <div class="corner-tl"></div>
+                                    <div class="corner-br"></div>
                                     <div class="tactical-inner">
                                         <img src="${b.imageUrl}" alt="Badge">
                                     </div>
@@ -5523,6 +5525,8 @@ function showSmDay(date) {
           ${tacticalBadges.map((badge, i) => `
             <div class="tactical-card-container">
                 <div class="tactical-card">
+                    <div class="corner-tl"></div>
+                    <div class="corner-br"></div>
                     <div class="tactical-inner">
                         <img src="${badge.imageUrl}" alt="${sanitize(badge.name)}" loading="lazy">
                     </div>
@@ -6179,6 +6183,8 @@ function showSmDay(date) {
                   ${tacticalPool.map((url, i) => `
                       <div class="tactical-card-container">
                           <div class="tactical-card">
+                              <div class="corner-tl"></div>
+                              <div class="corner-br"></div>
                               <div class="tactical-inner">
                                   <img src="${url}" alt="Badge ${i+1}" loading="lazy">
                               </div>
