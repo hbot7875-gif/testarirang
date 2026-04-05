@@ -4786,19 +4786,28 @@ function showSmDay(date) {
       const kstHour = kstNow.getHours();
       const kstMin = kstNow.getMinutes();
   
+      let targetAttnWeek = STATE.week;
       let isWindowOpen = false;
-      if (kstDay === 6 && (kstHour > 18 || (kstHour === 18 && kstMin >= 30))) isWindowOpen = true; // Sat after 6:30 PM
-      if (kstDay === 0 && (kstHour < 18 || (kstHour === 18 && kstMin < 30))) isWindowOpen = true; // Sun before 6:30 PM
+      if (kstDay === 6 && (kstHour > 18 || (kstHour === 18 && kstMin >= 30))) {
+          isWindowOpen = true; // Sat after 6:30 PM
+      }
+      if (kstDay === 0 && (kstHour < 18 || (kstHour === 18 && kstMin < 30))) {
+          isWindowOpen = true; // Sun before 6:30 PM
+          // Sunday belongs to the new week, but attendance is for the previous week
+          const weekMatch = STATE.week.match(/Week (\d+)/i);
+          if (weekMatch) targetAttnWeek = 'Week ' + (parseInt(weekMatch[1]) - 1);
+      }
   
       const hasSubmitted = STATE.data?.agent?.attendance?.submitted;
   
-      if (isWindowOpen && !hasSubmitted && !cleared.includes('attn_wk_' + STATE.week)) {
+      if (isWindowOpen && !hasSubmitted && !cleared.includes('attn_wk_' + targetAttnWeek)) {
         notifications.push({
-          id: 'attn_wk_' + STATE.week,
+          id: 'attn_wk_' + targetAttnWeek,
           type: 'attendance', icon: '📸',
-          title: 'Attendance Required',
-          message: 'The 24hr window is open. Drop your screenshot in the GC!',
+          title: `Attendance Required (${targetAttnWeek})`,
+          message: `The 24hr window is open for ${targetAttnWeek}. Drop your screenshot in the GC!`,
           priority: 'high',
+          route: 'attendance'
         });
       }
   
@@ -4875,7 +4884,8 @@ function showSmDay(date) {
               type: 'album2x_reminder', icon: '⏰',
               title: 'Arirang 2X Reminder',
               message: 'Day is ending soon! Complete your 2X streams before midnight KST.',
-              priority: 'high'
+              priority: 'high',
+              route: 'album2x'
             });
           }
         }
@@ -4891,7 +4901,8 @@ function showSmDay(date) {
               type: 'streak_reminder', icon: '🔥',
               title: 'Streak at Risk!',
               message: 'Stream 10+ tracks before midnight KST to keep your streak!',
-              priority: 'high'
+              priority: 'high',
+              route: 'home'
             });
           }
         } catch { /* silent */ }
@@ -4917,25 +4928,24 @@ function showSmDay(date) {
   
   function updateNotificationUI() {
     const count = (STATE.notifications || []).length;
-    let badge = $('notifBadge');
+    
+    // Remove the old injected badge if it exists
+    const oldBadge = document.getElementById('notifBadge');
+    if (oldBadge) {
+      oldBadge.remove();
+    }
+    
+    let btn = $('topBarNotif');
+    if (!btn) return;
   
     if (count > 0) {
-      if (!badge) {
-        badge = document.createElement('div');
-        badge.id = 'notifBadge';
-        badge.onclick = () => showNotificationCenter();
-        document.body.appendChild(badge);
-      }
-      badge.innerHTML = `🔔 ${count}`;
-      badge.style.cssText = `
-        position:fixed;top:12px;right:60px;z-index:9999;
-        background:var(--red-main);color:#fff;padding:6px 12px;
-        font-size:11px;font-weight:900;cursor:pointer;
-        border-radius:4px;animation:pulseBorder 2s infinite;
-      `;
-      badge.style.display = 'block';
-    } else if (badge) {
-      badge.style.display = 'none';
+      btn.innerHTML = `🔔 <span style="background:var(--red-main);color:#fff;border-radius:10px;padding:2px 5px;font-size:10px;font-weight:900;position:absolute;top:2px;right:2px;transform:scale(0.85);">${count}</span>`;
+      btn.style.position = 'relative'; 
+      btn.style.animation = 'pulseBorder 2s infinite';
+    } else {
+      btn.innerHTML = '🔔';
+      btn.style.animation = 'none';
+      btn.style.position = 'static';
     }
   }
   
@@ -4956,10 +4966,10 @@ function showSmDay(date) {
           ${notifs.length === 0
             ? '<div style="text-align:center;padding:30px;color:var(--text-muted);">✨ All caught up!</div>'
             : notifs.map(n => `
-              <div style="padding:12px;border-bottom:1px solid var(--border-light);display:flex;gap:10px;align-items:flex-start;">
+              <div style="padding:12px;border-bottom:1px solid var(--border-light);display:flex;gap:10px;align-items:flex-start;cursor:${n.route?'pointer':'default'};" ${n.route ? `onclick="goTo('${n.route}'); this.closest('div[style]').parentElement.remove();"` : ''}>
                 <span style="font-size:20px;">${n.icon || '🔔'}</span>
                 <div>
-                  <div style="font-weight:700;font-size:12px;">${sanitize(n.title)}</div>
+                  <div style="font-weight:700;font-size:12px;${n.route?'color:var(--wave-foam);':''}">${sanitize(n.title)} ${n.route ? '›' : ''}</div>
                   <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">${sanitize(n.message)}</div>
                 </div>
               </div>`).join('')
