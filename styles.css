@@ -6323,16 +6323,21 @@ img {
 .tactical-card {
   width: 95px;
   height: 95px;
-  background: #020202; /* Very dark background to make gold pop */
-  border: 3px solid rgba(212, 175, 55, 0.7); /* Thicker gold border */
-  border-radius: 4px;
+  /* Deep textured background */
+  background: linear-gradient(135deg, #161616 0%, #000 100%);
+  border: 3px solid rgba(212, 175, 55, 0.8);
+  border-radius: 6px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15); /* Faint gold outer glow */
-  transition: all 0.3s ease;
+  /* Complex shadows: deep outer drop shadow, strong faint gold glow, inner depth */
+  box-shadow: 
+    0 4px 10px rgba(0, 0, 0, 0.8),
+    0 0 15px rgba(212, 175, 55, 0.15),
+    inset 0 0 15px rgba(212, 175, 55, 0.15); /* inner gold ambient light */
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .tactical-inner {
@@ -6359,14 +6364,14 @@ img {
   object-fit: cover;
 }
 
-/* Metallic Scan-line Shine */
+/* Metallic Gold Scan-line Shine */
 .tactical-shine {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     -45deg,
     transparent 40%,
-    rgba(255, 255, 255, 0.15) 50%,
+    rgba(212, 175, 55, 0.25) 50%, /* Gold shimmer instead of white */
     transparent 60%
   );
   background-size: 200% 200%;
@@ -6381,9 +6386,12 @@ img {
 }
 
 .tactical-card:hover {
-  border-color: rgba(212, 175, 55, 1);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.25), 0 0 15px rgba(212, 175, 55, 0.2); /* Enhanced soft gold glow on hover */
+  border-color: rgba(255, 215, 0, 1); /* Brighter gold on hover */
+  transform: translateY(-5px);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.8),
+    0 0 25px rgba(255, 215, 0, 0.3), /* intense outer glow */
+    inset 0 0 20px rgba(255, 215, 0, 0.2); 
 }
 
 .tactical-label {
