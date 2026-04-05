@@ -2701,14 +2701,13 @@ async function updateActivityWidget() {
                     <div class="tactical-grid">
                         ${coolBadges.map(b => `
                             <div class="tactical-card-container">
-                                <div class="tactical-card" style="--i:${b.name.split(' ')[1] || Math.floor(Math.random() * 60)}">
-                                    <div class="merit-corner-tl"></div>
-                                    <div class="merit-corner-br"></div>
+                                <div class="tactical-card">
+                                    <div class="corner-tl"></div>
+                                    <div class="corner-br"></div>
                                     <div class="tactical-inner">
                                         <img src="${b.imageUrl}" alt="Badge">
                                     </div>
                                     <div class="tactical-shine"></div>
-                                    <div class="merit-live-dot"></div>
                                 </div>
                                 <div class="tactical-label">MERIT ${b.name.split(' ')[1]}</div>
                             </div>
@@ -5525,14 +5524,13 @@ function showSmDay(date) {
         <div class="tactical-grid">
           ${tacticalBadges.map((badge, i) => `
             <div class="tactical-card-container">
-                <div class="tactical-card" style="--i:${i+1}">
-                    <div class="merit-corner-tl"></div>
-                    <div class="merit-corner-br"></div>
+                <div class="tactical-card">
+                    <div class="corner-tl"></div>
+                    <div class="corner-br"></div>
                     <div class="tactical-inner">
                         <img src="${badge.imageUrl}" alt="${sanitize(badge.name)}" loading="lazy">
                     </div>
                     <div class="tactical-shine"></div>
-                    <div class="merit-live-dot"></div>
                 </div>
                 <div class="tactical-label" style="color:var(--red-core);">${sanitize(badge.name)}</div>
             </div>
@@ -6184,14 +6182,13 @@ function showSmDay(date) {
               <div class="tactical-grid">
                   ${tacticalPool.map((url, i) => `
                       <div class="tactical-card-container">
-                          <div class="tactical-card" style="--i:${i+1}">
-                              <div class="merit-corner-tl"></div>
-                              <div class="merit-corner-br"></div>
+                          <div class="tactical-card">
+                              <div class="corner-tl"></div>
+                              <div class="corner-br"></div>
                               <div class="tactical-inner">
                                   <img src="${url}" alt="Badge ${i+1}" loading="lazy">
                               </div>
                               <div class="tactical-shine"></div>
-                              <div class="merit-live-dot"></div>
                           </div>
                           <div class="tactical-label" style="color:var(--red-core);">MERIT ${i+1}</div>
                       </div>
