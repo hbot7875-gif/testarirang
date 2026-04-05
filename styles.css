@@ -6332,101 +6332,167 @@ img {
   justify-content: center;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-  /* Layered crimson glow — this is what makes it feel alive */
   box-shadow:
-    0 0 0 1.5px rgba(220, 30, 50, 0.8),     /* sharp crisp red edge */
-    0 0 0 3px   rgba(220, 30, 50, 0.15),    /* soft second ring */
-    0 0 18px    rgba(220, 30, 50, 0.25),    /* inner bloom */
-    0 0 45px    rgba(220, 30, 50, 0.08),    /* wide ambient */
-    0 12px 35px rgba(0, 0, 0, 0.7);         /* depth */
+    0 0 0 1px rgba(220, 30, 50, 0.75),      /* crisp red edge */
+    0 0 12px rgba(220, 30, 50, 0.20),        /* inner glow */
+    0 0 30px rgba(220, 30, 50, 0.06),        /* wide ambient */
+    0 8px 25px rgba(0, 0, 0, 0.8);           /* depth */
 
-  animation: arirangPulse 2.5s ease-in-out infinite;
+  animation: arirangPulse 3s ease-in-out infinite;
+  /* Stagger each card's pulse so they don't all breathe together */
+  animation-delay: calc(var(--i, 0) * 0.4s);
 }
 
-/* Breathing pulse — like a live broadcast signal */
 @keyframes arirangPulse {
   0%, 100% {
     box-shadow:
-      0 0 0 1.5px rgba(220, 30, 50, 0.7),
-      0 0 0 3px   rgba(220, 30, 50, 0.1),
-      0 0 15px    rgba(220, 30, 50, 0.2),
-      0 0 40px    rgba(220, 30, 50, 0.06),
-      0 12px 35px rgba(0, 0, 0, 0.7);
+      0 0 0 1px rgba(220, 30, 50, 0.6),
+      0 0 10px rgba(220, 30, 50, 0.15),
+      0 0 25px rgba(220, 30, 50, 0.04),
+      0 8px 25px rgba(0, 0, 0, 0.8);
   }
   50% {
     box-shadow:
-      0 0 0 1.5px rgba(232, 58, 93, 1),
-      0 0 0 4px   rgba(232, 58, 93, 0.2),
-      0 0 25px    rgba(232, 58, 93, 0.35),
-      0 0 60px    rgba(232, 58, 93, 0.12),
-      0 12px 35px rgba(0, 0, 0, 0.7);
+      0 0 0 1px rgba(232, 58, 93, 0.95),
+      0 0 18px rgba(232, 58, 93, 0.30),
+      0 0 45px rgba(232, 58, 93, 0.10),
+      0 8px 25px rgba(0, 0, 0, 0.8);
   }
 }
 
-/* TOP EDGE — Arirang broadcast bar */
+/* TOP BAR — thinner, sharper, more elegant */
 .tactical-card::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 2.5px;
+  height: 1.5px;                             /* thinner */
   background: linear-gradient(90deg,
-    transparent      0%,
-    rgba(220,30,50,0.6)  10%,
-    rgba(232,58,93,1)    30%,
-    #ff6b8a          50%,   /* hot white-red peak */
-    rgba(232,58,93,1)    70%,
-    rgba(220,30,50,0.6)  90%,
-    transparent      100%
+    transparent       0%,
+    rgba(232,58,93,0.5)  15%,
+    rgba(232,58,93,1)    35%,
+    rgba(255,100,130,1)  50%,               /* bright hot center */
+    rgba(232,58,93,1)    65%,
+    rgba(232,58,93,0.5)  85%,
+    transparent       100%
   );
   z-index: 10;
-  animation: topBarLive 2.5s ease-in-out infinite;
+  animation: topBarLive 3s ease-in-out infinite;
+  animation-delay: inherit;
 }
 
 @keyframes topBarLive {
-  0%, 100% { opacity: 0.7; filter: blur(0px); }
-  50%       { opacity: 1;   filter: blur(0.5px);
-              box-shadow: 0 0 12px rgba(232,58,93,0.9); }
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; box-shadow: 0 0 8px rgba(232,58,93,1); }
 }
 
-/* BOTTOM EDGE — dimmer echo */
+/* BOTTOM BAR — very subtle echo */
 .tactical-card::after {
   content: '';
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 1.5px;
+  height: 1px;
   background: linear-gradient(90deg,
     transparent,
-    rgba(232,58,93,0.3) 30%,
-    rgba(232,58,93,0.5) 50%,
-    rgba(232,58,93,0.3) 70%,
+    rgba(232,58,93,0.25) 30%,
+    rgba(232,58,93,0.4)  50%,
+    rgba(232,58,93,0.25) 70%,
     transparent
   );
   z-index: 10;
 }
 
-/* Tactical corners — RED not gold */
-.tactical-card-container .tactical-card .corner-tl,
-.tactical-card-container .tactical-card .corner-br {
+/* CORNERS — consistent, sharp */
+/* Replace your existing corner pseudo with dedicated elements */
+.merit-corner-tl,
+.merit-corner-br {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  border: 1.5px solid #e83a5d;
+  width: 11px;
+  height: 11px;
   z-index: 15;
   transition: all 0.3s ease;
-  box-shadow: 0 0 6px rgba(232,58,93,0.4);
 }
 
-.tactical-card-container .tactical-card .corner-tl {
-  top: 5px; left: 5px;
-  border-right: none; border-bottom: none;
+.merit-corner-tl {
+  top: 5px;
+  left: 5px;
+  border-top: 1.5px solid rgba(232,58,93,0.7);
+  border-left: 1.5px solid rgba(232,58,93,0.7);
+  box-shadow:
+    -2px -2px 6px rgba(232,58,93,0.2);
 }
 
-.tactical-card-container .tactical-card .corner-br {
-  bottom: 5px; right: 5px;
-  border-left: none; border-top: none;
+.merit-corner-br {
+  bottom: 5px;
+  right: 5px;
+  border-bottom: 1.5px solid rgba(232,58,93,0.7);
+  border-right: 1.5px solid rgba(232,58,93,0.7);
+  box-shadow:
+    2px 2px 6px rgba(232,58,93,0.2);
 }
 
-/* Inner — subtle red grid instead of white */
+/* Hover — corners light up */
+.tactical-card-container:hover .merit-corner-tl,
+.tactical-card-container:hover .merit-corner-br {
+  width: 14px;
+  height: 14px;
+  border-color: rgba(232,58,93,1);
+  border-width: 2px;
+  box-shadow: 0 0 10px rgba(232,58,93,0.7);
+}
+
+/* SCAN LINE — red with hot white center */
+.tactical-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(90deg,
+    transparent          0%,
+    rgba(232,58,93,0.3) 20%,
+    rgba(232,58,93,0.6) 40%,
+    rgba(255,150,170,0.5) 50%,              /* hot white-pink center */
+    rgba(232,58,93,0.6) 60%,
+    rgba(232,58,93,0.3) 80%,
+    transparent         100%
+  );
+  filter: blur(4px);
+  opacity: 0.55;
+  z-index: 8;
+  animation: arirangScan 3.5s infinite ease-in-out;
+  animation-delay: inherit;
+}
+
+@keyframes arirangScan {
+  0%        { top: -10%; opacity: 0; }
+  5%        { opacity: 0.55; }
+  35%       { top: 110%; opacity: 0.3; }
+  36%, 100% { top: 110%; opacity: 0; }
+}
+
+/* LIVE DOT — broadcast signal */
+.merit-live-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 4px;
+  height: 4px;
+  background: #e83a5d;
+  border-radius: 50%;
+  z-index: 20;
+  box-shadow:
+    0 0 4px rgba(232,58,93,1),
+    0 0 8px rgba(232,58,93,0.6);
+  animation: liveBlink 2s ease-in-out infinite;
+  animation-delay: inherit;
+}
+
+@keyframes liveBlink {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.2; transform: scale(0.7); }
+}
+
+/* INNER grid — red tinted */
 .tactical-inner {
   width: 100%;
   height: 100%;
@@ -6435,25 +6501,25 @@ img {
   align-items: center;
   justify-content: center;
   background-image:
-    linear-gradient(rgba(232,58,93,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(232,58,93,0.03) 1px, transparent 1px);
+    linear-gradient(rgba(232,58,93,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,58,93,0.025) 1px, transparent 1px);
   background-size: 10px 10px;
   position: relative;
   z-index: 2;
 }
 
-/* Red shimmer overlay on image */
+/* Red shimmer over image */
 .tactical-inner::after {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(232,58,93,0) 0%,
-    rgba(232,58,93,0.05) 35%,
-    rgba(255,100,130,0.10) 50%,
-    rgba(232,58,93,0.05) 65%,
-    rgba(232,58,93,0) 100%
+    rgba(232,58,93,0)    0%,
+    rgba(232,58,93,0.04) 35%,
+    rgba(255,90,120,0.08) 50%,
+    rgba(232,58,93,0.04) 65%,
+    rgba(232,58,93,0)    100%
   );
   animation: redShimmer 5s ease-in-out infinite alternate;
   pointer-events: none;
@@ -6461,8 +6527,8 @@ img {
 }
 
 @keyframes redShimmer {
-  0%   { transform: translateX(-25px); opacity: 0.2; }
-  100% { transform: translateX(25px);  opacity: 0.7; }
+  0%   { transform: translateX(-20px); opacity: 0.3; }
+  100% { transform: translateX(20px);  opacity: 0.8; }
 }
 
 .tactical-inner img {
@@ -6474,62 +6540,33 @@ img {
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-/* Scan line — red, not white */
-.tactical-shine {
-  position: absolute;
-  top: -100%;
-  left: 0;
-  width: 100%;
-  height: 10px;
-  background: linear-gradient(90deg,
-    transparent,
-    rgba(232,58,93,0.6),
-    rgba(255,120,150,0.4),
-    rgba(232,58,93,0.6),
-    transparent
-  );
-  filter: blur(6px);
-  opacity: 0.5;
-  z-index: 8;
-  animation: arirangScan 3s infinite ease-in-out;
-}
-
-@keyframes arirangScan {
-  0%   { top: -10%; }
-  30%  { top: 110%; }
-  100% { top: 110%; }
-}
-
-/* Hover */
-.tactical-card-container:hover .tactical-card {
-  transform: translateY(-5px);
-  box-shadow:
-    0 0 0 1.5px rgba(232, 58, 93, 1),
-    0 0 0 4px   rgba(232, 58, 93, 0.25),
-    0 0 30px    rgba(232, 58, 93, 0.4),
-    0 0 70px    rgba(232, 58, 93, 0.15),
-    0 15px 45px rgba(0, 0, 0, 0.9);
-}
-
+/* Hover image */
 .tactical-card-container:hover img {
   transform: scale(1.15);
   filter: drop-shadow(0 0 15px rgba(232,58,93,0.5));
 }
 
-.tactical-card-container:hover .tactical-card .corner-tl,
-.tactical-card-container:hover .tactical-card .corner-br {
-  width: 14px;
-  height: 14px;
-  border-width: 2px;
-  box-shadow: 0 0 12px rgba(232,58,93,0.8);
+/* Hover card */
+.tactical-card-container:hover .tactical-card {
+  transform: translateY(-5px);
+  box-shadow:
+    0 0 0 1.5px rgba(232,58,93,1),
+    0 0 20px rgba(232,58,93,0.4),
+    0 0 50px rgba(232,58,93,0.12),
+    0 15px 40px rgba(0,0,0,0.9);
 }
 
-/* Label */
+/* LABEL */
 .tactical-label {
   font-family: 'Share Tech Mono', monospace;
   font-size: 8px;
-  color: rgba(232, 58, 93, 0.4);
+  color: rgba(232,58,93,0.45);
   margin-top: 6px;
   text-transform: uppercase;
   letter-spacing: 2px;
+  transition: color 0.3s ease;
+}
+
+.tactical-card-container:hover .tactical-label {
+  color: rgba(232,58,93,0.8);
 }
