@@ -12086,74 +12086,231 @@ function check100XPPopup() {
         // Fallback just in case
         if (!badgeUrl) badgeUrl = CONFIG.TACTICAL_POOL[0];
         
-        const modalHtml = `
-            <div id="${modalId}" class="spy-modal-overlay" style="z-index: 100000; position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); animation: fadeIn 0.4s ease;">
+        // In V2, replace the circular merit-image-wrapper
+// with your tactical rectangle to stay consistent
+
+const modalHtml = `
+    <div id="${modalId}" class="spy-modal-overlay" 
+         style="z-index: 100000; position: fixed; inset: 0; 
+                background: rgba(5,5,8,0.95); 
+                display: flex; align-items: center; 
+                justify-content: center; 
+                backdrop-filter: blur(12px); 
+                animation: fadeIn 0.4s ease;">
+        
+        <div style="padding: 0; text-align: center; 
+                    width: 90%; max-width: 360px; 
+                    background: linear-gradient(180deg, #0a0a0f, #050508); 
+                    border: 1px solid rgba(232,58,93,0.3);
+                    box-shadow: 
+                        0 0 60px rgba(232,58,93,0.2),
+                        inset 0 0 30px rgba(232,58,93,0.04);
+                    overflow: hidden; 
+                    animation: popupSlideUp 0.6s cubic-bezier(0.16,1,0.3,1);">
+            
+            <!-- Header -->
+            <div style="padding: 18px 16px; position: relative; 
+                        border-bottom: 1px solid rgba(232,58,93,0.15); 
+                        background: rgba(232,58,93,0.03);">
+                <!-- Top crimson bar -->
+                <div style="position:absolute; top:0; left:0; right:0; 
+                            height:2px; 
+                            background: linear-gradient(90deg, 
+                                transparent, #e83a5d, transparent);
+                            animation: topBarLive 2s infinite;">
+                </div>
+                <h3 style="font-family:'Orbitron',sans-serif; 
+                           color:#fff; margin:0; font-size:14px; 
+                           letter-spacing:4px; 
+                           text-shadow: 0 0 15px #e83a5d;
+                           display:flex; align-items:center; 
+                           justify-content:center; gap:10px;">
+                    <span style="color:#e83a5d; 
+                                 animation: blink 2s infinite;">◈</span>
+                    CLEARANCE UPGRADED
+                </h3>
+            </div>
+
+            <div style="padding: 30px 24px;">
                 
-                <div class="glass-card" style="padding: 0; text-align: center; width: 90%; max-width: 360px; border: 1px solid var(--red-core); box-shadow: 0 0 60px rgba(255, 20, 95, 0.25); overflow: hidden; animation: slideUpReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1);">
+                <!-- Agent ID -->
+                <div style="font-family:'Share Tech Mono',monospace; 
+                            font-size:10px; 
+                            color:rgba(255,255,255,0.4); 
+                            margin-bottom:28px; 
+                            text-transform:uppercase; letter-spacing:2px;">
+                    Agent ${STATE.agentNo} // 100 XP SECURED
+                </div>
+
+                <!-- BADGE — tactical rectangle + V2 animations -->
+                <div style="position:relative; 
+                            width:120px; height:145px; 
+                            margin: 0 auto 35px;
+                            animation: hologramTilt 2.5s ease-out forwards;">
                     
-                    <!-- Tactical Header -->
-                    <div style="background: var(--red-whisper); padding: 16px; border-bottom: 1px solid var(--red-border); display: flex; align-items: center; justify-content: center; gap: 12px;">
-                        <span style="font-size: 18px; filter: drop-shadow(0 0 5px var(--red-core));">🔓</span>
-                        <h3 style="font-family: 'Orbitron', sans-serif; color: var(--red-core); margin: 0; font-size: 14px; letter-spacing: 3px; text-shadow: 0 0 10px var(--red-glow);">CLEARANCE UPGRADED</h3>
+                    <!-- Outer spinning ring (keep from V2) -->
+                    <div style="position:absolute; inset:-18px; 
+                                border-radius:4px;
+                                border:1px dashed rgba(232,58,93,0.3);
+                                animation: spinSlow 12s linear infinite;">
+                    </div>
+                    
+                    <!-- Inner spinning ring -->
+                    <div style="position:absolute; inset:-8px; 
+                                border-radius:4px;
+                                border:2px solid rgba(232,58,93,0.08);
+                                border-top-color:#e83a5d;
+                                border-bottom-color:#e83a5d;
+                                animation:spinFast 4s linear infinite reverse;
+                                box-shadow:0 0 15px rgba(232,58,93,0.25);">
                     </div>
 
-                    <div style="padding: 30px 24px;">
-                        <div style="font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px;">
-                            Agent ${STATE.agentNo} • 100 XP Secured
-                        </div>
-
-                        <!-- Tactical Badge with Decryption Reveal Animation -->
-                        <div class="tactical-card-container reveal-anim" style="margin: 0 auto 30px; transform: scale(1.35);">
-                            <div class="tactical-card">
-                                <div class="corner-tl"></div>
-                                <div class="corner-br"></div>
-                                <div class="tactical-inner">
-                                    <img src="${badgeUrl}" alt="Classified Merit" style="animation: decryptImage 2.5s steps(15) forwards;">
-                                </div>
-                                <div class="tactical-shine"></div>
-                            </div>
-                        </div>
-
-                        <div style="font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 800; color: #fff; letter-spacing: 1.5px; margin-bottom: 8px;">
-                            CLASSIFIED MERIT UNLOCKED
-                        </div>
-                        <p style="font-size: 11.5px; margin-bottom: 28px; line-height: 1.6; color: var(--text-secondary);">
-                            HQ has recognized your outstanding field work. This tactical merit has been permanently added to your bag.
-                        </p>
+                    <!-- Tactical card (YOUR exact style) -->
+                    <div class="tactical-card" 
+                         style="width:120px; height:145px; 
+                                animation: arirangPulse 2.5s infinite;">
+                        <div class="merit-corner-tl"></div>
+                        <div class="merit-corner-br"></div>
                         
-                        <button class="btn-red" style="width: 100%; border-radius: 8px; font-size: 14px; padding: 14px; font-family: 'Orbitron', sans-serif; letter-spacing: 2px;" onclick="
-                            localStorage.setItem('${storageKey}', 'true');
-                            document.getElementById('${modalId}').remove();
-                            if(typeof fireConfetti === 'function') fireConfetti();
-                        ">WE WANT IT ALL 🏆</button>
+                        <div class="tactical-inner" 
+                             style="position:relative; overflow:hidden;">
+                            <img src="${badgeUrl}" 
+                                 alt="Classified Merit"
+                                 style="max-width:100%; max-height:100%;
+                                        object-fit:contain;
+                                        animation: superDecrypt 3.5s 
+                                        cubic-bezier(0.2,0.8,0.2,1) forwards;">
+                            
+                            <!-- Laser scan (V2) -->
+                            <div class="merit-scanline"></div>
+                            
+                            <!-- CRT glitch (V2) -->
+                            <div class="merit-glitch-overlay"></div>
+                        </div>
+                        
+                        <div class="tactical-shine"></div>
+                        <div class="merit-live-dot"></div>
                     </div>
                 </div>
 
-                <style>
-                    @keyframes slideUpReveal {
-                        from { transform: translateY(40px) scale(0.95); opacity: 0; }
-                        to { transform: translateY(0) scale(1); opacity: 1; }
-                    }
-                    /* Spy Decryption Glitch Effect */
-                    @keyframes decryptImage {
-                        0% { filter: brightness(0) blur(8px) contrast(5); opacity: 0; }
-                        30% { filter: brightness(3) sepia(1) hue-rotate(-50deg) blur(4px); opacity: 0.3; }
-                        60% { filter: brightness(0.5) contrast(2) blur(1px); opacity: 0.8; }
-                        80% { filter: brightness(1.5) contrast(1.2); opacity: 1; }
-                        100% { filter: none; opacity: 1; }
-                    }
-                    .reveal-anim {
-                        animation: badgePopIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
-                    }
-                    @keyframes badgePopIn {
-                        from { transform: scale(0.5); opacity: 0; }
-                        to { transform: scale(1.35); opacity: 1; }
-                    }
-                </style>
+                <!-- Text -->
+                <div style="font-family:'Orbitron',sans-serif; 
+                            font-size:13px; font-weight:800; 
+                            color:#e83a5d; letter-spacing:2px; 
+                            margin-bottom:10px;
+                            text-shadow:0 0 10px rgba(232,58,93,0.4);">
+                    CLASSIFIED MERIT UNLOCKED
+                </div>
+                <p style="font-family:'Rajdhani',sans-serif; 
+                          font-size:13px; margin-bottom:28px; 
+                          line-height:1.6; 
+                          color:rgba(255,255,255,0.6);">
+                    HQ has verified your streaming metrics. 
+                    This elite tactical merit has been permanently 
+                    encrypted into your dossier.
+                </p>
+
+                <!-- Button -->
+                <button onclick="
+                    localStorage.setItem('${storageKey}', 'true');
+                    document.getElementById('${modalId}').remove();
+                    if(typeof fireConfetti === 'function') fireConfetti();
+                " style="width:100%; padding:16px; 
+                         font-family:'Orbitron',sans-serif; 
+                         font-size:13px; letter-spacing:2px;
+                         background:linear-gradient(135deg,#e83a5d,#8a0020);
+                         border:1px solid #e83a5d; color:#fff;
+                         border-radius:8px; cursor:pointer;
+                         box-shadow:0 0 20px rgba(232,58,93,0.35),
+                                    inset 0 2px 5px rgba(255,255,255,0.15);
+                         position:relative; overflow:hidden;
+                         transition:all 0.3s ease;">
+                    WE WANT IT ALL 🏆
+                    <div style="position:absolute; top:0; 
+                                left:-100%; width:50%; height:100%;
+                                background:linear-gradient(90deg,
+                                    transparent,
+                                    rgba(255,255,255,0.3),
+                                    transparent);
+                                animation:btnShimmer 3s infinite;">
+                    </div>
+                </button>
             </div>
-        `;
-        
-        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        </div>
+
+        <style>
+            @keyframes popupSlideUp {
+                from { transform: translateY(30px) scale(0.95); opacity:0; }
+                to   { transform: translateY(0) scale(1); opacity:1; }
+            }
+            @keyframes blink {
+                0%,100% { opacity:1; }
+                50%      { opacity:0.2; }
+            }
+            @keyframes topBarLive {
+                0%,100% { opacity:0.6; }
+                50%      { opacity:1; box-shadow:0 0 8px #e83a5d; }
+            }
+            @keyframes hologramTilt {
+                0%   { transform: rotateX(60deg) scale(0.8); opacity:0; }
+                100% { transform: rotateX(0deg)  scale(1);   opacity:1; }
+            }
+            @keyframes spinSlow {
+                100% { transform: rotate(360deg); }
+            }
+            @keyframes spinFast {
+                100% { transform: rotate(360deg); }
+            }
+            @keyframes superDecrypt {
+                0%   { filter:blur(20px) grayscale(100%) contrast(5) brightness(0);
+                       transform:scale(1.4); opacity:0; }
+                30%  { filter:blur(8px) sepia(1) hue-rotate(-50deg) contrast(3) brightness(2);
+                       opacity:0.5; }
+                60%  { filter:blur(3px) contrast(1.5) brightness(1.3);
+                       transform:scale(1.05); }
+                100% { filter:none; transform:scale(1); opacity:1; }
+            }
+            @keyframes btnShimmer {
+                0%   { left:-100%; }
+                20%  { left:200%; }
+                100% { left:200%; }
+            }
+            .merit-glitch-overlay {
+                position:absolute; inset:0;
+                background: repeating-linear-gradient(
+                    0deg,
+                    rgba(232,58,93,0.08) 0px,
+                    rgba(232,58,93,0.08) 1px,
+                    transparent 1px,
+                    transparent 4px
+                );
+                pointer-events:none;
+                animation: glitchFade 3.5s ease-out forwards;
+            }
+            @keyframes glitchFade {
+                0%,60% { opacity:1; }
+                100%   { opacity:0.1; }
+            }
+            .merit-scanline {
+                position:absolute; top:-20%; left:-50%;
+                width:200%; height:3px;
+                background:rgba(255,255,255,0.9);
+                box-shadow:0 0 15px 5px #e83a5d, 0 0 30px #e83a5d;
+                transform:rotate(10deg);
+                animation:scanSweep 3.5s cubic-bezier(0.4,0,0.2,1) forwards;
+                pointer-events:none; z-index:5;
+            }
+            @keyframes scanSweep {
+                0%   { top:-20%; opacity:0; }
+                15%  { opacity:1; }
+                75%  { opacity:1; }
+                100% { top:120%; opacity:0; }
+            }
+        </style>
+    </div>
+`;
+
+document.body.insertAdjacentHTML('beforeend', modalHtml);
     }
 }
 
