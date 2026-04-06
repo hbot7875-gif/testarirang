@@ -12060,7 +12060,7 @@ Object.assign(window, EXPORTS);
   // END OF app.js v2.0 — STABLE & SECURE
   // =============================================
 
-// ==================== 100XP POPUP (ARIRANG — EYE FRIENDLY) ====================
+// ==================== 100XP POPUP (ARIRANG — PSYCHO EDITION) ====================
 function check100XPPopup() {
     if (!STATE.data || !STATE.data.agent || !STATE.data.agent.stats) return;
     const currentWeekXP = parseInt(STATE.data.agent.stats.totalXP) || 0;
@@ -12097,7 +12097,7 @@ function check100XPPopup() {
                     padding: 0;
                     text-align: center;
                     width: 90%;
-                    max-width: 360px;
+                    max-width: 370px;
                     background: linear-gradient(180deg, #0a0a0f 0%, #050508 100%);
                     border: 1px solid rgba(232, 58, 93, 0.3);
                     box-shadow:
@@ -12113,7 +12113,7 @@ function check100XPPopup() {
                         padding: 18px 16px;
                         position: relative;
                         border-bottom: 1px solid rgba(232, 58, 93, 0.12);
-                        background: rgba(232, 58, 93, 0.03);">
+                        background: rgba(232, 58, 93, 0.04);">
 
                         <!-- Top crimson bar -->
                         <div style="
@@ -12129,46 +12129,44 @@ function check100XPPopup() {
                             animation: topBarLive 2.5s ease-in-out infinite;">
                         </div>
 
-                        <h3 style="
+                        <!-- Header title -->
+                        <div style="
                             font-family: 'Orbitron', sans-serif;
                             color: #fff;
                             margin: 0;
-                            font-size: 13px;
-                            letter-spacing: 4px;
+                            font-size: 15px;
+                            font-weight: 900;
+                            letter-spacing: 3px;
                             text-shadow: 0 0 12px rgba(232, 58, 93, 0.5);
                             display: flex;
                             align-items: center;
                             justify-content: center;
                             gap: 10px;">
-                            <span style="
-                                color: #e83a5d;
-                                font-size: 16px;
-                                animation: blinkSoft 2s ease-in-out infinite;
-                                text-shadow: 0 0 8px rgba(232, 58, 93, 0.6);">◈</span>
-                            CLEARANCE UPGRADED
-                        </h3>
+                            STREAMS GO PSYCHO 🔥
+                        </div>
                     </div>
 
                     <!-- ── BODY ── -->
-                    <div style="padding: 28px 24px 30px;">
+                    <div style="padding: 26px 24px 28px;">
 
-                        <!-- Agent ID line -->
+                        <!-- Fun subtitle -->
                         <div style="
                             font-family: 'Share Tech Mono', monospace;
                             font-size: 10px;
-                            color: rgba(255, 255, 255, 0.35);
-                            margin-bottom: 26px;
+                            color: rgba(232, 58, 93, 0.7);
+                            margin-bottom: 22px;
                             text-transform: uppercase;
-                            letter-spacing: 2px;">
-                            Agent ${STATE.agentNo} // 100 XP SECURED
+                            letter-spacing: 3px;
+                            animation: blinkSoft 2s ease-in-out infinite;">
+                            ◈ ${STATE.agentNo} just went full hooligan ◈
                         </div>
 
                         <!-- ── BADGE CONTAINER ── -->
                         <div style="
                             position: relative;
-                            width: 120px;
-                            height: 145px;
-                            margin: 0 auto 32px;
+                            width: 150px;
+                            height: 180px;
+                            margin: 0 auto 28px;
                             animation: badgeEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;">
 
                             <!-- Outer dashed ring -->
@@ -12192,36 +12190,35 @@ function check100XPPopup() {
                                 box-shadow: 0 0 10px rgba(232, 58, 93, 0.2);">
                             </div>
 
-                            <!-- Tactical card (matches your merit card style) -->
+                            <!-- Tactical card -->
                             <div class="tactical-card" style="
-                                width: 120px;
-                                height: 145px;
+                                width: 150px;
+                                height: 180px;
                                 animation: arirangPulse 3s ease-in-out infinite;">
 
-                                <!-- Gold corners replaced with crimson -->
                                 <div class="merit-corner-tl"></div>
                                 <div class="merit-corner-br"></div>
-
-                                <!-- Live dot -->
                                 <div class="merit-live-dot"></div>
 
-                                <!-- Image wrapper -->
-                                <div class="tactical-inner" style="position: relative; overflow: hidden;">
+                                <div class="tactical-inner" style="
+                                    position: relative;
+                                    overflow: hidden;
+                                    width: 100%;
+                                    height: 100%;">
 
                                     <img src="${badgeUrl}"
                                          alt="Classified Merit"
                                          style="
-                                             max-width: 100%;
-                                             max-height: 100%;
-                                             object-fit: contain;
+                                             width: 100%;
+                                             height: 100%;
+                                             object-fit: cover;
                                              object-position: top;
-                                             filter: drop-shadow(0 0 10px rgba(0,0,0,1));
                                              animation: softDecrypt 3s ease-out forwards;">
 
-                                    <!-- Soft scan line — red only, no white flash -->
+                                    <!-- Scan line -->
                                     <div class="popup-scanline"></div>
 
-                                    <!-- CRT overlay — very subtle -->
+                                    <!-- CRT overlay -->
                                     <div class="popup-crt"></div>
 
                                 </div>
@@ -12230,28 +12227,28 @@ function check100XPPopup() {
                             </div>
                         </div>
 
-                        <!-- Title -->
+                        <!-- Fun quote -->
                         <div style="
-                            font-family: 'Orbitron', sans-serif;
-                            font-size: 12px;
-                            font-weight: 800;
-                            color: #e83a5d;
-                            letter-spacing: 2px;
+                            font-family: 'Rajdhani', sans-serif;
+                            font-size: 15px;
+                            font-weight: 700;
+                            color: rgba(255, 255, 255, 0.9);
+                            letter-spacing: 1px;
                             margin-bottom: 10px;
-                            text-shadow: 0 0 10px rgba(232, 58, 93, 0.35);">
-                            CLASSIFIED MERIT UNLOCKED
+                            font-style: italic;">
+                            "Watch this stream goin' hooligan!" 🎧
                         </div>
 
-                        <!-- Description -->
+                        <!-- Description — fun version -->
                         <p style="
                             font-family: 'Rajdhani', sans-serif;
                             font-size: 13px;
                             margin-bottom: 26px;
-                            line-height: 1.7;
-                            color: rgba(255, 255, 255, 0.55);">
-                            HQ has verified your streaming metrics.<br>
-                            This tactical merit has been permanently<br>
-                            encrypted into your dossier.
+                            line-height: 1.8;
+                            color: rgba(255, 255, 255, 0.5);">
+                            HQ verified you went <span style="color:#e83a5d; font-weight:700;">full streamer</span> tonight.<br>
+                            Your 100 XP made the numbers jump,<br>
+                            and this elite merit is <span style="color:#fff; font-weight:700;">permanently yours.</span>
                         </p>
 
                         <!-- Button -->
@@ -12303,62 +12300,46 @@ function check100XPPopup() {
                     </div>
                 </div>
 
-                <!-- ── ALL ANIMATIONS ── -->
+                <!-- ── ANIMATIONS ── -->
                 <style>
-                    /* Overlay fade */
                     @keyframes fadeIn {
                         from { opacity: 0; }
                         to   { opacity: 1; }
                     }
-
-                    /* Card slide up */
                     @keyframes popupSlideUp {
                         from { transform: translateY(30px) scale(0.95); opacity: 0; }
                         to   { transform: translateY(0)    scale(1);    opacity: 1; }
                     }
-
-                    /* Badge entrance — spring, no rotation */
                     @keyframes badgeEntrance {
                         from { transform: scale(0.6); opacity: 0; }
                         to   { transform: scale(1);   opacity: 1; }
                     }
-
-                    /* Image decrypt — NO brightness spikes */
                     @keyframes softDecrypt {
                         0%   {
-                            filter: blur(14px) grayscale(100%) brightness(0.2)
-                                    drop-shadow(0 0 10px rgba(0,0,0,1));
-                            transform: scale(1.25);
+                            filter: blur(14px) grayscale(100%) brightness(0.2);
+                            transform: scale(1.2);
                             opacity: 0;
                         }
                         25%  {
-                            filter: blur(8px) grayscale(70%) brightness(0.6)
-                                    drop-shadow(0 0 10px rgba(0,0,0,1));
+                            filter: blur(8px) grayscale(70%) brightness(0.6);
                             opacity: 0.5;
                         }
                         55%  {
-                            filter: blur(3px) grayscale(20%) brightness(0.9)
-                                    drop-shadow(0 0 10px rgba(0,0,0,1));
+                            filter: blur(3px) grayscale(20%) brightness(0.9);
                             transform: scale(1.04);
                         }
                         100% {
-                            filter: blur(0px) grayscale(0%) brightness(1)
-                                    drop-shadow(0 0 10px rgba(0,0,0,1));
+                            filter: blur(0px) grayscale(0%) brightness(1);
                             transform: scale(1);
                             opacity: 1;
                         }
-                        /* brightness never exceeds 1 — no flash */
                     }
-
-                    /* Spinning rings */
                     @keyframes spinSlow {
                         100% { transform: rotate(360deg); }
                     }
                     @keyframes spinFast {
                         100% { transform: rotate(360deg); }
                     }
-
-                    /* Arirang pulse on card */
                     @keyframes arirangPulse {
                         0%, 100% {
                             box-shadow:
@@ -12373,20 +12354,14 @@ function check100XPPopup() {
                                 0 8px 25px rgba(0, 0, 0, 0.8);
                         }
                     }
-
-                    /* Top bar pulse */
                     @keyframes topBarLive {
                         0%, 100% { opacity: 0.5; }
-                        50%       { opacity: 1; }
+                        50%       { opacity: 1;   }
                     }
-
-                    /* Icon blink — never goes to 0 */
                     @keyframes blinkSoft {
                         0%, 100% { opacity: 0.9; }
-                        50%       { opacity: 0.3; }
+                        50%       { opacity: 0.4; }
                     }
-
-                    /* Scan line — red only, gentle */
                     .popup-scanline {
                         position: absolute;
                         top: -10%;
@@ -12399,7 +12374,6 @@ function check100XPPopup() {
                             rgba(232, 58, 93, 0.7),
                             rgba(232, 58, 93, 0.4),
                             transparent);
-                        /* NO white, NO box-shadow brightness */
                         filter: blur(2px);
                         opacity: 0;
                         transform: rotate(8deg);
@@ -12407,15 +12381,12 @@ function check100XPPopup() {
                         pointer-events: none;
                         z-index: 5;
                     }
-
                     @keyframes scanSweep {
-                        0%   { top: -10%; opacity: 0; }
-                        15%  { opacity: 0.65; }
-                        80%  { opacity: 0.45; }
-                        100% { top: 115%;  opacity: 0; }
+                        0%   { top: -10%; opacity: 0;    }
+                        15%  { opacity: 0.65;             }
+                        80%  { opacity: 0.45;             }
+                        100% { top: 115%;  opacity: 0;   }
                     }
-
-                    /* CRT overlay — barely visible */
                     .popup-crt {
                         position: absolute;
                         inset: 0;
@@ -12429,27 +12400,21 @@ function check100XPPopup() {
                         pointer-events: none;
                         animation: crtFade 3s ease-out forwards;
                     }
-
                     @keyframes crtFade {
                         0%,  50% { opacity: 0.8; }
                         100%     { opacity: 0.06; }
                     }
-
-                    /* Button shimmer */
                     @keyframes btnShimmer {
                         0%   { left: -100%; }
                         18%  { left: 200%;  }
                         100% { left: 200%;  }
                     }
-
-                    /* Live dot blink */
-                    .merit-live-dot {
-                        animation: liveBlink 2s ease-in-out infinite !important;
-                    }
-
                     @keyframes liveBlink {
                         0%, 100% { opacity: 1;   transform: scale(1);   }
                         50%       { opacity: 0.25; transform: scale(0.75); }
+                    }
+                    .merit-live-dot {
+                        animation: liveBlink 2s ease-in-out infinite !important;
                     }
                 </style>
             </div>
