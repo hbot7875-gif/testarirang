@@ -12196,10 +12196,14 @@ function check100XPPopup() {
                                 height: 180px;
                                 animation: arirangPulse 3s ease-in-out infinite;">
 
-                                <div class="merit-corner-tl"></div>
-                                <div class="merit-corner-br"></div>
-                                <div class="merit-live-dot"></div>
+                                <!-- Corners -->
+                                <div class="popup-corner-tl"></div>
+                                <div class="popup-corner-br"></div>
 
+                                <!-- Live dot -->
+                                <div class="popup-live-dot"></div>
+
+                                <!-- Image wrapper -->
                                 <div class="tactical-inner" style="
                                     position: relative;
                                     overflow: hidden;
@@ -12239,16 +12243,19 @@ function check100XPPopup() {
                             "Watch this stream goin' hooligan!" 🎧
                         </div>
 
-                        <!-- Description — fun version -->
+                        <!-- Description -->
                         <p style="
                             font-family: 'Rajdhani', sans-serif;
                             font-size: 13px;
                             margin-bottom: 26px;
                             line-height: 1.8;
                             color: rgba(255, 255, 255, 0.5);">
-                            HQ verified you went <span style="color:#e83a5d; font-weight:700;">full streamer</span> tonight.<br>
+                            HQ verified you went
+                            <span style="color: #e83a5d; font-weight: 700;">full streamer</span>
+                            tonight.<br>
                             Your 100 XP made the numbers jump,<br>
-                            and this elite merit is <span style="color:#fff; font-weight:700;">permanently yours.</span>
+                            and this elite merit is
+                            <span style="color: #fff; font-weight: 700;">permanently yours.</span>
                         </p>
 
                         <!-- Button -->
@@ -12284,7 +12291,7 @@ function check100XPPopup() {
 
                             WE WANT IT ALL 🏆
 
-                            <!-- Shimmer sweep -->
+                            <!-- Button shimmer -->
                             <div style="
                                 position: absolute;
                                 top: 0; left: -100%;
@@ -12300,31 +12307,44 @@ function check100XPPopup() {
                     </div>
                 </div>
 
-                <!-- ── ANIMATIONS ── -->
+                <!-- ══════════════════════════════════
+                     ALL STYLES — SELF CONTAINED
+                     prefix: popup- to avoid conflicts
+                     with your global tactical CSS
+                ══════════════════════════════════ -->
                 <style>
+
+                    /* ── OVERLAY ── */
                     @keyframes fadeIn {
                         from { opacity: 0; }
                         to   { opacity: 1; }
                     }
+
+                    /* ── CARD ENTRANCE ── */
                     @keyframes popupSlideUp {
                         from { transform: translateY(30px) scale(0.95); opacity: 0; }
                         to   { transform: translateY(0)    scale(1);    opacity: 1; }
                     }
+
+                    /* ── BADGE ENTRANCE ── */
                     @keyframes badgeEntrance {
                         from { transform: scale(0.6); opacity: 0; }
                         to   { transform: scale(1);   opacity: 1; }
                     }
+
+                    /* ── IMAGE DECRYPT ── */
+                    /* brightness never exceeds 1 — no eye strain */
                     @keyframes softDecrypt {
-                        0%   {
+                        0% {
                             filter: blur(14px) grayscale(100%) brightness(0.2);
                             transform: scale(1.2);
                             opacity: 0;
                         }
-                        25%  {
+                        25% {
                             filter: blur(8px) grayscale(70%) brightness(0.6);
                             opacity: 0.5;
                         }
-                        55%  {
+                        55% {
                             filter: blur(3px) grayscale(20%) brightness(0.9);
                             transform: scale(1.04);
                         }
@@ -12334,12 +12354,16 @@ function check100XPPopup() {
                             opacity: 1;
                         }
                     }
+
+                    /* ── RINGS ── */
                     @keyframes spinSlow {
                         100% { transform: rotate(360deg); }
                     }
                     @keyframes spinFast {
                         100% { transform: rotate(360deg); }
                     }
+
+                    /* ── CARD PULSE ── */
                     @keyframes arirangPulse {
                         0%, 100% {
                             box-shadow:
@@ -12354,14 +12378,101 @@ function check100XPPopup() {
                                 0 8px 25px rgba(0, 0, 0, 0.8);
                         }
                     }
+
+                    /* ── HEADER BAR ── */
                     @keyframes topBarLive {
                         0%, 100% { opacity: 0.5; }
-                        50%       { opacity: 1;   }
+                        50%      { opacity: 1;   }
                     }
+
+                    /* ── SUBTITLE BLINK ── */
                     @keyframes blinkSoft {
                         0%, 100% { opacity: 0.9; }
-                        50%       { opacity: 0.4; }
+                        50%      { opacity: 0.4; }
                     }
+
+                    /* ── LIVE DOT BLINK ── */
+                    @keyframes liveBlink {
+                        0%, 100% { opacity: 1;    transform: scale(1);    }
+                        50%      { opacity: 0.25;  transform: scale(0.75); }
+                    }
+
+                    /* ── SCAN LINE ── */
+                    @keyframes scanSweep {
+                        0%   { top: -10%; opacity: 0;   }
+                        15%  { opacity: 0.65;            }
+                        80%  { opacity: 0.45;            }
+                        100% { top: 115%; opacity: 0;   }
+                    }
+
+                    /* ── CRT FADE ── */
+                    @keyframes crtFade {
+                        0%,  50% { opacity: 0.8;  }
+                        100%     { opacity: 0.06; }
+                    }
+
+                    /* ── BUTTON SHIMMER ── */
+                    @keyframes btnShimmer {
+                        0%   { left: -100%; }
+                        18%  { left: 200%;  }
+                        100% { left: 200%;  }
+                    }
+
+                    /* ══ CORNERS ══
+                       Using popup- prefix so they don't
+                       conflict with your global .merit-corner-tl */
+                    .popup-corner-tl,
+                    .popup-corner-br {
+                        position: absolute;
+                        width: 12px;
+                        height: 12px;
+                        z-index: 15;
+                        pointer-events: none;
+                        transition: all 0.3s ease;
+                    }
+
+                    .popup-corner-tl {
+                        top: 6px;
+                        left: 6px;
+                        border-top: 1.5px solid rgba(232, 58, 93, 0.85);
+                        border-left: 1.5px solid rgba(232, 58, 93, 0.85);
+                        box-shadow: -2px -2px 6px rgba(232, 58, 93, 0.25);
+                        animation: cornerPulse 3s ease-in-out infinite;
+                    }
+
+                    .popup-corner-br {
+                        bottom: 6px;
+                        right: 6px;
+                        border-bottom: 1.5px solid rgba(232, 58, 93, 0.85);
+                        border-right: 1.5px solid rgba(232, 58, 93, 0.85);
+                        box-shadow: 2px 2px 6px rgba(232, 58, 93, 0.25);
+                        animation: cornerPulse 3s ease-in-out infinite 1.5s;
+                    }
+
+                    @keyframes cornerPulse {
+                        0%, 100% { opacity: 0.7; }
+                        50%      { opacity: 1;
+                                   box-shadow: 0 0 10px rgba(232, 58, 93, 0.6); }
+                    }
+
+                    /* ══ LIVE DOT ══ */
+                    .popup-live-dot {
+                        position: absolute;
+                        top: 7px;
+                        right: 7px;
+                        width: 5px;
+                        height: 5px;
+                        background: #e83a5d;
+                        border-radius: 50%;
+                        z-index: 20;
+                        pointer-events: none;
+                        box-shadow:
+                            0 0 4px rgba(232, 58, 93, 1),
+                            0 0 8px rgba(232, 58, 93, 0.5);
+                        animation: liveBlink 2s ease-in-out infinite;
+                    }
+
+                    /* ══ SCAN LINE ══ */
                     .popup-scanline {
                         position: absolute;
                         top: -10%;
@@ -12381,12 +12492,8 @@ function check100XPPopup() {
                         pointer-events: none;
                         z-index: 5;
                     }
-                    @keyframes scanSweep {
-                        0%   { top: -10%; opacity: 0;    }
-                        15%  { opacity: 0.65;             }
-                        80%  { opacity: 0.45;             }
-                        100% { top: 115%;  opacity: 0;   }
-                    }
+
+                    /* ══ CRT OVERLAY ══ */
                     .popup-crt {
                         position: absolute;
                         inset: 0;
@@ -12400,22 +12507,7 @@ function check100XPPopup() {
                         pointer-events: none;
                         animation: crtFade 3s ease-out forwards;
                     }
-                    @keyframes crtFade {
-                        0%,  50% { opacity: 0.8; }
-                        100%     { opacity: 0.06; }
-                    }
-                    @keyframes btnShimmer {
-                        0%   { left: -100%; }
-                        18%  { left: 200%;  }
-                        100% { left: 200%;  }
-                    }
-                    @keyframes liveBlink {
-                        0%, 100% { opacity: 1;   transform: scale(1);   }
-                        50%       { opacity: 0.25; transform: scale(0.75); }
-                    }
-                    .merit-live-dot {
-                        animation: liveBlink 2s ease-in-out infinite !important;
-                    }
+
                 </style>
             </div>
         `;
@@ -12427,3 +12519,4 @@ function check100XPPopup() {
 if (typeof window !== 'undefined') {
     window.check100XPPopup = check100XPPopup;
 }
+
