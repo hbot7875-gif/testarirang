@@ -12061,6 +12061,7 @@ Object.assign(window, EXPORTS);
   // =============================================
 
 // ==================== 100XP POPUP ====================
+// ==================== 100XP POPUP (TACTICAL REDESIGN) ====================
 function check100XPPopup() {
     if (!STATE.data || !STATE.data.agent || !STATE.data.agent.stats) return;
     const currentWeekXP = parseInt(STATE.data.agent.stats.totalXP) || 0;
@@ -12072,20 +12073,83 @@ function check100XPPopup() {
 
         const modalId = 'xp-100-modal';
         if (document.getElementById(modalId)) return;
+
+        // Fetch the newly unlocked tactical badge dynamically
+        let badgeUrl = '';
+        if (typeof getTacticalBadges === 'function') {
+            const badges = getTacticalBadges(STATE.agentNo, currentWeekXP);
+            if (badges && badges.length > 0) {
+                badgeUrl = badges[0].imageUrl;
+            }
+        }
+        
+        // Fallback just in case
+        if (!badgeUrl) badgeUrl = CONFIG.TACTICAL_POOL[0];
         
         const modalHtml = `
-            <div id="${modalId}" class="modal-overlay" style="z-index: 99999;">
-                <div class="glass-card" style="padding: 30px; text-align: center; max-width: 320px; border-top: 4px solid var(--gold-core);">
-                    <div style="font-size: 40px; margin-bottom: 10px;">🌟</div>
-                    <h3 style="font-family: var(--font-display); color: var(--gold-core); margin-bottom: 10px;">TACTICAL MILESTONE</h3>
-                    <p style="font-size: 14px; margin-bottom: 25px; line-height: 1.5; color: var(--text-primary);">
-                        Incredible work, Agent! You reached <strong>100 XP</strong> this week!<br>You have unlocked Classified Merits!
-                    </p>
-                    <button class="btn-red" style="width: 100%; border-radius: 8px; font-size: 14px; font-weight: bold; letter-spacing: 2px;" onclick="
-                        localStorage.setItem('${storageKey}', 'true');
-                        document.getElementById('${modalId}').remove();
-                    ">YAYAYA</button>
+            <div id="${modalId}" class="spy-modal-overlay" style="z-index: 100000; position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); animation: fadeIn 0.4s ease;">
+                
+                <div class="glass-card" style="padding: 0; text-align: center; width: 90%; max-width: 360px; border: 1px solid var(--red-core); box-shadow: 0 0 60px rgba(255, 20, 95, 0.25); overflow: hidden; animation: slideUpReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1);">
+                    
+                    <!-- Tactical Header -->
+                    <div style="background: var(--red-whisper); padding: 16px; border-bottom: 1px solid var(--red-border); display: flex; align-items: center; justify-content: center; gap: 12px;">
+                        <span style="font-size: 18px; filter: drop-shadow(0 0 5px var(--red-core));">🔓</span>
+                        <h3 style="font-family: 'Orbitron', sans-serif; color: var(--red-core); margin: 0; font-size: 14px; letter-spacing: 3px; text-shadow: 0 0 10px var(--red-glow);">CLEARANCE UPGRADED</h3>
+                    </div>
+
+                    <div style="padding: 30px 24px;">
+                        <div style="font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px;">
+                            Agent ${STATE.agentNo} • 100 XP Secured
+                        </div>
+
+                        <!-- Tactical Badge with Decryption Reveal Animation -->
+                        <div class="tactical-card-container reveal-anim" style="margin: 0 auto 30px; transform: scale(1.35);">
+                            <div class="tactical-card">
+                                <div class="corner-tl"></div>
+                                <div class="corner-br"></div>
+                                <div class="tactical-inner">
+                                    <img src="${badgeUrl}" alt="Classified Merit" style="animation: decryptImage 2.5s steps(15) forwards;">
+                                </div>
+                                <div class="tactical-shine"></div>
+                            </div>
+                        </div>
+
+                        <div style="font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 800; color: #fff; letter-spacing: 1.5px; margin-bottom: 8px;">
+                            CLASSIFIED MERIT UNLOCKED
+                        </div>
+                        <p style="font-size: 11.5px; margin-bottom: 28px; line-height: 1.6; color: var(--text-secondary);">
+                            HQ has recognized your outstanding field work. This tactical merit has been permanently added to your bag.
+                        </p>
+                        
+                        <button class="btn-red" style="width: 100%; border-radius: 8px; font-size: 14px; padding: 14px; font-family: 'Orbitron', sans-serif; letter-spacing: 2px;" onclick="
+                            localStorage.setItem('${storageKey}', 'true');
+                            document.getElementById('${modalId}').remove();
+                            if(typeof fireConfetti === 'function') fireConfetti();
+                        ">WE WANT IT ALL 🏆</button>
+                    </div>
                 </div>
+
+                <style>
+                    @keyframes slideUpReveal {
+                        from { transform: translateY(40px) scale(0.95); opacity: 0; }
+                        to { transform: translateY(0) scale(1); opacity: 1; }
+                    }
+                    /* Spy Decryption Glitch Effect */
+                    @keyframes decryptImage {
+                        0% { filter: brightness(0) blur(8px) contrast(5); opacity: 0; }
+                        30% { filter: brightness(3) sepia(1) hue-rotate(-50deg) blur(4px); opacity: 0.3; }
+                        60% { filter: brightness(0.5) contrast(2) blur(1px); opacity: 0.8; }
+                        80% { filter: brightness(1.5) contrast(1.2); opacity: 1; }
+                        100% { filter: none; opacity: 1; }
+                    }
+                    .reveal-anim {
+                        animation: badgePopIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+                    }
+                    @keyframes badgePopIn {
+                        from { transform: scale(0.5); opacity: 0; }
+                        to { transform: scale(1.35); opacity: 1; }
+                    }
+                </style>
             </div>
         `;
         
