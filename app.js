@@ -6067,6 +6067,7 @@ function showSmDay(date) {
           { key: 'history', icon: '📜', label: 'History' },
           { key: 'system',  icon: '⚙️', label: 'System'  },
           { key: 'agents',  icon: '👤', label: 'Agents'  },
+          { key: 'debug',   icon: '🔧', label: 'Diagnostics' },
           { key: 'badges',  icon: '🎖️', label: 'Badges'  },
       ];
   
@@ -6125,6 +6126,7 @@ function showSmDay(date) {
       history: loadMissionHistory,
       system:  renderAdminSystemTab,
       agents:  renderAdminAgentsTab,
+      debug:   renderAdminDiagnosticsTab,
       badges:  renderAdminBadgesTab,
   };
   
@@ -7023,6 +7025,79 @@ function showSmDay(date) {
               Failed to load history.<br>${e.message}</div>`;
       }
   }
+// =============================================
+// ██████  ADMIN DIAGNOSTICS (0 Scrobble Checker)
+// =============================================
+
+function renderAdminDiagnosticsTab(container) {
+    if (!container) container = $('admin-panel-body');
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="archive-card" style="margin-bottom:24px; border-top:3px solid var(--wave-foam);">
+            <div style="font-size:14px; font-weight:900; color:var(--wave-foam); font-family:'Orbitron',sans-serif; letter-spacing:1px; margin-bottom:16px;">
+                🕵️‍♂️ AGENT DIAGNOSTICS
+            </div>
+            <p style="font-size:11px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">
+                Investigate "0 Scrobble" issues. This forces a live fetch from Last.fm and shows exactly what data is being returned.
+            </p>
+            
+            <div style="display:flex; gap:12px; margin-bottom:24px;">
+                <input type="text" id="debug-agent-id" class="input-field" placeholder="Enter Agent ID (e.g. AGENT001)" style="flex:1; text-transform:uppercase;">
+                <button type="button" onclick="runAgentDiagnosis()" class="btn-outline" style="border-color:var(--wave-foam); color:var(--wave-foam); white-space:nowrap; padding:0 20px;">
+                    🔍 Analyze
+                </button>
+            </div>
+
+            <div id="debug-results"></div>
+        </div>
+    `;
+}
+
+async function runAgentDiagnosis() {
+    const agentInput = document.getElementById('debug-agent-id');
+    const resultsDiv = document.getElementById('debug-results');
+    const agentNo = agentInput?.value.trim().toUpperCase();
+
+    if (!agentNo) {
+        showToast("Enter an Agent ID", "error");
+        return;
+    }
+
+    resultsDiv.innerHTML = '<div style="text-align:center; padding:30px; color:var(--text-muted); font-size:11px;">📡 Intercepting Data Stream...</div>';
+
+    try {
+        // 1. Fetch Agent Details first to check DB existence using the new Api client
+        const agentCheck = await Api.call('getDashboardData', { agentNo: agentNo }, { dedupe: false, cache: false });
+        
+        if (!agentCheck.success) {
+            resultsDiv.innerHTML = `<div class="glass-card" style="border-left:3px solid var(--fail); padding:16px;"><p style="margin:0; color:var(--fail); font-size:12px; font-weight:700;">❌ Agent ${agentNo} not found in Database.</p></div>`;
+            return;
+        }
+
+        // 2. Force Sync with Last.fm
+        const res = await Api.call('refreshAgentStats', { 
+            agentNo: agentNo
+        }, { dedupe: false, cache: false });
+
+        // 3. Build Report
+        const debug = res.debug || {};
+        const stats = res.stats || {};
+        const userProfile = agentCheck.agent?.profile || {};
+        const tColor = teamColor(userProfile.team);
+
+        let reportHTML = `
+            <div class="glass-card" style="padding:20px; font-family:var(--font-mono);">
+                
+                <!-- ID Card -->
+                <div style="border-bottom:1px solid var(--border-subtle); padding-bottom:15px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="color:#fff; font-weight:900; font-size:16px;">${agentNo}</div>
+                        <div style="color:${tColor}; font-size:11px; font-weight:700;">${userProfile.team || 'Unknown'}</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="color:var(--text-ghost); font-size:9px; letter-spacing:1px; margin-bottom:4px;">LAST.FM USERNAME</div>
+                        <div style="color:var(--green); font-size:13px; font-weight:800;">${(debug.usernames ||
   
   // ==================== TAB: SYSTEM CONTROLS ====================
   
@@ -7063,6 +7138,7 @@ function showSmDay(date) {
           </div>`;
   }
   window.renderAdminSystemTab = renderAdminSystemTab;
+
   
   // TODO: Implement these system actions
   window.adminTriggerSync    = window.adminTriggerSync    || function() { showToast('Not yet implemented', 'info'); };
