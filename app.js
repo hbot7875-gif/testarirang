@@ -7065,16 +7065,16 @@ function renderAdminDiagnosticsTab(container) {
  * Executes the deep-scan on a specific agent
  */
 async function runAgentDiagnosis() {
-  const resultsDiv = document.getElementById('debug-results');
-  const agentInput = document.getElementById('debug-agent-id');
-  const agentNo = agentInput?.value.trim().toUpperCase();
+    const resultsDiv = document.getElementById('debug-results');
+    const agentInput = document.getElementById('debug-agent-id');
+    const agentNoInput = agentInput?.value.trim().toUpperCase();
 
-  if (!agentNo) {
-    showToast("Enter an Agent ID", "error");
-    return;
-  }
+    if (!agentNoInput) {
+        showToast("Enter an Agent ID", "error");
+        return;
+    }
 
-  resultsDiv.innerHTML = `
+    resultsDiv.innerHTML = `
         <div style="text-align:center; padding:40px;">
             <div class="spinner" style="margin:0 auto 15px;"></div>
             <div style="color:var(--wave-foam); font-family:var(--font-mono); font-size:10px; letter-spacing:2px; animation:pulse 1s infinite;">
@@ -7083,61 +7083,61 @@ async function runAgentDiagnosis() {
         </div>
     `;
 
-  try {
-    // 1. Force a refresh and request debug metadata from the backend
-    const res = await Api.call('refreshAgentStats', {
-      agentNo: agentNo,
-      debug: true // Signals backend to return raw Last.fm logs
-    }, { dedupe: false, cache: false });
+    try {
+        const res = await Api.call('refreshAgentStats', { 
+            agentNo: agentNoInput,
+            debug: true 
+        }, { dedupe: false, cache: false });
 
-    if (!res.success) {
-      resultsDiv.innerHTML = `
+        if (!res.success) {
+            resultsDiv.innerHTML = `
                 <div class="glass-card" style="border-left:4px solid var(--fail); padding:20px;">
                     <div style="color:var(--fail); font-weight:900; font-size:13px; margin-bottom:8px;">❌ DIAGNOSIS FAILED</div>
                     <div style="color:var(--text-secondary); font-size:11px; font-family:var(--font-mono);">${res.error || 'Agent not found in database.'}</div>
                 </div>`;
-      return;
-    }
+            return;
+        }
 
-    const debug = res.debug || {};
-    const stats = res.stats || {};
-    const tColor = teamColor(res.team || 'Unknown');
+        const debug = res.debug || {};
+        const stats = res.stats || {};
+        const tColor = teamColor(res.team || 'Unknown');
+        
+        // ── PROFILE-STYLE USERNAME RESOLUTION ──
+        const rawLfm = debug.lastfm_username || res.lastfm || res.lastfms || '—';
+        const displayLfm = Array.isArray(rawLfm) ? rawLfm.join(', ') : rawLfm;
 
-    // 2. Intelligence Analysis (Logic to determine why scrobbles are 0)
-    let statusTag = { text: 'HEALTHY', color: 'var(--green)' };
-    let findings = [];
+        let statusTag = { text: 'HEALTHY', color: 'var(--green)' };
+        let findings = [];
 
-    if (!debug.lastfm_username) {
-      if (res.alreadySynced) {
-        statusTag = { text: 'COOLDOWN', color: 'var(--courage-amber)' };
-        findings.push("⏱️ System is in cooldown. Please wait 5 minutes before running another deep scan.");
-      } else {
-        statusTag = { text: 'CRITICAL', color: 'var(--fail)' };
-        findings.push("❌ No Last.fm account linked to this Agent ID.");
-      }
-    } else if (debug.last_api_error) {
-      statusTag = { text: 'SYNC ERROR', color: 'var(--fail)' };
-      findings.push(`❌ Last.fm API Error: ${debug.last_api_error}`);
-    } else if (debug.raw_scrobble_count === 0) {
-      statusTag = { text: 'INACTIVE', color: 'var(--courage-amber)' };
-      findings.push("⚠️ Last.fm returned 0 total tracks for the week. The user is not scrobbling.");
-    } else if (debug.filtered_scrobble_count === 0 && debug.raw_scrobble_count > 0) {
-      statusTag = { text: 'FILTER BLOCK', color: 'var(--red-core)' };
-      findings.push("🚨 Agent is scrobbling, but 0 tracks matched Arirang/BTS criteria. Possible Artist Name mismatch (e.g. 'Agust D' vs 'SUGA').");
-    }
+        // ── LOGIC CHECKS ──
+        if (res.alreadySynced && !debug.lastfm_username) {
+            statusTag = { text: 'COOLDOWN', color: 'var(--courage-amber)' };
+            findings.push("⏱️ System in cooldown. Data below is from the previous sync.");
+        } else if (displayLfm === '—' || !displayLfm) {
+            statusTag = { text: 'CRITICAL', color: 'var(--fail)' };
+            findings.push("❌ No Last.fm account linked to this Agent ID.");
+        } else if (debug.last_api_error) {
+            statusTag = { text: 'SYNC ERROR', color: 'var(--fail)' };
+            findings.push(`❌ Last.fm API Error: ${debug.last_api_error}`);
+        } else if (debug.raw_scrobble_count === 0) {
+            statusTag = { text: 'INACTIVE', color: 'var(--courage-amber)' };
+            findings.push("⚠️ Last.fm returned 0 tracks. The user is not scrobbling.");
+        } else if (debug.filtered_scrobble_count === 0 && debug.raw_scrobble_count > 0) {
+            statusTag = { text: 'FILTER BLOCK', color: 'var(--red-core)' };
+            findings.push("🚨 Agent is scrobbling, but 0 tracks matched Arirang/BTS criteria.");
+        }
 
-    if (res.onLeave) {
-      findings.push("💤 Note: Agent is currently on Leave (Ghost Protocol).");
-    }
+        if (res.onLeave) {
+            findings.push("💤 Note: Agent is currently on Leave (Ghost Protocol).");
+        }
 
-    // 3. Build the Report HTML
-    resultsDiv.innerHTML = `
+        resultsDiv.innerHTML = `
             <div class="glass-card" style="padding:20px; border-top:2px solid ${statusTag.color};">
                 
                 <!-- Header Stats -->
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; border-bottom:1px solid var(--border-subtle); padding-bottom:15px;">
                     <div>
-                        <div style="font-family:var(--font-display); font-size:16px; font-weight:900; color:#fff;">${agentNo}</div>
+                        <div style="font-family:var(--font-display); font-size:16px; font-weight:900; color:#fff;">${agentNoInput}</div>
                         <div style="color:${tColor}; font-size:10px; font-weight:800; text-transform:uppercase;">${res.team || STATE.data?.agent?.profile?.team || 'Unassigned'}</div>
                     </div>
                     <div style="text-align:right;">
@@ -7151,32 +7151,32 @@ async function runAgentDiagnosis() {
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
                     <div class="stat-box" style="background:rgba(255,255,255,0.02);">
                         <div class="sl">Last.fm Username</div>
-                        <div class="sv" style="font-size:12px; color:var(--wave-foam);">${debug.lastfm_username || '—'}</div>
+                        <div class="sv" style="font-size:12px; color:var(--wave-foam);">${displayLfm}</div>
                     </div>
                     <div class="stat-box" style="background:rgba(255,255,255,0.02);">
                         <div class="sl">Last Sync Attempt</div>
-                        <div class="sv" style="font-size:12px;">${timeAgo(res.lastUpdated)}</div>
+                        <div class="sv" style="font-size:12px;">${res.lastUpdated ? timeAgo(res.lastUpdated) : (res.alreadySynced ? 'Cooldown' : 'Fresh Fetch')}</div>
                     </div>
                     <div class="stat-box" style="background:rgba(255,255,255,0.02);">
                         <div class="sl">Weekly Raw (LFM)</div>
-                        <div class="sv" style="color:#fff;">${debug.raw_scrobble_count || 0}</div>
+                        <div class="sv" style="color:#fff;">${debug.raw_scrobble_count ?? 0}</div>
                     </div>
                     <div class="stat-box" style="background:rgba(255,255,255,0.02);">
                         <div class="sl">Weekly Validated</div>
-                        <div class="sv" style="color:var(--green);">${debug.filtered_scrobble_count || 0}</div>
+                        <div class="sv" style="color:var(--green);">${debug.filtered_scrobble_count ?? 0}</div>
                     </div>
                 </div>
 
                 <!-- Analysis List -->
                 <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:15px; border:1px solid var(--border-subtle);">
                     <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Intelligence Findings:</div>
-                    ${findings.length > 0
-        ? findings.map(f => `<div style="font-size:11px; color:#fff; margin-bottom:8px; line-height:1.4;">${f}</div>`).join('')
-        : `<div style="font-size:11px; color:var(--green);">✓ No anomalies detected. System operating within normal parameters.</div>`
-      }
+                    ${findings.length > 0 
+                        ? findings.map(f => `<div style="font-size:11px; color:#fff; margin-bottom:8px; line-height:1.4;">${f}</div>`).join('')
+                        : `<div style="font-size:11px; color:var(--green);">✓ No anomalies detected. System operating within normal parameters.</div>`
+                    }
                 </div>
 
-                <!-- Raw Metadata (Toggleable for high-level debug) -->
+                <!-- Raw Metadata (Toggleable) -->
                 <div style="margin-top:20px;">
                     <details style="cursor:pointer;">
                         <summary style="font-size:10px; color:var(--text-muted); outline:none;">View Raw Intelligence Metadata</summary>
@@ -7188,12 +7188,12 @@ ${JSON.stringify(debug, null, 2)}
             </div>
         `;
 
-    showToast(`Diagnosis for ${agentNo} complete`, 'info');
+        showToast(`Diagnosis for ${agentNoInput} complete`, 'info');
 
-  } catch (e) {
-    console.error("Diagnosis Error:", e);
-    resultsDiv.innerHTML = `<div class="glass-card" style="padding:20px; color:var(--fail);">System Error: ${e.message}</div>`;
-  }
+    } catch (e) {
+        console.error("Diagnosis Error:", e);
+        resultsDiv.innerHTML = `<div class="glass-card" style="padding:20px; color:var(--fail);">System Error: ${e.message}</div>`;
+    }
 }
 
 // ==================== TAB: SYSTEM CONTROLS ====================
