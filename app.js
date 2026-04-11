@@ -7065,8 +7065,8 @@ function renderAdminDiagnosticsTab(container) {
  * Executes the deep-scan on a specific agent
  */
 async function runAgentDiagnosis() {
-    const resultsDiv = document.getElementById('debug-results');
     const agentInput = document.getElementById('debug-agent-id');
+    const resultsDiv = document.getElementById('debug-results');
     const agentNoInput = agentInput?.value.trim().toUpperCase();
 
     if (!agentNoInput) {
@@ -7084,6 +7084,19 @@ async function runAgentDiagnosis() {
     `;
 
     try {
+        // 1. Fetch Agent Details first to check DB existence using the new Api client
+        const agentCheck = await Api.call('getDashboardData', { agentNo: agentNoInput }, { dedupe: false, cache: false });
+        
+        if (!agentCheck.success) {
+            resultsDiv.innerHTML = `
+                <div class="glass-card" style="border-left:4px solid var(--fail); padding:20px;">
+                    <div style="color:var(--fail); font-weight:900; font-size:13px; margin-bottom:8px;">❌ DIAGNOSIS FAILED</div>
+                    <div style="color:var(--text-secondary); font-size:11px; font-family:var(--font-mono);">${agentCheck.error || 'Agent not found in database.'}</div>
+                </div>`;
+            return;
+        }
+
+        // 2. Force Sync with Last.fm
         const res = await Api.call('refreshAgentStats', { 
             agentNo: agentNoInput,
             debug: true 
@@ -7093,21 +7106,23 @@ async function runAgentDiagnosis() {
             resultsDiv.innerHTML = `
                 <div class="glass-card" style="border-left:4px solid var(--fail); padding:20px;">
                     <div style="color:var(--fail); font-weight:900; font-size:13px; margin-bottom:8px;">❌ DIAGNOSIS FAILED</div>
-                    <div style="color:var(--text-secondary); font-size:11px; font-family:var(--font-mono);">${res.error || 'Agent not found in database.'}</div>
+                    <div style="color:var(--text-secondary); font-size:11px; font-family:var(--font-mono);">${res.error || 'Sync failed.'}</div>
                 </div>`;
             return;
         }
 
+        // 3. Build Report
         const debug = res.debug || {};
         const stats = res.stats || {};
-        const tColor = teamColor(res.team || 'Unknown');
+        const userProfile = agentCheck.agent?.profile || {};
+        const tColor = teamColor(res.team || userProfile.team || 'Unknown');
         
-
-        
-        const rawLastfm = a.lastfms || a.lastfm || p.lastfms || p.lastfm || debug.lastfm_username;
+        // Properly extract from debug first, fallback to userProfile
+        const rawLastfm = debug.usernames || debug.lastfm_username || userProfile.lastfms || userProfile.lastfm;
         const lastfmUsernames = Array.isArray(rawLastfm)
             ? rawLastfm
             : (rawLastfm ? [rawLastfm] : []);
+        
         const hasLastfm = lastfmUsernames.length > 0;
         const displayLfm = hasLastfm ? lastfmUsernames.join(', ') : '—';
 
@@ -7136,6 +7151,19 @@ async function runAgentDiagnosis() {
             findings.push("💤 Note: Agent is currently on Leave (Ghost Protocol).");
         }
 
+        // Additional diagnostic details
+        if (debug.pages_fetched) {
+            findings.push(`📄 Last.fm Pages Fetched: ${debug.pages_fetched}`);
+        }
+        
+        if (debug.most_recent_track && debug.most_recent_track !== 'None Found') {
+            findings.push(`🎵 Most Recent Track: ${debug.most_recent_track}`);
+        }
+
+        if (debug.fetchErrors && debug.fetchErrors.length > 0) {
+            findings.push(`⚠️ Fetch Errors Encountered: ${debug.fetchErrors.length}`);
+        }
+
         resultsDiv.innerHTML = `
             <div class="glass-card" style="padding:20px; border-top:2px solid ${statusTag.color};">
                 
@@ -7143,7 +7171,7 @@ async function runAgentDiagnosis() {
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; border-bottom:1px solid var(--border-subtle); padding-bottom:15px;">
                     <div>
                         <div style="font-family:var(--font-display); font-size:16px; font-weight:900; color:#fff;">${agentNoInput}</div>
-                        <div style="color:${tColor}; font-size:10px; font-weight:800; text-transform:uppercase;">${res.team || STATE.data?.agent?.profile?.team || 'Unassigned'}</div>
+                        <div style="color:${tColor}; font-size:10px; font-weight:800; text-transform:uppercase;">${res.team || userProfile.team || 'Unassigned'}</div>
                     </div>
                     <div style="text-align:right;">
                         <div style="padding:4px 10px; border-radius:4px; background:${statusTag.color}22; color:${statusTag.color}; font-size:10px; font-weight:900; border:1px solid ${statusTag.color}44;">
@@ -7169,6 +7197,14 @@ async function runAgentDiagnosis() {
                     <div class="stat-box" style="background:rgba(255,255,255,0.02);">
                         <div class="sl">Weekly Validated</div>
                         <div class="sv" style="color:var(--green);">${debug.filtered_scrobble_count ?? 0}</div>
+                    </div>
+                    <div class="stat-box" style="background:rgba(255,255,255,0.02);">
+                        <div class="sl">Track Scrobbles</div>
+                        <div class="sv" style="color:var(--wave-foam);">${debug.goalMatchedTrackScrobbles ?? 0}</div>
+                    </div>
+                    <div class="stat-box" style="background:rgba(255,255,255,0.02);">
+                        <div class="sl">Album Scrobbles</div>
+                        <div class="sv" style="color:var(--wave-foam);">${debug.goalMatchedAlbumScrobbles ?? 0}</div>
                     </div>
                 </div>
 
