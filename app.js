@@ -7102,18 +7102,25 @@ async function runAgentDiagnosis() {
         const stats = res.stats || {};
         const tColor = teamColor(res.team || 'Unknown');
         
-        // ── PROFILE-STYLE USERNAME RESOLUTION ──
-        const rawLfm = debug.lastfm_username || res.lastfm || res.lastfms || '—';
-        const displayLfm = Array.isArray(rawLfm) ? rawLfm.join(', ') : rawLfm;
+        // ✅ SAME LOGIC AS renderProfile() - checks all possible fields
+        const a = res; // Backend response acts like agent object
+        const p = res.profile || {}; // In case backend sends profile sub-object
+        
+        const rawLastfm = a.lastfms || a.lastfm || p.lastfms || p.lastfm || debug.lastfm_username;
+        const lastfmUsernames = Array.isArray(rawLastfm)
+            ? rawLastfm
+            : (rawLastfm ? [rawLastfm] : []);
+        const hasLastfm = lastfmUsernames.length > 0;
+        const displayLfm = hasLastfm ? lastfmUsernames.join(', ') : '—';
 
         let statusTag = { text: 'HEALTHY', color: 'var(--green)' };
         let findings = [];
 
         // ── LOGIC CHECKS ──
-        if (res.alreadySynced && !debug.lastfm_username) {
+        if (res.alreadySynced && !hasLastfm) {
             statusTag = { text: 'COOLDOWN', color: 'var(--courage-amber)' };
             findings.push("⏱️ System in cooldown. Data below is from the previous sync.");
-        } else if (displayLfm === '—' || !displayLfm) {
+        } else if (!hasLastfm) {
             statusTag = { text: 'CRITICAL', color: 'var(--fail)' };
             findings.push("❌ No Last.fm account linked to this Agent ID.");
         } else if (debug.last_api_error) {
