@@ -7135,7 +7135,7 @@ async function runAgentDiagnosis() {
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; border-bottom:1px solid var(--border-subtle); padding-bottom:15px;">
                     <div>
                         <div style="font-family:var(--font-display); font-size:16px; font-weight:900; color:#fff;">${agentNo}</div>
-                        <div style="color:${tColor}; font-size:10px; font-weight:800; text-transform:uppercase;">${res.team || 'Unassigned'}</div>
+                        <div style="color:${tColor}; font-size:10px; font-weight:800; text-transform:uppercase;">${res.team || STATE.data?.agent?.profile?.team || 'Unassigned'}</div>
                     </div>
                     <div style="text-align:right;">
                         <div style="padding:4px 10px; border-radius:4px; background:${statusTag.color}22; color:${statusTag.color}; font-size:10px; font-weight:900; border:1px solid ${statusTag.color}44;">
