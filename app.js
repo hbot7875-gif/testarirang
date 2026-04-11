@@ -12075,8 +12075,7 @@ function check100XPPopup() {
     const storageKey = `arirang_${STATE.agentNo}_100xp_popup_${STATE.week}`;
     
     if (currentWeekXP >= 100 && !localStorage.getItem(storageKey)) {
-        if (STATE.week === 'Week 1' || STATE.week === 'Week 2') return;
-
+        if (STATE.week === 'Week 1' || STATE.week === 'Week 2' || STATE.week === 'Week 3') return;
         const modalId = 'xp-100-modal';
         if (document.getElementById(modalId)) return;
 
