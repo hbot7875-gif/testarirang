@@ -7102,9 +7102,7 @@ async function runAgentDiagnosis() {
         const stats = res.stats || {};
         const tColor = teamColor(res.team || 'Unknown');
         
-        // ✅ SAME LOGIC AS renderProfile() - checks all possible fields
-        const a = res; // Backend response acts like agent object
-        const p = res.profile || {}; // In case backend sends profile sub-object
+
         
         const rawLastfm = a.lastfms || a.lastfm || p.lastfms || p.lastfm || debug.lastfm_username;
         const lastfmUsernames = Array.isArray(rawLastfm)
