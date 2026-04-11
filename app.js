@@ -38,36 +38,36 @@ const CONFIG = {
   // Team Golden:    PFP is warm gold/amber with dark figure
   //
   TEAMS: {
-    'Team MONO':      { color: '#b8c5d6', emoji: '', ref: 'RM — mono.' },
-    'Team Happy':     { color: '#ff2d78', emoji: '', ref: 'Jin — Happy' },
-    'Team D-Day':     { color: '#c62828', emoji: '', ref: 'Agust D — D-DAY' },
+    'Team MONO': { color: '#b8c5d6', emoji: '', ref: 'RM — mono.' },
+    'Team Happy': { color: '#ff2d78', emoji: '', ref: 'Jin — Happy' },
+    'Team D-Day': { color: '#c62828', emoji: '', ref: 'Agust D — D-DAY' },
     'Team Hopeworld': { color: '#ff6d3a', emoji: '', ref: 'J-Hope — Hope World' },
-    'Team Muse':      { color: '#d946a8', emoji: '', ref: 'Jimin — MUSE' },
-    'Team Layover':   { color: '#42a5f5', emoji: '', ref: 'V — Layover' },
-    'Team Golden':    { color: '#e5a528', emoji: '', ref: 'Jungkook — GOLDEN' },
+    'Team Muse': { color: '#d946a8', emoji: '', ref: 'Jimin — MUSE' },
+    'Team Layover': { color: '#42a5f5', emoji: '', ref: 'V — Layover' },
+    'Team Golden': { color: '#e5a528', emoji: '', ref: 'Jungkook — GOLDEN' },
   },
 
   TEAM_PFPS: {
-    'Team MONO':      'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teammono.jpeg',
-    'Team Happy':     'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamhappy.jpg',
-    'Team D-Day':     'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamdday.jpg',
+    'Team MONO': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teammono.jpeg',
+    'Team Happy': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamhappy.jpg',
+    'Team D-Day': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamdday.jpg',
     'Team Hopeworld': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamhopeworld.jpg',
-    'Team Muse':      'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teammuse.jpg',
-    'Team Layover':   'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamlayover.jpg',
-    'Team Golden':    'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamgolden.jpg',
+    'Team Muse': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teammuse.jpg',
+    'Team Layover': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamlayover.jpg',
+    'Team Golden': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamgolden.jpg',
   },
- 
- GC_LINKS: {
+
+  GC_LINKS: {
     main: "https://ig.me/j/AbYKU2kWlAPh2ORh/",
     playlist: "https://www.instagram.com/channel/AbajsdwblYDVcZ41/?igsh=ZzRuc2FrenlzdHM5",
     teams: {
-      'Team MONO':      'https://ig.me/j/Abb_PCXJ-2nX7TEl/',
-      'Team Happy':     'https://ig.me/j/Aba2IYzGYrnUS4fG/',
-      'Team D-Day':     'https://ig.me/j/AbYVGQ1IqPRxWTfh/',
+      'Team MONO': 'https://ig.me/j/Abb_PCXJ-2nX7TEl/',
+      'Team Happy': 'https://ig.me/j/Aba2IYzGYrnUS4fG/',
+      'Team D-Day': 'https://ig.me/j/AbYVGQ1IqPRxWTfh/',
       'Team Hopeworld': 'https://ig.me/j/Aba0JfNTWjVLymch/',
-      'Team Muse':      'https://ig.me/j/AbZPkazSbkvRaRED/',
-      'Team Layover':   'https://ig.me/j/Abb-9beEsolxN9u3/',
-      'Team Golden':    'https://ig.me/j/AbZeh2wCVARX3oVt/',
+      'Team Muse': 'https://ig.me/j/AbZPkazSbkvRaRED/',
+      'Team Layover': 'https://ig.me/j/Abb-9beEsolxN9u3/',
+      'Team Golden': 'https://ig.me/j/AbZeh2wCVARX3oVt/',
     }
   },
 
@@ -88,45 +88,45 @@ const CONFIG = {
     'Like Animals'
   ],
 
-  SIDE_MISSION_TRACKS:[
-    { 
-      name: 'Wild Flower',                          
-      artist: 'RM',      
-      weeklyReq: 20, 
-      aliases:['Wild Flower (with 조유진)', '야생화', '야생화 Wild Flower', '야생화 Wild Flower (with 조유진)', 'Wild Flower (with youjeen)'] 
-    },
-    { 
-      name: "Don't Say You Love Me",                
-      artist: 'BTS',     
+  SIDE_MISSION_TRACKS: [
+    {
+      name: 'Wild Flower',
+      artist: 'RM',
       weeklyReq: 20,
-      aliases:['Dont Say You Love Me', 'DSYLM']
+      aliases: ['Wild Flower (with 조유진)', '야생화', '야생화 Wild Flower', '야생화 Wild Flower (with 조유진)', 'Wild Flower (with youjeen)']
     },
-    { 
-      name: 'Haegeum',                              
-      artist: 'Agust D', 
+    {
+      name: "Don't Say You Love Me",
+      artist: 'BTS',
       weeklyReq: 20,
-      aliases: ['해금', '해금 Haegeum'] 
+      aliases: ['Dont Say You Love Me', 'DSYLM']
     },
-    { 
-      name: "Killin' It Girl (feat. GloRilla)",     
-      artist: 'J-Hope',     
-      weeklyReq: 20, 
-      aliases:[
-        "Killin' It Girl", 
-        "Killin It Girl", 
-        "Killing It Girl", 
+    {
+      name: 'Haegeum',
+      artist: 'Agust D',
+      weeklyReq: 20,
+      aliases: ['해금', '해금 Haegeum']
+    },
+    {
+      name: "Killin' It Girl (feat. GloRilla)",
+      artist: 'J-Hope',
+      weeklyReq: 20,
+      aliases: [
+        "Killin' It Girl",
+        "Killin It Girl",
+        "Killing It Girl",
         "Killin' It Girl - feat. GloRilla",
-        "Killin' It Girl (Solo Version)" 
-      ] 
+        "Killin' It Girl (Solo Version)"
+      ]
     }
   ], // <-- Notice this comma right here!
 
   // Requirements
-  ALBUM_2X_DAILY:         2,
-  UNIT_WEEKLY:            25,
-  SIDE_MISSION_WEEKLY:    20,
+  ALBUM_2X_DAILY: 2,
+  UNIT_WEEKLY: 25,
+  SIDE_MISSION_WEEKLY: 20,
   SIDE_MISSION_MIN_DAILY: 1,
-  MAX_POLICE_REPORTS:     3,
+  MAX_POLICE_REPORTS: 3,
 
   // Badge system
   BADGE_REPO_URL: 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/main/lvl1badges/',
@@ -154,23 +154,23 @@ const CONFIG = {
     for (let i = 1; i <= this.TOTAL_TACTICAL_IMAGES; i++) {
       // Matches: BTS2.0- (1).jpg, BTS2.0- (2).jpg, etc.
       // We use %20 to represent the space in the filename for the URL
-      pool.push(`${this.TACTICAL_BADGE_REPO}BTS2.0-%20(${i}).jpg`); 
+      pool.push(`${this.TACTICAL_BADGE_REPO}BTS2.0-%20(${i}).jpg`);
     }
     this._tacticalPoolCache = pool;
     return pool;
   },
 
   // Battle dates
-  BATTLE_START:    '2026-03-22T00:00:00+05:30',
-  BATTLE_END:      '2026-07-22T23:59:59+05:30',
-  SHOW_COUNTDOWN:  false,
+  BATTLE_START: '2026-03-22T00:00:00+05:30',
+  BATTLE_END: '2026-07-22T23:59:59+05:30',
+  SHOW_COUNTDOWN: false,
 
   WEEK_DATES: {
-    'Week 1':  '2026-03-22', 'Week 2':  '2026-03-29',
-    'Week 3':  '2026-04-05', 'Week 4':  '2026-04-12',
-    'Week 5':  '2026-04-19', 'Week 6':  '2026-04-26',
-    'Week 7':  '2026-05-03', 'Week 8':  '2026-05-10',
-    'Week 9':  '2026-05-17', 'Week 10': '2026-05-24',
+    'Week 1': '2026-03-22', 'Week 2': '2026-03-29',
+    'Week 3': '2026-04-05', 'Week 4': '2026-04-12',
+    'Week 5': '2026-04-19', 'Week 6': '2026-04-26',
+    'Week 7': '2026-05-03', 'Week 8': '2026-05-10',
+    'Week 9': '2026-05-17', 'Week 10': '2026-05-24',
     'Week 11': '2026-05-31', 'Week 12': '2026-06-07',
     'Week 13': '2026-06-14', 'Week 14': '2026-06-21',
     'Week 15': '2026-06-28', 'Week 16': '2026-07-05',
@@ -178,59 +178,61 @@ const CONFIG = {
   },
 
   ALBUM_CHALLENGE: {
-    REQUIRED_STREAMS:  2,
-    CHALLENGE_NAME:    'Arirang 2X',
-    BADGE_NAME:        '2X Master',
+    REQUIRED_STREAMS: 2,
+    CHALLENGE_NAME: 'Arirang 2X',
+    BADGE_NAME: '2X Master',
     BADGE_DESCRIPTION: 'Completed Daily Arirang 2X Challenge',
   },
 
   SECRET_MISSIONS: {
-    xpPerMission:      5,
+    xpPerMission: 5,
     maxMissionsPerTeam: 5,
-    maxTeamBonus:      25,
+    maxTeamBonus: 25,
   },
 
   MISSION_TYPES: {
-    'switch_app':   { name: 'Switch App',   icon: '🔄', description: 'Switch to YouTube/Apple Music for 1 hour.' },
-    'filler_mode':  { name: 'Filler Mode',  icon: '🧬', description: 'Stream 1 BTS Song + 2 Non-Kpop songs.' },
-    'old_songs':    { name: 'Old Songs',    icon: '🕰️', description: 'Stream tracks older than 2 years.' },
+    'switch_app': { name: 'Switch App', icon: '🔄', description: 'Switch to YouTube/Apple Music for 1 hour.' },
+    'filler_mode': { name: 'Filler Mode', icon: '🧬', description: 'Stream 1 BTS Song + 2 Non-Kpop songs.' },
+    'old_songs': { name: 'Old Songs', icon: '🕰️', description: 'Stream tracks older than 2 years.' },
     'stream_party': { name: 'Stream Party', icon: '🎉', description: 'Everyone streams the exact same playlist NOW.' },
-    'custom':       { name: 'Custom Task',  icon: '⭐', description: 'Special instruction from Admin.' },
+    'custom': { name: 'Custom Task', icon: '⭐', description: 'Special instruction from Admin.' },
   },
 
   ACTIVITY_TYPES: {
-    'streak_update':      { icon: '🔥', color: '#ff6b35',  template: d => `<strong>${d.name}</strong> hit a <strong class="hl">${d.streak}-day</strong> streak!` },
-    'team_surge':         { icon: '⚡', color: '#ff0000',  template: d => `<strong style="color:${teamColor(d.team)}">${d.team}</strong> surged with <strong class="hl">${d.streams}</strong> streams!` },
-    'results_release':    { icon: '🏆', color: '#ffd700',  template: d => d.message || 'Results released!' },
-    'team_dissolved':     { icon: '💀', color: '#ff0000',  template: d => `<strong>${d.team}</strong> has been dissolved!` },
-    'leader_update':      { icon: '📈', color: '#00ff66',  template: d => d.message || `${d.team} leveled up!` },
-    'new_agent':          { icon: '🆕', color: '#60a5fa',  template: d => d.message || 'New agent enlisted!' },
-    'secret_mission':     { icon: '🕵️', color: '#a855f7',  template: d => {
-      const title = d.title || 'Secret Mission';
-      const isFail = title.includes('(Failed)');
-      return `<strong style="color:${teamColor(d.team)}">${d.team}</strong> ${isFail ? 'failed' : 'completed'}: <strong style="color:${isFail ? '#ff0000' : '#00ff66'}">${title}</strong> (+${d.xp || 0} XP)`;
-    }},
-    'side_mission_alert': { icon: '⚠️', color: '#ff0000',  template: d => d.message || 'Side mission alert!' },
-    'unit_completed':     { icon: '✨', color: '#00ff66',  template: d => d.message || 'Unit completed!' },
-    'agent_retired':      { icon: '👋', color: '#888',     template: d => d.message || 'An agent has retired.' },
-    'sotd_winner':        { icon: '🎵', color: '#ffd700',  template: d => `${d.team} won Song of the Day!` },
-    'album2x_completed':  { icon: '💿', color: '#c56cf0',  template: d => `<strong>${d.name}</strong> completed Album 2X!` },
-    'goal_completed':     { icon: '🎯', color: '#00ff66',  template: d => `<strong style="color:${teamColor(d.team)}">${d.team}</strong> completed <strong class="hl">${d.goal}</strong>!` },
+    'streak_update': { icon: '🔥', color: '#ff6b35', template: d => `<strong>${d.name}</strong> hit a <strong class="hl">${d.streak}-day</strong> streak!` },
+    'team_surge': { icon: '⚡', color: '#ff0000', template: d => `<strong style="color:${teamColor(d.team)}">${d.team}</strong> surged with <strong class="hl">${d.streams}</strong> streams!` },
+    'results_release': { icon: '🏆', color: '#ffd700', template: d => d.message || 'Results released!' },
+    'team_dissolved': { icon: '💀', color: '#ff0000', template: d => `<strong>${d.team}</strong> has been dissolved!` },
+    'leader_update': { icon: '📈', color: '#00ff66', template: d => d.message || `${d.team} leveled up!` },
+    'new_agent': { icon: '🆕', color: '#60a5fa', template: d => d.message || 'New agent enlisted!' },
+    'secret_mission': {
+      icon: '🕵️', color: '#a855f7', template: d => {
+        const title = d.title || 'Secret Mission';
+        const isFail = title.includes('(Failed)');
+        return `<strong style="color:${teamColor(d.team)}">${d.team}</strong> ${isFail ? 'failed' : 'completed'}: <strong style="color:${isFail ? '#ff0000' : '#00ff66'}">${title}</strong> (+${d.xp || 0} XP)`;
+      }
+    },
+    'side_mission_alert': { icon: '⚠️', color: '#ff0000', template: d => d.message || 'Side mission alert!' },
+    'unit_completed': { icon: '✨', color: '#00ff66', template: d => d.message || 'Unit completed!' },
+    'agent_retired': { icon: '👋', color: '#888', template: d => d.message || 'An agent has retired.' },
+    'sotd_winner': { icon: '🎵', color: '#ffd700', template: d => `${d.team} won Song of the Day!` },
+    'album2x_completed': { icon: '💿', color: '#c56cf0', template: d => `<strong>${d.name}</strong> completed Album 2X!` },
+    'goal_completed': { icon: '🎯', color: '#00ff66', template: d => `<strong style="color:${teamColor(d.team)}">${d.team}</strong> completed <strong class="hl">${d.goal}</strong>!` },
   },
 
   GUIDES: {
-    'home':          { icon: '🏠', title: 'Mission HQ',       text: '7 teams. 17 weeks. Stream BTS ARIRANG daily. Complete all missions to win!' },
-    'profile':       { icon: '📋', title: 'Agent Dossier',     text: 'Your stats, contributions, streak, and leave status.' },
-    'goals':         { icon: '🎯', title: 'Team Goals',        text: 'Hit the team streaming targets for tracks and albums.' },
-    'album2x':       { icon: '💿', title: 'Arirang 2X',        text: 'Stream every ARIRANG track 2x PER DAY. 14 tracks × 2 = 28 streams daily.' },
-    'unit':          { icon: '⚡', title: 'Arirang Unit',       text: 'Your team gets 2 tracks each week. Stream each 25x. All members must complete for +25 XP bonus.' },
-    'sidemissions':  { icon: '🛡️', title: 'Side Missions',     text: '4 tracks × 20x/week. Must stream every day. Team fails = WARNING → DISSOLUTION.' },
-    'rankings':      { icon: '🏆', title: 'Global Rankings',   text: 'Top agents across all teams. Friendly competition — we are ONE ARMY! 💜' },
-    'teams':         { icon: '⚔️', title: 'Team Battle',       text: 'All 7 teams ranked by XP. Complete all 7 badges to activate the Army Bomb.' },
-    'chat':          { icon: '💬', title: 'Secret Comms',       text: 'Chat with fellow agents. Be kind — we are ONE ARMY! 💜' },
-    'announcements': { icon: '📢', title: 'Announcements',     text: 'Important news from HQ. Check regularly!' },
-    'protocol148':   { icon: '🧠', title: '148 Protocol',      text: "RM's strategic analysis. Your personal daily streaming plan with exact numbers." },
-    'guide':         { icon: '📚', title: 'Agent Manual',       text: 'Everything you need to know about the ARIRANG MISSION.' },
+    'home': { icon: '🏠', title: 'Mission HQ', text: '7 teams. 17 weeks. Stream BTS ARIRANG daily. Complete all missions to win!' },
+    'profile': { icon: '📋', title: 'Agent Dossier', text: 'Your stats, contributions, streak, and leave status.' },
+    'goals': { icon: '🎯', title: 'Team Goals', text: 'Hit the team streaming targets for tracks and albums.' },
+    'album2x': { icon: '💿', title: 'Arirang 2X', text: 'Stream every ARIRANG track 2x PER DAY. 14 tracks × 2 = 28 streams daily.' },
+    'unit': { icon: '⚡', title: 'Arirang Unit', text: 'Your team gets 2 tracks each week. Stream each 25x. All members must complete for +25 XP bonus.' },
+    'sidemissions': { icon: '🛡️', title: 'Side Missions', text: '4 tracks × 20x/week. Must stream every day. Team fails = WARNING → DISSOLUTION.' },
+    'rankings': { icon: '🏆', title: 'Global Rankings', text: 'Top agents across all teams. Friendly competition — we are ONE ARMY! 💜' },
+    'teams': { icon: '⚔️', title: 'Team Battle', text: 'All 7 teams ranked by XP. Complete all 7 badges to activate the Army Bomb.' },
+    'chat': { icon: '💬', title: 'Secret Comms', text: 'Chat with fellow agents. Be kind — we are ONE ARMY! 💜' },
+    'announcements': { icon: '📢', title: 'Announcements', text: 'Important news from HQ. Check regularly!' },
+    'protocol148': { icon: '🧠', title: '148 Protocol', text: "RM's strategic analysis. Your personal daily streaming plan with exact numbers." },
+    'guide': { icon: '📚', title: 'Agent Manual', text: 'Everything you need to know about the ARIRANG MISSION.' },
   },
 };
 
@@ -277,130 +279,130 @@ const renderHeader = (icon, title, color) => `
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const STREAK_CONFIG = {
-  THRESHOLD:   10,
+  THRESHOLD: 10,
   MAX_FREEZES: 2,
-  RISK_HOURS:  4,
+  RISK_HOURS: 4,
 };
 
 const ARMY_BOMB_BADGES = [
-  { 
-    member: '🐨 Namjoon', memberName: 'Namjoon', mission: 'Track Goals', icon: '🎯', 
-    key: 'trackGoalPassed', color: '#b8c5d6', 
+  {
+    member: '🐨 Namjoon', memberName: 'Namjoon', mission: 'Track Goals', icon: '🎯',
+    key: 'trackGoalPassed', color: '#b8c5d6',
     req: 'Team must reach 100% on all priority Track Targets.',
-    importance: 'Direction gives purpose — this badge means the team moved with intention.' 
+    importance: 'Direction gives purpose — this badge means the team moved with intention.'
   },
-  { 
-    member: '🐹 Jin', memberName: 'Jin', mission: 'Attendance', icon: '📋', 
-    key: 'attendanceConfirmed', color: '#ff2d78', 
+  {
+    member: '🐹 Jin', memberName: 'Jin', mission: 'Attendance', icon: '📋',
+    key: 'attendanceConfirmed', color: '#ff2d78',
     req: 'Every agent in the squad must submit their weekend check-in.',
-    importance: 'Presence is love in action — this badge honors showing up for each other.' 
+    importance: 'Presence is love in action — this badge honors showing up for each other.'
   },
-  { 
-    member: '🐱 Yoongi', memberName: 'Yoongi', mission: 'Police Reports', icon: '👮', 
-    key: 'policeConfirmed', color: '#c62828', 
+  {
+    member: '🐱 Yoongi', memberName: 'Yoongi', mission: 'Police Reports', icon: '👮',
+    key: 'policeConfirmed', color: '#c62828',
     req: 'Team must have 3 or fewer confirmed integrity violations.',
-    importance: 'Discipline protects the mission — staying focused under pressure.' 
+    importance: 'Discipline protects the mission — staying focused under pressure.'
   },
-  { 
-    member: '🐿️ Hobi', memberName: 'Hobi', mission: 'Album Goals', icon: '💿', 
-    key: 'albumGoalPassed', color: '#ff6d3a', 
+  {
+    member: '🐿️ Hobi', memberName: 'Hobi', mission: 'Album Goals', icon: '💿',
+    key: 'albumGoalPassed', color: '#ff6d3a',
     req: 'Team must complete the total Arirang Album streaming target.',
-    importance: 'Momentum creates belief — the spark that keeps the ship moving.' 
+    importance: 'Momentum creates belief — the spark that keeps the ship moving.'
   },
-  { 
-    member: '🐥 Jimin', memberName: 'Jimin', mission: 'Album 2X', icon: '🔁', 
-    key: 'album2xPassed', color: '#d946a8', 
+  {
+    member: '🐥 Jimin', memberName: 'Jimin', mission: 'Album 2X', icon: '🔁',
+    key: 'album2xPassed', color: '#d946a8',
     req: 'Every squad member must complete the Arirang 2X daily challenge.',
-    importance: 'Consistency turns effort into results — celebrating daily dedication.' 
+    importance: 'Consistency turns effort into results — celebrating daily dedication.'
   },
-  { 
-    member: '🐻 Taehyung', memberName: 'Taehyung', mission: 'Arirang Units', icon: '⚡', 
-    key: 'arirangUnitPassed', color: '#42a5f5', 
+  {
+    member: '🐻 Taehyung', memberName: 'Taehyung', mission: 'Arirang Units', icon: '⚡',
+    key: 'arirangUnitPassed', color: '#42a5f5',
     req: 'All unit members must secure their assigned tracks (25x each).',
-    importance: 'Uniqueness wins difficult battles — courage in special assignments.' 
+    importance: 'Uniqueness wins difficult battles — courage in special assignments.'
   },
-  { 
-    member: '🐰 Jungkook', memberName: 'Jungkook', mission: 'Side Missions', icon: '🛡️', 
-    key: 'sideMissionPassed', color: '#e5a528', 
+  {
+    member: '🐰 Jungkook', memberName: 'Jungkook', mission: 'Side Missions', icon: '🛡️',
+    key: 'sideMissionPassed', color: '#e5a528',
     req: 'Survival Protocol: No member can fail the 7-day side mission streak.',
-    importance: 'Balance prevents blind spots — ensuring nothing is neglected.' 
+    importance: 'Balance prevents blind spots — ensuring nothing is neglected.'
   },
 ];
 
-  // ==================== ROUTER & STATE ====================
-  // Used to map page names to rendering functions later
-  const PAGE_RENDERERS = {};
-  
-  const STATE = {
-    agentNo:      null,
-    week:         null,
-    weeks:        [],
-    data:         null,
-    page:         'home',
-    isAdmin:      false,
-    adminSession: null,
-    lastUpdated:  null,
-  
-    // Notification tracking
-    notifications: [],
-    isCheckingNotifications: false,
-    hasShownPopupThisSession: false,
-    lastChecked: {
-      badges: 0,
-      _badgesInitialized: false,
-      songOfDay: null,
-      seenAnnouncementIds: [],
-      seenMissionIds: [],
-      _missionBaselineSet: false,
-      weekResults: [],
-    },
-  };
-  
-  
-  // ==================== DOM HELPER ====================
-  /** @param {string} id @returns {HTMLElement|null} */
-  const $ = id => document.getElementById(id);
-  
-  
-  // ==================== TEAM HELPERS ====================
-  const teamColor = team => CONFIG.TEAMS[team]?.color || '#ff0000';
-  
-  const teamPfp = team => CONFIG.TEAM_PFPS[team] || '';
-  
-  // If emoji is empty, we return an image tag pointing to the PFP!
-  const teamEmoji = team => {
-      const emoji = CONFIG.TEAMS[team]?.emoji;
-      if (emoji) return emoji;
-      
-      const pfp = teamPfp(team);
-      if (pfp) return `<img src="${pfp}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" alt="${team}">`;
-      
-      return '🎵'; // Ultimate fallback
-  };
-  
-  /**
-   * Sanitize string to prevent XSS
-   * v2.0: Added backtick escaping
-   */
-  function sanitize(str) {
-    if (!str) return '';
-    const map = { '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '&': '&amp;', '`': '&#96;' };
-    return String(str).replace(/[<>"'&`]/g, c => map[c] || c);
-  }
-  
-  
-  // ==================== DATE HELPERS ====================
-  /** Get current date string in KST timezone (YYYY-MM-DD) */
-  function getKSTDateString() {
-    const kst = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
-    return `${kst.getFullYear()}-${String(kst.getMonth() + 1).padStart(2, '0')}-${String(kst.getDate()).padStart(2, '0')}`;
-  }
-  
-  /** Format ISO date to readable "Mar 22, 3:45 PM IST" */
-  /** 
- * Formats a date string to a readable "Mar 22, 3:45 PM IST" 
- * v2.0: Supports both names to prevent ReferenceErrors
+// ==================== ROUTER & STATE ====================
+// Used to map page names to rendering functions later
+const PAGE_RENDERERS = {};
+
+const STATE = {
+  agentNo: null,
+  week: null,
+  weeks: [],
+  data: null,
+  page: 'home',
+  isAdmin: false,
+  adminSession: null,
+  lastUpdated: null,
+
+  // Notification tracking
+  notifications: [],
+  isCheckingNotifications: false,
+  hasShownPopupThisSession: false,
+  lastChecked: {
+    badges: 0,
+    _badgesInitialized: false,
+    songOfDay: null,
+    seenAnnouncementIds: [],
+    seenMissionIds: [],
+    _missionBaselineSet: false,
+    weekResults: [],
+  },
+};
+
+
+// ==================== DOM HELPER ====================
+/** @param {string} id @returns {HTMLElement|null} */
+const $ = id => document.getElementById(id);
+
+
+// ==================== TEAM HELPERS ====================
+const teamColor = team => CONFIG.TEAMS[team]?.color || '#ff0000';
+
+const teamPfp = team => CONFIG.TEAM_PFPS[team] || '';
+
+// If emoji is empty, we return an image tag pointing to the PFP!
+const teamEmoji = team => {
+  const emoji = CONFIG.TEAMS[team]?.emoji;
+  if (emoji) return emoji;
+
+  const pfp = teamPfp(team);
+  if (pfp) return `<img src="${pfp}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" alt="${team}">`;
+
+  return '🎵'; // Ultimate fallback
+};
+
+/**
+ * Sanitize string to prevent XSS
+ * v2.0: Added backtick escaping
  */
+function sanitize(str) {
+  if (!str) return '';
+  const map = { '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '&': '&amp;', '`': '&#96;' };
+  return String(str).replace(/[<>"'&`]/g, c => map[c] || c);
+}
+
+
+// ==================== DATE HELPERS ====================
+/** Get current date string in KST timezone (YYYY-MM-DD) */
+function getKSTDateString() {
+  const kst = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  return `${kst.getFullYear()}-${String(kst.getMonth() + 1).padStart(2, '0')}-${String(kst.getDate()).padStart(2, '0')}`;
+}
+
+/** Format ISO date to readable "Mar 22, 3:45 PM IST" */
+/** 
+* Formats a date string to a readable "Mar 22, 3:45 PM IST" 
+* v2.0: Supports both names to prevent ReferenceErrors
+*/
 function timeAgo(dateStr) {
   if (!dateStr) return 'Unknown';
   try {
@@ -408,41 +410,41 @@ function timeAgo(dateStr) {
     if (isNaN(d.getTime())) return dateStr;
     return d.toLocaleString('en-US', {
       timeZone: 'Asia/Kolkata', // Matches your config
-      month: 'short', 
+      month: 'short',
       day: 'numeric',
-      hour: 'numeric', 
-      minute: '2-digit', 
+      hour: 'numeric',
+      minute: '2-digit',
       hour12: true
     }) + ' IST';
-  } catch (e) { 
-    return dateStr; 
+  } catch (e) {
+    return dateStr;
   }
 }
 
 // Create the alias so pages calling "formatTimeAgo" don't crash
 const formatTimeAgo = timeAgo;
-  
-  /** Get remaining days for a given week label */
-  function getDaysRemaining(weekLabel) {
-    const startStr = CONFIG.WEEK_DATES?.[weekLabel];
-    if (!startStr) return 7;
-    const [y, m, d] = startStr.split('-').map(Number);
-    const end = new Date(y, m - 1, d + 7);
-    return Math.max(0, Math.ceil((end - Date.now()) / 86_400_000));
-  }
-  
-  /** Check if a week's end date has passed */
-  function isWeekCompleted(weekLabel) {
-    const startStr = CONFIG.WEEK_DATES?.[weekLabel];
-    if (!startStr) return false;
-    const [y, m, d] = startStr.split('-').map(Number);
-    return Date.now() >= new Date(y, m - 1, d + 7).getTime();
-  }
-  /** Get array of 7 date strings (YYYY-MM-DD) for a specific week */
+
+/** Get remaining days for a given week label */
+function getDaysRemaining(weekLabel) {
+  const startStr = CONFIG.WEEK_DATES?.[weekLabel];
+  if (!startStr) return 7;
+  const [y, m, d] = startStr.split('-').map(Number);
+  const end = new Date(y, m - 1, d + 7);
+  return Math.max(0, Math.ceil((end - Date.now()) / 86_400_000));
+}
+
+/** Check if a week's end date has passed */
+function isWeekCompleted(weekLabel) {
+  const startStr = CONFIG.WEEK_DATES?.[weekLabel];
+  if (!startStr) return false;
+  const [y, m, d] = startStr.split('-').map(Number);
+  return Date.now() >= new Date(y, m - 1, d + 7).getTime();
+}
+/** Get array of 7 date strings (YYYY-MM-DD) for a specific week */
 function getWeekDates(weekLabel) {
   const startStr = CONFIG.WEEK_DATES?.[weekLabel];
-  const dates =[];
-  
+  const dates = [];
+
   if (startStr) {
     // Parse safely as UTC to prevent local timezone shifts
     const start = new Date(startStr + 'T00:00:00Z');
@@ -459,277 +461,277 @@ function getWeekDates(weekLabel) {
   }
   return dates;
 }
-  
-  // =============================================
-  // ██████  NEW IN v2.0: TIMER MANAGER
-  // =============================================
-  const Timers = {
-    _intervals: new Map(),
-    _timeouts:  new Map(),
-  
-    setInterval(name, fn, ms) {
-      this.clearInterval(name);
-      this._intervals.set(name, window.setInterval(fn, ms));
-    },
-  
-    clearInterval(name) {
-      if (this._intervals.has(name)) {
-        window.clearInterval(this._intervals.get(name));
-        this._intervals.delete(name);
-      }
-    },
-  
-    setTimeout(name, fn, ms) {
-      this.clearTimeout(name);
-      this._timeouts.set(name, window.setTimeout(() => {
-        this._timeouts.delete(name);
-        fn();
-      }, ms));
-    },
-  
-    clearTimeout(name) {
-      if (this._timeouts.has(name)) {
-        window.clearTimeout(this._timeouts.get(name));
-        this._timeouts.delete(name);
-      }
-    },
-  
-    clearAll() {
-      this._intervals.forEach(id => window.clearInterval(id));
-      this._intervals.clear();
-      this._timeouts.forEach(id => window.clearTimeout(id));
-      this._timeouts.clear();
-    },
-  };
-  // ↑↑↑ Timers object CLOSED here — nothing else inside it ↑↑↑
-  
-  
-  // ── BEST: Combined V3 ──
+
+// =============================================
+// ██████  NEW IN v2.0: TIMER MANAGER
+// =============================================
+const Timers = {
+  _intervals: new Map(),
+  _timeouts: new Map(),
+
+  setInterval(name, fn, ms) {
+    this.clearInterval(name);
+    this._intervals.set(name, window.setInterval(fn, ms));
+  },
+
+  clearInterval(name) {
+    if (this._intervals.has(name)) {
+      window.clearInterval(this._intervals.get(name));
+      this._intervals.delete(name);
+    }
+  },
+
+  setTimeout(name, fn, ms) {
+    this.clearTimeout(name);
+    this._timeouts.set(name, window.setTimeout(() => {
+      this._timeouts.delete(name);
+      fn();
+    }, ms));
+  },
+
+  clearTimeout(name) {
+    if (this._timeouts.has(name)) {
+      window.clearTimeout(this._timeouts.get(name));
+      this._timeouts.delete(name);
+    }
+  },
+
+  clearAll() {
+    this._intervals.forEach(id => window.clearInterval(id));
+    this._intervals.clear();
+    this._timeouts.forEach(id => window.clearTimeout(id));
+    this._timeouts.clear();
+  },
+};
+// ↑↑↑ Timers object CLOSED here — nothing else inside it ↑↑↑
+
+
+// ── BEST: Combined V3 ──
 (function initLoadingQuotes() {
-    const quotes = document.querySelectorAll('.wisdom-quote');
-    if (quotes.length === 0) return;
+  const quotes = document.querySelectorAll('.wisdom-quote');
+  if (quotes.length === 0) return;
 
-    // V2: Random start
-    let currentIndex = Math.floor(Math.random() * quotes.length);
-    quotes.forEach(q => q.classList.remove('active'));
+  // V2: Random start
+  let currentIndex = Math.floor(Math.random() * quotes.length);
+  quotes.forEach(q => q.classList.remove('active'));
+  quotes[currentIndex].classList.add('active');
+
+  Timers.setInterval('loading-quotes', () => {
+    const loading = document.getElementById('loading');
+    // V1: Proper cleanup
+    if (!loading || loading.style.display === 'none' || loading.style.opacity === '0') {
+      Timers.clearInterval('loading-quotes');
+      return;
+    }
+    quotes[currentIndex].classList.remove('active');
+    currentIndex = (currentIndex + 1) % quotes.length;
     quotes[currentIndex].classList.add('active');
-
-    Timers.setInterval('loading-quotes', () => {
-        const loading = document.getElementById('loading');
-        // V1: Proper cleanup
-        if (!loading || loading.style.display === 'none' || loading.style.opacity === '0') {
-            Timers.clearInterval('loading-quotes');
-            return;
-        }
-        quotes[currentIndex].classList.remove('active');
-        currentIndex = (currentIndex + 1) % quotes.length;
-        quotes[currentIndex].classList.add('active');
-    }, 3000);
+  }, 3000);
 })();
 
 function hideLoadingScreen() {
-    const loading = document.getElementById('loading');
-    if (!loading) return;
+  const loading = document.getElementById('loading');
+  if (!loading) return;
 
-    // V1: Clear interval first
-    Timers.clearInterval('loading-quotes');
+  // V1: Clear interval first
+  Timers.clearInterval('loading-quotes');
 
-    // V1: Fill progress bar to 100%
-    const fill = loading.querySelector('.loading-progress-fill');
-    if (fill) {
-        fill.style.animation = 'none';
-        fill.style.width = '100%';
-        fill.style.transition = 'width 0.3s ease';
+  // V1: Fill progress bar to 100%
+  const fill = loading.querySelector('.loading-progress-fill');
+  if (fill) {
+    fill.style.animation = 'none';
+    fill.style.width = '100%';
+    fill.style.transition = 'width 0.3s ease';
+  }
+
+  const status = loading.querySelector('.loading-status');
+  if (status) status.textContent = 'Mission Dashboard Ready';
+
+  setTimeout(() => {
+    loading.style.opacity = '0';
+    // V2: Kill pointer events immediately
+    loading.style.pointerEvents = 'none';
+
+    // V2: Simple timeout for final removal
+    setTimeout(() => {
+      if (loading.parentNode) loading.style.display = 'none';
+    }, 600);
+  }, 400);
+}
+// =============================================
+// ██████  NEW IN v2.0: API CLIENT
+// =============================================
+// Features:
+//  • Response caching with configurable TTL
+//  • In-flight request deduplication
+//  • 15s timeout via AbortController
+//  • Selective cache invalidation
+//  • Silent mode for background requests
+// =============================================
+const Api = {
+  _cache: new Map(),
+  _pending: new Map(),
+
+  /**
+   * Make an API call with optional caching and dedup.
+   *
+   * @param {string} action — API action name
+   * @param {object} [params={}] — Additional payload
+   * @param {object} [opts={}] — Options
+   * @param {boolean} [opts.cache=false] — Cache the response
+   * @param {number}  [opts.ttl=30000] — Cache TTL in ms
+   * @param {boolean} [opts.dedupe=true] — Deduplicate in-flight requests
+   * @param {boolean} [opts.silent=false] — Suppress console errors
+   * @returns {Promise<object>}
+   *
+   * @example
+   * // Normal call
+   * const data = await Api.call('getDashboardData');
+   *
+   * // Cached for 60s, deduped
+   * const feed = await Api.call('getActivityFeed', { limit: 5 }, { cache: true, ttl: 60000 });
+   *
+   * // Silent background call
+   * await Api.call('heartbeat', {}, { silent: true, dedupe: false });
+   */
+  async call(action, params = {}, opts = {}) {
+    const { cache = false, ttl = 30_000, dedupe = true, silent = false } = opts;
+    const key = this._key(action, params);
+
+    // 1) Check cache
+    if (cache) {
+      const hit = this._cache.get(key);
+      if (hit && (Date.now() - hit.ts < ttl)) {
+        return hit.data;
+      }
     }
 
-    const status = loading.querySelector('.loading-status');
-    if (status) status.textContent = 'Mission Dashboard Ready';
+    // 2) Deduplicate in-flight requests
+    //    If another caller already fired the same request, piggyback on it
+    if (dedupe && this._pending.has(key)) {
+      return this._pending.get(key);
+    }
 
-    setTimeout(() => {
-        loading.style.opacity = '0';
-        // V2: Kill pointer events immediately
-        loading.style.pointerEvents = 'none';
+    // 3) Fire the request
+    const promise = this._request(action, params, silent);
 
-        // V2: Simple timeout for final removal
-        setTimeout(() => {
-            if (loading.parentNode) loading.style.display = 'none';
-        }, 600);
-    }, 400);
+    if (dedupe) {
+      this._pending.set(key, promise);
+    }
+
+    try {
+      const data = await promise;
+
+      // 4) Cache successful responses
+      if (cache && data) {
+        this._cache.set(key, { data, ts: Date.now() });
+      }
+
+      return data;
+    } finally {
+      this._pending.delete(key);
+    }
+  },
+
+  /** Internal fetch with AbortController timeout */
+  /** Internal fetch with AbortController timeout */
+  async _request(action, params, silent) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 90_000);
+
+    try {
+      const res = await fetch(CONFIG.API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${CONFIG.SUPABASE_ANON_KEY}` // <--- ADD THIS LINE
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          action,
+          agentNo: STATE.agentNo,
+          week: STATE.week,
+          ...params,
+        }),
+      });
+
+      if (!res.ok) throw new Error(`Server Error: ${res.status}`);
+
+      const data = await res.json();
+      if (data.error && !data.success) throw new Error(data.error);
+
+      return data;
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        const timeoutErr = new Error('Request timed out (15s)');
+        if (!silent) console.warn(`API [${action}]: timed out`);
+        throw timeoutErr;
+      }
+      if (!silent) console.error(`API [${action}]:`, err.message);
+      throw err;
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  },
+
+  /** Build a cache key from action + params */
+  _key(action, params) {
+    // Exclude agentNo/week from key since they come from STATE
+    return `${action}::${JSON.stringify(params)}`;
+  },
+
+  /**
+   * Invalidate cache entries.
+   * @param {string} [pattern] — If provided, only invalidate keys containing this string.
+   *                              If omitted, clears entire cache.
+   */
+  invalidate(pattern) {
+    if (!pattern) {
+      this._cache.clear();
+      return;
+    }
+    for (const key of this._cache.keys()) {
+      if (key.includes(pattern)) this._cache.delete(key);
+    }
+  },
+};
+
+// Legacy alias — old code uses `api('action', params)`
+// v2.0: Wraps new ApiClient for backward compatibility
+async function api(action, params = {}) {
+  return Api.call(action, params);
 }
-  // =============================================
-  // ██████  NEW IN v2.0: API CLIENT
-  // =============================================
-  // Features:
-  //  • Response caching with configurable TTL
-  //  • In-flight request deduplication
-  //  • 15s timeout via AbortController
-  //  • Selective cache invalidation
-  //  • Silent mode for background requests
-  // =============================================
-  const Api = {
-    _cache:   new Map(),
-    _pending: new Map(),
-  
-    /**
-     * Make an API call with optional caching and dedup.
-     *
-     * @param {string} action — API action name
-     * @param {object} [params={}] — Additional payload
-     * @param {object} [opts={}] — Options
-     * @param {boolean} [opts.cache=false] — Cache the response
-     * @param {number}  [opts.ttl=30000] — Cache TTL in ms
-     * @param {boolean} [opts.dedupe=true] — Deduplicate in-flight requests
-     * @param {boolean} [opts.silent=false] — Suppress console errors
-     * @returns {Promise<object>}
-     *
-     * @example
-     * // Normal call
-     * const data = await Api.call('getDashboardData');
-     *
-     * // Cached for 60s, deduped
-     * const feed = await Api.call('getActivityFeed', { limit: 5 }, { cache: true, ttl: 60000 });
-     *
-     * // Silent background call
-     * await Api.call('heartbeat', {}, { silent: true, dedupe: false });
-     */
-    async call(action, params = {}, opts = {}) {
-      const { cache = false, ttl = 30_000, dedupe = true, silent = false } = opts;
-      const key = this._key(action, params);
-  
-      // 1) Check cache
-      if (cache) {
-        const hit = this._cache.get(key);
-        if (hit && (Date.now() - hit.ts < ttl)) {
-          return hit.data;
-        }
-      }
-  
-      // 2) Deduplicate in-flight requests
-      //    If another caller already fired the same request, piggyback on it
-      if (dedupe && this._pending.has(key)) {
-        return this._pending.get(key);
-      }
-  
-      // 3) Fire the request
-      const promise = this._request(action, params, silent);
-  
-      if (dedupe) {
-        this._pending.set(key, promise);
-      }
-  
-      try {
-        const data = await promise;
-  
-        // 4) Cache successful responses
-        if (cache && data) {
-          this._cache.set(key, { data, ts: Date.now() });
-        }
-  
-        return data;
-      } finally {
-        this._pending.delete(key);
-      }
-    },
-  
-    /** Internal fetch with AbortController timeout */
-    /** Internal fetch with AbortController timeout */
-    async _request(action, params, silent) {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 90_000); 
-  
-      try {
-        const res = await fetch(CONFIG.API_URL, {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${CONFIG.SUPABASE_ANON_KEY}` // <--- ADD THIS LINE
-          },
-          signal: controller.signal,
-          body: JSON.stringify({
-            action,
-            agentNo: STATE.agentNo,
-            week: STATE.week,
-            ...params,
-          }),
-        });
-  
-        if (!res.ok) throw new Error(`Server Error: ${res.status}`);
-  
-        const data = await res.json();
-        if (data.error && !data.success) throw new Error(data.error);
-  
-        return data;
-      } catch (err) {
-        if (err.name === 'AbortError') {
-          const timeoutErr = new Error('Request timed out (15s)');
-          if (!silent) console.warn(`API [${action}]: timed out`);
-          throw timeoutErr;
-        }
-        if (!silent) console.error(`API [${action}]:`, err.message);
-        throw err;
-      } finally {
-        clearTimeout(timeoutId);
-      }
-    },
-  
-    /** Build a cache key from action + params */
-    _key(action, params) {
-      // Exclude agentNo/week from key since they come from STATE
-      return `${action}::${JSON.stringify(params)}`;
-    },
-  
-    /**
-     * Invalidate cache entries.
-     * @param {string} [pattern] — If provided, only invalidate keys containing this string.
-     *                              If omitted, clears entire cache.
-     */
-    invalidate(pattern) {
-      if (!pattern) {
-        this._cache.clear();
-        return;
-      }
-      for (const key of this._cache.keys()) {
-        if (key.includes(pattern)) this._cache.delete(key);
-      }
-    },
-  };
-  
-  // Legacy alias — old code uses `api('action', params)`
-  // v2.0: Wraps new ApiClient for backward compatibility
-  async function api(action, params = {}) {
-    return Api.call(action, params);
-  }
-  
-  
-  // ==================== TOAST SYSTEM ====================
-  // v2.0: Queue-based, prevents toast stacking, guaranteed cleanup
-  const Toast = {
-    _current: null,
-    _queue: [],
-  
-    /**
-     * Show a toast notification
-     * @param {string} msg
-     * @param {'success'|'error'|'info'} [type='info']
-     */
-    show(msg, type = 'info') {
-      // If a toast is already showing, replace it immediately
-      if (this._current) {
-        this._current.remove();
-        this._current = null;
-      }
-  
-      const colors = {
-        success: { bg: 'rgba(0,40,0,0.95)',  border: '#00ff66', icon: '✅' },
-        error:   { bg: 'rgba(40,0,0,0.95)',  border: '#ff0000', icon: '⚠️' },
-        info:    { bg: 'rgba(20,20,20,0.95)', border: '#ff0000', icon: 'ℹ️' },
-      };
-      const c = colors[type] || colors.info;
-  
-      const el = document.createElement('div');
-      el.className = 'toast-mini';
-      el.innerHTML = `<span>${c.icon}</span><span>${sanitize(msg)}</span>`;
-      el.style.cssText = `
+
+
+// ==================== TOAST SYSTEM ====================
+// v2.0: Queue-based, prevents toast stacking, guaranteed cleanup
+const Toast = {
+  _current: null,
+  _queue: [],
+
+  /**
+   * Show a toast notification
+   * @param {string} msg
+   * @param {'success'|'error'|'info'} [type='info']
+   */
+  show(msg, type = 'info') {
+    // If a toast is already showing, replace it immediately
+    if (this._current) {
+      this._current.remove();
+      this._current = null;
+    }
+
+    const colors = {
+      success: { bg: 'rgba(0,40,0,0.95)', border: '#00ff66', icon: '✅' },
+      error: { bg: 'rgba(40,0,0,0.95)', border: '#ff0000', icon: '⚠️' },
+      info: { bg: 'rgba(20,20,20,0.95)', border: '#ff0000', icon: 'ℹ️' },
+    };
+    const c = colors[type] || colors.info;
+
+    const el = document.createElement('div');
+    el.className = 'toast-mini';
+    el.innerHTML = `<span>${c.icon}</span><span>${sanitize(msg)}</span>`;
+    el.style.cssText = `
         position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-80px);
         padding:10px 18px;background:${c.bg};border:1px solid ${c.border};
         color:#fff;display:inline-flex;align-items:center;gap:8px;font-size:12px;
@@ -738,385 +740,385 @@ function hideLoadingScreen() {
         font-weight:700;text-transform:uppercase;letter-spacing:1px;
         border-radius:4px;max-width:90vw;
       `;
-      document.body.appendChild(el);
-      this._current = el;
-  
-      // Animate in
-      requestAnimationFrame(() => {
-        el.style.opacity = '1';
-        el.style.transform = 'translateX(-50%) translateY(0)';
-      });
-  
-      // Auto-dismiss
-      Timers.setTimeout('toast-dismiss', () => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateX(-50%) translateY(-80px)';
-        Timers.setTimeout('toast-remove', () => {
-          el.remove();
-          if (this._current === el) this._current = null;
-        }, 300);
-      }, 4000);
-    },
-  };
-  
-  // Global alias for backward compatibility
-  function showToast(msg, type = 'info') {
-    Toast.show(msg, type);
-  }
-  
-  
-  // ==================== LOADING OVERLAY ====================
-  const Loading = {
-    _visible: false,
-  
-    show() {
-      if (this._visible) return;
-      this._visible = true;
-      const el = $('loading');
-      if (el) {
-        el.style.display = 'flex'; 
-        el.style.opacity = '1';
-        el.style.pointerEvents = 'all';
-      }
-      Timers.setTimeout('loading-safety', () => this.hide(), 15_000);
-    },
-  
-    hide() {
-      this._visible = false;
-      Timers.clearTimeout('loading-safety');
-      Timers.clearInterval('loading-quotes'); // Stop the quotes
-      
-      const el = $('loading');
-      if (!el) return;
-  
-      // Fill progress bar to 100%
-      const fill = el.querySelector('.loading-progress-fill');
-      if (fill) {
-        fill.style.animation = 'none';
-        fill.style.width = '100%';
-        fill.style.transition = 'width 0.4s ease';
-      }
-  
-      // Update status text
-      const status = el.querySelector('.loading-status');
-      if (status) status.textContent = 'Mission Dashboard Ready';
-  
-      // Fade out
-      Timers.setTimeout('loading-fadeout', () => {
-        el.style.opacity = '0';
-        el.style.pointerEvents = 'none';
-        Timers.setTimeout('loading-none', () => {
-          if (!this._visible) el.style.display = 'none';
-        }, 600);
-      }, 500);
-    },
-  
-    get isVisible() { return this._visible; },
-  };
-  
-  // Legacy alias
-  function loading(show) {
-    show ? Loading.show() : Loading.hide();
-  }
-  // Add to your Part 1 after the loading system
-  
-  const MEMBER_QUOTES = [
-    { member: 'rm', text: '"Love for life... at your own pace"', author: 'RM' },
-    { member: 'jin', text: '"Finding balance was precious and happy"', author: 'Jin' },
-    { member: 'suga', text: '"The groove of this track is a kick"', author: 'SUGA' },
-    { member: 'jhope', text: '"We poured all our positive energy"', author: 'j-hope' },
-    { member: 'jimin', text: '"Like a current that never stops"', author: 'Jimin' },
-    { member: 'v', text: '"We\'re swimming right next to you"', author: 'V' },
-    { member: 'jk', text: '"I hope this feels like a gift"', author: 'Jung Kook' },
-  ];
-  
-  let currentQuoteIndex = 0;
-  
-  function rotateLoadingQuotes() {
-    const quotes = document.querySelectorAll('.wisdom-quote');
-    if (quotes.length === 0) return;
-  
-    quotes[currentQuoteIndex].classList.remove('active');
-    currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
-    quotes[currentQuoteIndex].classList.add('active');
-  }
-  
-  // Start rotation when loading appears
-  const loadingEl = document.getElementById('loading');
-  if (loadingEl) {
-    const quoteInterval = setInterval(rotateLoadingQuotes, 3000);
-    
-    // Stop rotation when loading completes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.target.style.opacity === '0') {
-          clearInterval(quoteInterval);
-        }
-      });
+    document.body.appendChild(el);
+    this._current = el;
+
+    // Animate in
+    requestAnimationFrame(() => {
+      el.style.opacity = '1';
+      el.style.transform = 'translateX(-50%) translateY(0)';
     });
-    
-    observer.observe(loadingEl, { attributes: true, attributeFilter: ['style'] });
-  }
-  // ==================== COUNTDOWN ====================
-  // v2.0: Uses Timers manager, no global window._cdInterval
-  function renderCountdown() {
-    if (!CONFIG.SHOW_COUNTDOWN) return '';
-  
-    const diff = new Date(CONFIG.BATTLE_START).getTime() - Date.now();
-    if (diff <= 0) {
-      return `<div class="countdown-bar"><span class="cd-live">● BATTLE ACTIVE</span></div>`;
+
+    // Auto-dismiss
+    Timers.setTimeout('toast-dismiss', () => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateX(-50%) translateY(-80px)';
+      Timers.setTimeout('toast-remove', () => {
+        el.remove();
+        if (this._current === el) this._current = null;
+      }, 300);
+    }, 4000);
+  },
+};
+
+// Global alias for backward compatibility
+function showToast(msg, type = 'info') {
+  Toast.show(msg, type);
+}
+
+
+// ==================== LOADING OVERLAY ====================
+const Loading = {
+  _visible: false,
+
+  show() {
+    if (this._visible) return;
+    this._visible = true;
+    const el = $('loading');
+    if (el) {
+      el.style.display = 'flex';
+      el.style.opacity = '1';
+      el.style.pointerEvents = 'all';
     }
-  
+    Timers.setTimeout('loading-safety', () => this.hide(), 15_000);
+  },
+
+  hide() {
+    this._visible = false;
+    Timers.clearTimeout('loading-safety');
+    Timers.clearInterval('loading-quotes'); // Stop the quotes
+
+    const el = $('loading');
+    if (!el) return;
+
+    // Fill progress bar to 100%
+    const fill = el.querySelector('.loading-progress-fill');
+    if (fill) {
+      fill.style.animation = 'none';
+      fill.style.width = '100%';
+      fill.style.transition = 'width 0.4s ease';
+    }
+
+    // Update status text
+    const status = el.querySelector('.loading-status');
+    if (status) status.textContent = 'Mission Dashboard Ready';
+
+    // Fade out
+    Timers.setTimeout('loading-fadeout', () => {
+      el.style.opacity = '0';
+      el.style.pointerEvents = 'none';
+      Timers.setTimeout('loading-none', () => {
+        if (!this._visible) el.style.display = 'none';
+      }, 600);
+    }, 500);
+  },
+
+  get isVisible() { return this._visible; },
+};
+
+// Legacy alias
+function loading(show) {
+  show ? Loading.show() : Loading.hide();
+}
+// Add to your Part 1 after the loading system
+
+const MEMBER_QUOTES = [
+  { member: 'rm', text: '"Love for life... at your own pace"', author: 'RM' },
+  { member: 'jin', text: '"Finding balance was precious and happy"', author: 'Jin' },
+  { member: 'suga', text: '"The groove of this track is a kick"', author: 'SUGA' },
+  { member: 'jhope', text: '"We poured all our positive energy"', author: 'j-hope' },
+  { member: 'jimin', text: '"Like a current that never stops"', author: 'Jimin' },
+  { member: 'v', text: '"We\'re swimming right next to you"', author: 'V' },
+  { member: 'jk', text: '"I hope this feels like a gift"', author: 'Jung Kook' },
+];
+
+let currentQuoteIndex = 0;
+
+function rotateLoadingQuotes() {
+  const quotes = document.querySelectorAll('.wisdom-quote');
+  if (quotes.length === 0) return;
+
+  quotes[currentQuoteIndex].classList.remove('active');
+  currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+  quotes[currentQuoteIndex].classList.add('active');
+}
+
+// Start rotation when loading appears
+const loadingEl = document.getElementById('loading');
+if (loadingEl) {
+  const quoteInterval = setInterval(rotateLoadingQuotes, 3000);
+
+  // Stop rotation when loading completes
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.target.style.opacity === '0') {
+        clearInterval(quoteInterval);
+      }
+    });
+  });
+
+  observer.observe(loadingEl, { attributes: true, attributeFilter: ['style'] });
+}
+// ==================== COUNTDOWN ====================
+// v2.0: Uses Timers manager, no global window._cdInterval
+function renderCountdown() {
+  if (!CONFIG.SHOW_COUNTDOWN) return '';
+
+  const diff = new Date(CONFIG.BATTLE_START).getTime() - Date.now();
+  if (diff <= 0) {
+    return `<div class="countdown-bar"><span class="cd-live">● BATTLE ACTIVE</span></div>`;
+  }
+
+  const d = Math.floor(diff / 86_400_000);
+  const h = Math.floor((diff % 86_400_000) / 3_600_000);
+  const m = Math.floor((diff % 3_600_000) / 60_000);
+  const s = Math.floor((diff % 60_000) / 1_000);
+
+  return `
+      <div class="countdown-bar" id="countdownBar">
+        <span class="cd-label">BATTLE BEGINS</span>
+        <div class="cd-blocks">
+          <div class="cd-block"><span class="cd-num" id="cdD">${String(d).padStart(2, '0')}</span><span class="cd-lbl">D</span></div>
+          <div class="cd-block"><span class="cd-num" id="cdH">${String(h).padStart(2, '0')}</span><span class="cd-lbl">H</span></div>
+          <div class="cd-block"><span class="cd-num" id="cdM">${String(m).padStart(2, '0')}</span><span class="cd-lbl">M</span></div>
+          <div class="cd-block"><span class="cd-num" id="cdS">${String(s).padStart(2, '0')}</span><span class="cd-lbl">S</span></div>
+        </div>
+      </div>
+    `;
+}
+
+function startCountdown() {
+  Timers.setInterval('countdown', () => {
+    const diff = new Date(CONFIG.BATTLE_START).getTime() - Date.now();
+
+    if (diff <= 0) {
+      Timers.clearInterval('countdown');
+      const bar = $('countdownBar');
+      if (bar) bar.innerHTML = '<span class="cd-live">● BATTLE ACTIVE</span>';
+      return;
+    }
+
     const d = Math.floor(diff / 86_400_000);
     const h = Math.floor((diff % 86_400_000) / 3_600_000);
     const m = Math.floor((diff % 3_600_000) / 60_000);
     const s = Math.floor((diff % 60_000) / 1_000);
-  
-    return `
-      <div class="countdown-bar" id="countdownBar">
-        <span class="cd-label">BATTLE BEGINS</span>
-        <div class="cd-blocks">
-          <div class="cd-block"><span class="cd-num" id="cdD">${String(d).padStart(2,'0')}</span><span class="cd-lbl">D</span></div>
-          <div class="cd-block"><span class="cd-num" id="cdH">${String(h).padStart(2,'0')}</span><span class="cd-lbl">H</span></div>
-          <div class="cd-block"><span class="cd-num" id="cdM">${String(m).padStart(2,'0')}</span><span class="cd-lbl">M</span></div>
-          <div class="cd-block"><span class="cd-num" id="cdS">${String(s).padStart(2,'0')}</span><span class="cd-lbl">S</span></div>
-        </div>
-      </div>
-    `;
+
+    const dE = $('cdD'), hE = $('cdH'), mE = $('cdM'), sE = $('cdS');
+    if (dE) dE.textContent = String(d).padStart(2, '0');
+    if (hE) hE.textContent = String(h).padStart(2, '0');
+    if (mE) mE.textContent = String(m).padStart(2, '0');
+    if (sE) sE.textContent = String(s).padStart(2, '0');
+  }, 1000);
+}
+
+
+// ==================== AUTH ====================
+// v2.0: Cleaner session management, proper cleanup on logout
+
+function checkAuth() {
+  const saved = localStorage.getItem('arirang_agent');
+
+  if (!saved) {
+    // If no user is saved, we are on the login screen.
+    // Hide loading screen so user can see the login form.
+    Loading.hide();
+    return;
   }
-  
-  function startCountdown() {
-    Timers.setInterval('countdown', () => {
-      const diff = new Date(CONFIG.BATTLE_START).getTime() - Date.now();
-  
-      if (diff <= 0) {
-        Timers.clearInterval('countdown');
-        const bar = $('countdownBar');
-        if (bar) bar.innerHTML = '<span class="cd-live">● BATTLE ACTIVE</span>';
-        return;
-      }
-  
-      const d = Math.floor(diff / 86_400_000);
-      const h = Math.floor((diff % 86_400_000) / 3_600_000);
-      const m = Math.floor((diff % 3_600_000) / 60_000);
-      const s = Math.floor((diff % 60_000) / 1_000);
-  
-      const dE = $('cdD'), hE = $('cdH'), mE = $('cdM'), sE = $('cdS');
-      if (dE) dE.textContent = String(d).padStart(2, '0');
-      if (hE) hE.textContent = String(h).padStart(2, '0');
-      if (mE) mE.textContent = String(m).padStart(2, '0');
-      if (sE) sE.textContent = String(s).padStart(2, '0');
-    }, 1000);
-  }
-  
-  
-  // ==================== AUTH ====================
-  // v2.0: Cleaner session management, proper cleanup on logout
-  
-  function checkAuth() {
-    const saved = localStorage.getItem('arirang_agent');
-    
-    if (!saved) {
-      // If no user is saved, we are on the login screen.
-      // Hide loading screen so user can see the login form.
-      Loading.hide(); 
-      return; 
+
+  try {
+    const agent = JSON.parse(saved);
+    STATE.agentNo = agent.agentNo || agent.agent_no;
+    STATE.isAdmin = STATE.agentNo === CONFIG.ADMIN_AGENT_NO;
+    restoreAdminSession();
+
+    const savedNotifs = localStorage.getItem('arirang_notif_state_' + STATE.agentNo);
+    if (savedNotifs) {
+      try { STATE.lastChecked = Object.assign(STATE.lastChecked, JSON.parse(savedNotifs)); } catch (e) { }
     }
-  
-    try {
-      const agent = JSON.parse(saved);
+
+    // Logged in! Now go to app/lock logic
+    initApp();
+  } catch (e) {
+    localStorage.removeItem('arirang_agent');
+    Loading.hide();
+  }
+}
+
+async function doLogin() {
+  const id = $('loginId')?.value?.trim().toUpperCase();
+  const pw = $('loginPw')?.value;
+  const err = $('loginErr');
+
+  if (!id || !pw) {
+    if (err) err.textContent = 'Enter Agent ID and password';
+    return;
+  }
+
+  if (err) err.textContent = 'Authenticating...';
+
+  try {
+    const d = await Api.call('loginAgent', { agentNo: id, password: pw }, { dedupe: false });
+
+    if (d.success) {
+      const agent = d.agent;
       STATE.agentNo = agent.agentNo || agent.agent_no;
       STATE.isAdmin = STATE.agentNo === CONFIG.ADMIN_AGENT_NO;
-      restoreAdminSession();
-      
+      localStorage.setItem('arirang_agent', JSON.stringify(agent));
+
       const savedNotifs = localStorage.getItem('arirang_notif_state_' + STATE.agentNo);
       if (savedNotifs) {
-        try { STATE.lastChecked = Object.assign(STATE.lastChecked, JSON.parse(savedNotifs)); } catch(e) {}
+        try { STATE.lastChecked = Object.assign(STATE.lastChecked, JSON.parse(savedNotifs)); } catch (e) { }
       }
-      
-      // Logged in! Now go to app/lock logic
+      if (err) err.textContent = '';
       initApp();
-    } catch (e) {
-      localStorage.removeItem('arirang_agent');
+    } else {
+      if (err) err.textContent = d.error || 'Access denied';
+    }
+  } catch (e) {
+    if (err) err.textContent = 'Connection failed — try again';
+  }
+}
+
+// ==================== AUTH FUNCTIONS ====================
+function doLogout() {
+  // Fire-and-forget cleanup
+  Api.call('removeOnlineUser', { agentNo: STATE.agentNo }, { silent: true, dedupe: false }).catch(() => { });
+
+  // Clear all state
+  STATE.agentNo = null;
+  STATE.data = null;
+  STATE.isAdmin = false;
+  STATE.adminSession = null;
+
+  localStorage.removeItem('arirang_agent');
+  localStorage.removeItem('adminSession');
+  localStorage.removeItem('adminExpiry');
+
+  // Clear all timers
+  Timers.clearAll();
+
+  // Clear API cache
+  Api.invalidate();
+
+  // ✅ Hide lock screen if showing
+  const lockEl = document.getElementById('missionLock');
+  if (lockEl) lockEl.style.display = 'none';
+
+  location.reload();
+}
+// NO EXTRA BRACKET HERE
+/** Restore admin session from localStorage if still valid */
+function restoreAdminSession() {
+  if (STATE.agentNo !== CONFIG.ADMIN_AGENT_NO) return;
+
+  const session = localStorage.getItem('adminSession');
+  const expiry = localStorage.getItem('adminExpiry');
+
+  if (session && expiry && Date.now() < parseInt(expiry, 10)) {
+    STATE.isAdmin = true;
+    STATE.adminSession = session;
+  }
+}
+
+
+// ==================== MISSION LOCK SYSTEM ====================
+const MISSION_CONFIG = {
+  // Set to true to lock dashboard for all non-admins
+  LOCKED: false,
+
+  // Launch date (KST)
+  LAUNCH_DATE: '2026-03-22T00:00:00+09:00',
+
+  // Admins who can bypass (add your agent IDs)
+  BYPASS_AGENTS: ['AGENT000', ''],
+};
+
+function checkMissionLock() {
+  // Always allow admins to bypass the lock screen
+  if (MISSION_CONFIG.BYPASS_AGENTS.includes(STATE.agentNo)) {
+    hideMissionLock();
+    return;
+  }
+
+  // Check if mission is manually locked via config
+  if (MISSION_CONFIG.LOCKED) {
+    showMissionLock();
+    return;
+  }
+
+  // Check if launch date has passed
+  const now = Date.now();
+  const launchTime = new Date(MISSION_CONFIG.LAUNCH_DATE).getTime();
+
+  if (now < launchTime) {
+    showMissionLock();
+  } else {
+    hideMissionLock();
+  }
+}
+
+function showMissionLock() {
+  const lockEl = document.getElementById('missionLock');
+  if (lockEl) {
+    lockEl.style.display = 'flex';
+
+    // 1. Fill the Agent ID on the lock screen
+    const displayEl = document.getElementById('lockAgentNo');
+    if (displayEl) {
+      displayEl.textContent = STATE.agentNo || "Agent";
+    }
+
+    // 2. Start the countdown
+    startLaunchCountdown();
+
+    // 3. Hide the actual app UI
+    const appEl = document.getElementById('app');
+    if (appEl) appEl.style.display = 'none';
+
+    // 4. IMPORTANT: Force hide the loading screen so the lock screen is visible
+    if (typeof Loading !== 'undefined') {
       Loading.hide();
+    } else {
+      const loadEl = document.getElementById('loading');
+      if (loadEl) loadEl.style.opacity = '0';
     }
   }
-  
-  async function doLogin() {
-    const id = $('loginId')?.value?.trim().toUpperCase();
-    const pw = $('loginPw')?.value;
-    const err = $('loginErr');
-  
-    if (!id || !pw) {
-      if (err) err.textContent = 'Enter Agent ID and password';
-      return;
-    }
-  
-    if (err) err.textContent = 'Authenticating...';
-  
-    try {
-      const d = await Api.call('loginAgent', { agentNo: id, password: pw }, { dedupe: false });
-  
-      if (d.success) {
-        const agent = d.agent;
-        STATE.agentNo = agent.agentNo || agent.agent_no;
-        STATE.isAdmin = STATE.agentNo === CONFIG.ADMIN_AGENT_NO;
-        localStorage.setItem('arirang_agent', JSON.stringify(agent));
-        
-        const savedNotifs = localStorage.getItem('arirang_notif_state_' + STATE.agentNo);
-        if (savedNotifs) {
-          try { STATE.lastChecked = Object.assign(STATE.lastChecked, JSON.parse(savedNotifs)); } catch(e) {}
-        }
-        if (err) err.textContent = '';
-        initApp();
-      } else {
-        if (err) err.textContent = d.error || 'Access denied';
-      }
-    } catch (e) {
-      if (err) err.textContent = 'Connection failed — try again';
-    }
-  }
-  
-  // ==================== AUTH FUNCTIONS ====================
-  function doLogout() {
-    // Fire-and-forget cleanup
-    Api.call('removeOnlineUser', { agentNo: STATE.agentNo }, { silent: true, dedupe: false }).catch(() => {});
-  
-    // Clear all state
-    STATE.agentNo = null;
-    STATE.data = null;
-    STATE.isAdmin = false;
-    STATE.adminSession = null;
-  
-    localStorage.removeItem('arirang_agent');
-    localStorage.removeItem('adminSession');
-    localStorage.removeItem('adminExpiry');
-  
-    // Clear all timers
-    Timers.clearAll();
-  
-    // Clear API cache
-    Api.invalidate();
-  
-    // ✅ Hide lock screen if showing
-    const lockEl = document.getElementById('missionLock');
-    if (lockEl) lockEl.style.display = 'none';
-  
-    location.reload();
-  }
-  // NO EXTRA BRACKET HERE
-  /** Restore admin session from localStorage if still valid */
-  function restoreAdminSession() {
-    if (STATE.agentNo !== CONFIG.ADMIN_AGENT_NO) return;
-  
-    const session = localStorage.getItem('adminSession');
-    const expiry  = localStorage.getItem('adminExpiry');
-  
-    if (session && expiry && Date.now() < parseInt(expiry, 10)) {
-      STATE.isAdmin = true;
-      STATE.adminSession = session;
-    }
-  }
-  
-  
-  // ==================== MISSION LOCK SYSTEM ====================
-  const MISSION_CONFIG = {
-    // Set to true to lock dashboard for all non-admins
-    LOCKED: false,
-    
-    // Launch date (KST)
-    LAUNCH_DATE: '2026-03-22T00:00:00+09:00',
-    
-    // Admins who can bypass (add your agent IDs)
-    BYPASS_AGENTS: ['AGENT000', ''], 
-  };
-  
-  function checkMissionLock() {
-    // Always allow admins to bypass the lock screen
-    if (MISSION_CONFIG.BYPASS_AGENTS.includes(STATE.agentNo)) {
-      hideMissionLock();
-      return;
-    }
-    
-    // Check if mission is manually locked via config
-    if (MISSION_CONFIG.LOCKED) {
-      showMissionLock();
-      return;
-    }
-    
-    // Check if launch date has passed
+}
+
+function hideMissionLock() {
+  const lockEl = document.getElementById('missionLock');
+  if (lockEl) lockEl.style.display = 'none';
+
+  // Show main app UI
+  const appEl = document.getElementById('app');
+  if (appEl) appEl.style.display = 'flex';
+}
+
+function startLaunchCountdown() {
+  const container = document.getElementById('launchCountdown');
+  if (!container) return;
+
+  function updateCountdown() {
     const now = Date.now();
     const launchTime = new Date(MISSION_CONFIG.LAUNCH_DATE).getTime();
-    
-    if (now < launchTime) {
-      showMissionLock();
-    } else {
-      hideMissionLock();
+    const diff = launchTime - now;
+
+    if (diff <= 0) {
+      container.innerHTML = '<div style="font-size:1.5rem;color:var(--courage-amber);font-weight:900;">🔒 AWAITING HQ CLEARANCE</div>';
+
+      // Stop the timer
+      Timers.clearInterval('launchCountdown');
+
+
+      return;
     }
-  }
-  
-  function showMissionLock() {
-    const lockEl = document.getElementById('missionLock');
-    if (lockEl) {
-      lockEl.style.display = 'flex';
-      
-      // 1. Fill the Agent ID on the lock screen
-      const displayEl = document.getElementById('lockAgentNo');
-      if (displayEl) {
-        displayEl.textContent = STATE.agentNo || "Agent";
-      }
-      
-      // 2. Start the countdown
-      startLaunchCountdown();
-      
-      // 3. Hide the actual app UI
-      const appEl = document.getElementById('app');
-      if (appEl) appEl.style.display = 'none';
-  
-      // 4. IMPORTANT: Force hide the loading screen so the lock screen is visible
-      if (typeof Loading !== 'undefined') {
-         Loading.hide();
-      } else {
-         const loadEl = document.getElementById('loading');
-         if (loadEl) loadEl.style.opacity = '0';
-      }
-    }
-  }
-  
-  function hideMissionLock() {
-    const lockEl = document.getElementById('missionLock');
-    if (lockEl) lockEl.style.display = 'none';
-    
-    // Show main app UI
-    const appEl = document.getElementById('app');
-    if (appEl) appEl.style.display = 'flex';
-  }
-  
-  function startLaunchCountdown() {
-    const container = document.getElementById('launchCountdown');
-    if (!container) return;
-    
-    function updateCountdown() {
-      const now = Date.now();
-      const launchTime = new Date(MISSION_CONFIG.LAUNCH_DATE).getTime();
-      const diff = launchTime - now;
-      
-      if (diff <= 0) {
-        container.innerHTML = '<div style="font-size:1.5rem;color:var(--courage-amber);font-weight:900;">🔒 AWAITING HQ CLEARANCE</div>';
-        
-        // Stop the timer
-        Timers.clearInterval('launchCountdown');
-        
-       
-        return;
-      }
-      
-      const days = Math.floor(diff / 86400000);
-      const hours = Math.floor((diff % 86400000) / 3600000);
-      const mins = Math.floor((diff % 3600000) / 60000);
-      const secs = Math.floor((diff % 60000) / 1000);
-      
-      container.innerHTML = `
+
+    const days = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins = Math.floor((diff % 3600000) / 60000);
+    const secs = Math.floor((diff % 60000) / 1000);
+
+    container.innerHTML = `
         <div class="launch-timer">
           <div class="timer-block"><div class="timer-num">${String(days).padStart(2, '0')}</div><div class="timer-label">DAYS</div></div>
           <div class="timer-sep">:</div>
@@ -1127,242 +1129,242 @@ function hideLoadingScreen() {
           <div class="timer-block"><div class="timer-num">${String(secs).padStart(2, '0')}</div><div class="timer-label">SEC</div></div>
         </div>
       `;
-    }
-    
-    updateCountdown();
-    Timers.setInterval('launchCountdown', updateCountdown, 1000);
   }
-  
-  // ==================== INIT APP ====================
-  // v2.0: Clean startup sequence with visibility handling
-  function initApp() {
-    // 1. MUST hide the login overlay
-    const loginEl = document.getElementById('loginOverlay');
-    if (loginEl) loginEl.style.display = 'none'; 
-  
-    // 2. Show admin nav if applicable
-    if (STATE.isAdmin || STATE.agentNo === CONFIG.ADMIN_AGENT_NO) {
-      const adminNav = document.getElementById('adminNav');
-      if (adminNav) adminNav.style.display = 'block';
-    }
-  
-    // 3. CHECK MISSION LOCK FIRST
-    checkMissionLock();
-    
-    // 4. If mission is locked for non-admins, STOP here 
-    // (The countdown screen is now safely showing)
-    if (MISSION_CONFIG.LOCKED && !MISSION_CONFIG.BYPASS_AGENTS.includes(STATE.agentNo)) {
-      return; 
-    }
-  
-    // 5. If unlocked or bypassed -> Start the main application
-    const appEl = document.getElementById('app');
-    if (appEl) appEl.style.display = 'flex';
-  
-    startHeartbeat();
-    startOnlinePolling();
-    loadDashboard();
-    setupVisibilityHandler();
 
-    window.addEventListener('hashchange', () => {
-      const hash = window.location.hash.substring(1);
-      if (hash && hash !== STATE.page && document.getElementById('page-' + hash)) {
-        goTo(hash);
-      }
-    });
-
-    setTimeout(checkHTOnboarding, 2500); // Show popup after dash loads
+  updateCountdown();
+  Timers.setInterval('launchCountdown', updateCountdown, 1000);
 }
-  
-  
-  // ==================== HEARTBEAT & ONLINE ====================
-  // v2.0: Uses Timers manager, visibility-aware, silent API calls
-  
-  function startHeartbeat() {
-    sendHeartbeat(); // Immediate first call
-    Timers.setInterval('heartbeat', sendHeartbeat, 30_000);
+
+// ==================== INIT APP ====================
+// v2.0: Clean startup sequence with visibility handling
+function initApp() {
+  // 1. MUST hide the login overlay
+  const loginEl = document.getElementById('loginOverlay');
+  if (loginEl) loginEl.style.display = 'none';
+
+  // 2. Show admin nav if applicable
+  if (STATE.isAdmin || STATE.agentNo === CONFIG.ADMIN_AGENT_NO) {
+    const adminNav = document.getElementById('adminNav');
+    if (adminNav) adminNav.style.display = 'block';
   }
-  
-  async function sendHeartbeat() {
-    try {
-      await Api.call('heartbeat', { agentNo: STATE.agentNo }, { silent: true, dedupe: false, cache: false });
-    } catch { /* silent */ }
+
+  // 3. CHECK MISSION LOCK FIRST
+  checkMissionLock();
+
+  // 4. If mission is locked for non-admins, STOP here 
+  // (The countdown screen is now safely showing)
+  if (MISSION_CONFIG.LOCKED && !MISSION_CONFIG.BYPASS_AGENTS.includes(STATE.agentNo)) {
+    return;
   }
-  
-  function startOnlinePolling() {
-    loadOnlineCount(); // Immediate
-    Timers.setInterval('online', loadOnlineCount, 60_000);
-  }
-  
-  async function loadOnlineCount() {
-    try {
-      const d = await Api.call('getOnlineCount', {}, { cache: true, ttl: 45_000, silent: true });
-      if (d.success) {
-        const el = $('onlineCount');
-        if (el) el.textContent = d.online || 0;
-      }
-    } catch { /* silent */ }
-  }
-  
-  /**
-   * v2.0: Pause all polling when tab is hidden, resume when visible.
-   * This saves significant bandwidth and API quota.
-   */
-  function setupVisibilityHandler() {
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        // Pause expensive polling
-        Timers.clearInterval('heartbeat');
-        Timers.clearInterval('online');
-        Timers.clearInterval('chat');
-      } else {
-        // Resume with immediate execution
-        if (!STATE.agentNo) return;
-  
-        sendHeartbeat();
-        Timers.setInterval('heartbeat', sendHeartbeat, 30_000);
-  
-        loadOnlineCount();
-        Timers.setInterval('online', loadOnlineCount, 60_000);
-  
-        // Resume chat polling only if on chat 
-        if (STATE.page === 'chat') {
-          loadChat();
-          Timers.setInterval('chat', loadChat, 10_000);
-        }
-  
-        // Refresh notifications on tab return
-        Timers.setTimeout('notif-resume', () => {
-          if (typeof checkNotifications === 'function') checkNotifications();
-        }, 1500);
-      }
-    });
-  }
-  
-  
-  // ==================== NAVIGATION ====================
-  // v2.0: Combined goTo +  renderer in one function.
-  //        Removed the fragile _baseGoTo override pattern.
-  //        Added closeSidebar() integration for mobile.
-  
-  /**  → render function mapping (populated as render functions are defined) */
-  const _RENDERERS = {};
-  
-  /**
-   * Navigate to a , update nav highlight, render content.
-   * @param {string}  —  name (matches id="page-{name}")
-   */
-  function goTo(page) {
-    // Close sidebar on navigation (mobile)
-    if (typeof closeSidebar === 'function') {
-      closeSidebar();
+
+  // 5. If unlocked or bypassed -> Start the main application
+  const appEl = document.getElementById('app');
+  if (appEl) appEl.style.display = 'flex';
+
+  startHeartbeat();
+  startOnlinePolling();
+  loadDashboard();
+  setupVisibilityHandler();
+
+  window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.substring(1);
+    if (hash && hash !== STATE.page && document.getElementById('page-' + hash)) {
+      goTo(hash);
     }
-  
-    if (window.location.hash !== '#' + page) {
-      history.replaceState(null, null, '#' + page);
+  });
+
+  setTimeout(checkHTOnboarding, 2500); // Show popup after dash loads
+}
+
+
+// ==================== HEARTBEAT & ONLINE ====================
+// v2.0: Uses Timers manager, visibility-aware, silent API calls
+
+function startHeartbeat() {
+  sendHeartbeat(); // Immediate first call
+  Timers.setInterval('heartbeat', sendHeartbeat, 30_000);
+}
+
+async function sendHeartbeat() {
+  try {
+    await Api.call('heartbeat', { agentNo: STATE.agentNo }, { silent: true, dedupe: false, cache: false });
+  } catch { /* silent */ }
+}
+
+function startOnlinePolling() {
+  loadOnlineCount(); // Immediate
+  Timers.setInterval('online', loadOnlineCount, 60_000);
+}
+
+async function loadOnlineCount() {
+  try {
+    const d = await Api.call('getOnlineCount', {}, { cache: true, ttl: 45_000, silent: true });
+    if (d.success) {
+      const el = $('onlineCount');
+      if (el) el.textContent = d.online || 0;
     }
-  
-    STATE.page = page;
-  
-    // Hide all pages, show target
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    const pageEl = $('page-' + page);
-    if (pageEl) pageEl.classList.add('active');
-  
-    // Update sidebar nav highlights
-    document.querySelectorAll('.nav-item').forEach(n => {
-      n.classList.remove('active');
-      if (n.getAttribute('onclick')?.includes(`'${page}'`)) {
-        n.classList.add('active');
-      }
-    });
-  
-    // Close mobile sidebar (legacy support)
-    $('sidebar')?.classList.remove('open');
-    const overlay = $('sidebarOverlay');
-    if (overlay) overlay.style.display = 'none';
-  
-    // Scroll content to top
-    document.querySelector('.pages-wrapper')?.scrollTo({ top: 0, behavior: 'instant' });
-  
-    // Stop chat polling when leaving chat
-    if (page !== 'chat') {
+  } catch { /* silent */ }
+}
+
+/**
+ * v2.0: Pause all polling when tab is hidden, resume when visible.
+ * This saves significant bandwidth and API quota.
+ */
+function setupVisibilityHandler() {
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      // Pause expensive polling
+      Timers.clearInterval('heartbeat');
+      Timers.clearInterval('online');
       Timers.clearInterval('chat');
-    }
-  
-    // Call the page's render function if one exists
-    const renderer = PAGE_RENDERERS[page];
-    if (renderer) {
-      try { renderer(); }
-      catch (e) { console.error(`Render error [${page}]:`, e); }
-    }
-  }
-  
-  
-  
-  // ==================== LOAD DASHBOARD ====================
-  // v2.0: Parallel data fetching where possible, proper error recovery
-  
-  /** Track if a dashboard load is already in progress */
-  let _dashboardLoading = false;
-  
-  async function loadDashboard() {
-    // Prevent overlapping dashboard loads
-    if (_dashboardLoading) return;
-    _dashboardLoading = true;
-  
-    Loading.show();
-  
-    try {
-      const d = await Api.call('getDashboardData', { agentNo: STATE.agentNo });
-  
-      if (!d.success) {
-        showToast(d.error || 'Failed to load dashboard', 'error');
-        return;
+    } else {
+      // Resume with immediate execution
+      if (!STATE.agentNo) return;
+
+      sendHeartbeat();
+      Timers.setInterval('heartbeat', sendHeartbeat, 30_000);
+
+      loadOnlineCount();
+      Timers.setInterval('online', loadOnlineCount, 60_000);
+
+      // Resume chat polling only if on chat 
+      if (STATE.page === 'chat') {
+        loadChat();
+        Timers.setInterval('chat', loadChat, 10_000);
       }
-  
-      // Update state
-      STATE.data = d;
-      STATE.week = d.week;
-      STATE.weeks = d.availableWeeks || [];
-      STATE.lastUpdated = d.lastUpdated;
-  
-      // Update sidebar agent info
-      updateSidebarAgent(d.agent);
-  
-      // Setup week selector
-      setupWeekSelector();
-  
-      // Route based on URL hash or fallback to home
-      let startPage = 'home';
-      const hash = window.location.hash.substring(1);
-      if (hash && document.getElementById('page-' + hash)) {
-        startPage = hash;
-      }
-      goTo(startPage);
-  
-      // Start countdown
-      startCountdown();
-  
-      // Check notifications after a short delay (non-blocking)
-      Timers.setTimeout('notif-check', () => {
+
+      // Refresh notifications on tab return
+      Timers.setTimeout('notif-resume', () => {
         if (typeof checkNotifications === 'function') checkNotifications();
-        if (typeof check100XPPopup === 'function') check100XPPopup();
-      }, 2000);
-  
-    } catch (e) {
-      showToast('Failed to connect to HQ', 'error');
-      console.error('Dashboard load error:', e);
-    } finally {
-      Loading.hide();
-      _dashboardLoading = false;
+      }, 1500);
     }
+  });
+}
+
+
+// ==================== NAVIGATION ====================
+// v2.0: Combined goTo +  renderer in one function.
+//        Removed the fragile _baseGoTo override pattern.
+//        Added closeSidebar() integration for mobile.
+
+/**  → render function mapping (populated as render functions are defined) */
+const _RENDERERS = {};
+
+/**
+ * Navigate to a , update nav highlight, render content.
+ * @param {string}  —  name (matches id="page-{name}")
+ */
+function goTo(page) {
+  // Close sidebar on navigation (mobile)
+  if (typeof closeSidebar === 'function') {
+    closeSidebar();
   }
-  
-  /** Update sidebar with agent info from dashboard data */
-  /** Update sidebar with agent info from dashboard data */
-  /** Update sidebar with agent info from dashboard data */
-  function updateSidebarAgent(agent) {
+
+  if (window.location.hash !== '#' + page) {
+    history.replaceState(null, null, '#' + page);
+  }
+
+  STATE.page = page;
+
+  // Hide all pages, show target
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const pageEl = $('page-' + page);
+  if (pageEl) pageEl.classList.add('active');
+
+  // Update sidebar nav highlights
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.remove('active');
+    if (n.getAttribute('onclick')?.includes(`'${page}'`)) {
+      n.classList.add('active');
+    }
+  });
+
+  // Close mobile sidebar (legacy support)
+  $('sidebar')?.classList.remove('open');
+  const overlay = $('sidebarOverlay');
+  if (overlay) overlay.style.display = 'none';
+
+  // Scroll content to top
+  document.querySelector('.pages-wrapper')?.scrollTo({ top: 0, behavior: 'instant' });
+
+  // Stop chat polling when leaving chat
+  if (page !== 'chat') {
+    Timers.clearInterval('chat');
+  }
+
+  // Call the page's render function if one exists
+  const renderer = PAGE_RENDERERS[page];
+  if (renderer) {
+    try { renderer(); }
+    catch (e) { console.error(`Render error [${page}]:`, e); }
+  }
+}
+
+
+
+// ==================== LOAD DASHBOARD ====================
+// v2.0: Parallel data fetching where possible, proper error recovery
+
+/** Track if a dashboard load is already in progress */
+let _dashboardLoading = false;
+
+async function loadDashboard() {
+  // Prevent overlapping dashboard loads
+  if (_dashboardLoading) return;
+  _dashboardLoading = true;
+
+  Loading.show();
+
+  try {
+    const d = await Api.call('getDashboardData', { agentNo: STATE.agentNo });
+
+    if (!d.success) {
+      showToast(d.error || 'Failed to load dashboard', 'error');
+      return;
+    }
+
+    // Update state
+    STATE.data = d;
+    STATE.week = d.week;
+    STATE.weeks = d.availableWeeks || [];
+    STATE.lastUpdated = d.lastUpdated;
+
+    // Update sidebar agent info
+    updateSidebarAgent(d.agent);
+
+    // Setup week selector
+    setupWeekSelector();
+
+    // Route based on URL hash or fallback to home
+    let startPage = 'home';
+    const hash = window.location.hash.substring(1);
+    if (hash && document.getElementById('page-' + hash)) {
+      startPage = hash;
+    }
+    goTo(startPage);
+
+    // Start countdown
+    startCountdown();
+
+    // Check notifications after a short delay (non-blocking)
+    Timers.setTimeout('notif-check', () => {
+      if (typeof checkNotifications === 'function') checkNotifications();
+      if (typeof check100XPPopup === 'function') check100XPPopup();
+    }, 2000);
+
+  } catch (e) {
+    showToast('Failed to connect to HQ', 'error');
+    console.error('Dashboard load error:', e);
+  } finally {
+    Loading.hide();
+    _dashboardLoading = false;
+  }
+}
+
+/** Update sidebar with agent info from dashboard data */
+/** Update sidebar with agent info from dashboard data */
+/** Update sidebar with agent info from dashboard data */
+function updateSidebarAgent(agent) {
   if (!agent?.profile) return;
 
   const { name, team } = agent.profile;
@@ -1370,16 +1372,16 @@ function hideLoadingScreen() {
 
   if ($('sbName')) $('sbName').textContent = name;
   if ($('sbTeam')) $('sbTeam').textContent = team;
-  if ($('sbId'))   $('sbId').textContent = STATE.agentNo;
+  if ($('sbId')) $('sbId').textContent = STATE.agentNo;
 
   const sbPfp = $('sbPfp');
   if (sbPfp) {
     sbPfp.style.setProperty('--team-color', tColor);
-    
+
     const pfpUrl = teamPfp(team);
     // Add the online dot back in since we are overwriting innerHTML
     const onlineDot = '<div class="online-dot"></div>';
-    
+
     if (pfpUrl) {
       sbPfp.innerHTML = `<img src="${pfpUrl}" alt="${team}">${onlineDot}`;
     } else {
@@ -1387,14 +1389,14 @@ function hideLoadingScreen() {
     }
   }
 }
-  /** Populate the week dropdown in sidebar */
-  function setupWeekSelector() {
+/** Populate the week dropdown in sidebar */
+function setupWeekSelector() {
   const select = $('weekSelect');
   if (!select) return;
-  
+
   // 1. Force the active week into the array, even if the DB is empty
   if (STATE.week && !STATE.weeks.includes(STATE.week)) {
-     STATE.weeks.push(STATE.week);
+    STATE.weeks.push(STATE.week);
   }
 
   // 2. Erase "Pre Season" from the dropdown permanently
@@ -1404,181 +1406,181 @@ function hideLoadingScreen() {
     `<option value="${w}" ${w === STATE.week ? 'selected' : ''}>${w}</option>`
   ).join('');
 
-  select.onchange = function() {
+  select.onchange = function () {
     STATE.week = this.value;
-    Api.invalidate(); 
+    Api.invalidate();
     loadDashboard();
   };
 }
-  
-  
-  // ==================== SYNC ====================
-  // v2.0: Debounced, prevents double-clicks, invalidates cache after sync
-  
-  let _syncInProgress = false;
-  
-  async function syncData() {
-    if (_syncInProgress) return;
-    _syncInProgress = true;
-  
-    const btn = $('syncBtn');
-    if (btn) { btn.textContent = '⟳ SYNCING...'; btn.disabled = true; }
-  
-    try {
-      const d = await Api.call('refreshAgentStats', { agentNo: STATE.agentNo }, { dedupe: false, cache: false });
-  
-      if (d.success) {
-        if (d.alreadySynced) {
-          if (btn) btn.textContent = `⏱ ${d.message}`;
-        } else {
-          if (btn) btn.textContent = '✓ SYNCED';
-          showToast('Data synced!', 'success');
-  
-          // Invalidate cache so dashboard reloads fresh data
-          Api.invalidate();
-  
-          // Reload dashboard after short delay
-          Timers.setTimeout('post-sync-reload', () => loadDashboard(), 800);
-        }
+
+
+// ==================== SYNC ====================
+// v2.0: Debounced, prevents double-clicks, invalidates cache after sync
+
+let _syncInProgress = false;
+
+async function syncData() {
+  if (_syncInProgress) return;
+  _syncInProgress = true;
+
+  const btn = $('syncBtn');
+  if (btn) { btn.textContent = '⟳ SYNCING...'; btn.disabled = true; }
+
+  try {
+    const d = await Api.call('refreshAgentStats', { agentNo: STATE.agentNo }, { dedupe: false, cache: false });
+
+    if (d.success) {
+      if (d.alreadySynced) {
+        if (btn) btn.textContent = `⏱ ${d.message}`;
       } else {
-        if (btn) btn.textContent = '✗ FAILED';
-        showToast(d.error || 'Sync failed', 'error');
+        if (btn) btn.textContent = '✓ SYNCED';
+        showToast('Data synced!', 'success');
+
+        // Invalidate cache so dashboard reloads fresh data
+        Api.invalidate();
+
+        // Reload dashboard after short delay
+        Timers.setTimeout('post-sync-reload', () => loadDashboard(), 800);
       }
-    } catch (e) {
-      if (btn) btn.textContent = '✗ ERROR';
-      showToast('Sync failed', 'error');
+    } else {
+      if (btn) btn.textContent = '✗ FAILED';
+      showToast(d.error || 'Sync failed', 'error');
     }
-  
-    // Reset button after 5s
-    Timers.setTimeout('sync-btn-reset', () => {
-      _syncInProgress = false;
-      if (btn) { btn.textContent = '⟳ Sync Last.fm'; btn.disabled = false; }
-    }, 5000);
+  } catch (e) {
+    if (btn) btn.textContent = '✗ ERROR';
+    showToast('Sync failed', 'error');
   }
-  
-  // Alias
-  function handleManualSync() { syncData(); }
-  
-  
-  // =============================================
-  // END OF PART 1
-  // =============================================
-  // Part 2 will define all render/page functions
-  // and register them in PAGE_RENDERERS.
-  //
-  // Part 3 will define features (chat, SOTD, admin,
-  // 148 protocol, badges) + final initialization
-  // + window exports.
-  // =============================================
-  // ██████  PART 2: ALL RENDER FUNCTIONS
-  // ██████  v2.0 — Cached, DRY, Error-Resilient
-  // =============================================
-  //
-  // KEY IMPROVEMENTS OVER v1.0:
-  // ───────────────────────────────────────────────
-  // ✅ buildRankRow / displayName / buildMissionRow — DRY helpers
-  // ✅ Parallel async fetches in renderHome (streak + activity)
-  // ✅ Cached API calls for rankings, goals, album2x, feed, streak
-  // ✅ Error boundaries with retry buttons on every API page
-  // ✅ Army Bomb CSS injected once (not per-render)
-  // ✅ Loading states for all async pages
-  // ✅ warnBanner/leaveBanner use style.display (fixes v1 bug)
-  // ✅ Chat uses Timers manager (no interval stacking)
-  // ✅ Consistent null-safe DOM access
-  // =============================================
-  
-  'use strict';
-  
-  // ==================== REUSABLE HELPERS ====================
-  
-  /**
-   * Sanitize a display name. Hides raw Agent IDs as "Secret Agent".
-   * @param {string} name
-   * @returns {string}
-   */
-  function displayName(name) {
-    const n = sanitize(name || 'Agent');
-    return n.toUpperCase().startsWith('AGENT') ? 'Secret Agent' : n;
-  }
-  
-  /**
-   * Build a ranking row — reused in home top agents + both ranking tabs.
-   * v2.0: Extracted from 3 duplicate implementations.
-   *
-   * @param {object} agent — { agentNo, name, team, totalXP }
-   * @param {number} index — 0-based rank position
-   * @param {object} [opts]
-   * @param {boolean} [opts.showTeam=true]
-   * @returns {string} HTML
-   */
-  function buildRankRow(agent, index, opts = {}) {
-    const { showTeam = true } = opts;
-    const isMe = agent.agentNo === STATE.agentNo;
-    const medals = ['🥇', '🥈', '🥉'];
-    const icon = index < 3 ? medals[index] : index + 1;
-  
-    return `<div class="r-row" style="border-left:3px solid ${teamColor(agent.team)}">
+
+  // Reset button after 5s
+  Timers.setTimeout('sync-btn-reset', () => {
+    _syncInProgress = false;
+    if (btn) { btn.textContent = '⟳ Sync Last.fm'; btn.disabled = false; }
+  }, 5000);
+}
+
+// Alias
+function handleManualSync() { syncData(); }
+
+
+// =============================================
+// END OF PART 1
+// =============================================
+// Part 2 will define all render/page functions
+// and register them in PAGE_RENDERERS.
+//
+// Part 3 will define features (chat, SOTD, admin,
+// 148 protocol, badges) + final initialization
+// + window exports.
+// =============================================
+// ██████  PART 2: ALL RENDER FUNCTIONS
+// ██████  v2.0 — Cached, DRY, Error-Resilient
+// =============================================
+//
+// KEY IMPROVEMENTS OVER v1.0:
+// ───────────────────────────────────────────────
+// ✅ buildRankRow / displayName / buildMissionRow — DRY helpers
+// ✅ Parallel async fetches in renderHome (streak + activity)
+// ✅ Cached API calls for rankings, goals, album2x, feed, streak
+// ✅ Error boundaries with retry buttons on every API page
+// ✅ Army Bomb CSS injected once (not per-render)
+// ✅ Loading states for all async pages
+// ✅ warnBanner/leaveBanner use style.display (fixes v1 bug)
+// ✅ Chat uses Timers manager (no interval stacking)
+// ✅ Consistent null-safe DOM access
+// =============================================
+
+'use strict';
+
+// ==================== REUSABLE HELPERS ====================
+
+/**
+ * Sanitize a display name. Hides raw Agent IDs as "Secret Agent".
+ * @param {string} name
+ * @returns {string}
+ */
+function displayName(name) {
+  const n = sanitize(name || 'Agent');
+  return n.toUpperCase().startsWith('AGENT') ? 'Secret Agent' : n;
+}
+
+/**
+ * Build a ranking row — reused in home top agents + both ranking tabs.
+ * v2.0: Extracted from 3 duplicate implementations.
+ *
+ * @param {object} agent — { agentNo, name, team, totalXP }
+ * @param {number} index — 0-based rank position
+ * @param {object} [opts]
+ * @param {boolean} [opts.showTeam=true]
+ * @returns {string} HTML
+ */
+function buildRankRow(agent, index, opts = {}) {
+  const { showTeam = true } = opts;
+  const isMe = agent.agentNo === STATE.agentNo;
+  const medals = ['🥇', '🥈', '🥉'];
+  const icon = index < 3 ? medals[index] : index + 1;
+
+  return `<div class="r-row" style="border-left:3px solid ${teamColor(agent.team)}">
       <div class="r-num ${index < 3 ? 'top' : ''}">${icon}</div>
       <div class="r-name ${isMe ? 'me' : ''}">${displayName(agent.name)}${isMe
-        ? ' <span style="font-size:7px;color:var(--red-main);border:1px solid var(--red-main);padding:1px 4px;margin-left:3px;">YOU</span>'
-        : ''}</div>
+      ? ' <span style="font-size:7px;color:var(--red-main);border:1px solid var(--red-main);padding:1px 4px;margin-left:3px;">YOU</span>'
+      : ''}</div>
       ${showTeam ? `<div class="r-team">${(agent.team || '').replace('Team ', '')}</div>` : ''}
       <div class="r-xp">${fmt(agent.totalXP)}</div>
     </div>`;
-  }
+}
 /**
  * Fetches and renders global rankings
  */
 async function renderOverallRankings() {
-    const list = $('rankList');
-    if (!list) return;
-    showPageLoading(list);
-    try {
-        const d = await Api.call('getRankings', { week: STATE.week, limit: 100 }, { cache: true, ttl: 30000 });
-        if (d.success) {
-            list.innerHTML = d.rankings.map((agent, i) => buildRankCard(agent, i, { showTeam: true })).join('');
-        }
-    } catch (e) { showPageError(list, 'renderOverallRankings'); }
+  const list = $('rankList');
+  if (!list) return;
+  showPageLoading(list);
+  try {
+    const d = await Api.call('getRankings', { week: STATE.week, limit: 100 }, { cache: true, ttl: 30000 });
+    if (d.success) {
+      list.innerHTML = d.rankings.map((agent, i) => buildRankCard(agent, i, { showTeam: true })).join('');
+    }
+  } catch (e) { showPageError(list, 'renderOverallRankings'); }
 }
 
 /**
  * Fetches and renders team-specific rankings
  */
 async function renderTeamRankings() {
-    const list = $('rankList');
-    if (!list) return;
-    const team = STATE.data?.agent?.profile?.team;
-    showPageLoading(list);
-    try {
-        const d = await Api.call('getTeamRankings', { week: STATE.week, team: team }, { cache: true, ttl: 30000 });
-        if (d.success) {
-            list.innerHTML = d.rankings.map((agent, i) => buildRankCard(agent, i, { showTeam: false })).join('');
-        }
-    } catch (e) { showPageError(list, 'renderTeamRankings'); }
+  const list = $('rankList');
+  if (!list) return;
+  const team = STATE.data?.agent?.profile?.team;
+  showPageLoading(list);
+  try {
+    const d = await Api.call('getTeamRankings', { week: STATE.week, team: team }, { cache: true, ttl: 30000 });
+    if (d.success) {
+      list.innerHTML = d.rankings.map((agent, i) => buildRankCard(agent, i, { showTeam: false })).join('');
+    }
+  } catch (e) { showPageError(list, 'renderTeamRankings'); }
 }
-  
-  /**
-   * Build a pass/fail mission row.
-   * @param {string} name — Mission label with emoji
-   * @param {boolean} passed
-   * @returns {string} HTML
-   */
-  function buildMissionRow(name, passed) {
-    return `<div class="m-row">
+
+/**
+ * Build a pass/fail mission row.
+ * @param {string} name — Mission label with emoji
+ * @param {boolean} passed
+ * @returns {string} HTML
+ */
+function buildMissionRow(name, passed) {
+  return `<div class="m-row">
       <span>${name}</span>
       <span class="${passed ? 'm-pass' : 'm-fail'}">${passed ? '✓ PASS' : '✗ FAIL'}</span>
     </div>`;
-  }
-  
-  /**
-   * Render a unit track with progress bar.
-   * Handles exempt (on-leave) state.
-   */
-  function renderUnitTrack(name, count, req) {
-    const isExempt = typeof count === 'string';
-    const pct = isExempt ? 100 : Math.min(100, ((count || 0) / req) * 100);
-    const done = isExempt || (typeof count === 'number' && count >= req);
-    return `
+}
+
+/**
+ * Render a unit track with progress bar.
+ * Handles exempt (on-leave) state.
+ */
+function renderUnitTrack(name, count, req) {
+  const isExempt = typeof count === 'string';
+  const pct = isExempt ? 100 : Math.min(100, ((count || 0) / req) * 100);
+  const done = isExempt || (typeof count === 'number' && count >= req);
+  return `
       <div class="unit-box">
         <div class="ub-hdr">
           <span class="ub-name">${sanitize(name)}</span>
@@ -1586,26 +1588,26 @@ async function renderTeamRankings() {
         </div>
         <div class="pbar"><div class="pfill ${done ? 'green' : ''}" style="width:${pct}%"></div></div>
       </div>`;
-  }
-  
-  /**
-   * Render a side-mission track with 7-day grid.
-   * @param {object} track — { name, daily, weeklyTotal, weeklyRequired }
-   * @param {string[]} weekDates — Array of 7 date strings
-   * @param {string} today — Current KST date string
-   */
-  function renderSMTrack(track, weekDates, today) {
-    const daysHtml = (weekDates || []).map((date, i) => {
-      const d = track.daily?.[date];
-      const count = d?.count ?? 0;
-      const passed = d?.passed ?? false;
-      const isFuture = date > today;
-      const cls = isFuture ? 'future' : (passed ? 'pass' : 'fail');
-      return `<div class="sm-cell ${cls}"><div class="sc-day">${DAYS[i]}</div><div class="sc-val">${isFuture ? '—' : count}</div></div>`;
-    }).join('');
-  
-    const wDone = (track.weeklyTotal || 0) >= (track.weeklyRequired || 20);
-    return `
+}
+
+/**
+ * Render a side-mission track with 7-day grid.
+ * @param {object} track — { name, daily, weeklyTotal, weeklyRequired }
+ * @param {string[]} weekDates — Array of 7 date strings
+ * @param {string} today — Current KST date string
+ */
+function renderSMTrack(track, weekDates, today) {
+  const daysHtml = (weekDates || []).map((date, i) => {
+    const d = track.daily?.[date];
+    const count = d?.count ?? 0;
+    const passed = d?.passed ?? false;
+    const isFuture = date > today;
+    const cls = isFuture ? 'future' : (passed ? 'pass' : 'fail');
+    return `<div class="sm-cell ${cls}"><div class="sc-day">${DAYS[i]}</div><div class="sc-val">${isFuture ? '—' : count}</div></div>`;
+  }).join('');
+
+  const wDone = (track.weeklyTotal || 0) >= (track.weeklyRequired || 20);
+  return `
       <div class="sm-track">
         <div class="sm-hdr">
           <span class="sm-n">${sanitize(track.name)}</span>
@@ -1613,20 +1615,20 @@ async function renderTeamRankings() {
         </div>
         <div class="sm-grid">${daysHtml}</div>
       </div>`;
-  }
-  
-  /**
-   * Render a goal progress bar with remaining count.
-   * @param {string} name — Goal name
-   * @param {number} current — Current count
-   * @param {number} goal — Target count
-   * @param {string} [status] — 'completed' or other
-   */
-  function renderGoalBar(name, current, goal, status) {
-    const pct = goal > 0 ? Math.min(100, (current / goal) * 100) : 0;
-    const done = status === 'completed' || current >= goal;
-    const remaining = Math.max(0, goal - current);
-    return `
+}
+
+/**
+ * Render a goal progress bar with remaining count.
+ * @param {string} name — Goal name
+ * @param {number} current — Current count
+ * @param {number} goal — Target count
+ * @param {string} [status] — 'completed' or other
+ */
+function renderGoalBar(name, current, goal, status) {
+  const pct = goal > 0 ? Math.min(100, (current / goal) * 100) : 0;
+  const done = status === 'completed' || current >= goal;
+  const remaining = Math.max(0, goal - current);
+  return `
       <div style="margin-bottom:14px;">
         <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
           <span style="font-weight:700">${sanitize(name)}</span>
@@ -1635,39 +1637,39 @@ async function renderTeamRankings() {
         <div class="pbar"><div class="pfill ${done ? 'green' : ''}" style="width:${pct}%"></div></div>
         ${remaining > 0 ? `<div style="font-size:9px;color:var(--text-muted);margin-top:2px;">${fmt(remaining)} more needed</div>` : ''}
       </div>`;
-  }
-  
-  /**
-   * Build a member pill for album2x team lists.
-   * @param {object} m — { name, passed }
-   * @param {boolean} passed
-   */
-  function buildMemberPill(m, passed) {
-    const n = displayName(m.name);
-    const icon = passed ? '✨' : '❌';
-    const bg = passed ? 'rgba(0,255,102,0.05)' : 'rgba(255,0,0,0.05)';
-    return `<span style="font-size:9px;padding:3px 8px;background:${bg};color:var(--text-muted);">${icon} ${n}</span>`;
-  }
-  
-  /**
-   * Show a loading spinner inside a container, or an error with retry.
-   */
-  function showPageLoading(container) {
-    if (container) container.innerHTML = '<div class="page-loading"><div class="spinner"></div></div>';
-  }
-  
-  function showPageError(container, retryFn) {
-    if (!container) return;
-    const fnName = typeof retryFn === 'string' ? retryFn : 'loadDashboard';
-    container.innerHTML = `
+}
+
+/**
+ * Build a member pill for album2x team lists.
+ * @param {object} m — { name, passed }
+ * @param {boolean} passed
+ */
+function buildMemberPill(m, passed) {
+  const n = displayName(m.name);
+  const icon = passed ? '✨' : '❌';
+  const bg = passed ? 'rgba(0,255,102,0.05)' : 'rgba(255,0,0,0.05)';
+  return `<span style="font-size:9px;padding:3px 8px;background:${bg};color:var(--text-muted);">${icon} ${n}</span>`;
+}
+
+/**
+ * Show a loading spinner inside a container, or an error with retry.
+ */
+function showPageLoading(container) {
+  if (container) container.innerHTML = '<div class="page-loading"><div class="spinner"></div></div>';
+}
+
+function showPageError(container, retryFn) {
+  if (!container) return;
+  const fnName = typeof retryFn === 'string' ? retryFn : 'loadDashboard';
+  container.innerHTML = `
       <div style="text-align:center;padding:30px;">
         <div style="font-size:28px;margin-bottom:10px;">⚠️</div>
         <div style="font-size:13px;color:var(--red-main);margin-bottom:12px;">Failed to load</div>
         <button onclick="${fnName}()" class="btn-outline">🔄 Retry</button>
       </div>`;
-  }
-  
-  
+}
+
+
 async function renderHome() {
   const content = $('homeContent');
   if (!content) return;
@@ -1799,12 +1801,12 @@ async function renderHome() {
               <span style="font-family:var(--font-mono); font-size:9px; color:var(--text-ghost);">${sanitize(team.replace('Team ', ''))}</span>
             </div>
             ${trackEntries.length ? trackEntries.slice(0, 3).map(([name, goalInfo]) => {
-              const prog = goalInfo.teams?.[team] || { current: 0 };
-              const goal = goalInfo.goal || 1;
-              const cur = prog.current || 0;
-              const pct = Math.min(100, Math.round((cur / goal) * 100));
-              const done = pct >= 100;
-              return `
+        const prog = goalInfo.teams?.[team] || { current: 0 };
+        const goal = goalInfo.goal || 1;
+        const cur = prog.current || 0;
+        const pct = Math.min(100, Math.round((cur / goal) * 100));
+        const done = pct >= 100;
+        return `
                 <div style="margin-bottom:8px;">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
                     <span style="font-size:10px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:55%;">${sanitize(name)}</span>
@@ -1815,7 +1817,7 @@ async function renderHome() {
                   </div>
                 </div>
               `;
-            }).join('') : '<div style="font-size:10px; color:var(--text-ghost);">No track targets set</div>'}
+      }).join('') : '<div style="font-size:10px; color:var(--text-ghost);">No track targets set</div>'}
             <div style="text-align:center; margin-top:8px;">
               <span onclick="goTo('trackgoals')" style="font-size:9px; color:var(--wave-foam); cursor:pointer; font-weight:700;">
                 ${trackEntries.length > 3 ? `View All ${trackEntries.length} →` : 'Details →'}
@@ -1829,12 +1831,12 @@ async function renderHome() {
               <span style="font-family:var(--font-mono); font-size:9px; color:var(--text-ghost);">${sanitize(team.replace('Team ', ''))}</span>
             </div>
             ${albumEntries.length ? albumEntries.slice(0, 3).map(([name, goalInfo]) => {
-              const prog = goalInfo.teams?.[team] || { current: 0 };
-              const goal = goalInfo.goal || 1;
-              const cur = prog.current || 0;
-              const pct = Math.min(100, Math.round((cur / goal) * 100));
-              const done = pct >= 100;
-              return `
+        const prog = goalInfo.teams?.[team] || { current: 0 };
+        const goal = goalInfo.goal || 1;
+        const cur = prog.current || 0;
+        const pct = Math.min(100, Math.round((cur / goal) * 100));
+        const done = pct >= 100;
+        return `
                 <div style="margin-bottom:8px;">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
                     <span style="font-size:10px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:55%;">${sanitize(name)}</span>
@@ -1845,7 +1847,7 @@ async function renderHome() {
                   </div>
                 </div>
               `;
-            }).join('') : '<div style="font-size:10px; color:var(--text-ghost);">No album targets set</div>'}
+      }).join('') : '<div style="font-size:10px; color:var(--text-ghost);">No album targets set</div>'}
             <div style="text-align:center; margin-top:8px;">
               <span onclick="goTo('albumgoals')" style="font-size:9px; color:var(--wave-foam); cursor:pointer; font-weight:700;">
                 ${albumEntries.length > 3 ? `View All ${albumEntries.length} →` : 'Details →'}
@@ -2050,11 +2052,11 @@ async function renderHome() {
 async function renderHomeStreakWidget(stats) {
   const el = $('homeStreakWidget');
   if (!el) return;
-  
+
   try {
     // Fetch live streak data to get accurate 'todayCompleted' status
     const d = await Api.call('getStreakData', { agentNo: STATE.agentNo }, { cache: true, ttl: 30000, silent: true });
-    
+
     let streak = stats.streak || 0;
     let best = stats.bestStreak || streak;
     let statusText = streak > 0 ? '✓ ACTIVE' : '✗ BROKEN';
@@ -2063,7 +2065,7 @@ async function renderHomeStreakWidget(stats) {
     if (d.success && d.streak) {
       streak = d.streak.current || 0;
       best = d.streak.best || best;
-      
+
       // True Logic: Only "Secured" if they streamed today
       if (d.streak.todayCompleted) {
         statusText = '✓ SECURED';
@@ -2140,7 +2142,7 @@ async function updateTickerWithActivity() {
         return `<span class="ticker-item">● ${sanitize(text)}</span>`;
       }).join('');
     }
-  } catch (e) {}
+  } catch (e) { }
 }
 
 
@@ -2248,8 +2250,8 @@ function buildMissionCard(icon, title, passed, goalsList, targetPage) {
       ${hasGoals ? `
         <div style="display:flex; flex-direction:column; gap:6px;">
           ${goalsList.map(g => {
-            const pct = g.goal > 0 ? Math.min(100, (g.current / g.goal) * 100) : 0;
-            return `
+    const pct = g.goal > 0 ? Math.min(100, (g.current / g.goal) * 100) : 0;
+    return `
               <div style="display:flex; align-items:center; gap:8px;">
                 <span style="font-size:10px; color:${g.done ? 'var(--green, #00ff66)' : 'var(--text-muted)'}; width:14px;">${g.done ? '✅' : '⏳'}</span>
                 <span style="flex:1; font-size:11px; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${sanitize(g.name)}</span>
@@ -2258,7 +2260,7 @@ function buildMissionCard(icon, title, passed, goalsList, targetPage) {
                 </span>
               </div>
             `;
-          }).join('')}
+  }).join('')}
         </div>
       ` : ''}
     </div>
@@ -2444,58 +2446,58 @@ async function updateActivityWidget() {
     // silent
   }
 }
-  
-  
-  // =============================================
-  // ██████  PROFILE PAGE
-  // =============================================
-  
-  // =============================================
-  // ██████  PROFILE PAGE (Arirang Theme)
-  // =============================================
-  
- function renderProfile() {
-    const container = $('profileContent');
-    if (!container) return;
 
-    try {
-        const a = STATE.data?.agent || {};
-        const p = a.profile || {};
-        const stats = a.stats || {};
-        const album2xStatus = a.album2xStatus || {};
-        const trackContributions = a.trackContributions || {};
-        const albumContributions = a.albumContributions || {};
-        const currentWeekXP = parseInt(stats.totalXP) || 0;
-        const team = p.team || 'Unknown';
-        const tColor = teamColor(team);
 
-        const isExempt = album2xStatus.passed === true &&
-            Object.values(album2xStatus.tracks || {}).some(v => v === 'Exempt');
+// =============================================
+// ██████  PROFILE PAGE
+// =============================================
 
-        const xpBadges = getLevelBadges(STATE.agentNo, currentWeekXP) || [];
-        const album2xBadge = getAlbum2xBadge(STATE.agentNo, STATE.week);
-        const currentWeekBadges = [];
-        if (album2xBadge) currentWeekBadges.push(album2xBadge);
-        currentWeekBadges.push(...xpBadges);
+// =============================================
+// ██████  PROFILE PAGE (Arirang Theme)
+// =============================================
 
-        // ✅ CATCH-ALL LAST.FM LOGIC: checks a.lastfms, a.lastfm, p.lastfms, p.lastfm
-        const rawLastfm = a.lastfms || a.lastfm || p.lastfms || p.lastfm;
-        const lastfmUsernames = Array.isArray(rawLastfm)
-            ? rawLastfm
-            : (rawLastfm ? [rawLastfm] : []);
-        const hasLastfm = lastfmUsernames.length > 0;
+function renderProfile() {
+  const container = $('profileContent');
+  if (!container) return;
 
-        // ✅ SAFE week dates
-        const daysArray = getWeekDates(STATE.week);
-        const weekDates = {
-            start: daysArray[0],
-            end: daysArray[6]
-        };
+  try {
+    const a = STATE.data?.agent || {};
+    const p = a.profile || {};
+    const stats = a.stats || {};
+    const album2xStatus = a.album2xStatus || {};
+    const trackContributions = a.trackContributions || {};
+    const albumContributions = a.albumContributions || {};
+    const currentWeekXP = parseInt(stats.totalXP) || 0;
+    const team = p.team || 'Unknown';
+    const tColor = teamColor(team);
 
-        let html = '';
+    const isExempt = album2xStatus.passed === true &&
+      Object.values(album2xStatus.tracks || {}).some(v => v === 'Exempt');
 
-        // --- 0. PROFILE AGENT CARD ---
-        html += `
+    const xpBadges = getLevelBadges(STATE.agentNo, currentWeekXP) || [];
+    const album2xBadge = getAlbum2xBadge(STATE.agentNo, STATE.week);
+    const currentWeekBadges = [];
+    if (album2xBadge) currentWeekBadges.push(album2xBadge);
+    currentWeekBadges.push(...xpBadges);
+
+    // ✅ CATCH-ALL LAST.FM LOGIC: checks a.lastfms, a.lastfm, p.lastfms, p.lastfm
+    const rawLastfm = a.lastfms || a.lastfm || p.lastfms || p.lastfm;
+    const lastfmUsernames = Array.isArray(rawLastfm)
+      ? rawLastfm
+      : (rawLastfm ? [rawLastfm] : []);
+    const hasLastfm = lastfmUsernames.length > 0;
+
+    // ✅ SAFE week dates
+    const daysArray = getWeekDates(STATE.week);
+    const weekDates = {
+      start: daysArray[0],
+      end: daysArray[6]
+    };
+
+    let html = '';
+
+    // --- 0. PROFILE AGENT CARD ---
+    html += `
             <div class="profile-agent-card" style="--team-color: ${tColor}">
                 <div style="display: flex; align-items: center; gap: 20px; position: relative; z-index: 5;">
                     <div class="profile-pfp-large" style="--team-color: ${tColor};">
@@ -2515,8 +2517,8 @@ async function updateActivityWidget() {
             </div>
         `;
 
-        // --- 1. STATS GRID ---
-        html += `
+    // --- 1. STATS GRID ---
+    html += `
             <div class="grid-3" style="margin-bottom:24px;">
                 <div class="stat-box" style="border-top:2px solid var(--red-core);">
                     <div class="sv red" style="font-size:20px;">${fmt(stats.totalXP)}</div>
@@ -2539,17 +2541,17 @@ async function updateActivityWidget() {
                     <div class="sl">Album Streams</div>
                 </div>
                 <div class="stat-box">
-                    <div class="sv ${album2xStatus.passed ? 'green' : 'red'}" style="font-size: 10px;">${album2xStatus.passed ? 
-                        `<span style="color:var(--green); font-family:var(--font-mono); font-size:10px; border:1px solid var(--green); padding:2px 8px; border-radius:4px; background:rgba(0,255,0,0.1);">[✓] SECURED</span>` : 
-                        `<span style="color:var(--fail); font-family:var(--font-mono); font-size:10px; border:1px solid var(--fail); padding:2px 8px; border-radius:4px; background:rgba(255,0,0,0.1); animation:pulse 2s infinite;">[!] PENDING_ACTION</span>`
-                    }</div>
+                    <div class="sv ${album2xStatus.passed ? 'green' : 'red'}" style="font-size: 10px;">${album2xStatus.passed ?
+        `<span style="color:var(--green); font-family:var(--font-mono); font-size:10px; border:1px solid var(--green); padding:2px 8px; border-radius:4px; background:rgba(0,255,0,0.1);">[✓] SECURED</span>` :
+        `<span style="color:var(--fail); font-family:var(--font-mono); font-size:10px; border:1px solid var(--fail); padding:2px 8px; border-radius:4px; background:rgba(255,0,0,0.1); animation:pulse 2s infinite;">[!] PENDING_ACTION</span>`
+      }</div>
                     <div class="sl">2X Status</div>
                 </div>
             </div>
         `;
 
-        // --- 2. CONTRIBUTIONS ---
-        html += `
+    // --- 2. CONTRIBUTIONS ---
+    html += `
             <div style="display:flex; align-items:center; gap:12px; margin:0 0 16px 0;">
                 <div style="font-size:16px;">🎧</div>
                 <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Agent Contributions</div>
@@ -2561,33 +2563,33 @@ async function updateActivityWidget() {
                     <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Top Tracks</div>
                     <div style="max-height:150px; overflow-y:auto; padding-right:4px;">
                         ${Object.entries(trackContributions).length > 0
-                            ? Object.entries(trackContributions).sort((x, y) => y[1] - x[1]).map(([n, c]) => `
+        ? Object.entries(trackContributions).sort((x, y) => y[1] - x[1]).map(([n, c]) => `
                                 <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-subtle); font-size:11px;">
                                     <span style="color:#fff;">${sanitize(n)}</span>
                                     <span style="font-family:'Share Tech Mono', monospace; color:var(--wave-foam);">${fmt(c)}</span>
                                 </div>`).join('')
-                            : '<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No track data yet</div>'
-                        }
+        : '<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No track data yet</div>'
+      }
                     </div>
                 </div>
                 <div class="glass-card" style="padding:16px;">
                     <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Top Albums</div>
                     <div style="max-height:150px; overflow-y:auto; padding-right:4px;">
                         ${Object.entries(albumContributions).length > 0
-                            ? Object.entries(albumContributions).sort((x, y) => y[1] - x[1]).map(([n, c]) => `
+        ? Object.entries(albumContributions).sort((x, y) => y[1] - x[1]).map(([n, c]) => `
                                 <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-subtle); font-size:11px;">
                                     <span style="color:#fff;">${sanitize(n)}</span>
                                     <span style="font-family:'Share Tech Mono', monospace; color:var(--wave-foam);">${fmt(c)}</span>
                                 </div>`).join('')
-                            : '<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No album data yet</div>'
-                        }
+        : '<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No album data yet</div>'
+      }
                     </div>
                 </div>
             </div>
         `;
 
-        // --- 2.5. LAST.FM VERIFICATION ---
-        html += `
+    // --- 2.5. LAST.FM VERIFICATION ---
+    html += `
             <div style="display:flex; align-items:center; gap:12px; margin:0 0 16px 0;">
                 <div style="font-size:16px;">🎵</div>
                 <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Last.fm Account</div>
@@ -2644,8 +2646,8 @@ async function updateActivityWidget() {
             </div>
         `;
 
-        // --- 3. BADGES ---
-        html += `
+    // --- 3. BADGES ---
+    html += `
             <div style="display:flex; align-items:center; gap:12px; margin:0 0 16px 0;">
                 <div style="font-size:16px;">🎖️</div>
                 <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--vinyl-gold);">Recent Honors</div>
@@ -2653,8 +2655,8 @@ async function updateActivityWidget() {
             </div>
         `;
 
-        if (currentWeekBadges.length > 0) {
-            html += `
+    if (currentWeekBadges.length > 0) {
+      html += `
                 <div class="glass-card" style="padding:16px; margin-bottom:24px;">
                     <div class="badge-grid">
                         ${currentWeekBadges.map(b => `
@@ -2674,23 +2676,23 @@ async function updateActivityWidget() {
                     </button>
                 </div>
             `;
-        } else {
-            html += `
+    } else {
+      html += `
                 <div class="glass-card" style="padding:30px 20px; text-align:center; margin-bottom:24px;">
                     <div style="font-size:32px; margin-bottom:12px; opacity:0.5;">🔒</div>
                     <p style="font-size:12px; color:var(--text-muted); margin:0;">Earn <strong style="color:var(--vinyl-gold);">50 XP</strong> this week to unlock an honor badge.</p>
                     <button onclick="goTo('badges')" class="btn-outline" style="margin-top:16px; font-size:10px;">🎒 View Badge Drawer</button>
                 </div>
             `;
-        }
+    }
 
-        // --- 3.5 TACTICAL BADGES ---
-        const coolBadges = (STATE.week !== 'Week 1' && STATE.week !== 'Week 2' && STATE.week !== 'Week 3') 
-            ? getTacticalBadges(STATE.agentNo, currentWeekXP) 
-            : [];
+    // --- 3.5 TACTICAL BADGES ---
+    const coolBadges = (STATE.week !== 'Week 1' && STATE.week !== 'Week 2' && STATE.week !== 'Week 3')
+      ? getTacticalBadges(STATE.agentNo, currentWeekXP)
+      : [];
 
-        if (coolBadges.length > 0) {
-            html += `
+    if (coolBadges.length > 0) {
+      html += `
                 <div style="display:flex; align-items:center; gap:12px; margin:24px 0 16px 0;">
                     <div style="font-size:16px;">🛡️</div>
                     <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Classified Merits</div>
@@ -2715,10 +2717,10 @@ async function updateActivityWidget() {
                     </div>
                 </div>
             `;
-        }
+    }
 
-        // --- 4. GHOST PROTOCOL (LEAVE) ---
-        html += `
+    // --- 4. GHOST PROTOCOL (LEAVE) ---
+    html += `
             <div class="archive-card" style="margin-bottom:24px; border-color:${isExempt ? 'var(--text-muted)' : 'var(--courage-amber)'}; background:${isExempt ? 'var(--bg-panel)' : 'rgba(255,149,0,0.03)'};">
                 <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between;">
                     <div style="flex:1; min-width:200px;">
@@ -2728,8 +2730,8 @@ async function updateActivityWidget() {
                         </div>
                         <div style="font-size:10px; color:var(--text-secondary); margin-top:6px; line-height:1.5;">
                             ${isExempt
-                                ? 'You are exempt from missions this week. No XP awarded. Rest well, Agent.'
-                                : "Can't stream this week? Apply for leave to protect your team stats. (0 XP earned)"}
+        ? 'You are exempt from missions this week. No XP awarded. Rest well, Agent.'
+        : "Can't stream this week? Apply for leave to protect your team stats. (0 XP earned)"}
                         </div>
                     </div>
                     <div>
@@ -2747,8 +2749,8 @@ async function updateActivityWidget() {
             </div>
         `;
 
-        // --- 5. RETIREMENT ---
-        html += `
+    // --- 5. RETIREMENT ---
+    html += `
             <div style="text-align:center; padding-top:20px; border-top:1px dashed rgba(255,59,92,0.3);">
                 <p style="font-size:10px; color:var(--text-muted); margin-bottom:12px;">Leaving permanently? This action cannot be undone.</p>
                 <button onclick="promptDeleteAccount()" style="background:transparent; border:1px solid var(--fail); color:var(--fail); padding:10px 24px; border-radius:8px; font-size:10px; font-weight:800; cursor:pointer; text-transform:uppercase; letter-spacing:1px; transition:all 0.3s;"
@@ -2759,14 +2761,14 @@ async function updateActivityWidget() {
             </div>
         `;
 
-        container.innerHTML = html;
+    container.innerHTML = html;
 
-        if (typeof loadCareerHistory === 'function') loadCareerHistory();
-        if (typeof loadProfileStreak === 'function') loadProfileStreak();
+    if (typeof loadCareerHistory === 'function') loadCareerHistory();
+    if (typeof loadProfileStreak === 'function') loadProfileStreak();
 
-    } catch (err) {
-        console.error('renderProfile crashed:', err);
-        container.innerHTML = `
+  } catch (err) {
+    console.error('renderProfile crashed:', err);
+    container.innerHTML = `
             <div class="glass-card" style="padding:24px; border-left:3px solid var(--fail); margin-bottom:16px;">
                 <div style="font-size:13px; font-weight:800; color:var(--fail); margin-bottom:8px;">⚠️ Profile Failed To Load</div>
                 <div style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono); line-height:1.6;">
@@ -2777,54 +2779,54 @@ async function updateActivityWidget() {
                 </button>
             </div>
         `;
-    }
+  }
 }
 // =============================================
 // ██████  LEAVE SYSTEM
 // =============================================
 
 async function confirmLeaveApplication() {
-    document.querySelector('.spy-modal-overlay')?.remove();
-    Loading.show();
-    try {
-        const result = await Api.call('applyLeave', { agentNo: STATE.agentNo, week: STATE.week });
-        if (result.success) {
-            showToast('Application received! Status updates in ~1 hr.', 'success');
-            setTimeout(() => { loadDashboard(); }, 1500);
-        } else {
-            showToast(result.error || 'Failed to update status', 'error');
-        }
-    } catch (e) {
-        showToast('Network Error', 'error');
-    } finally {
-        Loading.hide();
+  document.querySelector('.spy-modal-overlay')?.remove();
+  Loading.show();
+  try {
+    const result = await Api.call('applyLeave', { agentNo: STATE.agentNo, week: STATE.week });
+    if (result.success) {
+      showToast('Application received! Status updates in ~1 hr.', 'success');
+      setTimeout(() => { loadDashboard(); }, 1500);
+    } else {
+      showToast(result.error || 'Failed to update status', 'error');
     }
+  } catch (e) {
+    showToast('Network Error', 'error');
+  } finally {
+    Loading.hide();
+  }
 }
 
 async function cancelLeaveRequest() {
-    if (!confirm("⚠️ REACTIVATE STATUS?\n\nAre you sure you want to cancel your leave?\nYou will be required to complete missions again.")) return;
-    Loading.show();
-    try {
-        const result = await Api.call('cancelLeave', { agentNo: STATE.agentNo, week: STATE.week });
-        if (result.success) {
-            showToast('Welcome back, Agent. Leave cancelled.', 'success');
-            setTimeout(() => { loadDashboard(); }, 1500);
-        } else {
-            showToast(result.error || 'Failed to cancel', 'error');
-        }
-    } catch (e) {
-        showToast('Network Error', 'error');
-    } finally {
-        Loading.hide();
+  if (!confirm("⚠️ REACTIVATE STATUS?\n\nAre you sure you want to cancel your leave?\nYou will be required to complete missions again.")) return;
+  Loading.show();
+  try {
+    const result = await Api.call('cancelLeave', { agentNo: STATE.agentNo, week: STATE.week });
+    if (result.success) {
+      showToast('Welcome back, Agent. Leave cancelled.', 'success');
+      setTimeout(() => { loadDashboard(); }, 1500);
+    } else {
+      showToast(result.error || 'Failed to cancel', 'error');
     }
+  } catch (e) {
+    showToast('Network Error', 'error');
+  } finally {
+    Loading.hide();
+  }
 }
-  function promptDeleteAccount() {
-      document.querySelectorAll('.spy-modal-overlay').forEach(e => e.remove());
-      const modal = document.createElement('div');
-      modal.className = 'spy-modal-overlay';
-      modal.style.cssText = `position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:100000; display:flex; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(8px); animation:fadeIn 0.3s ease;`;
-  
-      modal.innerHTML = `
+function promptDeleteAccount() {
+  document.querySelectorAll('.spy-modal-overlay').forEach(e => e.remove());
+  const modal = document.createElement('div');
+  modal.className = 'spy-modal-overlay';
+  modal.style.cssText = `position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:100000; display:flex; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(8px); animation:fadeIn 0.3s ease;`;
+
+  modal.innerHTML = `
           <div style="background:var(--bg-panel); border:1px solid var(--fail); border-radius:16px; width:100%; max-width:380px; box-shadow:0 0 60px rgba(255,59,92,0.2); overflow:hidden;">
               <div style="background:rgba(255,59,92,0.15); padding:24px; border-bottom:1px solid rgba(255,59,92,0.3); text-align:center;">
                   <div style="font-size:40px; margin-bottom:12px;">⚠️</div>
@@ -2852,74 +2854,74 @@ async function cancelLeaveRequest() {
               </div>
           </div>
       `;
-      document.body.appendChild(modal);
-      setTimeout(() => { document.getElementById('deleteConfirmPassword')?.focus(); }, 100);
+  document.body.appendChild(modal);
+  setTimeout(() => { document.getElementById('deleteConfirmPassword')?.focus(); }, 100);
+}
+
+async function confirmDeleteAccount() {
+  const input = document.getElementById('deleteConfirmPassword');
+  const password = input?.value?.trim();
+  if (!password) {
+    showToast('Please enter your password', 'error');
+    input?.focus();
+    return;
   }
-  
-  async function confirmDeleteAccount() {
-      const input = document.getElementById('deleteConfirmPassword');
-      const password = input?.value?.trim();
-      if (!password) {
-          showToast('Please enter your password', 'error');
-          input?.focus();
-          return;
-      }
-  
-      document.querySelector('.spy-modal-overlay')?.remove();
-      Loading.show();
-      
-      try {
-          const result = await Api.call('deleteAccount', { agentNo: STATE.agentNo, password: password });
-          if (result.success) {
-              showToast('Account deleted. Thank you for your service.', 'success');
-              setTimeout(() => { doLogout(); }, 2000);
-          } else {
-              showToast(result.error || 'Failed to delete account', 'error');
-          }
-      } catch (e) {
-          showToast('Network Error', 'error');
-      } finally {
-          Loading.hide();
-      }
+
+  document.querySelector('.spy-modal-overlay')?.remove();
+  Loading.show();
+
+  try {
+    const result = await Api.call('deleteAccount', { agentNo: STATE.agentNo, password: password });
+    if (result.success) {
+      showToast('Account deleted. Thank you for your service.', 'success');
+      setTimeout(() => { doLogout(); }, 2000);
+    } else {
+      showToast(result.error || 'Failed to delete account', 'error');
+    }
+  } catch (e) {
+    showToast('Network Error', 'error');
+  } finally {
+    Loading.hide();
   }
-  // =============================================
-  // ██████  GOALS PAGE
-  // =============================================
-  
-  /**
-   * Render goals with cached API call (60s TTL).
-   * v2.0: Cache shared with 148 Protocol page.
-   */
- // =============================================
+}
+// =============================================
+// ██████  GOALS PAGE
+// =============================================
+
+/**
+ * Render goals with cached API call (60s TTL).
+ * v2.0: Cache shared with 148 Protocol page.
+ */
+// =============================================
 // ██████  TRACK GOALS PAGE
 // =============================================
 // =============================================
 // ██████  TRACK GOALS PAGE
 // =============================================
 async function renderTrackGoals() {
-    const container = $('trackGoalsContent');
-    if (!container) return;
+  const container = $('trackGoalsContent');
+  if (!container) return;
 
-    const team = STATE.data?.agent?.profile?.team || 'Unknown';
-    const tColor = teamColor(team);
+  const team = STATE.data?.agent?.profile?.team || 'Unknown';
+  const tColor = teamColor(team);
 
-    showPageLoading(container);
+  showPageLoading(container);
 
-    try {
-        const data = await Api.call('getGoalsProgress', { week: STATE.week }, { cache: true, ttl: 60_000 });
-        if (data.lastUpdated) STATE.lastUpdated = data.lastUpdated;
+  try {
+    const data = await Api.call('getGoalsProgress', { week: STATE.week }, { cache: true, ttl: 60_000 });
+    if (data.lastUpdated) STATE.lastUpdated = data.lastUpdated;
 
-        const trackGoals = data.trackGoals || {};
+    const trackGoals = data.trackGoals || {};
 
-        let html = '';
+    let html = '';
 
-        // ★ INJECT NARRATIVE LORE BOX
-        if (Object.keys(trackGoals).length > 0) {
-            html += renderNarrativeCard('trackGoals');
-        }
+    // ★ INJECT NARRATIVE LORE BOX
+    if (Object.keys(trackGoals).length > 0) {
+      html += renderNarrativeCard('trackGoals');
+    }
 
-        // Targets header + 148 Protocol
-        html += `
+    // Targets header + 148 Protocol
+    html += `
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <div class="section-label" style="margin:0; border:none; padding:0;">🎯 Targets</div>
                 <div style="font-family:'Share Tech Mono', monospace; font-size:10px; color:var(--red-core); padding:3px 10px; background:rgba(255,20,95,0.1); border:1px solid rgba(255,20,95,0.3); border-radius:12px;">
@@ -2938,9 +2940,9 @@ async function renderTrackGoals() {
             </div>
         `;
 
-        // Track Goals
-        if (Object.keys(trackGoals).length > 0) {
-            html += `
+    // Track Goals
+    if (Object.keys(trackGoals).length > 0) {
+      html += `
                 <div class="archive-card" style="border-top:3px solid ${tColor};">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                         <h3 style="font-size:13px; font-weight:800; color:#fff; margin:0; display:flex; align-items:center; gap:8px;">
@@ -2951,14 +2953,14 @@ async function renderTrackGoals() {
                     <div style="display:flex; flex-direction:column; gap:12px;">
             `;
 
-            for (const [track, info] of Object.entries(trackGoals)) {
-                const tp = info.teams?.[team] || {};
-                const current = tp.current || 0;
-                const goal = info.goal || 0;
-                const done = tp.status === 'Completed' || current >= goal;
-                const pct = goal > 0 ? Math.min((current / goal) * 100, 100) : 0;
+      for (const [track, info] of Object.entries(trackGoals)) {
+        const tp = info.teams?.[team] || {};
+        const current = tp.current || 0;
+        const goal = info.goal || 0;
+        const done = tp.status === 'Completed' || current >= goal;
+        const pct = goal > 0 ? Math.min((current / goal) * 100, 100) : 0;
 
-                html += `
+        html += `
                     <div style="padding:12px; background:rgba(255,255,255,0.02); border-radius:8px; border-left:2px solid ${done ? 'var(--green)' : 'var(--text-muted)'};">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                             <div style="display:flex; align-items:center; gap:8px;">
@@ -2970,22 +2972,22 @@ async function renderTrackGoals() {
                             </span>
                         </div>
                         <div class="pbar">
-                            <div class="pfill ${done ? 'green' : ''}" style="width:${pct}%; ${!done ? 'background:'+tColor : ''}"></div>
+                            <div class="pfill ${done ? 'green' : ''}" style="width:${pct}%; ${!done ? 'background:' + tColor : ''}"></div>
                         </div>
                     </div>
                 `;
-            }
-            html += '</div></div>';
-        } else {
-            html += '<div class="glass-card" style="padding:40px; text-align:center; color:var(--text-muted);">No track goals set for this week</div>';
-        }
-
-        container.innerHTML = html;
-
-    } catch (e) {
-        console.error('Track Goals error:', e);
-        showPageError(container, 'renderTrackGoals');
+      }
+      html += '</div></div>';
+    } else {
+      html += '<div class="glass-card" style="padding:40px; text-align:center; color:var(--text-muted);">No track goals set for this week</div>';
     }
+
+    container.innerHTML = html;
+
+  } catch (e) {
+    console.error('Track Goals error:', e);
+    showPageError(container, 'renderTrackGoals');
+  }
 }
 
 
@@ -2993,29 +2995,29 @@ async function renderTrackGoals() {
 // ██████  ALBUM GOALS PAGE
 // =============================================
 async function renderAlbumGoals() {
-    const container = $('albumGoalsContent');
-    if (!container) return;
+  const container = $('albumGoalsContent');
+  if (!container) return;
 
-    const team = STATE.data?.agent?.profile?.team || 'Unknown';
-    const tColor = teamColor(team);
+  const team = STATE.data?.agent?.profile?.team || 'Unknown';
+  const tColor = teamColor(team);
 
-    showPageLoading(container);
+  showPageLoading(container);
 
-    try {
-        const data = await Api.call('getGoalsProgress', { week: STATE.week }, { cache: true, ttl: 60_000 });
-        if (data.lastUpdated) STATE.lastUpdated = data.lastUpdated;
+  try {
+    const data = await Api.call('getGoalsProgress', { week: STATE.week }, { cache: true, ttl: 60_000 });
+    if (data.lastUpdated) STATE.lastUpdated = data.lastUpdated;
 
-        const albumGoals = data.albumGoals || {};
+    const albumGoals = data.albumGoals || {};
 
-        let html = '';
+    let html = '';
 
-        // ★ INJECT NARRATIVE LORE BOX
-        if (Object.keys(albumGoals).length > 0) {
-            html += renderNarrativeCard('albumGoals');
-        }
+    // ★ INJECT NARRATIVE LORE BOX
+    if (Object.keys(albumGoals).length > 0) {
+      html += renderNarrativeCard('albumGoals');
+    }
 
-        // Targets header + 148 Protocol
-        html += `
+    // Targets header + 148 Protocol
+    html += `
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <div class="section-label" style="margin:0; border:none; padding:0;">📀 Targets</div>
                 <div style="font-family:'Share Tech Mono', monospace; font-size:10px; color:var(--red-core); padding:3px 10px; background:rgba(255,20,95,0.1); border:1px solid rgba(255,20,95,0.3); border-radius:12px;">
@@ -3034,9 +3036,9 @@ async function renderAlbumGoals() {
             </div>
         `;
 
-        // Album Goals
-        if (Object.keys(albumGoals).length > 0) {
-            html += `
+    // Album Goals
+    if (Object.keys(albumGoals).length > 0) {
+      html += `
                 <div class="archive-card" style="border-top:3px solid var(--vinyl-gold);">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                         <h3 style="font-size:13px; font-weight:800; color:#fff; margin:0; display:flex; align-items:center; gap:8px;">
@@ -3047,14 +3049,14 @@ async function renderAlbumGoals() {
                     <div style="display:flex; flex-direction:column; gap:12px;">
             `;
 
-            for (const [album, info] of Object.entries(albumGoals)) {
-                const ap = info.teams?.[team] || {};
-                const current = ap.current || 0;
-                const goal = info.goal || 0;
-                const done = ap.status === 'Completed' || current >= goal;
-                const pct = goal > 0 ? Math.min((current / goal) * 100, 100) : 0;
+      for (const [album, info] of Object.entries(albumGoals)) {
+        const ap = info.teams?.[team] || {};
+        const current = ap.current || 0;
+        const goal = info.goal || 0;
+        const done = ap.status === 'Completed' || current >= goal;
+        const pct = goal > 0 ? Math.min((current / goal) * 100, 100) : 0;
 
-                html += `
+        html += `
                     <div style="padding:12px; background:rgba(255,255,255,0.02); border-radius:8px; border-left:2px solid ${done ? 'var(--green)' : 'var(--text-muted)'};">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                             <div style="display:flex; align-items:center; gap:8px;">
@@ -3070,108 +3072,108 @@ async function renderAlbumGoals() {
                         </div>
                     </div>
                 `;
-            }
-            html += '</div></div>';
-        } else {
-            html += '<div class="glass-card" style="padding:40px; text-align:center; color:var(--text-muted);">No album goals set for this week</div>';
-        }
-
-        container.innerHTML = html;
-
-    } catch (e) {
-        console.error('Album Goals error:', e);
-        showPageError(container, 'renderAlbumGoals');
+      }
+      html += '</div></div>';
+    } else {
+      html += '<div class="glass-card" style="padding:40px; text-align:center; color:var(--text-muted);">No album goals set for this week</div>';
     }
+
+    container.innerHTML = html;
+
+  } catch (e) {
+    console.error('Album Goals error:', e);
+    showPageError(container, 'renderAlbumGoals');
+  }
 }
-  
-  // =============================================
-  // ██████  ALBUM 2X PAGE
-  // =============================================
-  
-  /**
-   * Render Album 2X status with daily grid + team completion.
-   * v2.0: Cached team data (60s TTL), uses buildMemberPill helper.
-   */
-  // =============================================
-  // ██████  ALBUM 2X PAGE (7-Day Dopamine Grid)
-  // =============================================
+
+// =============================================
+// ██████  ALBUM 2X PAGE
+// =============================================
+
+/**
+ * Render Album 2X status with daily grid + team completion.
+ * v2.0: Cached team data (60s TTL), uses buildMemberPill helper.
+ */
+// =============================================
+// ██████  ALBUM 2X PAGE (7-Day Dopamine Grid)
+// =============================================
 async function renderAlbum2x() {
-    const container = $('album2xContent');
-    if (!container) return;
+  const container = $('album2xContent');
+  if (!container) return;
 
-    const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-    const team = STATE.data?.agent?.profile?.team || 'Unknown';
-    const currentWeek = STATE.week || 'Week 1';
+  const team = STATE.data?.agent?.profile?.team || 'Unknown';
+  const currentWeek = STATE.week || 'Week 1';
 
-    const REQUIRED = CONFIG.ALBUM_CHALLENGE?.REQUIRED_STREAMS || 2;
-    const CHALLENGE_NAME = 'ARIRANG 2X';
-    const BADGE_NAME = CONFIG.ALBUM_CHALLENGE?.BADGE_NAME || '2X Master';
+  const REQUIRED = CONFIG.ALBUM_CHALLENGE?.REQUIRED_STREAMS || 2;
+  const CHALLENGE_NAME = 'ARIRANG 2X';
+  const BADGE_NAME = CONFIG.ALBUM_CHALLENGE?.BADGE_NAME || '2X Master';
 
-    const teamTracks = CONFIG.ARIRANG_TRACKS || [];
-    const currentTeamColor = teamColor(team);
-    const today = STATE.data?.agent?.sideMissions?.today || getKSTDateString();
+  const teamTracks = CONFIG.ARIRANG_TRACKS || [];
+  const currentTeamColor = teamColor(team);
+  const today = STATE.data?.agent?.sideMissions?.today || getKSTDateString();
 
-    showPageLoading(container);
+  showPageLoading(container);
 
-    let a2xData = {};
-    let allMembers = [];
-    let passedMembers = [];
-    let failedMembers = [];
-    let totalMembers = 0;
-    let weekDates = getWeekDates(currentWeek);
+  let a2xData = {};
+  let allMembers = [];
+  let passedMembers = [];
+  let failedMembers = [];
+  let totalMembers = 0;
+  let weekDates = getWeekDates(currentWeek);
 
-    try {
-        const res = await Api.call('getAlbum2xStatus', {
-            week: currentWeek,
-            team: team,
-            agentNo: STATE.agentNo
-        }, { cache: true, ttl: 60_000 });
+  try {
+    const res = await Api.call('getAlbum2xStatus', {
+      week: currentWeek,
+      team: team,
+      agentNo: STATE.agentNo
+    }, { cache: true, ttl: 60_000 });
 
-        a2xData = res || {};
+    a2xData = res || {};
 
-        const teamData = res.teams?.[team] || {};
-        allMembers = teamData.members || [];
+    const teamData = res.teams?.[team] || {};
+    allMembers = teamData.members || [];
 
-        window._a2xMembers = allMembers;
-        window._a2xToday = res.today || today;
+    window._a2xMembers = allMembers;
+    window._a2xToday = res.today || today;
 
-        passedMembers = allMembers.filter(m => m.passed === true);
-        failedMembers = allMembers.filter(m => m.passed !== true);
-        totalMembers = allMembers.length;
+    passedMembers = allMembers.filter(m => m.passed === true);
+    failedMembers = allMembers.filter(m => m.passed !== true);
+    totalMembers = allMembers.length;
 
-        // Use server-provided dates if available
-        if (res.weekDates) weekDates = res.weekDates;
+    // Use server-provided dates if available
+    if (res.weekDates) weekDates = res.weekDates;
 
-    } catch (e) {
-        a2xData = { dailyGrid: STATE.data?.agent?.album2xStatus?.dailyGrid || {} };
+  } catch (e) {
+    a2xData = { dailyGrid: STATE.data?.agent?.album2xStatus?.dailyGrid || {} };
+  }
+
+  const isUserExempt = STATE.data?.agent?.onLeave || false;
+  const isWeekComplete = STATE.data?.agent?.album2xStatus?.weeklyPassed || false;
+
+  // Calculate today's progress (personal)
+  let todayPassedCount = 0;
+  teamTracks.forEach(track => {
+    const cell = STATE.data?.agent?.album2xStatus?.dailyGrid?.[today]?.[track];
+    if (cell?.passed || String(cell?.count).toLowerCase() === 'exempt') {
+      todayPassedCount++;
     }
+  });
 
-    const isUserExempt = STATE.data?.agent?.onLeave || false;
-    const isWeekComplete = STATE.data?.agent?.album2xStatus?.weeklyPassed || false;
+  const todayPct = teamTracks.length ? Math.round((todayPassedCount / teamTracks.length) * 100) : 0;
+  const isTodayComplete = todayPassedCount >= teamTracks.length;
 
-    // Calculate today's progress (personal)
-    let todayPassedCount = 0;
-    teamTracks.forEach(track => {
-        const cell = STATE.data?.agent?.album2xStatus?.dailyGrid?.[today]?.[track];
-        if (cell?.passed || String(cell?.count).toLowerCase() === 'exempt') {
-            todayPassedCount++;
-        }
-    });
-
-    const todayPct = teamTracks.length ? Math.round((todayPassedCount / teamTracks.length) * 100) : 0;
-    const isTodayComplete = todayPassedCount >= teamTracks.length;
-
-    let html = `
+  let html = `
         ${renderGuide('album2x') || ''}
         ${renderNarrativeCard('album2x')}`;
 
-    const teamAllComplete = totalMembers > 0 && passedMembers.length === totalMembers;
+  const teamAllComplete = totalMembers > 0 && passedMembers.length === totalMembers;
 
-    // ═══════════════════════════════
-    // 1. TODAY'S TARGET (Personal)
-    // ═══════════════════════════════
-    html += `
+  // ═══════════════════════════════
+  // 1. TODAY'S TARGET (Personal)
+  // ═══════════════════════════════
+  html += `
         <div class="archive-card" style="padding:24px; text-align:center; margin-bottom:24px; border-top:4px solid ${isUserExempt ? 'var(--text-muted)' : (isTodayComplete ? 'var(--green)' : 'var(--red-core)')};">
             <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:3px; margin-bottom:12px;">Today's Target</div>
 
@@ -3198,64 +3200,64 @@ async function renderAlbum2x() {
         </div>
     `;
 
-    // ═══════════════════════════════
-    // 2. WEEKLY HEATMAP (Personal)
-    // ═══════════════════════════════
-    html += `
+  // ═══════════════════════════════
+  // 2. WEEKLY HEATMAP (Personal)
+  // ═══════════════════════════════
+  html += `
         <div class="glass-card" style="padding:20px 16px; margin-bottom:24px; overflow-x:auto;">
             <div style="font-size:12px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; margin-bottom:16px;">📅 Weekly Heatmap</div>
 
             <div style="display:grid; grid-template-columns:120px repeat(7, minmax(36px, 1fr)); gap:4px; min-width:400px;">
                 <div style="padding:8px; font-size:9px; color:var(--text-ghost); font-weight:800; text-transform:uppercase; letter-spacing:1px; display:flex; align-items:flex-end;">Track</div>
                 ${weekDates.map((d, i) => {
-                    const isToday = d === today;
-                    return `
+    const isToday = d === today;
+    return `
                         <div style="text-align:center; padding:8px 0; background:${isToday ? 'rgba(255,20,95,0.1)' : 'var(--bg-lifted)'}; border-radius:6px; border:1px solid ${isToday ? 'var(--red-core)' : 'transparent'};">
                             <div style="font-size:8px; font-weight:900; color:${isToday ? 'var(--red-core)' : 'var(--text-muted)'}; text-transform:uppercase; margin-bottom:4px;">${DAYS[new Date(d).getDay()] || 'D' + (i + 1)}</div>
                         </div>
                     `;
-                }).join('')}
+  }).join('')}
 
                 ${teamTracks.map(track => {
-                    let rowHtml = `
+    let rowHtml = `
                         <div style="padding:8px; font-size:10px; font-weight:700; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; border-bottom:1px solid var(--border-subtle);">
                             ${sanitize(track)}
                         </div>
                     `;
 
-                    const joinDate = STATE.data?.agent?.joinDate || '2000-01-01';
-                    weekDates.forEach(d => {
-                        const cell = STATE.data?.agent?.album2xStatus?.dailyGrid?.[d]?.[track];
-                        const isFuture = d > today;
-                        const isPreJoin = d < joinDate;
-                        const isExemptCell = String(cell?.count).toLowerCase() === 'exempt';
+    const joinDate = STATE.data?.agent?.joinDate || '2000-01-01';
+    weekDates.forEach(d => {
+      const cell = STATE.data?.agent?.album2xStatus?.dailyGrid?.[d]?.[track];
+      const isFuture = d > today;
+      const isPreJoin = d < joinDate;
+      const isExemptCell = String(cell?.count).toLowerCase() === 'exempt';
 
-                        let bg = 'rgba(255,255,255,0.02)';
-                        let border = 'var(--border-subtle)';
-                        let color = 'var(--text-muted)';
-                        let text = cell?.count || '0';
-                        let opacity = '1';
+      let bg = 'rgba(255,255,255,0.02)';
+      let border = 'var(--border-subtle)';
+      let color = 'var(--text-muted)';
+      let text = cell?.count || '0';
+      let opacity = '1';
 
-                        if (isPreJoin) {
-                            bg = 'rgba(255,255,255,0.05)'; border = 'rgba(255,255,255,0.1)'; color = 'var(--text-ghost)'; text = '👋'; opacity = '0.5';
-                        } else if (isFuture) {
-                            bg = 'transparent'; border = 'transparent'; text = '—'; opacity = '0.3';
-                        } else if (isExemptCell) {
-                            bg = 'rgba(255,255,255,0.05)'; border = 'rgba(255,255,255,0.1)'; color = 'var(--text-ghost)'; text = '-';
-                        } else if (cell?.passed) {
-                            bg = 'var(--green-soft)'; border = 'var(--green-border)'; color = 'var(--green)'; text = '✓';
-                        } else if (d === today && cell?.count > 0) {
-                            bg = 'var(--red-whisper)'; border = 'var(--red-border)'; color = 'var(--red-core)'; text = cell.count;
-                        }
+      if (isPreJoin) {
+        bg = 'rgba(255,255,255,0.05)'; border = 'rgba(255,255,255,0.1)'; color = 'var(--text-ghost)'; text = '👋'; opacity = '0.5';
+      } else if (isFuture) {
+        bg = 'transparent'; border = 'transparent'; text = '—'; opacity = '0.3';
+      } else if (isExemptCell) {
+        bg = 'rgba(255,255,255,0.05)'; border = 'rgba(255,255,255,0.1)'; color = 'var(--text-ghost)'; text = '-';
+      } else if (cell?.passed) {
+        bg = 'var(--green-soft)'; border = 'var(--green-border)'; color = 'var(--green)'; text = '✓';
+      } else if (d === today && cell?.count > 0) {
+        bg = 'var(--red-whisper)'; border = 'var(--red-border)'; color = 'var(--red-core)'; text = cell.count;
+      }
 
-                        rowHtml += `
+      rowHtml += `
                             <div style="display:flex; align-items:center; justify-content:center; background:${bg}; border:1px solid ${border}; border-radius:4px; font-family:'Share Tech Mono', monospace; font-size:10px; font-weight:800; color:${color}; margin-bottom:4px; opacity:${opacity};">
                                 ${text}
                             </div>
                         `;
-                    });
-                    return rowHtml;
-                }).join('')}
+    });
+    return rowHtml;
+  }).join('')}
             </div>
 
             ${isWeekComplete ? `
@@ -3267,32 +3269,32 @@ async function renderAlbum2x() {
         </div>
     `;
 
-    // ═══════════════════════════════════════════
-    // 3. ✅ NEW: DAILY TEAM MONITOR (Day Picker)
-    // ═══════════════════════════════════════════
-    if (allMembers.length > 0 && allMembers[0]?.daily) {
+  // ═══════════════════════════════════════════
+  // 3. ✅ NEW: DAILY TEAM MONITOR (Day Picker)
+  // ═══════════════════════════════════════════
+  if (allMembers.length > 0 && allMembers[0]?.daily) {
 
-        // Calculate daily team stats
-        const dailyTeamStats = weekDates.map(date => {
-            const isFuture = date > today;
-            let completed = 0;
-            let exempt = 0;
-            let active = 0;
+    // Calculate daily team stats
+    const dailyTeamStats = weekDates.map(date => {
+      const isFuture = date > today;
+      let completed = 0;
+      let exempt = 0;
+      let active = 0;
 
-            if (!isFuture) {
-                allMembers.forEach(m => {
-                    const dayStatus = m.daily?.[date];
-                    if (!dayStatus) return;
-                    if (dayStatus.exempt || m.onLeave) { exempt++; }
-                    else if (dayStatus.passed) { completed++; }
-                    active++;
-                });
-            }
-
-            return { date, completed, exempt, active, isFuture };
+      if (!isFuture) {
+        allMembers.forEach(m => {
+          const dayStatus = m.daily?.[date];
+          if (!dayStatus) return;
+          if (dayStatus.exempt || m.onLeave) { exempt++; }
+          else if (dayStatus.passed) { completed++; }
+          active++;
         });
+      }
 
-        html += `
+      return { date, completed, exempt, active, isFuture };
+    });
+
+    html += `
             <div class="glass-card" style="padding:20px; margin-bottom:24px; border-top:3px solid ${currentTeamColor};">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                     <h3 style="margin:0; font-size:13px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;">
@@ -3306,12 +3308,12 @@ async function renderAlbum2x() {
                 <!-- Day Selector Tabs -->
                 <div style="display:flex; gap:4px; margin-bottom:16px; overflow-x:auto; padding-bottom:4px;">
                     ${weekDates.map((date, i) => {
-                        const isToday = date === today;
-                        const isFuture = date > today;
-                        const ds = dailyTeamStats[i];
-                        const allDone = !isFuture && ds.active > 0 && (ds.completed + ds.exempt) >= ds.active;
+      const isToday = date === today;
+      const isFuture = date > today;
+      const ds = dailyTeamStats[i];
+      const allDone = !isFuture && ds.active > 0 && (ds.completed + ds.exempt) >= ds.active;
 
-                        return `
+      return `
                             <button onclick="showAlbum2xDay('${date}')"
                                 class="a2x-day-tab${isToday ? ' a2x-day-tab--active' : ''}"
                                 data-date="${date}"
@@ -3333,7 +3335,7 @@ async function renderAlbum2x() {
                                 ` : ''}
                             </button>
                         `;
-                    }).join('')}
+    }).join('')}
                 </div>
 
                 <!-- Daily Members List (default: today) -->
@@ -3342,12 +3344,12 @@ async function renderAlbum2x() {
                 </div>
             </div>
         `;
-    }
+  }
 
-    // ═══════════════════════════════════════
-    // 4. TEAM WEEKLY INTELLIGENCE (existing)
-    // ═══════════════════════════════════════
-    html += `
+  // ═══════════════════════════════════════
+  // 4. TEAM WEEKLY INTELLIGENCE (existing)
+  // ═══════════════════════════════════════
+  html += `
         <div class="glass-card" style="padding:20px; border-top:3px solid ${teamAllComplete ? 'var(--green)' : currentTeamColor};">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                 <h3 style="margin:0; font-size:13px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;">
@@ -3406,41 +3408,41 @@ async function renderAlbum2x() {
         </div>
     `;
 
-    container.innerHTML = html;
+  container.innerHTML = html;
 }
 // ═══ Render a single day's member status ═══
 function renderAlbum2xDayMembers(allMembers, date, today) {
-    const isFuture = date > today;
-    if (isFuture) {
-        return `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:11px;">Future date — no data yet</div>`;
+  const isFuture = date > today;
+  if (isFuture) {
+    return `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:11px;">Future date — no data yet</div>`;
+  }
+
+  const dayCompleted = [];
+  const dayFailed = [];
+  const dayExempt = [];
+
+  allMembers.forEach(m => {
+    const dayStatus = m.daily?.[date];
+    if (!dayStatus) {
+      dayFailed.push({ name: m.name, tracksDone: 0, totalTracks: dayStatus?.totalTracks || 0 });
+      return;
     }
+    if (dayStatus.exempt || m.onLeave || dayStatus.preJoin) {
+      dayExempt.push({ name: m.name, isPreJoin: dayStatus.preJoin });
+    } else if (dayStatus.passed) {
+      dayCompleted.push({ name: m.name });
+    } else {
+      dayFailed.push({ name: m.name, tracksDone: dayStatus.tracksDone, totalTracks: dayStatus.totalTracks });
+    }
+  });
 
-    const dayCompleted = [];
-    const dayFailed = [];
-    const dayExempt = [];
+  const activeCount = allMembers.length - dayExempt.length;
+  const completionPct = activeCount > 0 ? Math.round((dayCompleted.length / activeCount) * 100) : 0;
 
-    allMembers.forEach(m => {
-        const dayStatus = m.daily?.[date];
-        if (!dayStatus) {
-            dayFailed.push({ name: m.name, tracksDone: 0, totalTracks: dayStatus?.totalTracks || 0 });
-            return;
-        }
-        if (dayStatus.exempt || m.onLeave || dayStatus.preJoin) {
-            dayExempt.push({ name: m.name, isPreJoin: dayStatus.preJoin });
-        } else if (dayStatus.passed) {
-            dayCompleted.push({ name: m.name });
-        } else {
-            dayFailed.push({ name: m.name, tracksDone: dayStatus.tracksDone, totalTracks: dayStatus.totalTracks });
-        }
-    });
+  const isToday = date === today;
+  const dayLabel = isToday ? 'Today' : new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
-    const activeCount = allMembers.length - dayExempt.length;
-    const completionPct = activeCount > 0 ? Math.round((dayCompleted.length / activeCount) * 100) : 0;
-
-    const isToday = date === today;
-    const dayLabel = isToday ? 'Today' : new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-
-    return `
+  return `
         <div style="margin-bottom:12px;">
             <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
                 <span>${dayLabel} — ${date}</span>
@@ -3521,32 +3523,32 @@ window._a2xMembers = null;
 window._a2xToday = null;
 
 function showAlbum2xDay(date) {
-    const container = document.getElementById('a2xDailyView');
-    if (!container) return;
+  const container = document.getElementById('a2xDailyView');
+  if (!container) return;
 
-    const members = window._a2xMembers;
-    const today = window._a2xToday;
-    if (!members) {
-        console.error("No member data found for Album 2X click");
-        return;
-    }
+  const members = window._a2xMembers;
+  const today = window._a2xToday;
+  if (!members) {
+    console.error("No member data found for Album 2X click");
+    return;
+  }
 
-    // Update active tab styling
-    document.querySelectorAll('.a2x-day-tab').forEach(tab => {
-        const tabDate = tab.getAttribute('data-date');
-        const isActive = tabDate === date;
-        tab.classList.toggle('a2x-day-tab--active', isActive);
-        tab.style.borderColor = isActive ? (teamColor(STATE.data?.agent?.profile?.team) || 'var(--red-core)') : 'var(--border-light)';
-        tab.style.background = isActive ? (teamColor(STATE.data?.agent?.profile?.team) || 'var(--red-core)') + '15' : 'var(--bg-lifted)';
-    });
+  // Update active tab styling
+  document.querySelectorAll('.a2x-day-tab').forEach(tab => {
+    const tabDate = tab.getAttribute('data-date');
+    const isActive = tabDate === date;
+    tab.classList.toggle('a2x-day-tab--active', isActive);
+    tab.style.borderColor = isActive ? (teamColor(STATE.data?.agent?.profile?.team) || 'var(--red-core)') : 'var(--border-light)';
+    tab.style.background = isActive ? (teamColor(STATE.data?.agent?.profile?.team) || 'var(--red-core)') + '15' : 'var(--bg-lifted)';
+  });
 
-    container.innerHTML = renderAlbum2xDayMembers(members, date, today);
+  container.innerHTML = renderAlbum2xDayMembers(members, date, today);
 }
-  
-  // =============================================
-  // ██████  SIDE MISSIONS PAGE
-  // =============================================
-  // ═══════════════════════════════════════════
+
+// =============================================
+// ██████  SIDE MISSIONS PAGE
+// =============================================
+// ═══════════════════════════════════════════
 // SIDE MISSION TEAM MONITOR — Helpers
 // ═══════════════════════════════════════════
 
@@ -3555,52 +3557,52 @@ window._smTeamToday = null;
 window._smTrackNames = null;
 
 async function loadSideMissionTeamMonitor(teamName, weekDates, today) {
-    const box = document.getElementById('smTeamMonitor');
-    if (!box || !teamName) return;
+  const box = document.getElementById('smTeamMonitor');
+  if (!box || !teamName) return;
 
-    const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-    const res = await Api.call('getSideMissionTeamStatus', {
-        week: STATE.week,
-        team: teamName,
-    }, { cache: true, ttl: 60000 });
+  const res = await Api.call('getSideMissionTeamStatus', {
+    week: STATE.week,
+    team: teamName,
+  }, { cache: true, ttl: 60000 });
 
-    if (!res?.success || !res.members) {
-        box.innerHTML = `<div style="text-align:center; padding:14px; color:var(--text-muted); font-size:11px;">No data available.</div>`;
-        return;
+  if (!res?.success || !res.members) {
+    box.innerHTML = `<div style="text-align:center; padding:14px; color:var(--text-muted); font-size:11px;">No data available.</div>`;
+    return;
+  }
+
+  const members = res.members;
+  const totalTracks = res.totalTracks || 4;
+  const dates = res.weekDates || weekDates;
+  const serverToday = res.today || today;
+
+  window._smTeamMembers = members;
+  window._smTeamToday = serverToday;
+  window._smTrackNames = res.trackNames || [];
+
+  const dailyStats = dates.map(date => {
+    const isFuture = date > serverToday;
+    let completed = 0, exempt = 0, active = 0;
+
+    if (!isFuture) {
+      members.forEach(m => {
+        const ds = m.daily?.[date];
+        if (!ds) return;
+        if (ds.exempt || m.onLeave) { exempt++; }
+        else if (ds.passed) { completed++; }
+        active++;
+      });
     }
 
-    const members = res.members;
-    const totalTracks = res.totalTracks || 4;
-    const dates = res.weekDates || weekDates;
-    const serverToday = res.today || today;
+    return { date, completed, exempt, active, isFuture };
+  });
 
-    window._smTeamMembers = members;
-    window._smTeamToday = serverToday;
-    window._smTrackNames = res.trackNames || [];
+  const weeklyPassed = members.filter(m => m.weekPassed).length;
+  const weeklyFailed = members.filter(m => !m.weekPassed).length;
+  const tColor = teamColor(teamName);
 
-    const dailyStats = dates.map(date => {
-        const isFuture = date > serverToday;
-        let completed = 0, exempt = 0, active = 0;
-
-        if (!isFuture) {
-            members.forEach(m => {
-                const ds = m.daily?.[date];
-                if (!ds) return;
-                if (ds.exempt || m.onLeave) { exempt++; }
-                else if (ds.passed) { completed++; }
-                active++;
-            });
-        }
-
-        return { date, completed, exempt, active, isFuture };
-    });
-
-    const weeklyPassed = members.filter(m => m.weekPassed).length;
-    const weeklyFailed = members.filter(m => !m.weekPassed).length;
-    const tColor = teamColor(teamName);
-
-    box.innerHTML = `
+  box.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
             <h3 style="margin:0; font-size:13px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;">
                 <span style="font-size:16px;">👥</span> Squad Side Mission Monitor
@@ -3625,13 +3627,13 @@ async function loadSideMissionTeamMonitor(teamName, weekDates, today) {
         <div style="font-size:9px; color:var(--text-muted); margin-bottom:8px; font-weight:700;">Tap a day to inspect:</div>
         <div style="display:flex; gap:4px; margin-bottom:16px; overflow-x:auto; padding-bottom:4px;">
             ${dates.map((date, i) => {
-                const isToday = date === serverToday;
-                const isFuture = date > serverToday;
-                const ds = dailyStats[i];
-                const activeNonExempt = ds.active - ds.exempt;
-                const allDone = !isFuture && activeNonExempt > 0 && ds.completed >= activeNonExempt;
+    const isToday = date === serverToday;
+    const isFuture = date > serverToday;
+    const ds = dailyStats[i];
+    const activeNonExempt = ds.active - ds.exempt;
+    const allDone = !isFuture && activeNonExempt > 0 && ds.completed >= activeNonExempt;
 
-                return `
+    return `
                     <button onclick="showSmDay('${date}')"
                         class="sm-day-tab${isToday ? ' sm-day-tab--active' : ''}"
                         data-date="${date}"
@@ -3650,14 +3652,14 @@ async function loadSideMissionTeamMonitor(teamName, weekDates, today) {
                         ${!isFuture ? `
                             <div style="margin-top:4px; font-size:10px;">
                                 ${allDone
-                                    ? '<span style="color:var(--green);">✓</span>'
-                                    : `<span style="color:var(--red-core);">${ds.completed}/${activeNonExempt}</span>`
-                                }
+          ? '<span style="color:var(--green);">✓</span>'
+          : `<span style="color:var(--red-core);">${ds.completed}/${activeNonExempt}</span>`
+        }
                             </div>
                         ` : ''}
                     </button>
                 `;
-            }).join('')}
+  }).join('')}
         </div>
 
         <div id="smDailyView">
@@ -3667,42 +3669,42 @@ async function loadSideMissionTeamMonitor(teamName, weekDates, today) {
 }
 
 function renderSmDayMembers(members, date, today, totalTracks) {
-    const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const isFuture = date > today;
-    if (isFuture) {
-        return `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:11px;">Future date — no data yet</div>`;
+  const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const isFuture = date > today;
+  if (isFuture) {
+    return `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:11px;">Future date — no data yet</div>`;
+  }
+
+  const dayCompleted = [];
+  const dayFailed = [];
+  const dayExempt = [];
+
+  members.forEach(m => {
+    const ds = m.daily?.[date];
+    if (!ds) {
+      dayFailed.push({ name: m.name, tracksDone: 0, totalTracks, missingTracks: [] });
+      return;
     }
+    if (ds.exempt || m.onLeave || ds.preJoin) {
+      dayExempt.push({ name: m.name, isPreJoin: ds.preJoin });
+    } else if (ds.passed) {
+      dayCompleted.push({ name: m.name, tracksDone: ds.tracksDone });
+    } else {
+      dayFailed.push({
+        name: m.name,
+        tracksDone: ds.tracksDone,
+        totalTracks: ds.totalTracks,
+        missingTracks: ds.missingTracks || [],
+      });
+    }
+  });
 
-    const dayCompleted = [];
-    const dayFailed = [];
-    const dayExempt = [];
+  const activeCount = members.length - dayExempt.length;
+  const completionPct = activeCount > 0 ? Math.round((dayCompleted.length / activeCount) * 100) : 0;
+  const isToday = date === today;
+  const dayLabel = isToday ? 'Today' : `${DAYS[new Date(date).getDay()]} ${date.slice(5)}`;
 
-    members.forEach(m => {
-        const ds = m.daily?.[date];
-        if (!ds) {
-            dayFailed.push({ name: m.name, tracksDone: 0, totalTracks, missingTracks: [] });
-            return;
-        }
-        if (ds.exempt || m.onLeave || ds.preJoin) {
-            dayExempt.push({ name: m.name, isPreJoin: ds.preJoin });
-        } else if (ds.passed) {
-            dayCompleted.push({ name: m.name, tracksDone: ds.tracksDone });
-        } else {
-            dayFailed.push({
-                name: m.name,
-                tracksDone: ds.tracksDone,
-                totalTracks: ds.totalTracks,
-                missingTracks: ds.missingTracks || [],
-            });
-        }
-    });
-
-    const activeCount = members.length - dayExempt.length;
-    const completionPct = activeCount > 0 ? Math.round((dayCompleted.length / activeCount) * 100) : 0;
-    const isToday = date === today;
-    const dayLabel = isToday ? 'Today' : `${DAYS[new Date(date).getDay()]} ${date.slice(5)}`;
-
-    return `
+  return `
         <div style="margin-bottom:12px;">
             <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">
                 <span>${dayLabel}</span>
@@ -3788,58 +3790,58 @@ function renderSmDayMembers(members, date, today, totalTracks) {
 }
 
 function showSmDay(date) {
-    const container = document.getElementById('smDailyView');
-    if (!container) return;
+  const container = document.getElementById('smDailyView');
+  if (!container) return;
 
-    const members = window._smTeamMembers;
-    const today = window._smTeamToday;
-    if (!members) {
-        console.error("No member data found for Side Mission click");
-        return;
-    }
+  const members = window._smTeamMembers;
+  const today = window._smTeamToday;
+  if (!members) {
+    console.error("No member data found for Side Mission click");
+    return;
+  }
 
-    const totalTracks = window._smTrackNames?.length || 4;
-    const tColor = teamColor(STATE.data?.agent?.profile?.team);
+  const totalTracks = window._smTrackNames?.length || 4;
+  const tColor = teamColor(STATE.data?.agent?.profile?.team);
 
-    document.querySelectorAll('.sm-day-tab').forEach(tab => {
-        const tabDate = tab.getAttribute('data-date');
-        const isActive = tabDate === date;
-        tab.classList.toggle('sm-day-tab--active', isActive);
-        tab.style.borderColor = isActive ? tColor : 'var(--border-light)';
-        tab.style.background = isActive ? tColor + '15' : 'var(--bg-lifted)';
-    });
+  document.querySelectorAll('.sm-day-tab').forEach(tab => {
+    const tabDate = tab.getAttribute('data-date');
+    const isActive = tabDate === date;
+    tab.classList.toggle('sm-day-tab--active', isActive);
+    tab.style.borderColor = isActive ? tColor : 'var(--border-light)';
+    tab.style.background = isActive ? tColor + '15' : 'var(--bg-lifted)';
+  });
 
-    container.innerHTML = renderSmDayMembers(members, date, today, totalTracks);
+  container.innerHTML = renderSmDayMembers(members, date, today, totalTracks);
 }
-  function renderSideMissions() {
-    if (!STATE.data) return;
-    const container = $('smContent');
-    if (!container) return;
+function renderSideMissions() {
+  if (!STATE.data) return;
+  const container = $('smContent');
+  if (!container) return;
 
-    const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const sm = STATE.data.agent.sideMissions;
-    const today = sm?.today || getKSTDateString();
-    const isOnLeave = STATE.data.agent.onLeave || false;
-    const teamName = STATE.data?.agent?.profile?.team;
+  const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const sm = STATE.data.agent.sideMissions;
+  const today = sm?.today || getKSTDateString();
+  const isOnLeave = STATE.data.agent.onLeave || false;
+  const teamName = STATE.data?.agent?.profile?.team;
 
-    let html = renderGuide('sidemissions') || '';
-    html += renderNarrativeCard('sideMission');
+  let html = renderGuide('sidemissions') || '';
+  html += renderNarrativeCard('sideMission');
 
-    if (!sm?.tracks || sm.tracks.length === 0) {
-        html += `<div class="glass-card" style="padding:40px; text-align:center; color:var(--text-muted); font-size:12px;">No side missions assigned this week.</div>`;
-        container.innerHTML = html;
-        return;
-    }
+  if (!sm?.tracks || sm.tracks.length === 0) {
+    html += `<div class="glass-card" style="padding:40px; text-align:center; color:var(--text-muted); font-size:12px;">No side missions assigned this week.</div>`;
+    container.innerHTML = html;
+    return;
+  }
 
-    const weekDates = sm.weekDates || [];
-    const todayIndex = weekDates.indexOf(today);
-    const daysElapsed = todayIndex >= 0 ? todayIndex + 1 : weekDates.filter(d => d <= today).length;
-    const daysTotal = weekDates.length;
+  const weekDates = sm.weekDates || [];
+  const todayIndex = weekDates.indexOf(today);
+  const daysElapsed = todayIndex >= 0 ? todayIndex + 1 : weekDates.filter(d => d <= today).length;
+  const daysTotal = weekDates.length;
 
-    // ═══════════════════════════════════
-    // 1. HEADER STATUS
-    // ═══════════════════════════════════
-    html += `
+  // ═══════════════════════════════════
+  // 1. HEADER STATUS
+  // ═══════════════════════════════════
+  html += `
         <div class="archive-card" style="padding:20px; text-align:center; margin-bottom:24px; border-top:4px solid ${sm.weekFullyPassed ? 'var(--green)' : 'var(--courage-amber)'}; background:linear-gradient(135deg, rgba(255,149,0,0.05), var(--bg-panel));">
             <div style="font-size:32px; margin-bottom:12px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));">🛡️</div>
             <div style="font-size:14px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; font-family:'Orbitron', sans-serif;">Survival Protocol</div>
@@ -3865,20 +3867,20 @@ function showSmDay(date) {
         </div>
     `;
 
-    // ═══════════════════════════════════
-    // 2. TODAY'S CHECKLIST
-    // ═══════════════════════════════════
-    const todayTracks = sm.tracks.map(t => {
-        const d = t.daily?.[today];
-        const count = d?.count ?? 0;
-        const passed = d?.passed ?? false;
-        return { name: t.name, artist: t.artist, count, passed };
-    });
-    const todayDoneCount = todayTracks.filter(t => t.passed).length;
-    const todayTotal = todayTracks.length;
+  // ═══════════════════════════════════
+  // 2. TODAY'S CHECKLIST
+  // ═══════════════════════════════════
+  const todayTracks = sm.tracks.map(t => {
+    const d = t.daily?.[today];
+    const count = d?.count ?? 0;
+    const passed = d?.passed ?? false;
+    return { name: t.name, artist: t.artist, count, passed };
+  });
+  const todayDoneCount = todayTracks.filter(t => t.passed).length;
+  const todayTotal = todayTracks.length;
 
-    if (!isOnLeave) {
-        html += `
+  if (!isOnLeave) {
+    html += `
             <div class="glass-card" style="padding:16px; margin-bottom:24px; border-top:3px solid ${todayDoneCount === todayTotal ? 'var(--green)' : 'var(--courage-amber)'};">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
                     <div style="font-size:12px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; display:flex; align-items:center; gap:8px;">
@@ -3894,9 +3896,9 @@ function showSmDay(date) {
                         <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:${t.passed ? 'rgba(0,255,102,0.04)' : 'rgba(255,149,0,0.04)'}; border:1px solid ${t.passed ? 'var(--green-border)' : 'rgba(255,149,0,0.15)'}; border-radius:8px;">
                             <div style="font-size:14px; flex-shrink:0;">
                                 ${t.passed
-                                    ? '<span style="color:var(--green);">✓</span>'
-                                    : '<span style="color:var(--courage-amber); animation:pulse-dot 2s infinite;">○</span>'
-                                }
+        ? '<span style="color:var(--green);">✓</span>'
+        : '<span style="color:var(--courage-amber); animation:pulse-dot 2s infinite;">○</span>'
+      }
                             </div>
                             <div style="flex:1; min-width:0;">
                                 <div style="font-size:12px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
@@ -3922,67 +3924,67 @@ function showSmDay(date) {
                 `}
             </div>
         `;
-    }
+  }
 
-    // ═══════════════════════════════════
-    // 3. PER-TRACK CARDS
-    //    Daily Chain + Weekly Total + Streak + Pace
-    // ═══════════════════════════════════
-    html += `
+  // ═══════════════════════════════════
+  // 3. PER-TRACK CARDS
+  //    Daily Chain + Weekly Total + Streak + Pace
+  // ═══════════════════════════════════
+  html += `
         <div style="font-size:10px; color:var(--text-ghost); font-weight:900; letter-spacing:4px; text-transform:uppercase; margin-bottom:12px; margin-left:4px;">
             [ // Track Dossiers ]
         </div>
         <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:24px;">
     `;
 
-    sm.tracks.forEach(track => {
-        const weeklyReq = track.weeklyRequired || 20;
-        const weeklyTotal = track.weeklyTotal || 0;
-        const weeklyPct = Math.min(100, (weeklyTotal / weeklyReq) * 100);
-        const weeklyDone = weeklyTotal >= weeklyReq;
-        const remaining = Math.max(0, weeklyReq - weeklyTotal);
+  sm.tracks.forEach(track => {
+    const weeklyReq = track.weeklyRequired || 20;
+    const weeklyTotal = track.weeklyTotal || 0;
+    const weeklyPct = Math.min(100, (weeklyTotal / weeklyReq) * 100);
+    const weeklyDone = weeklyTotal >= weeklyReq;
+    const remaining = Math.max(0, weeklyReq - weeklyTotal);
 
-        // Streak calculation
-        let currentStreak = 0;
-        let longestStreak = 0;
-        let tempStreak = 0;
-        let chainBroken = false;
+    // Streak calculation
+    let currentStreak = 0;
+    let longestStreak = 0;
+    let tempStreak = 0;
+    let chainBroken = false;
 
-        for (const date of weekDates) {
-            if (date > today) continue;
-            const d = track.daily?.[date];
-            const passed = d?.passed ?? false;
+    for (const date of weekDates) {
+      if (date > today) continue;
+      const d = track.daily?.[date];
+      const passed = d?.passed ?? false;
 
-            if (passed) {
-                tempStreak++;
-                if (tempStreak > longestStreak) longestStreak = tempStreak;
-            } else {
-                if (tempStreak > 0) chainBroken = true;
-                tempStreak = 0;
-            }
-        }
-        currentStreak = tempStreak;
+      if (passed) {
+        tempStreak++;
+        if (tempStreak > longestStreak) longestStreak = tempStreak;
+      } else {
+        if (tempStreak > 0) chainBroken = true;
+        tempStreak = 0;
+      }
+    }
+    currentStreak = tempStreak;
 
-        // Pace
-        const expectedByNow = daysElapsed > 0 ? Math.round((weeklyReq / daysTotal) * daysElapsed) : 0;
-        const paceStatus = weeklyTotal >= expectedByNow ? 'ahead' : 'behind';
-        const paceDiff = Math.abs(weeklyTotal - expectedByNow);
-        const daysRemaining = daysTotal - daysElapsed;
-        const neededPerDay = daysRemaining > 0 ? Math.ceil(remaining / daysRemaining) : remaining;
+    // Pace
+    const expectedByNow = daysElapsed > 0 ? Math.round((weeklyReq / daysTotal) * daysElapsed) : 0;
+    const paceStatus = weeklyTotal >= expectedByNow ? 'ahead' : 'behind';
+    const paceDiff = Math.abs(weeklyTotal - expectedByNow);
+    const daysRemaining = daysTotal - daysElapsed;
+    const neededPerDay = daysRemaining > 0 ? Math.ceil(remaining / daysRemaining) : remaining;
 
-        // Streak display
-        let streakHtml;
-        if (isOnLeave) {
-            streakHtml = `<span style="font-size:9px; color:var(--text-muted);">Exempt</span>`;
-        } else if (currentStreak > 0) {
-            streakHtml = `<span style="font-size:10px; color:var(--green); font-weight:800;">🔥 ${currentStreak}-day streak</span>`;
-        } else if (chainBroken) {
-            streakHtml = `<span style="font-size:10px; color:var(--red-core); font-weight:700;">💀 Chain broken</span>`;
-        } else {
-            streakHtml = `<span style="font-size:10px; color:var(--text-muted);">⏳ Not started</span>`;
-        }
+    // Streak display
+    let streakHtml;
+    if (isOnLeave) {
+      streakHtml = `<span style="font-size:9px; color:var(--text-muted);">Exempt</span>`;
+    } else if (currentStreak > 0) {
+      streakHtml = `<span style="font-size:10px; color:var(--green); font-weight:800;">🔥 ${currentStreak}-day streak</span>`;
+    } else if (chainBroken) {
+      streakHtml = `<span style="font-size:10px; color:var(--red-core); font-weight:700;">💀 Chain broken</span>`;
+    } else {
+      streakHtml = `<span style="font-size:10px; color:var(--text-muted);">⏳ Not started</span>`;
+    }
 
-        html += `
+    html += `
             <div class="glass-card" style="padding:16px; border-left:3px solid ${track.weekPassed ? 'var(--green)' : 'var(--courage-amber)'};">
 
                 <!-- Track Header -->
@@ -4001,39 +4003,39 @@ function showSmDay(date) {
                     </div>
                     <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:4px;">
                         ${weekDates.map(date => {
-                            const joinDate = STATE.data?.agent?.joinDate || '2000-01-01';
-                            const d = track.daily?.[date];
-                            const count = d?.count ?? 0;
-                            const passed = d?.passed ?? false;
-                            const isFuture = date > today;
-                            const isToday = date === today;
-                            const isPreJoin = date < joinDate;
+      const joinDate = STATE.data?.agent?.joinDate || '2000-01-01';
+      const d = track.daily?.[date];
+      const count = d?.count ?? 0;
+      const passed = d?.passed ?? false;
+      const isFuture = date > today;
+      const isToday = date === today;
+      const isPreJoin = date < joinDate;
 
-                            let bg, border, color, text, opacity = '1', extraStyle = '';
+      let bg, border, color, text, opacity = '1', extraStyle = '';
 
-                            if (isPreJoin) {
-                                bg = 'rgba(255,255,255,0.03)'; border = 'rgba(255,255,255,0.08)';
-                                color = 'var(--text-ghost)'; text = '👋';
-                            } else if (isFuture) {
-                                bg = 'rgba(255,255,255,0.02)'; border = 'var(--border-subtle)';
-                                color = 'var(--text-ghost)'; text = '·'; opacity = '0.4';
-                            } else if (isOnLeave) {
-                                bg = 'rgba(255,255,255,0.03)'; border = 'rgba(255,255,255,0.08)';
-                                color = 'var(--text-ghost)'; text = '—';
-                            } else if (passed) {
-                                bg = 'var(--green-soft)'; border = 'var(--green-border)';
-                                color = 'var(--green)'; text = '✓';
-                            } else if (isToday) {
-                                bg = 'rgba(255,149,0,0.1)'; border = 'rgba(255,149,0,0.35)';
-                                color = 'var(--courage-amber)'; text = count > 0 ? count : '!';
-                                extraStyle = 'box-shadow:0 0 8px rgba(255,149,0,0.15);';
-                            } else {
-                                // Past failed — dimmed
-                                bg = 'rgba(255,20,95,0.06)'; border = 'rgba(255,20,95,0.12)';
-                                color = 'rgba(255,20,95,0.5)'; text = '✗'; opacity = '0.6';
-                            }
+      if (isPreJoin) {
+        bg = 'rgba(255,255,255,0.03)'; border = 'rgba(255,255,255,0.08)';
+        color = 'var(--text-ghost)'; text = '👋';
+      } else if (isFuture) {
+        bg = 'rgba(255,255,255,0.02)'; border = 'var(--border-subtle)';
+        color = 'var(--text-ghost)'; text = '·'; opacity = '0.4';
+      } else if (isOnLeave) {
+        bg = 'rgba(255,255,255,0.03)'; border = 'rgba(255,255,255,0.08)';
+        color = 'var(--text-ghost)'; text = '—';
+      } else if (passed) {
+        bg = 'var(--green-soft)'; border = 'var(--green-border)';
+        color = 'var(--green)'; text = '✓';
+      } else if (isToday) {
+        bg = 'rgba(255,149,0,0.1)'; border = 'rgba(255,149,0,0.35)';
+        color = 'var(--courage-amber)'; text = count > 0 ? count : '!';
+        extraStyle = 'box-shadow:0 0 8px rgba(255,149,0,0.15);';
+      } else {
+        // Past failed — dimmed
+        bg = 'rgba(255,20,95,0.06)'; border = 'rgba(255,20,95,0.12)';
+        color = 'rgba(255,20,95,0.5)'; text = '✗'; opacity = '0.6';
+      }
 
-                            return `
+      return `
                                 <div style="text-align:center; padding:8px 2px; background:${bg}; border:1px solid ${border}; border-radius:6px; opacity:${opacity}; ${extraStyle}">
                                     <div style="font-size:7px; font-weight:900; color:var(--text-ghost); text-transform:uppercase; margin-bottom:3px;">
                                         ${DAYS[new Date(date).getDay()]}
@@ -4044,7 +4046,7 @@ function showSmDay(date) {
                                     ${!isFuture && !isOnLeave && passed ? `<div style="font-size:7px; color:var(--text-ghost); margin-top:2px;">${count}</div>` : ''}
                                 </div>
                             `;
-                        }).join('')}
+    }).join('')}
                     </div>
                 </div>
 
@@ -4066,9 +4068,9 @@ function showSmDay(date) {
                     ${!isOnLeave && !weeklyDone ? `
                         <div style="font-size:9px; color:${paceStatus === 'ahead' ? 'var(--green)' : 'var(--courage-amber)'}; font-weight:700;">
                             ${paceStatus === 'ahead'
-                                ? `↑ ${paceDiff} ahead of pace`
-                                : `↓ ${paceDiff} behind — need ~${neededPerDay}/day for ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}`
-                            }
+          ? `↑ ${paceDiff} ahead of pace`
+          : `↓ ${paceDiff} behind — need ~${neededPerDay}/day for ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}`
+        }
                         </div>
                     ` : ''}
                     ${weeklyDone ? `<div style="font-size:9px; color:var(--green); font-weight:800;">✓ Weekly target reached</div>` : ''}
@@ -4076,14 +4078,14 @@ function showSmDay(date) {
                 </div>
             </div>
         `;
-    });
+  });
 
-    html += `</div>`;
+  html += `</div>`;
 
-    // ═══════════════════════════════════
-    // 4. OVERVIEW MATRIX
-    // ═══════════════════════════════════
-    html += `
+  // ═══════════════════════════════════
+  // 4. OVERVIEW MATRIX
+  // ═══════════════════════════════════
+  html += `
         <div class="glass-card" style="padding:16px; margin-bottom:24px; overflow-x:auto;">
             <div style="font-size:12px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; margin-bottom:14px;">
                 📋 Overview Matrix
@@ -4093,72 +4095,72 @@ function showSmDay(date) {
                 <!-- Header -->
                 <div style="font-size:8px; color:var(--text-ghost); font-weight:800; padding:6px 4px; display:flex; align-items:flex-end;">Track</div>
                 ${weekDates.map(d => {
-                    const isToday = d === today;
-                    return `<div style="text-align:center; font-size:7px; font-weight:900; color:${isToday ? 'var(--red-core)' : 'var(--text-ghost)'}; padding:6px 0; text-transform:uppercase; ${isToday ? 'background:rgba(255,20,95,0.08); border-radius:4px;' : ''}">
+    const isToday = d === today;
+    return `<div style="text-align:center; font-size:7px; font-weight:900; color:${isToday ? 'var(--red-core)' : 'var(--text-ghost)'}; padding:6px 0; text-transform:uppercase; ${isToday ? 'background:rgba(255,20,95,0.08); border-radius:4px;' : ''}">
                         ${DAYS[new Date(d).getDay()]}<br><span style="font-size:6px; color:var(--text-ghost);">${d.slice(8)}</span>
                     </div>`;
-                }).join('')}
+  }).join('')}
                 <div style="text-align:center; font-size:7px; font-weight:900; color:var(--text-ghost); padding:6px 0; text-transform:uppercase;">Total</div>
 
                 <!-- Rows -->
                 ${sm.tracks.map(track => {
-                    const weeklyReq = track.weeklyRequired || 20;
-                    const weeklyDone = (track.weeklyTotal || 0) >= weeklyReq;
+    const weeklyReq = track.weeklyRequired || 20;
+    const weeklyDone = (track.weeklyTotal || 0) >= weeklyReq;
 
-                    let rowHtml = `
+    let rowHtml = `
                         <div style="font-size:9px; font-weight:700; color:var(--text-secondary); padding:6px 4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; border-bottom:1px solid var(--border-subtle); display:flex; align-items:center;" title="${sanitize(track.name)} — ${sanitize(track.artist)}">
                             ${sanitize(track.name)}
                         </div>
                     `;
 
-                    weekDates.forEach(date => {
-                        const joinDate = STATE.data?.agent?.joinDate || '2000-01-01';
-                        const d = track.daily?.[date];
-                        const count = d?.count ?? 0;
-                        const passed = d?.passed ?? false;
-                        const isFuture = date > today;
-                        const isToday = date === today;
-                        const isPreJoin = date < joinDate;
+    weekDates.forEach(date => {
+      const joinDate = STATE.data?.agent?.joinDate || '2000-01-01';
+      const d = track.daily?.[date];
+      const count = d?.count ?? 0;
+      const passed = d?.passed ?? false;
+      const isFuture = date > today;
+      const isToday = date === today;
+      const isPreJoin = date < joinDate;
 
-                        let cellBg, cellColor, cellText;
+      let cellBg, cellColor, cellText;
 
-                        if (isPreJoin) {
-                            cellBg = 'rgba(255,255,255,0.02)'; cellColor = 'var(--text-ghost)'; cellText = '👋';
-                        } else if (isFuture) {
-                            cellBg = 'transparent'; cellColor = 'var(--text-ghost)'; cellText = '·';
-                        } else if (isOnLeave) {
-                            cellBg = 'rgba(255,255,255,0.02)'; cellColor = 'var(--text-ghost)'; cellText = '—';
-                        } else if (passed) {
-                            cellBg = 'rgba(0,255,102,0.08)'; cellColor = 'var(--green)'; cellText = count;
-                        } else if (isToday) {
-                            cellBg = 'rgba(255,149,0,0.08)'; cellColor = 'var(--courage-amber)'; cellText = count || '!';
-                        } else {
-                            cellBg = 'rgba(255,20,95,0.05)'; cellColor = 'rgba(255,20,95,0.5)'; cellText = count || '✗';
-                        }
+      if (isPreJoin) {
+        cellBg = 'rgba(255,255,255,0.02)'; cellColor = 'var(--text-ghost)'; cellText = '👋';
+      } else if (isFuture) {
+        cellBg = 'transparent'; cellColor = 'var(--text-ghost)'; cellText = '·';
+      } else if (isOnLeave) {
+        cellBg = 'rgba(255,255,255,0.02)'; cellColor = 'var(--text-ghost)'; cellText = '—';
+      } else if (passed) {
+        cellBg = 'rgba(0,255,102,0.08)'; cellColor = 'var(--green)'; cellText = count;
+      } else if (isToday) {
+        cellBg = 'rgba(255,149,0,0.08)'; cellColor = 'var(--courage-amber)'; cellText = count || '!';
+      } else {
+        cellBg = 'rgba(255,20,95,0.05)'; cellColor = 'rgba(255,20,95,0.5)'; cellText = count || '✗';
+      }
 
-                        rowHtml += `
+      rowHtml += `
                             <div style="text-align:center; font-family:var(--font-mono); font-size:9px; font-weight:800; color:${cellColor}; background:${cellBg}; border-radius:3px; padding:6px 0; border-bottom:1px solid var(--border-subtle);">
                                 ${cellText}
                             </div>
                         `;
-                    });
+    });
 
-                    rowHtml += `
+    rowHtml += `
                         <div style="text-align:center; font-family:var(--font-mono); font-size:10px; font-weight:900; color:${weeklyDone ? 'var(--green)' : '#fff'}; padding:6px 0; border-bottom:1px solid var(--border-subtle);">
                             ${track.weeklyTotal || 0}<span style="color:var(--text-ghost);">/${weeklyReq}</span>
                         </div>
                     `;
 
-                    return rowHtml;
-                }).join('')}
+    return rowHtml;
+  }).join('')}
             </div>
         </div>
     `;
 
-    // ═══════════════════════════════════════════
-    // 5. TEAM DAILY MONITOR (async loaded)
-    // ═══════════════════════════════════════════
-    html += `
+  // ═══════════════════════════════════════════
+  // 5. TEAM DAILY MONITOR (async loaded)
+  // ═══════════════════════════════════════════
+  html += `
         <div id="smTeamMonitor" class="glass-card" style="padding:20px; margin-bottom:24px; border-top:3px solid ${teamColor(teamName)};">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                 <h3 style="margin:0; font-size:13px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;">
@@ -4174,39 +4176,39 @@ function showSmDay(date) {
         </div>
     `;
 
-    container.innerHTML = html;
+  container.innerHTML = html;
 
-    // ── Async: Load team monitor ──
-    loadSideMissionTeamMonitor(teamName, weekDates, today).catch(() => {
-        const box = document.getElementById('smTeamMonitor');
-        if (box) {
-            box.innerHTML = `
+  // ── Async: Load team monitor ──
+  loadSideMissionTeamMonitor(teamName, weekDates, today).catch(() => {
+    const box = document.getElementById('smTeamMonitor');
+    if (box) {
+      box.innerHTML = `
                 <div style="text-align:center; color:var(--fail); font-size:11px; padding:14px;">
                     Failed to load team side mission data.
                 </div>
             `;
-        }
-    });
+    }
+  });
 }
-  
-  
-  // =============================================
-  // ██████  RANKINGS
-  // =============================================
-  // v2.0: Cached API calls (30s TTL), buildRankRow helper.
-  
-  // =============================================
-  // ██████  RANKINGS PAGE
-  // =============================================
-  async function loadRankings() {
-    const container = $('rankContent');
-    if (!container) return;
-  
-    const myTeam = STATE.data?.agent?.profile?.team || '';
-    const myRank = STATE.data?.agent?.rank || '—';
-    const myTeamRank = STATE.data?.agent?.teamRank || '—';
-  
-    container.innerHTML = `
+
+
+// =============================================
+// ██████  RANKINGS
+// =============================================
+// v2.0: Cached API calls (30s TTL), buildRankRow helper.
+
+// =============================================
+// ██████  RANKINGS PAGE
+// =============================================
+async function loadRankings() {
+  const container = $('rankContent');
+  if (!container) return;
+
+  const myTeam = STATE.data?.agent?.profile?.team || '';
+  const myRank = STATE.data?.agent?.rank || '—';
+  const myTeamRank = STATE.data?.agent?.teamRank || '—';
+
+  container.innerHTML = `
       ${renderGuide('rankings') || ''}
       
       <!-- Your Rank Summary -->
@@ -4230,40 +4232,40 @@ function showSmDay(date) {
       
       <div id="rankList" style="display:flex; flex-direction:column; gap:8px;"></div>
     `;
-  
-    await renderOverallRankings();
-  }
-  
-  function switchRankTab(tab) {
-    const allBtn  = $('rankTabAll');
-    const teamBtn = $('rankTabTeam');
-  
-    const activeStyle  = 'background:var(--red-core); color:#fff;';
-    const defaultStyle = 'background:transparent; color:var(--text-muted);';
-  
-    if (tab === 'all') {
-      if (allBtn)  allBtn.style.cssText  = `flex:1; padding:12px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; border-radius:8px; border:none; cursor:pointer; transition:all 0.3s; ${activeStyle}`;
-      if (teamBtn) teamBtn.style.cssText = `flex:1; padding:12px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; border-radius:8px; border:none; cursor:pointer; transition:all 0.3s; ${defaultStyle}`;
-      renderOverallRankings();
-    } else {
-      if (teamBtn) teamBtn.style.cssText = `flex:1; padding:12px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; border-radius:8px; border:none; cursor:pointer; transition:all 0.3s; ${activeStyle}`;
-      if (allBtn)  allBtn.style.cssText  = `flex:1; padding:12px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; border-radius:8px; border:none; cursor:pointer; transition:all 0.3s; ${defaultStyle}`;
-      renderTeamRankings();
-    }
-  }
-  
-  // Update your buildRankRow function to use the Arirang theme
-  function buildRankCard(agent, index, opts = {}) {
-    const { showTeam = true } = opts;
-    const isMe = agent.agentNo === STATE.agentNo;
-    const tColor = teamColor(agent.team);
-    const pfpUrl = teamPfp(agent.team);
-    
-    // Top 3 Medals
-    const medals = ['🥇', '🥈', '🥉'];
-    const rankDisplay = index < 3 ? medals[index] : index + 1;
 
-    return `
+  await renderOverallRankings();
+}
+
+function switchRankTab(tab) {
+  const allBtn = $('rankTabAll');
+  const teamBtn = $('rankTabTeam');
+
+  const activeStyle = 'background:var(--red-core); color:#fff;';
+  const defaultStyle = 'background:transparent; color:var(--text-muted);';
+
+  if (tab === 'all') {
+    if (allBtn) allBtn.style.cssText = `flex:1; padding:12px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; border-radius:8px; border:none; cursor:pointer; transition:all 0.3s; ${activeStyle}`;
+    if (teamBtn) teamBtn.style.cssText = `flex:1; padding:12px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; border-radius:8px; border:none; cursor:pointer; transition:all 0.3s; ${defaultStyle}`;
+    renderOverallRankings();
+  } else {
+    if (teamBtn) teamBtn.style.cssText = `flex:1; padding:12px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; border-radius:8px; border:none; cursor:pointer; transition:all 0.3s; ${activeStyle}`;
+    if (allBtn) allBtn.style.cssText = `flex:1; padding:12px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; border-radius:8px; border:none; cursor:pointer; transition:all 0.3s; ${defaultStyle}`;
+    renderTeamRankings();
+  }
+}
+
+// Update your buildRankRow function to use the Arirang theme
+function buildRankCard(agent, index, opts = {}) {
+  const { showTeam = true } = opts;
+  const isMe = agent.agentNo === STATE.agentNo;
+  const tColor = teamColor(agent.team);
+  const pfpUrl = teamPfp(agent.team);
+
+  // Top 3 Medals
+  const medals = ['🥇', '🥈', '🥉'];
+  const rankDisplay = index < 3 ? medals[index] : index + 1;
+
+  return `
       <div class="rank-card ${isMe ? 'is-me' : ''} top-${index}" style="--team-color: ${tColor}">
         <!-- Rank -->
         <div class="rank-badge">${rankDisplay}</div>
@@ -4290,15 +4292,15 @@ function showSmDay(date) {
       </div>
     `;
 }
-  
-  // =============================================
-  // ██████  TEAMS PAGE (Army Bomb)
-  // =============================================
-  // =============================================
-  // ██████  TEAMS PAGE (Full Standings)
-  // =============================================
-  
-  function renderTeams() {
+
+// =============================================
+// ██████  TEAMS PAGE (Army Bomb)
+// =============================================
+// =============================================
+// ██████  TEAMS PAGE (Full Standings)
+// =============================================
+
+function renderTeams() {
   if (!STATE.data) return;
 
   const container = $('teamsContent');
@@ -4337,12 +4339,12 @@ function showSmDay(date) {
 
     <div style="display:flex; flex-direction:column; gap:10px;">
       ${teams.map((tm, i) => {
-        const isMe = tm.team === myTeam;
-        const tColor = teamColor(tm.team);
-        const badgeCount = ARMY_BOMB_BADGES.filter(b => tm[b.key]).length;
-        const rankDisplay = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`;
+    const isMe = tm.team === myTeam;
+    const tColor = teamColor(tm.team);
+    const badgeCount = ARMY_BOMB_BADGES.filter(b => tm[b.key]).length;
+    const rankDisplay = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`;
 
-        return `
+    return `
           <div class="team-group-container" onclick="goTo('hangar')"
             style="cursor:pointer; padding:12px; ${isMe ? `background:${tColor}11; border:1px solid ${tColor}33;` : ''} border-radius:10px;">
 
@@ -4378,16 +4380,16 @@ function showSmDay(date) {
                 <!-- Mission Status -->
                 <div style="display:flex; gap:4px; margin-top:6px; flex-wrap:wrap;">
                   ${[
-                    { icon: '🎵', key: 'trackGoalPassed' },
-                    { icon: '📀', key: 'albumGoalPassed' },
-                    { icon: '🔁', key: 'album2xPassed' },
-                    { icon: '⚡', key: 'arirangUnitPassed' },
-                    { icon: '🛡️', key: 'sideMissionPassed' },
-                    { icon: '📋', key: 'attendanceConfirmed' },
-                    { icon: '👮', key: 'policeConfirmed' }
-                  ].map(m => {
-                    const passed = tm[m.key];
-                    return `
+        { icon: '🎵', key: 'trackGoalPassed' },
+        { icon: '📀', key: 'albumGoalPassed' },
+        { icon: '🔁', key: 'album2xPassed' },
+        { icon: '⚡', key: 'arirangUnitPassed' },
+        { icon: '🛡️', key: 'sideMissionPassed' },
+        { icon: '📋', key: 'attendanceConfirmed' },
+        { icon: '👮', key: 'policeConfirmed' }
+      ].map(m => {
+        const passed = tm[m.key];
+        return `
                       <div style="display:flex; align-items:center; gap:2px; padding:2px 5px; background:rgba(255,255,255,0.04); border-radius:6px;">
                         <span style="font-size:10px;">${m.icon}</span>
                         <span style="font-size:9px; font-weight:900; color:${passed ? 'var(--green)' : 'var(--text-ghost)'};">
@@ -4395,7 +4397,7 @@ function showSmDay(date) {
                         </span>
                       </div>
                     `;
-                  }).join('')}
+      }).join('')}
                 </div>
 
               </div>
@@ -4411,554 +4413,554 @@ function showSmDay(date) {
             </div>
           </div>
         `;
-      }).join('')}
+  }).join('')}
     </div>
   `;
 }
-  
-  
-  // =============================================
-  // ██████  ACTIVITY FEED PAGE
-  // =============================================
-  
-  /**
-   * Full activity feed page — cached 30s.
-   */
-  async function loadFeed() {
-    const container = $('feedContent');
-    if (!container) return;
-    showPageLoading(container);
-  
-    try {
-      const d = await Api.call('getActivityFeed', { limit: 40 }, { cache: true, ttl: 30_000 });
-      const activities = d.activities || [];
-  
-      container.innerHTML = activities.length === 0
-        ? '<div style="color:var(--text-muted);font-size:12px;text-align:center;padding:30px;">No activity yet</div>'
-        : activities.map(a => {
-            const type = CONFIG.ACTIVITY_TYPES[a.type];
-            const data = a.data || {};
-            let msg = '';
-            try { msg = type?.template(data) || data.message || JSON.stringify(data); }
-            catch { msg = data.message || a.type; }
-  
-            return `<div class="feed-item">
+
+
+// =============================================
+// ██████  ACTIVITY FEED PAGE
+// =============================================
+
+/**
+ * Full activity feed page — cached 30s.
+ */
+async function loadFeed() {
+  const container = $('feedContent');
+  if (!container) return;
+  showPageLoading(container);
+
+  try {
+    const d = await Api.call('getActivityFeed', { limit: 40 }, { cache: true, ttl: 30_000 });
+    const activities = d.activities || [];
+
+    container.innerHTML = activities.length === 0
+      ? '<div style="color:var(--text-muted);font-size:12px;text-align:center;padding:30px;">No activity yet</div>'
+      : activities.map(a => {
+        const type = CONFIG.ACTIVITY_TYPES[a.type];
+        const data = a.data || {};
+        let msg = '';
+        try { msg = type?.template(data) || data.message || JSON.stringify(data); }
+        catch { msg = data.message || a.type; }
+
+        return `<div class="feed-item">
               <div class="feed-type" style="color:${type?.color || 'var(--red-main)'}">${type?.icon || '📡'} ${a.type.replace(/_/g, ' ')}</div>
               <div class="feed-msg">${msg}</div>
               <div class="feed-time">${new Date(a.timestamp).toLocaleString()}</div>
             </div>`;
-          }).join('');
-    } catch (e) {
-      showPageError(container, 'loadFeed');
-    }
+      }).join('');
+  } catch (e) {
+    showPageError(container, 'loadFeed');
   }
-  
-  
-  // =============================================
-  // ██████  CHAT
-  // =============================================
-  // v2.0: Uses Timers manager for polling, short-lived cache.
-  
-  async function loadChat() {
-    try {
-      // 5s cache — feels real-time but prevents hammering during rapid calls
-      const d = await Api.call('getChatMessages', { limit: 50 }, { cache: true, ttl: 5_000, silent: true });
-      if (!d.success) return;
-  
-      const box = $('chatBox');
-      if (!box) return;
-  
-      box.innerHTML = (d.messages || []).map(m =>
-        `<div class="chat-msg">
+}
+
+
+// =============================================
+// ██████  CHAT
+// =============================================
+// v2.0: Uses Timers manager for polling, short-lived cache.
+
+async function loadChat() {
+  try {
+    // 5s cache — feels real-time but prevents hammering during rapid calls
+    const d = await Api.call('getChatMessages', { limit: 50 }, { cache: true, ttl: 5_000, silent: true });
+    if (!d.success) return;
+
+    const box = $('chatBox');
+    if (!box) return;
+
+    box.innerHTML = (d.messages || []).map(m =>
+      `<div class="chat-msg">
           <span class="cm-name">${sanitize(m.username)}</span>
           <span class="cm-team">[${(m.team || '').replace('Team ', '')}]</span>
           <div class="cm-text">${sanitize(m.message)}</div>
         </div>`
-      ).join('');
-  
-      box.scrollTop = box.scrollHeight;
-  
-      // v2.0: Uses Timers — auto-clears previous interval
-      if (STATE.page === 'chat') {
-        Timers.setInterval('chat', loadChat, 10_000);
-      }
-    } catch { /* silent */ }
-  }
-  
-  async function sendChat() {
-    const input = $('chatInput');
-    if (!input) return;
-  
-    const msg = input.value.trim();
-    if (!msg) return;
-    input.value = '';
-  
-    try {
-      await Api.call('sendChatMessage', { agentNo: STATE.agentNo, message: msg }, { dedupe: false, cache: false });
-      // Invalidate chat cache so next load is fresh
-      Api.invalidate('getChatMessages');
-      loadChat();
-    } catch {
-      showToast('Failed to send', 'error');
+    ).join('');
+
+    box.scrollTop = box.scrollHeight;
+
+    // v2.0: Uses Timers — auto-clears previous interval
+    if (STATE.page === 'chat') {
+      Timers.setInterval('chat', loadChat, 10_000);
     }
+  } catch { /* silent */ }
+}
+
+async function sendChat() {
+  const input = $('chatInput');
+  if (!input) return;
+
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+
+  try {
+    await Api.call('sendChatMessage', { agentNo: STATE.agentNo, message: msg }, { dedupe: false, cache: false });
+    // Invalidate chat cache so next load is fresh
+    Api.invalidate('getChatMessages');
+    loadChat();
+  } catch {
+    showToast('Failed to send', 'error');
   }
-  
-  
-  // =============================================
-  // ██████  ANNOUNCEMENTS
-  // =============================================
-  
-  function renderAnnouncements() {
-    if (!STATE.data) return;
-    const container = $('annsContent');
-    if (!container) return;
-  
-    const anns = STATE.data.announcements || [];
-  
-    container.innerHTML = `
+}
+
+
+// =============================================
+// ██████  ANNOUNCEMENTS
+// =============================================
+
+function renderAnnouncements() {
+  if (!STATE.data) return;
+  const container = $('annsContent');
+  if (!container) return;
+
+  const anns = STATE.data.announcements || [];
+
+  container.innerHTML = `
       ${renderGuide('announcements') || ''}
       ${anns.length === 0
-        ? '<div style="color:var(--text-muted);font-size:12px">No announcements</div>'
-        : anns.map(a => `<div class="ann">
+      ? '<div style="color:var(--text-muted);font-size:12px">No announcements</div>'
+      : anns.map(a => `<div class="ann">
             <div class="ann-t">${sanitize(a.title)}</div>
             <div class="ann-m">${sanitize(a.message)}</div>
             ${a.link ? `<a href="${sanitize(a.link)}" target="_blank" rel="noopener" style="color:var(--red-main);font-size:10px;text-decoration:none;">${sanitize(a.linkText || 'Link →')}</a>` : ''}
             <div class="ann-d">${new Date(a.created).toLocaleDateString()}</div>
           </div>`).join('')
-      }
+    }
     `;
-  }
-  
-  
-  // =============================================
-  // ██████  LEAVE / ATTENDANCE ACTIONS
-  // =============================================
-  // v2.0: Cache invalidation after each action ensures fresh data.
-  
-  /**
-   * Wrapper for leave/attendance API actions.
-   * Handles confirmation, API call, toast, and dashboard reload.
-   */
-  async function performAction(actionName, opts = {}) {
-    const { confirmMsg, successMsg, errorMsg } = opts;
-  
-    if (confirmMsg && !confirm(confirmMsg)) return;
-  
-    try {
-      const d = await Api.call(actionName, { agentNo: STATE.agentNo }, { dedupe: false, cache: false });
-  
-      if (d.success) {
-        showToast(successMsg || 'Done!', 'success');
-        Api.invalidate(); // Fresh data on next load
-        loadDashboard();
-      } else {
-        showToast(d.error || errorMsg || 'Failed', 'error');
-      }
-    } catch {
-      showToast(errorMsg || 'Action failed', 'error');
-    }
-  }
-  
-  function applyLeave() {
-    performAction('applyLeave', {
-      confirmMsg: 'Apply leave? You earn 0 XP but team is unaffected.',
-      successMsg: 'Leave applied!',
-      errorMsg: 'Failed to apply leave',
-    });
-  }
-  
-  function cancelLeave() {
-    performAction('cancelLeave', {
-      confirmMsg: 'Cancel leave? You will be back on duty.',
-      successMsg: 'Leave cancelled!',
-      errorMsg: 'Failed to cancel leave',
-    });
-  }
-  
-  function submitAttendance() {
-    performAction('submitAttendance', {
-      successMsg: 'Attendance submitted! 📸',
-      errorMsg: 'Failed to submit',
-    });
-  }
-  
-  
-  // =============================================
-  // ██████  BADGE SYSTEM
-  // =============================================
-  
-  /**
-   * Deterministic badge selection from seed.
-   * Same agent + same milestone → always same badge.
-   */
-  function getBadgeForSeed(seed) {
-    const pool = CONFIG.BADGE_POOL;
-    if (!pool || pool.length === 0) return '';
-    return pool[Math.abs(seed) % pool.length];
-  }
-  
-  /**
-   * Get all level badges an agent has earned (1 per 50 XP).
-   * @returns {Array<{name: string, description: string, imageUrl: string, type: string}>}
-   */
-  function getLevelBadges(agentNo, totalXP) {
-    const badges = [];
-    const xp = parseInt(totalXP) || 0;
-    const count = Math.floor(xp / 50);
-  
-    for (let i = 1; i <= count; i++) {
-      // Generate deterministic seed from agent ID + badge index
-      let seed = 0;
-      const str = String(agentNo).toUpperCase();
-      for (let c = 0; c < str.length; c++) seed += str.charCodeAt(c);
-      seed += i * 137;
-  
-      badges.push({
-        name: `${i * 50} XP`,
-        description: `Earned at ${i * 50} XP`,
-        imageUrl: getBadgeForSeed(seed),
-        type: 'xp',
-      });
-    }
-  
-    return badges.reverse(); // Most recent first
-  }
+}
 
-  /**
-   * Get Elite Tactical Badges (1 per 100 XP)
-   */
-  function getTacticalBadges(agentNo, totalXP) {
-    const badges = [];
-    const count = Math.floor(totalXP / 100);
-    const pool = CONFIG.TACTICAL_POOL;
 
-    for (let i = 1; i <= count; i++) {
-      // We use a different salt ("TACTICAL") so they are different from standard badges
-      let seed = 0;
-      const str = String(agentNo).toUpperCase() + "TACTICAL" + i;
-      for (let c = 0; c < str.length; c++) seed += str.charCodeAt(c);
+// =============================================
+// ██████  LEAVE / ATTENDANCE ACTIONS
+// =============================================
+// v2.0: Cache invalidation after each action ensures fresh data.
 
-      badges.push({
-        name: `Elite ${i}`,
-        imageUrl: pool[Math.abs(seed) % pool.length]
-      });
+/**
+ * Wrapper for leave/attendance API actions.
+ * Handles confirmation, API call, toast, and dashboard reload.
+ */
+async function performAction(actionName, opts = {}) {
+  const { confirmMsg, successMsg, errorMsg } = opts;
+
+  if (confirmMsg && !confirm(confirmMsg)) return;
+
+  try {
+    const d = await Api.call(actionName, { agentNo: STATE.agentNo }, { dedupe: false, cache: false });
+
+    if (d.success) {
+      showToast(successMsg || 'Done!', 'success');
+      Api.invalidate(); // Fresh data on next load
+      loadDashboard();
+    } else {
+      showToast(d.error || errorMsg || 'Failed', 'error');
     }
-    return badges.reverse();
+  } catch {
+    showToast(errorMsg || 'Action failed', 'error');
   }
-  
-  /**
-   * Get Album 2X achievement badge if earned this week.
-   * @returns {object|null}
-   */
-  function getAlbum2xBadge(agentNo, weekName) {
-    const pool = CONFIG.BADGE_POOL;
-    if (!pool?.length) return null;
-    if (!STATE.data?.agent?.album2xStatus?.weeklyPassed) return null;
-  
+}
+
+function applyLeave() {
+  performAction('applyLeave', {
+    confirmMsg: 'Apply leave? You earn 0 XP but team is unaffected.',
+    successMsg: 'Leave applied!',
+    errorMsg: 'Failed to apply leave',
+  });
+}
+
+function cancelLeave() {
+  performAction('cancelLeave', {
+    confirmMsg: 'Cancel leave? You will be back on duty.',
+    successMsg: 'Leave cancelled!',
+    errorMsg: 'Failed to cancel leave',
+  });
+}
+
+function submitAttendance() {
+  performAction('submitAttendance', {
+    successMsg: 'Attendance submitted! 📸',
+    errorMsg: 'Failed to submit',
+  });
+}
+
+
+// =============================================
+// ██████  BADGE SYSTEM
+// =============================================
+
+/**
+ * Deterministic badge selection from seed.
+ * Same agent + same milestone → always same badge.
+ */
+function getBadgeForSeed(seed) {
+  const pool = CONFIG.BADGE_POOL;
+  if (!pool || pool.length === 0) return '';
+  return pool[Math.abs(seed) % pool.length];
+}
+
+/**
+ * Get all level badges an agent has earned (1 per 50 XP).
+ * @returns {Array<{name: string, description: string, imageUrl: string, type: string}>}
+ */
+function getLevelBadges(agentNo, totalXP) {
+  const badges = [];
+  const xp = parseInt(totalXP) || 0;
+  const count = Math.floor(xp / 50);
+
+  for (let i = 1; i <= count; i++) {
+    // Generate deterministic seed from agent ID + badge index
     let seed = 0;
-    const str = String(agentNo).toUpperCase() + '_ALBUM_' + weekName;
-    for (let i = 0; i < str.length; i++) seed += str.charCodeAt(i);
-  
-    return {
-      name: CONFIG.ALBUM_CHALLENGE.BADGE_NAME,
-      description: `${CONFIG.ALBUM_CHALLENGE.BADGE_DESCRIPTION} (${weekName})`,
-      imageUrl: pool[Math.abs(seed) % pool.length],
-      type: 'achievement',
-      icon: '✨',
-    };
-  }
-  
-  
-  // =============================================
-  // ██████  NOTIFICATIONS & WEB PUSH
-  // =============================================
-  // v2.0: Debounced, won't stack, visibility-aware.
+    const str = String(agentNo).toUpperCase();
+    for (let c = 0; c < str.length; c++) seed += str.charCodeAt(c);
+    seed += i * 137;
 
-  const VAPID_PUBLIC_KEY = 'BLaBF_JxPyDPSd-76mhZxFnvyxcHCY-bdNSKKFjLlLsAWxJkAGYx4_LffeSqpNSwyF1ajVLX7Z_iz_b2TCuIbQQ';
-
-  function urlBase64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-    for (let i = 0; i < rawData.length; ++i) {
-      outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
+    badges.push({
+      name: `${i * 50} XP`,
+      description: `Earned at ${i * 50} XP`,
+      imageUrl: getBadgeForSeed(seed),
+      type: 'xp',
+    });
   }
 
-  async function subscribeToPushNotifications() {
-    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-      showToast('Push not supported by this browser/device', 'error');
+  return badges.reverse(); // Most recent first
+}
+
+/**
+ * Get Elite Tactical Badges (1 per 100 XP)
+ */
+function getTacticalBadges(agentNo, totalXP) {
+  const badges = [];
+  const count = Math.floor(totalXP / 100);
+  const pool = CONFIG.TACTICAL_POOL;
+
+  for (let i = 1; i <= count; i++) {
+    // We use a different salt ("TACTICAL") so they are different from standard badges
+    let seed = 0;
+    const str = String(agentNo).toUpperCase() + "TACTICAL" + i;
+    for (let c = 0; c < str.length; c++) seed += str.charCodeAt(c);
+
+    badges.push({
+      name: `Elite ${i}`,
+      imageUrl: pool[Math.abs(seed) % pool.length]
+    });
+  }
+  return badges.reverse();
+}
+
+/**
+ * Get Album 2X achievement badge if earned this week.
+ * @returns {object|null}
+ */
+function getAlbum2xBadge(agentNo, weekName) {
+  const pool = CONFIG.BADGE_POOL;
+  if (!pool?.length) return null;
+  if (!STATE.data?.agent?.album2xStatus?.weeklyPassed) return null;
+
+  let seed = 0;
+  const str = String(agentNo).toUpperCase() + '_ALBUM_' + weekName;
+  for (let i = 0; i < str.length; i++) seed += str.charCodeAt(i);
+
+  return {
+    name: CONFIG.ALBUM_CHALLENGE.BADGE_NAME,
+    description: `${CONFIG.ALBUM_CHALLENGE.BADGE_DESCRIPTION} (${weekName})`,
+    imageUrl: pool[Math.abs(seed) % pool.length],
+    type: 'achievement',
+    icon: '✨',
+  };
+}
+
+
+// =============================================
+// ██████  NOTIFICATIONS & WEB PUSH
+// =============================================
+// v2.0: Debounced, won't stack, visibility-aware.
+
+const VAPID_PUBLIC_KEY = 'BLaBF_JxPyDPSd-76mhZxFnvyxcHCY-bdNSKKFjLlLsAWxJkAGYx4_LffeSqpNSwyF1ajVLX7Z_iz_b2TCuIbQQ';
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+async function subscribeToPushNotifications() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    showToast('Push not supported by this browser/device', 'error');
+    return;
+  }
+  try {
+    const registration = await navigator.serviceWorker.ready;
+    const existingSub = await registration.pushManager.getSubscription();
+    if (existingSub) {
+      showToast('Push Already Enabled!', 'info');
+      await Api.call('savePushSubscription', { agentNo: STATE.agentNo, subscription: existingSub }, { dedupe: false, cache: false });
       return;
     }
-    try {
-      const registration = await navigator.serviceWorker.ready;
-      const existingSub = await registration.pushManager.getSubscription();
-      if (existingSub) {
-        showToast('Push Already Enabled!', 'info');
-        await Api.call('savePushSubscription', { agentNo: STATE.agentNo, subscription: existingSub }, { dedupe: false, cache: false });
-        return;
-      }
-      
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
-      });
-      
-      const d = await Api.call('savePushSubscription', { agentNo: STATE.agentNo, subscription }, { dedupe: false, cache: false });
-      if (d.success) showToast('Push Alerts Enabled!', 'success');
-      else showToast(d.error || 'Subscription registration failed (Waiting on Supabase)', 'error');
-    } catch (e) {
-      console.error(e);
-      showToast('Push permission denied', 'error');
-    }
+
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+    });
+
+    const d = await Api.call('savePushSubscription', { agentNo: STATE.agentNo, subscription }, { dedupe: false, cache: false });
+    if (d.success) showToast('Push Alerts Enabled!', 'success');
+    else showToast(d.error || 'Subscription registration failed (Waiting on Supabase)', 'error');
+  } catch (e) {
+    console.error(e);
+    showToast('Push permission denied', 'error');
   }
-  
-  /** Minimum ms between notification checks */
-  const NOTIF_COOLDOWN = 60_000;
-  let _lastNotifCheckTime = 0;
-  
-  async function checkNotifications() {
-    // Guards
-    if (STATE.isCheckingNotifications) return;
-    if (!STATE.agentNo || !STATE.data) return;
-    if (Date.now() - _lastNotifCheckTime < NOTIF_COOLDOWN) return;
-  
-    STATE.isCheckingNotifications = true;
-    _lastNotifCheckTime = Date.now();
-  
-    try {
-      // Keep existing one-time notifications
-      const notifications = (STATE.notifications || []).filter(n => n.isOneTime);
-      const cleared = STATE.lastChecked.clearedReminders || [];
-  
-      // ── 1. Badge check ──
-      const xp = parseInt(STATE.data.agent?.stats?.totalXP) || 0;
-      const currentBadges = Math.floor(xp / 50);
-  
-      if (!STATE.lastChecked._badgesInitialized) {
-        STATE.lastChecked.badges = currentBadges;
-        STATE.lastChecked._badgesInitialized = true;
-      } else if (currentBadges > (STATE.lastChecked.badges || 0)) {
-        notifications.push({
-          id: 'badge_' + currentBadges,
-          type: 'badge', icon: '🎖️',
-          title: 'New Badge!',
-          message: `You reached ${currentBadges * 50} XP!`,
-          priority: 'high',
-          isOneTime: true
-        });
-        STATE.lastChecked.badges = currentBadges;
-      }
-  
-      // ── 2. SOTD check ──
-      const todayKST = getKSTDateString();
-      if (STATE.lastChecked.songOfDay !== todayKST) {
-        try {
-          const sotd = await Api.call('getSongOfDay', {}, { cache: true, ttl: 300_000, silent: true });
-          if (sotd.success && sotd.song) {
-            const answered = localStorage.getItem(`sotd_answered_${STATE.agentNo}_${todayKST}`);
-            if (!answered && !cleared.includes('sotd_' + todayKST)) {
-              notifications.push({
-                id: 'sotd_' + todayKST,
-                type: 'sotd', icon: '🎬',
-                title: 'Song of the Day!',
-                message: 'New puzzle available!',
-              });
-            }
-          }
-        } catch { /* silent */ }
-      }
-  
-      // ── 3. Warning check ──
-      if (STATE.data.team?.warningStatus?.hasWarning && !cleared.includes('warning_' + todayKST)) {
-        notifications.push({
-          id: 'warning_' + todayKST,
-          type: 'warning', icon: '⚠️',
-          title: 'Team At Risk!',
-          message: `Recovery: ${STATE.data.team.warningStatus.daysAchieved}/${STATE.data.team.warningStatus.daysRequired} days`,
-          priority: 'high',
-        });
-      }
-  
-      // ── 4. ATTENDANCE WINDOW REMINDER ──
-      const kstNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
-      const kstDay = kstNow.getDay(); 
-      const kstHour = kstNow.getHours();
-      const kstMin = kstNow.getMinutes();
-  
-      let targetAttnWeek = STATE.week;
-      let isWindowOpen = false;
-      if (kstDay === 6 && (kstHour > 18 || (kstHour === 18 && kstMin >= 30))) {
-          isWindowOpen = true; // Sat after 6:30 PM
-      }
-      if (kstDay === 0 && (kstHour < 18 || (kstHour === 18 && kstMin < 30))) {
-          isWindowOpen = true; // Sun before 6:30 PM
-          // Sunday belongs to the new week, but attendance is for the previous week
-          const weekMatch = STATE.week.match(/Week (\d+)/i);
-          if (weekMatch) targetAttnWeek = 'Week ' + (parseInt(weekMatch[1]) - 1);
-      }
-  
-      const hasSubmitted = STATE.data?.agent?.attendance?.submitted;
-  
-      if (isWindowOpen && !hasSubmitted && !cleared.includes('attn_wk_' + targetAttnWeek)) {
-        notifications.push({
-          id: 'attn_wk_' + targetAttnWeek,
-          type: 'attendance', icon: '📸',
-          title: `Attendance Required (${targetAttnWeek})`,
-          message: `The 24hr window is open for ${targetAttnWeek}. Drop your screenshot in the GC!`,
-          priority: 'high',
-          route: 'attendance'
-        });
-      }
-  
-      // ── 5. NEW PLAYLIST CHECK ──
+}
+
+/** Minimum ms between notification checks */
+const NOTIF_COOLDOWN = 60_000;
+let _lastNotifCheckTime = 0;
+
+async function checkNotifications() {
+  // Guards
+  if (STATE.isCheckingNotifications) return;
+  if (!STATE.agentNo || !STATE.data) return;
+  if (Date.now() - _lastNotifCheckTime < NOTIF_COOLDOWN) return;
+
+  STATE.isCheckingNotifications = true;
+  _lastNotifCheckTime = Date.now();
+
+  try {
+    // Keep existing one-time notifications
+    const notifications = (STATE.notifications || []).filter(n => n.isOneTime);
+    const cleared = STATE.lastChecked.clearedReminders || [];
+
+    // ── 1. Badge check ──
+    const xp = parseInt(STATE.data.agent?.stats?.totalXP) || 0;
+    const currentBadges = Math.floor(xp / 50);
+
+    if (!STATE.lastChecked._badgesInitialized) {
+      STATE.lastChecked.badges = currentBadges;
+      STATE.lastChecked._badgesInitialized = true;
+    } else if (currentBadges > (STATE.lastChecked.badges || 0)) {
+      notifications.push({
+        id: 'badge_' + currentBadges,
+        type: 'badge', icon: '🎖️',
+        title: 'New Badge!',
+        message: `You reached ${currentBadges * 50} XP!`,
+        priority: 'high',
+        isOneTime: true
+      });
+      STATE.lastChecked.badges = currentBadges;
+    }
+
+    // ── 2. SOTD check ──
+    const todayKST = getKSTDateString();
+    if (STATE.lastChecked.songOfDay !== todayKST) {
       try {
-        const plData = await Api.call('getPlaylists', {}, { cache: true, ttl: 300_000, silent: true });
-        if (plData.playlists) {
-          const plCount = plData.playlists.length;
-          if (!STATE.lastChecked._plInitialized) {
-            STATE.lastChecked.playListCount = plCount;
-            STATE.lastChecked._plInitialized = true;
-          } else if (plCount > (STATE.lastChecked.playListCount || 0)) {
+        const sotd = await Api.call('getSongOfDay', {}, { cache: true, ttl: 300_000, silent: true });
+        if (sotd.success && sotd.song) {
+          const answered = localStorage.getItem(`sotd_answered_${STATE.agentNo}_${todayKST}`);
+          if (!answered && !cleared.includes('sotd_' + todayKST)) {
             notifications.push({
-              id: 'pl_' + Date.now(),
-              type: 'playlist', icon: '🎵',
-              title: 'New Playlist Available!',
-              message: 'A new official playlist has been added.',
-              priority: 'normal',
-              isOneTime: true
+              id: 'sotd_' + todayKST,
+              type: 'sotd', icon: '🎬',
+              title: 'Song of the Day!',
+              message: 'New puzzle available!',
             });
-            STATE.lastChecked.playListCount = plCount;
           }
         }
       } catch { /* silent */ }
-  
-      // ── 6. NEW SECRET MISSION CHECK ──
-      const myTeam = STATE.data?.agent?.profile?.team;
-      if (myTeam) {
-        try {
-          const mData = await Api.call('getTeamSecretMissions', { team: myTeam, agentNo: STATE.agentNo, week: STATE.week }, { cache: true, ttl: 300_000, silent: true });
-          if (mData.active) {
-            const mCount = mData.active.length;
-            if (!STATE.lastChecked._missionBaselineSet) {
-              STATE.lastChecked.missionCount = mCount;
-              STATE.lastChecked._missionBaselineSet = true;
-            } else if (mCount > (STATE.lastChecked.missionCount || 0)) {
-              notifications.push({
-                id: 'sm_' + Date.now(),
-                type: 'secret_mission', icon: '🕵️',
-                title: 'New Secret Mission!',
-                message: 'A new classified operation is active for your team.',
-                priority: 'high',
-                isOneTime: true
-              });
-              STATE.lastChecked.missionCount = mCount;
-            }
-          }
-        } catch { /* silent */ }
-      }
-  
-      // ── 7. ARIRANG 2X END OF DAY REMINDER ──
-      if (kstHour >= 21 && !cleared.includes('a2x_' + todayKST)) {
-        const a2xPassed = STATE.data?.agent?.album2xStatus?.weeklyPassed;
-        if (!a2xPassed) {
-          const dailyGrid = STATE.data?.agent?.album2xStatus?.dailyGrid?.[todayKST] || {};
-          let isTodayDone = true;
-          // Fallback array if ARIRANG_TRACKS isn't available
-          const tracks = CONFIG.ARIRANG_TRACKS || [
-            "Intro : Persona", "Boy With Luv", "Make It Right", "Jamais Vu", "Dionysus",
-            "Interlude : Shadow", "Black Swan", "Filter", "My Time", "Louder than bombs",
-            "ON", "UGH!", "00:00 (Zero O'Clock)", "Inner Child", "Friends", "Moon",
-            "Respect", "We are Bulletproof : the Eternal", "Outro : Ego"
-          ];
-          for (let i = 0; i < tracks.length; i++) {
-            const t = tracks[i];
-            if (dailyGrid[t] !== 'Exempt' && (dailyGrid[t] || 0) < 2) {
-              isTodayDone = false;
-              break;
-            }
-          }
-          if (!isTodayDone) {
-            notifications.push({
-              id: 'a2x_' + todayKST,
-              type: 'album2x_reminder', icon: '⏰',
-              title: 'Arirang 2X Reminder',
-              message: 'Day is ending soon! Complete your 2X streams before midnight KST.',
-              priority: 'high',
-              route: 'album2x'
-            });
-          }
+    }
+
+    // ── 3. Warning check ──
+    if (STATE.data.team?.warningStatus?.hasWarning && !cleared.includes('warning_' + todayKST)) {
+      notifications.push({
+        id: 'warning_' + todayKST,
+        type: 'warning', icon: '⚠️',
+        title: 'Team At Risk!',
+        message: `Recovery: ${STATE.data.team.warningStatus.daysAchieved}/${STATE.data.team.warningStatus.daysRequired} days`,
+        priority: 'high',
+      });
+    }
+
+    // ── 4. ATTENDANCE WINDOW REMINDER ──
+    const kstNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+    const kstDay = kstNow.getDay();
+    const kstHour = kstNow.getHours();
+    const kstMin = kstNow.getMinutes();
+
+    let targetAttnWeek = STATE.week;
+    let isWindowOpen = false;
+    if (kstDay === 6 && (kstHour > 18 || (kstHour === 18 && kstMin >= 30))) {
+      isWindowOpen = true; // Sat after 6:30 PM
+    }
+    if (kstDay === 0 && (kstHour < 18 || (kstHour === 18 && kstMin < 30))) {
+      isWindowOpen = true; // Sun before 6:30 PM
+      // Sunday belongs to the new week, but attendance is for the previous week
+      const weekMatch = STATE.week.match(/Week (\d+)/i);
+      if (weekMatch) targetAttnWeek = 'Week ' + (parseInt(weekMatch[1]) - 1);
+    }
+
+    const hasSubmitted = STATE.data?.agent?.attendance?.submitted;
+
+    if (isWindowOpen && !hasSubmitted && !cleared.includes('attn_wk_' + targetAttnWeek)) {
+      notifications.push({
+        id: 'attn_wk_' + targetAttnWeek,
+        type: 'attendance', icon: '📸',
+        title: `Attendance Required (${targetAttnWeek})`,
+        message: `The 24hr window is open for ${targetAttnWeek}. Drop your screenshot in the GC!`,
+        priority: 'high',
+        route: 'attendance'
+      });
+    }
+
+    // ── 5. NEW PLAYLIST CHECK ──
+    try {
+      const plData = await Api.call('getPlaylists', {}, { cache: true, ttl: 300_000, silent: true });
+      if (plData.playlists) {
+        const plCount = plData.playlists.length;
+        if (!STATE.lastChecked._plInitialized) {
+          STATE.lastChecked.playListCount = plCount;
+          STATE.lastChecked._plInitialized = true;
+        } else if (plCount > (STATE.lastChecked.playListCount || 0)) {
+          notifications.push({
+            id: 'pl_' + Date.now(),
+            type: 'playlist', icon: '🎵',
+            title: 'New Playlist Available!',
+            message: 'A new official playlist has been added.',
+            priority: 'normal',
+            isOneTime: true
+          });
+          STATE.lastChecked.playListCount = plCount;
         }
       }
-  
-      // ── 8. STREAK END OF DAY WARNING ──
-      if (kstHour >= 21 && !cleared.includes('streak_' + todayKST)) {
-        try {
-          const strk = await Api.call('getStreakData', { agentNo: STATE.agentNo }, { cache: true, ttl: 300_000, silent: true });
-          if (strk.success && strk.streak && !strk.streak.todayCompleted) {
+    } catch { /* silent */ }
+
+    // ── 6. NEW SECRET MISSION CHECK ──
+    const myTeam = STATE.data?.agent?.profile?.team;
+    if (myTeam) {
+      try {
+        const mData = await Api.call('getTeamSecretMissions', { team: myTeam, agentNo: STATE.agentNo, week: STATE.week }, { cache: true, ttl: 300_000, silent: true });
+        if (mData.active) {
+          const mCount = mData.active.length;
+          if (!STATE.lastChecked._missionBaselineSet) {
+            STATE.lastChecked.missionCount = mCount;
+            STATE.lastChecked._missionBaselineSet = true;
+          } else if (mCount > (STATE.lastChecked.missionCount || 0)) {
             notifications.push({
-              id: 'streak_' + todayKST,
-              type: 'streak_reminder', icon: '🔥',
-              title: 'Streak at Risk!',
-              message: 'Stream 10+ tracks before midnight KST to keep your streak!',
+              id: 'sm_' + Date.now(),
+              type: 'secret_mission', icon: '🕵️',
+              title: 'New Secret Mission!',
+              message: 'A new classified operation is active for your team.',
               priority: 'high',
-              route: 'home'
+              isOneTime: true
             });
+            STATE.lastChecked.missionCount = mCount;
           }
-        } catch { /* silent */ }
+        }
+      } catch { /* silent */ }
+    }
+
+    // ── 7. ARIRANG 2X END OF DAY REMINDER ──
+    if (kstHour >= 21 && !cleared.includes('a2x_' + todayKST)) {
+      const a2xPassed = STATE.data?.agent?.album2xStatus?.weeklyPassed;
+      if (!a2xPassed) {
+        const dailyGrid = STATE.data?.agent?.album2xStatus?.dailyGrid?.[todayKST] || {};
+        let isTodayDone = true;
+        // Fallback array if ARIRANG_TRACKS isn't available
+        const tracks = CONFIG.ARIRANG_TRACKS || [
+          "Intro : Persona", "Boy With Luv", "Make It Right", "Jamais Vu", "Dionysus",
+          "Interlude : Shadow", "Black Swan", "Filter", "My Time", "Louder than bombs",
+          "ON", "UGH!", "00:00 (Zero O'Clock)", "Inner Child", "Friends", "Moon",
+          "Respect", "We are Bulletproof : the Eternal", "Outro : Ego"
+        ];
+        for (let i = 0; i < tracks.length; i++) {
+          const t = tracks[i];
+          if (dailyGrid[t] !== 'Exempt' && (dailyGrid[t] || 0) < 2) {
+            isTodayDone = false;
+            break;
+          }
+        }
+        if (!isTodayDone) {
+          notifications.push({
+            id: 'a2x_' + todayKST,
+            type: 'album2x_reminder', icon: '⏰',
+            title: 'Arirang 2X Reminder',
+            message: 'Day is ending soon! Complete your 2X streams before midnight KST.',
+            priority: 'high',
+            route: 'album2x'
+          });
+        }
       }
-  
-      STATE.notifications = notifications;
-      updateNotificationUI();
-      saveNotificationState();
-  
-      // Show popup toast for first notification (once per session)
-      if (notifications.length > 0 && !STATE.hasShownPopupThisSession) {
-        // Prioritize high-priority alerts like Attendance
-        const topNotif = notifications.find(n => n.priority === 'high') || notifications[0];
-        showToast(`${topNotif.icon || '🔔'} ${topNotif.title}`, topNotif.type === 'attendance' ? 'error' : 'info');
-        STATE.hasShownPopupThisSession = true;
-      }
-    } catch (e) {
-      console.error('Notification check error:', e);
-    } finally {
-      STATE.isCheckingNotifications = false;
     }
+
+    // ── 8. STREAK END OF DAY WARNING ──
+    if (kstHour >= 21 && !cleared.includes('streak_' + todayKST)) {
+      try {
+        const strk = await Api.call('getStreakData', { agentNo: STATE.agentNo }, { cache: true, ttl: 300_000, silent: true });
+        if (strk.success && strk.streak && !strk.streak.todayCompleted) {
+          notifications.push({
+            id: 'streak_' + todayKST,
+            type: 'streak_reminder', icon: '🔥',
+            title: 'Streak at Risk!',
+            message: 'Stream 10+ tracks before midnight KST to keep your streak!',
+            priority: 'high',
+            route: 'home'
+          });
+        }
+      } catch { /* silent */ }
+    }
+
+    STATE.notifications = notifications;
+    updateNotificationUI();
+    saveNotificationState();
+
+    // Show popup toast for first notification (once per session)
+    if (notifications.length > 0 && !STATE.hasShownPopupThisSession) {
+      // Prioritize high-priority alerts like Attendance
+      const topNotif = notifications.find(n => n.priority === 'high') || notifications[0];
+      showToast(`${topNotif.icon || '🔔'} ${topNotif.title}`, topNotif.type === 'attendance' ? 'error' : 'info');
+      STATE.hasShownPopupThisSession = true;
+    }
+  } catch (e) {
+    console.error('Notification check error:', e);
+  } finally {
+    STATE.isCheckingNotifications = false;
   }
-  
-  function updateNotificationUI() {
-    const count = (STATE.notifications || []).length;
-    
-    // Remove the old injected badge if it exists
-    const oldBadge = document.getElementById('notifBadge');
-    if (oldBadge) {
-      oldBadge.remove();
-    }
-    
-    let btn = $('topBarNotif');
-    if (!btn) return;
-  
-    if (count > 0) {
-      btn.innerHTML = `🔔 <span style="background:var(--red-main);color:#fff;border-radius:10px;padding:2px 5px;font-size:10px;font-weight:900;position:absolute;top:2px;right:2px;transform:scale(0.85);">${count}</span>`;
-      btn.style.position = 'relative'; 
-      btn.style.animation = 'pulseBorder 2s infinite';
-    } else {
-      btn.innerHTML = '🔔';
-      btn.style.animation = 'none';
-      btn.style.position = 'static';
-    }
+}
+
+function updateNotificationUI() {
+  const count = (STATE.notifications || []).length;
+
+  // Remove the old injected badge if it exists
+  const oldBadge = document.getElementById('notifBadge');
+  if (oldBadge) {
+    oldBadge.remove();
   }
-  
-  function showNotificationCenter() {
-    const notifs = STATE.notifications || [];
-  
-    const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:99999;display:flex;align-items:flex-start;justify-content:center;padding:60px 16px;';
-    overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
-  
-    overlay.innerHTML = `
+
+  let btn = $('topBarNotif');
+  if (!btn) return;
+
+  if (count > 0) {
+    btn.innerHTML = `🔔 <span style="background:var(--red-main);color:#fff;border-radius:10px;padding:2px 5px;font-size:10px;font-weight:900;position:absolute;top:2px;right:2px;transform:scale(0.85);">${count}</span>`;
+    btn.style.position = 'relative';
+    btn.style.animation = 'pulseBorder 2s infinite';
+  } else {
+    btn.innerHTML = '🔔';
+    btn.style.animation = 'none';
+    btn.style.position = 'static';
+  }
+}
+
+function showNotificationCenter() {
+  const notifs = STATE.notifications || [];
+
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:99999;display:flex;align-items:flex-start;justify-content:center;padding:60px 16px;';
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+
+  overlay.innerHTML = `
       <div style="background:var(--panel-bg);border:1px solid var(--border-light);max-width:380px;width:100%;max-height:70vh;overflow-y:auto;border-radius:8px;" onclick="event.stopPropagation()">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--red-main);border-radius:8px 8px 0 0;">
           <span style="font-weight:900;font-size:13px;">🔔 Notifications</span>
@@ -4966,16 +4968,16 @@ function showSmDay(date) {
         </div>
         <div style="padding:8px;">
           ${notifs.length === 0
-            ? '<div style="text-align:center;padding:30px;color:var(--text-muted);">✨ All caught up!</div>'
-            : notifs.map(n => `
-              <div style="padding:12px;border-bottom:1px solid var(--border-light);display:flex;gap:10px;align-items:flex-start;cursor:${n.route?'pointer':'default'};" ${n.route ? `onclick="goTo('${n.route}'); this.closest('div[style]').parentElement.remove();"` : ''}>
+      ? '<div style="text-align:center;padding:30px;color:var(--text-muted);">✨ All caught up!</div>'
+      : notifs.map(n => `
+              <div style="padding:12px;border-bottom:1px solid var(--border-light);display:flex;gap:10px;align-items:flex-start;cursor:${n.route ? 'pointer' : 'default'};" ${n.route ? `onclick="goTo('${n.route}'); this.closest('div[style]').parentElement.remove();"` : ''}>
                 <span style="font-size:20px;">${n.icon || '🔔'}</span>
                 <div>
-                  <div style="font-weight:700;font-size:12px;${n.route?'color:var(--wave-foam);':''}">${sanitize(n.title)} ${n.route ? '›' : ''}</div>
+                  <div style="font-weight:700;font-size:12px;${n.route ? 'color:var(--wave-foam);' : ''}">${sanitize(n.title)} ${n.route ? '›' : ''}</div>
                   <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">${sanitize(n.message)}</div>
                 </div>
               </div>`).join('')
-          }
+    }
         </div>
         ${notifs.length > 0 ? `
           <div style="padding:10px;border-top:1px solid var(--border-light);">
@@ -4984,245 +4986,245 @@ function showSmDay(date) {
         ` : ''}
       </div>
     `;
-  
-    document.body.appendChild(overlay);
-  }
-  function saveNotificationState() {
-      localStorage.setItem('arirang_notif_state_' + STATE.agentNo, JSON.stringify(STATE.lastChecked));
-  }
-  /**
-   * Setup notification triggers.
-   * v2.0: Uses the debounce cooldown, won't fire redundantly.
-   */
-  function setupNotificationChecks() {
-    // Check on tab return
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') {
-        Timers.setTimeout('notif-visibility', checkNotifications, 1000);
-      }
-    });
-  
-    // Check on reconnect
-    window.addEventListener('online', () => {
-      Timers.setTimeout('notif-online', checkNotifications, 2000);
-    });
-  
-    // Check on focus (with cooldown guard inside checkNotifications)
-    window.addEventListener('focus', () => {
-      checkNotifications();
-    });
 
-    // Periodic check every 60s
-    Timers.setInterval('notif-periodic', checkNotifications, 60000);
+  document.body.appendChild(overlay);
+}
+function saveNotificationState() {
+  localStorage.setItem('arirang_notif_state_' + STATE.agentNo, JSON.stringify(STATE.lastChecked));
+}
+/**
+ * Setup notification triggers.
+ * v2.0: Uses the debounce cooldown, won't fire redundantly.
+ */
+function setupNotificationChecks() {
+  // Check on tab return
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      Timers.setTimeout('notif-visibility', checkNotifications, 1000);
+    }
+  });
+
+  // Check on reconnect
+  window.addEventListener('online', () => {
+    Timers.setTimeout('notif-online', checkNotifications, 2000);
+  });
+
+  // Check on focus (with cooldown guard inside checkNotifications)
+  window.addEventListener('focus', () => {
+    checkNotifications();
+  });
+
+  // Periodic check every 60s
+  Timers.setInterval('notif-periodic', checkNotifications, 60000);
+}
+
+
+// =============================================
+// ██████  REGISTER PAGE RENDERERS
+// =============================================
+// Connects page names to their render functions.
+// goTo() in Part 1 looks up PAGE_RENDERERS[page] to call.
+// =============================================
+// END OF PART 2
+// =============================================
+// Part 3 will define:
+//  • findAgent, password, delete account
+//  • Song of the Day, Secret Missions
+//  • Badges page, Weekly Summary, Confetti
+//  • Admin Panel, 148 Protocol, Guide Page
+//  • Final initialization + window exports
+// =============================================
+// =============================================
+// ██████  PART 3: FEATURES + ADMIN + INIT
+// ██████  v2.0 — Final
+// =============================================
+//
+// KEY IMPROVEMENTS OVER v1.0:
+// ───────────────────────────────────────────────
+// ✅ findAgent debounced, login form cleaned
+// ✅ Password modal uses safe DOM refs (no stale closures)
+// ✅ Delete account has loading guard
+// ✅ SOTD uses 5-minute cache for song data
+// ✅ Secret missions: renderMissionCard extracted
+// ✅ Badges page renders all types uniformly
+// ✅ Weekly summary with cached API + confetti once-only
+// ✅ Confetti: pooled elements, auto-cleanup, CSS injected once
+// ✅ Admin panel: single-instance guard, session validation
+// ✅ 148 Protocol: parallel API, shared goal/album2x cache
+// ✅ Guide page: accessible accordion with proper state
+// ✅ PAGE_RENDERERS fully registered
+// ✅ Window exports consolidated, no duplicates
+// ✅ Keyboard shortcuts use Map for clarity
+// ✅ Single DOMContentLoaded / checkAuth entry point
+// ✅ beforeunload cleanup
+// =============================================
+
+'use strict';
+
+
+// =============================================
+// ██████  FIND AGENT (Login Page)
+// =============================================
+
+async function findAgent() {
+  const input = $('findIG');
+  const result = $('findResult');
+  if (!input || !result) return;
+
+  const ig = input.value.trim().replace(/@/g, '');
+  if (!ig) {
+    result.innerHTML = '<span style="color:var(--red-main)">Enter Instagram username</span>';
+    return;
   }
-  
-  
-  // =============================================
-  // ██████  REGISTER PAGE RENDERERS
-  // =============================================
-  // Connects page names to their render functions.
-  // goTo() in Part 1 looks up PAGE_RENDERERS[page] to call.
-  // =============================================
-  // END OF PART 2
-  // =============================================
-  // Part 3 will define:
-  //  • findAgent, password, delete account
-  //  • Song of the Day, Secret Missions
-  //  • Badges page, Weekly Summary, Confetti
-  //  • Admin Panel, 148 Protocol, Guide Page
-  //  • Final initialization + window exports
-  // =============================================
-  // =============================================
-  // ██████  PART 3: FEATURES + ADMIN + INIT
-  // ██████  v2.0 — Final
-  // =============================================
-  //
-  // KEY IMPROVEMENTS OVER v1.0:
-  // ───────────────────────────────────────────────
-  // ✅ findAgent debounced, login form cleaned
-  // ✅ Password modal uses safe DOM refs (no stale closures)
-  // ✅ Delete account has loading guard
-  // ✅ SOTD uses 5-minute cache for song data
-  // ✅ Secret missions: renderMissionCard extracted
-  // ✅ Badges page renders all types uniformly
-  // ✅ Weekly summary with cached API + confetti once-only
-  // ✅ Confetti: pooled elements, auto-cleanup, CSS injected once
-  // ✅ Admin panel: single-instance guard, session validation
-  // ✅ 148 Protocol: parallel API, shared goal/album2x cache
-  // ✅ Guide page: accessible accordion with proper state
-  // ✅ PAGE_RENDERERS fully registered
-  // ✅ Window exports consolidated, no duplicates
-  // ✅ Keyboard shortcuts use Map for clarity
-  // ✅ Single DOMContentLoaded / checkAuth entry point
-  // ✅ beforeunload cleanup
-  // =============================================
-  
-  'use strict';
-  
-  
-  // =============================================
-  // ██████  FIND AGENT (Login Page)
-  // =============================================
-  
-  async function findAgent() {
-    const input = $('findIG');
-    const result = $('findResult');
-    if (!input || !result) return;
-  
-    const ig = input.value.trim().replace(/@/g, '');
-    if (!ig) {
-      result.innerHTML = '<span style="color:var(--red-main)">Enter Instagram username</span>';
-      return;
+
+  result.innerHTML = '<span style="color:var(--text-muted)">Searching...</span>';
+
+  try {
+    const d = await Api.call('getAgentByInstagram', { instagram: ig }, { dedupe: false });
+
+    if (d.success && d.result) {
+      result.innerHTML = `<span style="color:var(--green)">✓ Your Agent ID: <strong style="font-family:monospace;font-size:14px;">${sanitize(d.result)}</strong></span>`;
+    } else {
+      result.innerHTML = `<span style="color:var(--red-main)">✗ No agent found for @${sanitize(ig)}</span>`;
     }
-  
-    result.innerHTML = '<span style="color:var(--text-muted)">Searching...</span>';
-  
-    try {
-      const d = await Api.call('getAgentByInstagram', { instagram: ig }, { dedupe: false });
-  
-      if (d.success && d.result) {
-        result.innerHTML = `<span style="color:var(--green)">✓ Your Agent ID: <strong style="font-family:monospace;font-size:14px;">${sanitize(d.result)}</strong></span>`;
-      } else {
-        result.innerHTML = `<span style="color:var(--red-main)">✗ No agent found for @${sanitize(ig)}</span>`;
-      }
-    } catch (e) {
-      result.innerHTML = `<span style="color:var(--red-main)">Error: ${sanitize(e.message)}</span>`;
-    }
+  } catch (e) {
+    result.innerHTML = `<span style="color:var(--red-main)">Error: ${sanitize(e.message)}</span>`;
   }
-  
-  
-  // =============================================
-  // ██████  PASSWORD CHANGE
-  // =============================================
-  
-  function openPasswordModal() {
-    const modal = $('passwordModal');
-    if (modal) modal.hidden = false;
+}
+
+
+// =============================================
+// ██████  PASSWORD CHANGE
+// =============================================
+
+function openPasswordModal() {
+  const modal = $('passwordModal');
+  if (modal) modal.hidden = false;
+}
+
+function closePasswordModal() {
+  const modal = $('passwordModal');
+  if (modal) modal.hidden = true;
+
+  // Clear fields safely
+  const fields = ['currentPw', 'newPw', 'confirmNewPw'];
+  fields.forEach(id => {
+    const el = $(id);
+    if (el) el.value = '';
+  });
+
+  const errEl = $('pwError');
+  if (errEl) errEl.textContent = '';
+}
+
+async function changePassword() {
+  const current = $('currentPw')?.value;
+  const newPw = $('newPw')?.value;
+  const confirmPw = $('confirmNewPw')?.value;
+  const errEl = $('pwError');
+
+  // Validation
+  if (!current || !newPw || !confirmPw) {
+    if (errEl) errEl.textContent = 'Fill all fields';
+    return;
   }
-  
-  function closePasswordModal() {
-    const modal = $('passwordModal');
-    if (modal) modal.hidden = true;
-  
-    // Clear fields safely
-    const fields = ['currentPw', 'newPw', 'confirmNewPw'];
-    fields.forEach(id => {
-      const el = $(id);
-      if (el) el.value = '';
-    });
-  
-    const errEl = $('pwError');
-    if (errEl) errEl.textContent = '';
+  if (newPw.length < 4) {
+    if (errEl) errEl.textContent = 'Min 4 characters';
+    return;
   }
-  
-  async function changePassword() {
-    const current   = $('currentPw')?.value;
-    const newPw     = $('newPw')?.value;
-    const confirmPw = $('confirmNewPw')?.value;
-    const errEl     = $('pwError');
-  
-    // Validation
-    if (!current || !newPw || !confirmPw) {
-      if (errEl) errEl.textContent = 'Fill all fields';
-      return;
-    }
-    if (newPw.length < 4) {
-      if (errEl) errEl.textContent = 'Min 4 characters';
-      return;
-    }
-    if (newPw !== confirmPw) {
-      if (errEl) errEl.textContent = 'Passwords do not match';
-      return;
-    }
-  
-    try {
-      const d = await Api.call('updatePassword', {
-        agentNo: STATE.agentNo,
-        oldPassword: current,
-        newPassword: newPw,
-      }, { dedupe: false, cache: false });
-  
-      if (d.success) {
-        showToast('Password updated!', 'success');
-        closePasswordModal();
-      } else {
-        if (errEl) errEl.textContent = d.error || 'Failed';
-      }
-    } catch (e) {
-      if (errEl) errEl.textContent = 'Error: ' + e.message;
-    }
+  if (newPw !== confirmPw) {
+    if (errEl) errEl.textContent = 'Passwords do not match';
+    return;
   }
-  
-  
-  // =============================================
-  // ██████  DELETE ACCOUNT
-  // =============================================
-  
-  let _deleteInProgress = false;
-  
-  async function deleteAccountConfirm() {
-    if (_deleteInProgress) return;
-  
-    const pw = prompt('⚠️ DELETE ACCOUNT?\n\nThis is PERMANENT. Enter your password to confirm:');
-    if (!pw) return;
-    if (!confirm('FINAL WARNING: All your data will be erased. Continue?')) return;
-  
-    _deleteInProgress = true;
-    Loading.show();
-  
-    try {
-      const d = await Api.call('deleteAccount', {
-        agentNo: STATE.agentNo,
-        password: pw,
-      }, { dedupe: false, cache: false });
-  
-      if (d.success) {
-        showToast('Account deleted', 'info');
-        doLogout();
-      } else {
-        showToast(d.error || 'Failed', 'error');
-      }
-    } catch (e) {
-      showToast('Error: ' + e.message, 'error');
-    } finally {
-      Loading.hide();
-      _deleteInProgress = false;
+
+  try {
+    const d = await Api.call('updatePassword', {
+      agentNo: STATE.agentNo,
+      oldPassword: current,
+      newPassword: newPw,
+    }, { dedupe: false, cache: false });
+
+    if (d.success) {
+      showToast('Password updated!', 'success');
+      closePasswordModal();
+    } else {
+      if (errEl) errEl.textContent = d.error || 'Failed';
     }
+  } catch (e) {
+    if (errEl) errEl.textContent = 'Error: ' + e.message;
   }
-  
-  
-  // =============================================
-  // ██████  SONG OF THE DAY PAGE
-  // =============================================
-  
-  async function renderSongOfDay() {
-      const container = $('sotdContent');
-      if (!container) return;
-  
-      showPageLoading(container);
-  
-      try {
-          const d = await Api.call('getSongOfDay', {}, { cache: true, ttl: 300_000 });
-          const song = d.song;
-          const todayKST = getKSTDateString();
-          const answered = localStorage.getItem(`sotd_answered_${STATE.agentNo}_${todayKST}`);
-          
-          let html = `
+}
+
+
+// =============================================
+// ██████  DELETE ACCOUNT
+// =============================================
+
+let _deleteInProgress = false;
+
+async function deleteAccountConfirm() {
+  if (_deleteInProgress) return;
+
+  const pw = prompt('⚠️ DELETE ACCOUNT?\n\nThis is PERMANENT. Enter your password to confirm:');
+  if (!pw) return;
+  if (!confirm('FINAL WARNING: All your data will be erased. Continue?')) return;
+
+  _deleteInProgress = true;
+  Loading.show();
+
+  try {
+    const d = await Api.call('deleteAccount', {
+      agentNo: STATE.agentNo,
+      password: pw,
+    }, { dedupe: false, cache: false });
+
+    if (d.success) {
+      showToast('Account deleted', 'info');
+      doLogout();
+    } else {
+      showToast(d.error || 'Failed', 'error');
+    }
+  } catch (e) {
+    showToast('Error: ' + e.message, 'error');
+  } finally {
+    Loading.hide();
+    _deleteInProgress = false;
+  }
+}
+
+
+// =============================================
+// ██████  SONG OF THE DAY PAGE
+// =============================================
+
+async function renderSongOfDay() {
+  const container = $('sotdContent');
+  if (!container) return;
+
+  showPageLoading(container);
+
+  try {
+    const d = await Api.call('getSongOfDay', {}, { cache: true, ttl: 300_000 });
+    const song = d.song;
+    const todayKST = getKSTDateString();
+    const answered = localStorage.getItem(`sotd_answered_${STATE.agentNo}_${todayKST}`);
+
+    let html = `
               <div class="archive-card" style="text-align:center; padding:30px 20px; border-top:3px solid var(--wave-foam); background:linear-gradient(135deg, rgba(74, 144, 164, 0.05), var(--bg-panel)); margin-bottom:24px;">
                   <div style="font-size:48px; margin-bottom:16px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));">🎬</div>
                   <div style="font-size:14px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; font-family:'Orbitron', sans-serif; margin-bottom:8px;">Audio Intelligence Unit</div>
                   <div style="font-size:11px; color:var(--wave-foam); letter-spacing:2px; font-family:'Share Tech Mono', monospace;">KST: ${todayKST}</div>
               </div>
           `;
-  
-          if (!d.success || !song) {
-              html += `<div class="glass-card" style="text-align:center; padding:40px; color:var(--text-muted); font-size:12px;">No audio intercepted today. Stand by.</div>`;
-              container.innerHTML = html;
-              return;
-          }
-  
-          if (song.hint) {
-              html += `
+
+    if (!d.success || !song) {
+      html += `<div class="glass-card" style="text-align:center; padding:40px; color:var(--text-muted); font-size:12px;">No audio intercepted today. Stand by.</div>`;
+      container.innerHTML = html;
+      return;
+    }
+
+    if (song.hint) {
+      html += `
                   <div class="glass-card" style="padding:20px; text-align:center; margin-bottom:24px; border-color:var(--vinyl-gold); box-shadow:inset 0 0 30px rgba(212,175,55,0.05);">
                       <div style="font-size:10px; color:var(--vinyl-gold); font-weight:900; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px;">Intercepted Clue</div>
                       <div style="font-size:14px; color:#fff; font-style:italic; line-height:1.6; text-shadow:0 2px 4px rgba(0,0,0,0.8);">"${sanitize(song.hint)}"</div>
@@ -5231,18 +5233,18 @@ function showSmDay(date) {
                       </div>
                   </div>
               `;
-          }
-  
-          if (answered) {
-              html += `
+    }
+
+    if (answered) {
+      html += `
                   <div class="glass-card" style="padding:30px 20px; text-align:center; border-left:4px solid var(--green);">
                       <div style="font-size:40px; margin-bottom:12px;">✅</div>
                       <div style="font-size:14px; font-weight:900; color:var(--green); letter-spacing:1px; text-transform:uppercase; margin-bottom:8px;">Decryption Successful</div>
                       <div style="font-size:12px; color:var(--text-secondary);">You have successfully identified the track today.</div>
                   </div>
               `;
-          } else {
-              html += `
+    } else {
+      html += `
                   <div class="glass-card" style="padding:24px;">
                       <label class="label-tag" style="display:block; margin-bottom:12px;">Submit YouTube URL</label>
                       <input type="text" id="sotdAnswer" class="input-field" placeholder="https://youtube.com/watch?v=..." style="margin-bottom:16px;">
@@ -5258,90 +5260,90 @@ function showSmDay(date) {
                       </div>
                   </div>
               `;
-          }
-  
-          container.innerHTML = html;
-          
-          // Clear notif state
-          if (STATE.lastChecked) {
-              STATE.lastChecked.songOfDay = todayKST;
-              saveNotificationState();
-          }
-          
-      } catch (e) {
-          showPageError(container, 'renderSongOfDay');
-      }
-  }
-  
-  async function submitSongAnswer() {
-    const answer = $('sotdAnswer')?.value?.trim();
-    const resultEl = $('sotdResult');
-  
-    if (!answer) {
-      if (resultEl) resultEl.innerHTML = '<span style="color:var(--red-main)">Paste a YouTube URL</span>';
-      return;
     }
-  
-    if (resultEl) resultEl.innerHTML = '<span style="color:var(--text-muted)">Checking...</span>';
-  
-    try {
-      const d = await Api.call('submitSongAnswer', {
-        agentNo: STATE.agentNo,
-        answer,
-      }, { dedupe: false, cache: false });
-  
-      if (d.correct) {
-        const todayKST = getKSTDateString();
-        localStorage.setItem(`sotd_answered_${STATE.agentNo}_${todayKST}`, 'true');
-        if (STATE.lastChecked) STATE.lastChecked.songOfDay = todayKST;
-  
-        if (resultEl) resultEl.innerHTML = `<span style="color:var(--green)">${sanitize(d.message)}</span>`;
-        showToast(d.message, 'success');
-  
-        // Invalidate SOTD cache and re-render
-        Api.invalidate('getSongOfDay');
-        Timers.setTimeout('sotd-rerender', renderSongOfDay, 1500);
-      } else {
-        if (resultEl) resultEl.innerHTML = `<span style="color:var(--red-main)">${sanitize(d.message || d.error)}</span>`;
-      }
-    } catch (e) {
-      if (resultEl) resultEl.innerHTML = `<span style="color:var(--red-main)">${sanitize(e.message)}</span>`;
+
+    container.innerHTML = html;
+
+    // Clear notif state
+    if (STATE.lastChecked) {
+      STATE.lastChecked.songOfDay = todayKST;
+      saveNotificationState();
     }
+
+  } catch (e) {
+    showPageError(container, 'renderSongOfDay');
   }
-  
-  
-  // =============================================
-  // ██████  SECRET MISSIONS (User View)
-  // =============================================
-  
-  // =============================================
-  // ██████  SECRET MISSIONS PAGE
-  // =============================================
-  
-  async function renderSecretMissions() {
-      const container = $('secretMissionsContent');
-      if (!container) return;
-      
-      const myTeam = STATE.data?.agent?.profile?.team;
-      if (!myTeam) return;
-      
-      showPageLoading(container);
-      
-      try {
-          const [missionsData, statsData] = await Promise.all([
-              Api.call('getTeamSecretMissions', { team: myTeam, agentNo: STATE.agentNo, week: STATE.week }).catch(() => ({ active: [], completed: [], myAssigned: [] })), 
-              Api.call('getTeamSecretStats', { week: STATE.week }).catch(() => ({ teams: {} }))
-          ]);
-          
-          const activeMissions = missionsData.active || [];
-          const completedMissions = missionsData.completed || [];
-          const myAssigned = missionsData.myAssigned || [];
-          const myStats = statsData.teams?.[myTeam] || {};
-          
-          let html = renderGuide('secretmissions') || '';
-  
-          // Status Header Card
-          html += `
+}
+
+async function submitSongAnswer() {
+  const answer = $('sotdAnswer')?.value?.trim();
+  const resultEl = $('sotdResult');
+
+  if (!answer) {
+    if (resultEl) resultEl.innerHTML = '<span style="color:var(--red-main)">Paste a YouTube URL</span>';
+    return;
+  }
+
+  if (resultEl) resultEl.innerHTML = '<span style="color:var(--text-muted)">Checking...</span>';
+
+  try {
+    const d = await Api.call('submitSongAnswer', {
+      agentNo: STATE.agentNo,
+      answer,
+    }, { dedupe: false, cache: false });
+
+    if (d.correct) {
+      const todayKST = getKSTDateString();
+      localStorage.setItem(`sotd_answered_${STATE.agentNo}_${todayKST}`, 'true');
+      if (STATE.lastChecked) STATE.lastChecked.songOfDay = todayKST;
+
+      if (resultEl) resultEl.innerHTML = `<span style="color:var(--green)">${sanitize(d.message)}</span>`;
+      showToast(d.message, 'success');
+
+      // Invalidate SOTD cache and re-render
+      Api.invalidate('getSongOfDay');
+      Timers.setTimeout('sotd-rerender', renderSongOfDay, 1500);
+    } else {
+      if (resultEl) resultEl.innerHTML = `<span style="color:var(--red-main)">${sanitize(d.message || d.error)}</span>`;
+    }
+  } catch (e) {
+    if (resultEl) resultEl.innerHTML = `<span style="color:var(--red-main)">${sanitize(e.message)}</span>`;
+  }
+}
+
+
+// =============================================
+// ██████  SECRET MISSIONS (User View)
+// =============================================
+
+// =============================================
+// ██████  SECRET MISSIONS PAGE
+// =============================================
+
+async function renderSecretMissions() {
+  const container = $('secretMissionsContent');
+  if (!container) return;
+
+  const myTeam = STATE.data?.agent?.profile?.team;
+  if (!myTeam) return;
+
+  showPageLoading(container);
+
+  try {
+    const [missionsData, statsData] = await Promise.all([
+      Api.call('getTeamSecretMissions', { team: myTeam, agentNo: STATE.agentNo, week: STATE.week }).catch(() => ({ active: [], completed: [], myAssigned: [] })),
+      Api.call('getTeamSecretStats', { week: STATE.week }).catch(() => ({ teams: {} }))
+    ]);
+
+    const activeMissions = missionsData.active || [];
+    const completedMissions = missionsData.completed || [];
+    const myAssigned = missionsData.myAssigned || [];
+    const myStats = statsData.teams?.[myTeam] || {};
+
+    let html = renderGuide('secretmissions') || '';
+
+    // Status Header Card
+    html += `
               <div class="archive-card" style="margin-bottom:24px; border-top:3px solid var(--purple-core); background:linear-gradient(135deg, rgba(167, 139, 250, 0.05), var(--bg-panel));">
                   <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px;">
                       <div>
@@ -5370,10 +5372,10 @@ function showSmDay(date) {
                   </div>
               </div>
           `;
-          
-          // Assigned Missions (Urgent)
-          if (myAssigned.length > 0) {
-              html += `
+
+    // Assigned Missions (Urgent)
+    if (myAssigned.length > 0) {
+      html += `
                   <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
                       <span style="font-size:16px;">🎯</span>
                       <div style="font-size:11px; font-weight:900; color:var(--courage-amber); text-transform:uppercase; letter-spacing:2px;">ACTION REQUIRED</div>
@@ -5381,40 +5383,40 @@ function showSmDay(date) {
                   </div>
                   ${myAssigned.map(m => renderSecretMissionCard(m, myTeam, true)).join('')}
               `;
-          }
-          
-          // Active Missions
-          html += `
+    }
+
+    // Active Missions
+    html += `
               <div style="display:flex; align-items:center; gap:12px; margin:24px 0 16px;">
                   <span style="font-size:16px;">🔓</span>
                   <div style="font-size:11px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px;">ACTIVE TEAM MISSIONS</div>
                   <div style="flex:1; height:1px; background:linear-gradient(90deg, var(--border-light), transparent);"></div>
               </div>
           `;
-  
-          if (activeMissions.length > 0) {
-              html += activeMissions.map(m => renderSecretMissionCard(m, myTeam, false)).join('');
-          } else {
-              html += `<div class="glass-card" style="padding:40px; text-align:center; color:var(--text-muted); font-size:11px;">No active secret missions right now. Keep an eye on the radar.</div>`;
-          }
-          
-          // Clear notifications logic
-          STATE.lastChecked.missionCount = activeMissions.length;
-          STATE.lastChecked.seenMissionIds = [...activeMissions.map(m=>m.id), ...myAssigned.map(m=>m.id)].filter(Boolean);
-          STATE.lastChecked._missionBaselineSet = true;
-          
-          container.innerHTML = html;
-          
-      } catch (e) {
-          showPageError(container, 'renderSecretMissions');
-      }
+
+    if (activeMissions.length > 0) {
+      html += activeMissions.map(m => renderSecretMissionCard(m, myTeam, false)).join('');
+    } else {
+      html += `<div class="glass-card" style="padding:40px; text-align:center; color:var(--text-muted); font-size:11px;">No active secret missions right now. Keep an eye on the radar.</div>`;
+    }
+
+    // Clear notifications logic
+    STATE.lastChecked.missionCount = activeMissions.length;
+    STATE.lastChecked.seenMissionIds = [...activeMissions.map(m => m.id), ...myAssigned.map(m => m.id)].filter(Boolean);
+    STATE.lastChecked._missionBaselineSet = true;
+
+    container.innerHTML = html;
+
+  } catch (e) {
+    showPageError(container, 'renderSecretMissions');
   }
-  
-  function renderSecretMissionCard(mission, team, isAssigned = false) {
-      const mType = CONFIG.MISSION_TYPES?.[mission.type] || { icon: '🕵️', name: 'Classified Op' };
-      const xp = mission.xpReward || 5;
-      
-      return `
+}
+
+function renderSecretMissionCard(mission, team, isAssigned = false) {
+  const mType = CONFIG.MISSION_TYPES?.[mission.type] || { icon: '🕵️', name: 'Classified Op' };
+  const xp = mission.xpReward || 5;
+
+  return `
           <div class="glass-card" style="margin-bottom:16px; border-left:4px solid ${isAssigned ? 'var(--courage-amber)' : 'var(--purple-core)'}; padding:20px;">
               
               <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
@@ -5460,46 +5462,46 @@ function showSmDay(date) {
               ` : ''}
           </div>
       `;
-  }
-  
-  // =============================================
-  // ██████  BADGES PAGE
-  // =============================================
-  
-  function renderBadgesPage() {
-    const container = $('badgesContent');
-    if (!container) return;
-  
-    const xp = parseInt(STATE.data?.agent?.stats?.totalXP) || 0;
-    const levelBadges = getLevelBadges(STATE.agentNo, xp);
-    const tacticalBadges = (typeof getTacticalBadges === 'function' && STATE.week !== 'Week 1' && STATE.week !== 'Week 2' && STATE.week !== 'Week 3') 
-      ? getTacticalBadges(STATE.agentNo, xp) 
-      :[];
-    
-    // Attempt to pull Album 2X badge for current week
-    const album2xBadge = getAlbum2xBadge(STATE.agentNo, STATE.week);
-  
-    const classicBadges = [...levelBadges];
-    if (album2xBadge) classicBadges.push(album2xBadge);
-  
-    if (classicBadges.length === 0 && tacticalBadges.length === 0) {
-      container.innerHTML = `
+}
+
+// =============================================
+// ██████  BADGES PAGE
+// =============================================
+
+function renderBadgesPage() {
+  const container = $('badgesContent');
+  if (!container) return;
+
+  const xp = parseInt(STATE.data?.agent?.stats?.totalXP) || 0;
+  const levelBadges = getLevelBadges(STATE.agentNo, xp);
+  const tacticalBadges = (typeof getTacticalBadges === 'function' && STATE.week !== 'Week 1' && STATE.week !== 'Week 2' && STATE.week !== 'Week 3')
+    ? getTacticalBadges(STATE.agentNo, xp)
+    : [];
+
+  // Attempt to pull Album 2X badge for current week
+  const album2xBadge = getAlbum2xBadge(STATE.agentNo, STATE.week);
+
+  const classicBadges = [...levelBadges];
+  if (album2xBadge) classicBadges.push(album2xBadge);
+
+  if (classicBadges.length === 0 && tacticalBadges.length === 0) {
+    container.innerHTML = `
         <div style="text-align:center;padding:30px;">
           <div style="font-size:36px;margin-bottom:10px;">🎖️</div>
           <p style="color:var(--text-muted);font-size:12px;">Earn 50 XP to get your first badge!</p>
           <p style="color:var(--text-muted);font-size:10px;margin-top:6px;">Current: ${fmt(xp)} XP</p>
         </div>`;
-      return;
-    }
-  
-    let html = `
+    return;
+  }
+
+  let html = `
       <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">
         You have <strong>${classicBadges.length + tacticalBadges.length}</strong> badge${(classicBadges.length + tacticalBadges.length) !== 1 ? 's' : ''} • ${fmt(xp)} XP total
       </div>
     `;
 
-    if (classicBadges.length > 0) {
-      html += `
+  if (classicBadges.length > 0) {
+    html += `
         <div style="margin-bottom:16px; font-family:'Orbitron',sans-serif; color:var(--wave-foam); font-size:12px; letter-spacing:1px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px;">
           STANDARD CLEARANCES
         </div>
@@ -5516,10 +5518,10 @@ function showSmDay(date) {
             </div>`).join('')}
         </div>
       `;
-    }
+  }
 
-    if (tacticalBadges.length > 0) {
-      html += `
+  if (tacticalBadges.length > 0) {
+    html += `
         <div style="margin-bottom:16px; font-family:'Orbitron',sans-serif; color:var(--red-core); font-size:12px; letter-spacing:1px; border-bottom:1px solid rgba(255,20,95,0.3); padding-bottom:6px;">
           CLASSIFIED MERITS
         </div>
@@ -5539,114 +5541,114 @@ function showSmDay(date) {
           `).join('')}
         </div>
       `;
-    }
-
-    container.innerHTML = html;
   }
-  
-  
-  // =============================================
-  // ██████  WEEKLY SUMMARY
-  // =============================================
-  // v2.0: Cached API, confetti fires only once per week.
-  
-  /** Track which weeks we already fired confetti for */
-  const _confettiFiredForWeek = new Set();
-  
-  // =============================================
-  // ██████  WEEKLY SUMMARY PAGE (ARIRANG THEME)
-  // =============================================
-  
-  // =============================================
-  // ██████  WEEKLY SUMMARY PAGE (7 Missions)
-  // =============================================
-  
-  async function renderSummary() {
-      const container = document.getElementById('summaryContent');
-      if (!container) return;
-  
-      const selectedWeek = STATE.week;
-      const isCompleted = isWeekCompleted(selectedWeek);
-  
-      // --- 1. LOCKED VIEW (week still running) ---
-      if (!isCompleted) {
-          container.innerHTML = `
+
+  container.innerHTML = html;
+}
+
+
+// =============================================
+// ██████  WEEKLY SUMMARY
+// =============================================
+// v2.0: Cached API, confetti fires only once per week.
+
+/** Track which weeks we already fired confetti for */
+const _confettiFiredForWeek = new Set();
+
+// =============================================
+// ██████  WEEKLY SUMMARY PAGE (ARIRANG THEME)
+// =============================================
+
+// =============================================
+// ██████  WEEKLY SUMMARY PAGE (7 Missions)
+// =============================================
+
+async function renderSummary() {
+  const container = document.getElementById('summaryContent');
+  if (!container) return;
+
+  const selectedWeek = STATE.week;
+  const isCompleted = isWeekCompleted(selectedWeek);
+
+  // --- 1. LOCKED VIEW (week still running) ---
+  if (!isCompleted) {
+    container.innerHTML = `
               <div class="glass-card" style="text-align:center; padding:60px 20px;">
                   <div style="font-size:48px; margin-bottom:16px; opacity:0.5; filter:grayscale(1);">⏳</div>
                   <div style="font-size:16px; font-weight:800; color:#fff; letter-spacing:1px; margin-bottom:8px;">MISSION IN PROGRESS</div>
                   <div style="font-size:11px; color:var(--text-muted);">Intel report pending end of week operations.</div>
               </div>`;
-          return;
-      }
-  
-      // --- 2. LOADING SKELETON ---
-      showPageLoading(container);
-  
-      try {
-          const [summary, goals, rankings] = await Promise.all([
-              Api.call('getWeeklySummary', { week: selectedWeek }),
-              Api.call('getGoalsProgress', { week: selectedWeek }),
-              Api.call('getRankings', { week: selectedWeek, limit: 10 })
-          ]);
-  
-          const isReleased = summary.resultsReleased === true;
-  
-          if (!isReleased) {
-              container.innerHTML = `
+    return;
+  }
+
+  // --- 2. LOADING SKELETON ---
+  showPageLoading(container);
+
+  try {
+    const [summary, goals, rankings] = await Promise.all([
+      Api.call('getWeeklySummary', { week: selectedWeek }),
+      Api.call('getGoalsProgress', { week: selectedWeek }),
+      Api.call('getRankings', { week: selectedWeek, limit: 10 })
+    ]);
+
+    const isReleased = summary.resultsReleased === true;
+
+    if (!isReleased) {
+      container.innerHTML = `
                   <div class="archive-card" style="text-align:center; padding:60px 20px; border-color:var(--courage-amber); background:rgba(255,149,0,0.03);">
                       <div style="font-size:48px; margin-bottom:16px; opacity:0.8;">🔒</div>
                       <div style="font-size:14px; font-weight:900; color:var(--courage-amber); text-transform:uppercase; letter-spacing:2px; margin-bottom:8px;">Verification in Progress</div>
                       <div style="font-size:11px; color:var(--text-secondary); line-height:1.6;">HQ is currently verifying Attendance & Police Reports.<br>Results will be broadcasted shortly.</div>
                   </div>`;
-              return;
-          }
-  
-          const teams = summary.teams || {};
-          const trackGoals = goals.trackGoals || {};
-          const albumGoals = goals.albumGoals || {};
-          const topAgents = rankings.rankings || [];
-  
-          const sortedTeams = Object.entries(teams).sort((a, b) => (b[1].teamXP || 0) - (a[1].teamXP || 0));
-          const winnerEntry = sortedTeams.find(([t, info]) => info.isWinner === true);
-          const winner = winnerEntry ? winnerEntry[0] : null;
-  
-          // Calculate stream totals
-          let totalTrackStreams = 0;
-          let totalAlbumStreams = 0;
-  
-          Object.entries(trackGoals).forEach(([name, info]) => {
-              let t = 0;
-              Object.values(info.teams || {}).forEach(s => t += (s.current || 0));
-              totalTrackStreams += t;
-          });
-          Object.entries(albumGoals).forEach(([name, info]) => {
-              let t = 0;
-              Object.values(info.teams || {}).forEach(s => t += (s.current || 0));
-              totalAlbumStreams += t;
-          });
-  
-          const dateStr = CONFIG.WEEK_DATES[selectedWeek]
-              ? new Date(CONFIG.WEEK_DATES[selectedWeek]).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
-              : '';
-  
-          const qualificationLabels = sortedTeams.map(([t, info]) => {
-              const checks = [
-                  { label: 'Tracks', passed: info.trackGoalPassed },
-                  { label: 'Albums', passed: info.albumGoalPassed },
-                  { label: '2X', passed: info.album2xPassed },
-                  { label: 'Unit', passed: info.arirangUnitPassed },
-                  { label: 'Side', passed: info.sideMissionPassed },
-                  { label: 'Attend', passed: info.attendanceConfirmed },
-                  { label: 'Police', passed: info.policeConfirmed }
-              ];
-              const passedCount = checks.filter(c => c.passed).length;
-              const failedNames = checks.filter(c => !c.passed).map(c => c.label);
-              return { team: t, info, checks, passedCount, failedNames, allPassed: passedCount === 7 };
-          });
-  
-          const teamsDataForShare = JSON.stringify(sortedTeams.map(([t, info]) => ({ t, xp: info.teamXP }))).replace(/"/g, '&quot;');
-  
-          let html = `
+      return;
+    }
+
+    const teams = summary.teams || {};
+    const trackGoals = goals.trackGoals || {};
+    const albumGoals = goals.albumGoals || {};
+    const topAgents = rankings.rankings || [];
+
+    const sortedTeams = Object.entries(teams).sort((a, b) => (b[1].teamXP || 0) - (a[1].teamXP || 0));
+    const winnerEntry = sortedTeams.find(([t, info]) => info.isWinner === true);
+    const winner = winnerEntry ? winnerEntry[0] : null;
+
+    // Calculate stream totals
+    let totalTrackStreams = 0;
+    let totalAlbumStreams = 0;
+
+    Object.entries(trackGoals).forEach(([name, info]) => {
+      let t = 0;
+      Object.values(info.teams || {}).forEach(s => t += (s.current || 0));
+      totalTrackStreams += t;
+    });
+    Object.entries(albumGoals).forEach(([name, info]) => {
+      let t = 0;
+      Object.values(info.teams || {}).forEach(s => t += (s.current || 0));
+      totalAlbumStreams += t;
+    });
+
+    const dateStr = CONFIG.WEEK_DATES[selectedWeek]
+      ? new Date(CONFIG.WEEK_DATES[selectedWeek]).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+      : '';
+
+    const qualificationLabels = sortedTeams.map(([t, info]) => {
+      const checks = [
+        { label: 'Tracks', passed: info.trackGoalPassed },
+        { label: 'Albums', passed: info.albumGoalPassed },
+        { label: '2X', passed: info.album2xPassed },
+        { label: 'Unit', passed: info.arirangUnitPassed },
+        { label: 'Side', passed: info.sideMissionPassed },
+        { label: 'Attend', passed: info.attendanceConfirmed },
+        { label: 'Police', passed: info.policeConfirmed }
+      ];
+      const passedCount = checks.filter(c => c.passed).length;
+      const failedNames = checks.filter(c => !c.passed).map(c => c.label);
+      return { team: t, info, checks, passedCount, failedNames, allPassed: passedCount === 7 };
+    });
+
+    const teamsDataForShare = JSON.stringify(sortedTeams.map(([t, info]) => ({ t, xp: info.teamXP }))).replace(/"/g, '&quot;');
+
+    let html = `
               <!-- WINNER OR NO WINNER -->
               ${winner ? `
                   <div class="archive-card" style="text-align:center; margin-bottom:24px; border-color:var(--vinyl-gold); background:radial-gradient(ellipse at top, rgba(212,175,55,0.1), transparent 70%);">
@@ -5661,8 +5663,8 @@ function showSmDay(date) {
                       <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; margin-bottom:16px;">No team successfully cleared all 7 checkpoints.<br><span style="color:var(--text-muted);">The trophy remains secured at HQ.</span></div>
                       <div style="display:flex; justify-content:center; gap:6px; flex-wrap:wrap;">
                           ${['Tracks', 'Albums', '2X', 'Unit', 'Side', 'Attend', 'Police'].map(m =>
-                              `<span style="font-size:8px; font-weight:700; padding:4px 8px; background:rgba(255,255,255,0.05); border:1px solid var(--border-light); border-radius:6px; color:var(--text-muted);">${m}</span>`
-                          ).join('')}
+      `<span style="font-size:8px; font-weight:700; padding:4px 8px; background:rgba(255,255,255,0.05); border:1px solid var(--border-light); border-radius:6px; color:var(--text-muted);">${m}</span>`
+    ).join('')}
                       </div>
                   </div>
               `}
@@ -5737,10 +5739,10 @@ function showSmDay(date) {
               <!-- TEAM STANDINGS with 7-checkpoint detail -->
               <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:35px;">
                   ${qualificationLabels.map((q, i) => {
-                      const isWinner = q.info.isWinner === true;
-                      const isQualified = q.allPassed;
-  
-                      return `
+      const isWinner = q.info.isWinner === true;
+      const isQualified = q.allPassed;
+
+      return `
                           <div class="glass-card" style="padding:16px; border-left:4px solid ${isWinner ? 'var(--vinyl-gold)' : (isQualified ? 'var(--green)' : 'var(--fail)')};">
                               <div style="display:flex; align-items:center; gap:12px;">
                                   <div style="width:28px; height:28px; border-radius:8px; background:${isWinner ? 'var(--vinyl-gold)' : 'var(--bg-deep)'}; color:${isWinner ? '#000' : 'var(--text-muted)'}; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:12px; flex-shrink:0;">
@@ -5773,13 +5775,13 @@ function showSmDay(date) {
                               <!-- Status line -->
                               <div style="margin-top:10px;">
                                   ${isQualified
-                                      ? '<span style="color:var(--green); font-size:10px; font-weight:800;">✓ ALL 7 PROTOCOLS CLEARED</span>'
-                                      : '<span style="color:var(--fail); font-size:9px; font-weight:700;">✗ ' + q.passedCount + '/7 CLEARED — Failed: ' + q.failedNames.join(', ') + '</span>'
-                                  }
+          ? '<span style="color:var(--green); font-size:10px; font-weight:800;">✓ ALL 7 PROTOCOLS CLEARED</span>'
+          : '<span style="color:var(--fail); font-size:9px; font-weight:700;">✗ ' + q.passedCount + '/7 CLEARED — Failed: ' + q.failedNames.join(', ') + '</span>'
+        }
                               </div>
                           </div>
                       `;
-                  }).join('')}
+    }).join('')}
               </div>
   
               <!-- Section: Elite Agents -->
@@ -5791,11 +5793,11 @@ function showSmDay(date) {
   
               <div class="archive-card" style="padding:0; margin-bottom:30px;">
                   ${topAgents.slice(0, 5).map((agent, i) => {
-                      const agentTeam = agent.team || 'Unknown';
-                      const agentName = agent.name || 'Agent';
-                      const agentXP = agent.totalXP || 0;
-  
-                      return `
+      const agentTeam = agent.team || 'Unknown';
+      const agentName = agent.name || 'Agent';
+      const agentXP = agent.totalXP || 0;
+
+      return `
                           <div style="display:flex; align-items:center; gap:12px; padding:16px; border-bottom:1px solid var(--border-subtle);">
                               <div style="font-size:18px; width:28px; text-align:center;">${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '<span style="color:var(--text-ghost); font-weight:900; font-family:monospace;">' + (i + 1) + '</span>'}</div>
                               <div style="flex:1; min-width:0;">
@@ -5807,7 +5809,7 @@ function showSmDay(date) {
                               </div>
                           </div>
                       `;
-                  }).join('')}
+    }).join('')}
               </div>
   
               <!-- Back Button -->
@@ -5815,26 +5817,26 @@ function showSmDay(date) {
                   ← Return to Mission Control
               </button>
           `;
-  
-          container.innerHTML = html;
-  
-      } catch (e) {
-          console.error('Summary error:', e);
-          showPageError(container, 'renderSummary');
-      }
+
+    container.innerHTML = html;
+
+  } catch (e) {
+    console.error('Summary error:', e);
+    showPageError(container, 'renderSummary');
   }
-  // =============================================
-  // ██████  CONFETTI
-  // =============================================
-  // v2.0: Injected CSS once, guaranteed cleanup,
-  //        uses documentFragment for batch DOM insertion.
-  
-  /** Inject confetti keyframes once */
-  function ensureConfettiStyles() {
-    if (document.getElementById('confetti-styles')) return;
-    const style = document.createElement('style');
-    style.id = 'confetti-styles';
-    style.textContent = `
+}
+// =============================================
+// ██████  CONFETTI
+// =============================================
+// v2.0: Injected CSS once, guaranteed cleanup,
+//        uses documentFragment for batch DOM insertion.
+
+/** Inject confetti keyframes once */
+function ensureConfettiStyles() {
+  if (document.getElementById('confetti-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'confetti-styles';
+  style.textContent = `
       @keyframes confettiFall {
         0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
         100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
@@ -5846,22 +5848,22 @@ function showSmDay(date) {
         pointer-events: none;
       }
     `;
-    document.head.appendChild(style);
-  }
-  
-  function fireConfetti() {
-    ensureConfettiStyles();
-  
-    const colors = ['#ff0000', '#ffffff', '#ffd700', '#00ff66', '#c4b5fd'];
-    const fragment = document.createDocumentFragment();
-    const pieces = [];
-  
-    for (let i = 0; i < 60; i++) {
-      const c = document.createElement('div');
-      c.className = 'confetti-piece';
-      const size = 4 + Math.random() * 6;
-      const duration = 2 + Math.random() * 2;
-      c.style.cssText = `
+  document.head.appendChild(style);
+}
+
+function fireConfetti() {
+  ensureConfettiStyles();
+
+  const colors = ['#ff0000', '#ffffff', '#ffd700', '#00ff66', '#c4b5fd'];
+  const fragment = document.createDocumentFragment();
+  const pieces = [];
+
+  for (let i = 0; i < 60; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    const size = 4 + Math.random() * 6;
+    const duration = 2 + Math.random() * 2;
+    c.style.cssText = `
         left: ${Math.random() * 100}%;
         width: ${size}px; height: ${size}px;
         background: ${colors[Math.floor(Math.random() * colors.length)]};
@@ -5869,118 +5871,118 @@ function showSmDay(date) {
         transform: rotate(${Math.random() * 360}deg);
         animation: confettiFall ${duration}s ease-out forwards;
       `;
-      fragment.appendChild(c);
-      pieces.push(c);
-    }
-  
-    document.body.appendChild(fragment);
-  
-    // Cleanup all pieces after longest animation
-    Timers.setTimeout('confetti-cleanup', () => {
-      pieces.forEach(p => p.remove());
-    }, 4500);
+    fragment.appendChild(c);
+    pieces.push(c);
   }
-  
-  
-  // =============================================
-  // ██████  ADMIN PANEL (Arirang Theme) — CLEANED
-  // =============================================
-  const NOTIFICATION_SYSTEM_VERSION = 4;
-  
-  // ==================== HELPERS ====================
-  
-  function isAdminAgent() {
-      return String(STATE.agentNo).toUpperCase() === String(CONFIG.ADMIN_AGENT_NO).toUpperCase();
-  }
-  
-  function getMissionId(mission) {
-      return mission.mission_id || mission.id;
-  }
-  
-  function extractYouTubeId(url) {
-      const match = url.match(/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
-      return (match && match[2].length === 11) ? match[2] : null;
-  }
-  
-  function showCreateResult(msg, isError) {
-      const el = document.getElementById('create-result');
-      if (!el) return;
-      el.innerHTML = `<div style="padding:12px; border-radius:8px; font-size:11px; font-weight:700;
+
+  document.body.appendChild(fragment);
+
+  // Cleanup all pieces after longest animation
+  Timers.setTimeout('confetti-cleanup', () => {
+    pieces.forEach(p => p.remove());
+  }, 4500);
+}
+
+
+// =============================================
+// ██████  ADMIN PANEL (Arirang Theme) — CLEANED
+// =============================================
+const NOTIFICATION_SYSTEM_VERSION = 4;
+
+// ==================== HELPERS ====================
+
+function isAdminAgent() {
+  return String(STATE.agentNo).toUpperCase() === String(CONFIG.ADMIN_AGENT_NO).toUpperCase();
+}
+
+function getMissionId(mission) {
+  return mission.mission_id || mission.id;
+}
+
+function extractYouTubeId(url) {
+  const match = url.match(/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+function showCreateResult(msg, isError) {
+  const el = document.getElementById('create-result');
+  if (!el) return;
+  el.innerHTML = `<div style="padding:12px; border-radius:8px; font-size:11px; font-weight:700;
           background:${isError ? 'rgba(255,59,92,0.1)' : 'rgba(0,255,102,0.1)'};
           color:${isError ? 'var(--fail)' : 'var(--green)'};
           border:1px solid ${isError ? 'var(--fail)' : 'var(--green)'};">${msg}</div>`;
-      setTimeout(() => el.innerHTML = '', 4000);
+  setTimeout(() => el.innerHTML = '', 4000);
+}
+
+// ==================== SESSION MANAGEMENT ====================
+
+function checkAdminStatus() {
+  if (!isAdminAgent()) {
+    STATE.isAdmin = false;
+    return;
   }
-  
-  // ==================== SESSION MANAGEMENT ====================
-  
-  function checkAdminStatus() {
-      if (!isAdminAgent()) {
-          STATE.isAdmin = false;
-          return;
-      }
-  
-      const savedSession = localStorage.getItem('adminSession');
-      const savedExpiry = localStorage.getItem('adminExpiry');
-  
-      if (savedSession && savedExpiry && Date.now() < parseInt(savedExpiry)) {
-          STATE.isAdmin = true;
-          STATE.adminSession = savedSession;
-          addAdminIndicator();
-      } else {
-          STATE.isAdmin = false;
-          STATE.adminSession = null;
-      }
+
+  const savedSession = localStorage.getItem('adminSession');
+  const savedExpiry = localStorage.getItem('adminExpiry');
+
+  if (savedSession && savedExpiry && Date.now() < parseInt(savedExpiry)) {
+    STATE.isAdmin = true;
+    STATE.adminSession = savedSession;
+    addAdminIndicator();
+  } else {
+    STATE.isAdmin = false;
+    STATE.adminSession = null;
   }
-  
-  function exitAdminMode() {
-      STATE.isAdmin = false;
-      STATE.adminSession = null;
-      localStorage.removeItem('adminSession');
-      localStorage.removeItem('adminExpiry');
-      document.querySelectorAll('.admin-nav-link').forEach(el => el.remove());
-      closeAdminPanel();
-      showToast('Admin mode deactivated', 'info');
-      goTo('home');
-  }
-  window.adminExitMode = exitAdminMode;
-  
-  function addAdminIndicator() {
-      if (!isAdminAgent()) return;
-      document.querySelectorAll('.admin-nav-link').forEach(el => el.remove());
-  
-      const nav = document.querySelector('.nav-links') || $('sidebar');
-      if (!nav) return;
-  
-      const link = document.createElement('a');
-      link.href = '#';
-      link.className = 'nav-link admin-nav-link';
-      link.style.cssText = 'margin-top:auto; border-top:1px solid var(--border-subtle); padding-top:15px; color:var(--red-core); font-weight:800;';
-      link.innerHTML = '<span class="nav-icon">🎛️</span><span>Mission Control</span>';
-      link.onclick = function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          STATE.isAdmin ? showAdminPanel() : showAdminLogin();
-          closeSidebar();
-      };
-      nav.appendChild(link);
-  }
-  
-  // ==================== LOGIN MODAL ====================
-  
-  function showAdminLogin() {
-      if (!isAdminAgent()) { showToast('Access denied.', 'error'); return; }
-      closeSidebar();
-      document.querySelectorAll('.admin-modal-overlay, #admin-modal').forEach(m => m.remove());
-  
-      const modal = document.createElement('div');
-      modal.className = 'admin-modal-overlay spy-modal-overlay';
-      modal.id = 'admin-modal';
-      modal.style.cssText = `position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:100000;
+}
+
+function exitAdminMode() {
+  STATE.isAdmin = false;
+  STATE.adminSession = null;
+  localStorage.removeItem('adminSession');
+  localStorage.removeItem('adminExpiry');
+  document.querySelectorAll('.admin-nav-link').forEach(el => el.remove());
+  closeAdminPanel();
+  showToast('Admin mode deactivated', 'info');
+  goTo('home');
+}
+window.adminExitMode = exitAdminMode;
+
+function addAdminIndicator() {
+  if (!isAdminAgent()) return;
+  document.querySelectorAll('.admin-nav-link').forEach(el => el.remove());
+
+  const nav = document.querySelector('.nav-links') || $('sidebar');
+  if (!nav) return;
+
+  const link = document.createElement('a');
+  link.href = '#';
+  link.className = 'nav-link admin-nav-link';
+  link.style.cssText = 'margin-top:auto; border-top:1px solid var(--border-subtle); padding-top:15px; color:var(--red-core); font-weight:800;';
+  link.innerHTML = '<span class="nav-icon">🎛️</span><span>Mission Control</span>';
+  link.onclick = function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    STATE.isAdmin ? showAdminPanel() : showAdminLogin();
+    closeSidebar();
+  };
+  nav.appendChild(link);
+}
+
+// ==================== LOGIN MODAL ====================
+
+function showAdminLogin() {
+  if (!isAdminAgent()) { showToast('Access denied.', 'error'); return; }
+  closeSidebar();
+  document.querySelectorAll('.admin-modal-overlay, #admin-modal').forEach(m => m.remove());
+
+  const modal = document.createElement('div');
+  modal.className = 'admin-modal-overlay spy-modal-overlay';
+  modal.id = 'admin-modal';
+  modal.style.cssText = `position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:100000;
           display:flex; align-items:center; justify-content:center; backdrop-filter:blur(8px); animation:fadeIn 0.3s ease;`;
-      modal.onclick = (e) => { if (e.target === modal) closeAdminModal(); };
-  
-      modal.innerHTML = `
+  modal.onclick = (e) => { if (e.target === modal) closeAdminModal(); };
+
+  modal.innerHTML = `
           <div class="glass-card" style="width:100%; max-width:360px; border:1px solid var(--red-core);
               box-shadow:0 0 40px rgba(255,20,95,0.2); overflow:hidden;" onclick="event.stopPropagation();">
               <div style="padding:20px; background:var(--red-whisper); border-bottom:1px solid var(--red-border);
@@ -6003,80 +6005,80 @@ function showSmDay(date) {
                       style="width:100%;">AUTHENTICATE</button>
               </div>
           </div>`;
-  
-      document.body.appendChild(modal);
-      setTimeout(() => {
-          const pw = $('admin-password');
-          if (pw) { pw.focus(); pw.onkeypress = (e) => { if (e.key === 'Enter') { e.preventDefault(); verifyAdminPassword(); } }; }
-      }, 150);
+
+  document.body.appendChild(modal);
+  setTimeout(() => {
+    const pw = $('admin-password');
+    if (pw) { pw.focus(); pw.onkeypress = (e) => { if (e.key === 'Enter') { e.preventDefault(); verifyAdminPassword(); } }; }
+  }, 150);
+}
+
+function closeAdminModal() {
+  const m = $('admin-modal');
+  if (m) m.remove();
+}
+
+async function verifyAdminPassword() {
+  const passwordField = $('admin-password');
+  const password = passwordField?.value;
+  const errorEl = $('admin-error');
+
+  if (!password) { if (errorEl) errorEl.textContent = 'Passcode required'; return; }
+
+  const btn = document.querySelector('#admin-modal .btn-red');
+  const originalText = btn?.innerHTML || 'AUTHENTICATE';
+  if (btn) { btn.innerHTML = 'VERIFYING...'; btn.disabled = true; }
+
+  try {
+    const result = await Api.call('verifyAdmin',
+      { agentNo: STATE.agentNo, password },
+      { dedupe: false, cache: false });
+
+    if (result.success && result.sessionToken) {
+      STATE.isAdmin = true;
+      STATE.adminSession = result.sessionToken;
+      localStorage.setItem('adminSession', result.sessionToken);
+      localStorage.setItem('adminExpiry', String(Date.now() + 2 * 60 * 60 * 1000));
+      closeAdminModal();
+      addAdminIndicator();
+      showToast('Access Granted', 'success');
+      setTimeout(() => showAdminPanel(), 100);
+    } else {
+      throw new Error(result.error || 'Invalid Passcode');
+    }
+  } catch (e) {
+    if (errorEl) errorEl.textContent = e.message || 'Auth Failed';
+  } finally {
+    if (btn) { btn.innerHTML = originalText; btn.disabled = false; }
   }
-  
-  function closeAdminModal() {
-      const m = $('admin-modal');
-      if (m) m.remove();
-  }
-  
-  async function verifyAdminPassword() {
-      const passwordField = $('admin-password');
-      const password = passwordField?.value;
-      const errorEl = $('admin-error');
-  
-      if (!password) { if (errorEl) errorEl.textContent = 'Passcode required'; return; }
-  
-      const btn = document.querySelector('#admin-modal .btn-red');
-      const originalText = btn?.innerHTML || 'AUTHENTICATE';
-      if (btn) { btn.innerHTML = 'VERIFYING...'; btn.disabled = true; }
-  
-      try {
-          const result = await Api.call('verifyAdmin',
-              { agentNo: STATE.agentNo, password },
-              { dedupe: false, cache: false });
-  
-          if (result.success && result.sessionToken) {
-              STATE.isAdmin = true;
-              STATE.adminSession = result.sessionToken;
-              localStorage.setItem('adminSession', result.sessionToken);
-              localStorage.setItem('adminExpiry', String(Date.now() + 2 * 60 * 60 * 1000));
-              closeAdminModal();
-              addAdminIndicator();
-              showToast('Access Granted', 'success');
-              setTimeout(() => showAdminPanel(), 100);
-          } else {
-              throw new Error(result.error || 'Invalid Passcode');
-          }
-      } catch (e) {
-          if (errorEl) errorEl.textContent = e.message || 'Auth Failed';
-      } finally {
-          if (btn) { btn.innerHTML = originalText; btn.disabled = false; }
-      }
-  }
-  
-  // ==================== PANEL SHELL ====================
-  
-  function showAdminPanel() {
-      if (!STATE.isAdmin) { showToast('Admin access required', 'error'); return; }
-      if (!STATE.week) STATE.week = STATE.weeks?.[0] || 'Week 1';
-      document.querySelectorAll('.admin-panel-overlay').forEach(p => p.remove());
-  
-      const TABS = [
-          { key: 'create',  icon: '➕', label: 'Deploy'  },
-          { key: 'active',  icon: '⚡', label: 'Active'  },
-          { key: 'confirm', icon: '📋', label: 'Verify'  },
-          { key: 'sotd',    icon: '🎵', label: 'SOTD'    },
-          { key: 'leaves',  icon: '💤', label: 'Leave'   },
-          { key: 'history', icon: '📜', label: 'History' },
-          { key: 'system',  icon: '⚙️', label: 'System'  },
-          { key: 'agents',  icon: '👤', label: 'Agents'  },
-          { key: 'debug',   icon: '🔧', label: 'Diagnostics' },
-          { key: 'badges',  icon: '🎖️', label: 'Badges'  },
-      ];
-  
-      const panel = document.createElement('div');
-      panel.className = 'admin-panel-overlay';
-      panel.style.cssText = `position:fixed; inset:0; background:var(--bg-abyss);
+}
+
+// ==================== PANEL SHELL ====================
+
+function showAdminPanel() {
+  if (!STATE.isAdmin) { showToast('Admin access required', 'error'); return; }
+  if (!STATE.week) STATE.week = STATE.weeks?.[0] || 'Week 1';
+  document.querySelectorAll('.admin-panel-overlay').forEach(p => p.remove());
+
+  const TABS = [
+    { key: 'create', icon: '➕', label: 'Deploy' },
+    { key: 'active', icon: '⚡', label: 'Active' },
+    { key: 'confirm', icon: '📋', label: 'Verify' },
+    { key: 'sotd', icon: '🎵', label: 'SOTD' },
+    { key: 'leaves', icon: '💤', label: 'Leave' },
+    { key: 'history', icon: '📜', label: 'History' },
+    { key: 'system', icon: '⚙️', label: 'System' },
+    { key: 'agents', icon: '👤', label: 'Agents' },
+    { key: 'debug', icon: '🔧', label: 'Diagnostics' },
+    { key: 'badges', icon: '🎖️', label: 'Badges' },
+  ];
+
+  const panel = document.createElement('div');
+  panel.className = 'admin-panel-overlay';
+  panel.style.cssText = `position:fixed; inset:0; background:var(--bg-abyss);
           z-index:999999; display:flex; flex-direction:column; overflow:hidden;`;
-  
-      panel.innerHTML = `
+
+  panel.innerHTML = `
           <div style="background:rgba(6,6,10,0.9); backdrop-filter:blur(10px);
               border-bottom:1px solid var(--red-border); padding:16px 24px;
               display:flex; justify-content:space-between; align-items:center; z-index:10;">
@@ -6106,56 +6108,56 @@ function showSmDay(date) {
   
           <div id="admin-panel-body" style="flex:1; overflow-y:auto; padding:24px;
               max-width:800px; margin:0 auto; width:100%;"></div>`;
-  
-      document.body.appendChild(panel);
-      document.body.style.overflow = 'hidden';
-      switchAdminTab('create', panel.querySelector('.admin-tab[data-tab="create"]'));
-  }
-  
-  function closeAdminPanel() {
-      const panel = document.querySelector('.admin-panel-overlay');
-      if (panel) { panel.remove(); document.body.style.overflow = ''; }
-  }
-  
-  const TAB_RENDERERS = {
-      create:  renderCreateMissionForm,
-      active:  loadActiveTeamMissions,
-      confirm: renderWeekConfirmation,
-      sotd:    renderAdminSOTD,
-      leaves:  loadLeavesAdmin,
-      history: loadMissionHistory,
-      system:  renderAdminSystemTab,
-      agents:  renderAdminAgentsTab,
-      debug:   renderAdminDiagnosticsTab,
-      badges:  renderAdminBadgesTab,
-  };
-  
-  function switchAdminTab(tabName, btnElement) {
-      document.querySelectorAll('.admin-tab').forEach(t => {
-          t.style.background = 'transparent';
-          t.style.borderColor = 'var(--border-subtle)';
-          t.style.color = 'var(--text-muted)';
-      });
-      if (btnElement) {
-          btnElement.style.background = 'var(--red-whisper)';
-          btnElement.style.borderColor = 'var(--red-core)';
-          btnElement.style.color = 'var(--red-core)';
-      }
-  
-      const container = $('admin-panel-body');
-      if (!container) return;
-  
-      const renderer = TAB_RENDERERS[tabName];
-      if (renderer) renderer(container);
-  }
-  
-  // ==================== TAB: TACTICAL BADGES PREVIEW ====================
 
-  function renderAdminBadgesTab(container) {
-      const tacticalPool = CONFIG.TACTICAL_POOL;
-      const holoPool = CONFIG.BADGE_POOL;
-      
-      let html = `
+  document.body.appendChild(panel);
+  document.body.style.overflow = 'hidden';
+  switchAdminTab('create', panel.querySelector('.admin-tab[data-tab="create"]'));
+}
+
+function closeAdminPanel() {
+  const panel = document.querySelector('.admin-panel-overlay');
+  if (panel) { panel.remove(); document.body.style.overflow = ''; }
+}
+
+const TAB_RENDERERS = {
+  create: renderCreateMissionForm,
+  active: loadActiveTeamMissions,
+  confirm: renderWeekConfirmation,
+  sotd: renderAdminSOTD,
+  leaves: loadLeavesAdmin,
+  history: loadMissionHistory,
+  system: renderAdminSystemTab,
+  agents: renderAdminAgentsTab,
+  debug: renderAdminDiagnosticsTab,
+  badges: renderAdminBadgesTab,
+};
+
+function switchAdminTab(tabName, btnElement) {
+  document.querySelectorAll('.admin-tab').forEach(t => {
+    t.style.background = 'transparent';
+    t.style.borderColor = 'var(--border-subtle)';
+    t.style.color = 'var(--text-muted)';
+  });
+  if (btnElement) {
+    btnElement.style.background = 'var(--red-whisper)';
+    btnElement.style.borderColor = 'var(--red-core)';
+    btnElement.style.color = 'var(--red-core)';
+  }
+
+  const container = $('admin-panel-body');
+  if (!container) return;
+
+  const renderer = TAB_RENDERERS[tabName];
+  if (renderer) renderer(container);
+}
+
+// ==================== TAB: TACTICAL BADGES PREVIEW ====================
+
+function renderAdminBadgesTab(container) {
+  const tacticalPool = CONFIG.TACTICAL_POOL;
+  const holoPool = CONFIG.BADGE_POOL;
+
+  let html = `
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
               <h3 style="margin:0; font-family:'Orbitron',sans-serif; color:var(--wave-foam);">CLASSIC BADGES PREVIEW</h3>
               <span style="font-size:12px; color:var(--text-muted);">${holoPool.length} Badges Loaded</span>
@@ -6171,7 +6173,7 @@ function showSmDay(date) {
                                   <div class="holo-shine"></div>
                               </div>
                           </div>
-                          <div class="badge-label">BADGE ${i+1}</div>
+                          <div class="badge-label">BADGE ${i + 1}</div>
                       </div>
                   `).join('')}
               </div>
@@ -6190,31 +6192,31 @@ function showSmDay(date) {
                               <div class="corner-tl"></div>
                               <div class="corner-br"></div>
                               <div class="tactical-inner">
-                                  <img src="${url}" alt="Badge ${i+1}" loading="lazy">
+                                  <img src="${url}" alt="Badge ${i + 1}" loading="lazy">
                               </div>
                               <div class="tactical-shine"></div>
                           </div>
-                          <div class="tactical-label" style="color:var(--red-core);">MERIT ${i+1}</div>
+                          <div class="tactical-label" style="color:var(--red-core);">MERIT ${i + 1}</div>
                       </div>
                   `).join('')}
               </div>
           </div>
       `;
-      container.innerHTML = html;
-  }
-  
-  // ==================== TAB: CREATE MISSION ====================
-  
-  function renderCreateMissionForm(container) {
-      const missionTypes = CONFIG.MISSION_TYPES || {
-          switch_app: { icon: '🔄', name: 'Switch App' },
-          filler:     { icon: '🧬', name: 'Filler Mode' },
-          stream:     { icon: '▶️', name: 'Stream Party' },
-          custom:     { icon: '⭐', name: 'Custom Task' },
-      };
-      const teams = CONFIG.TEAMS || {};
-  
-      container.innerHTML = `
+  container.innerHTML = html;
+}
+
+// ==================== TAB: CREATE MISSION ====================
+
+function renderCreateMissionForm(container) {
+  const missionTypes = CONFIG.MISSION_TYPES || {
+    switch_app: { icon: '🔄', name: 'Switch App' },
+    filler: { icon: '🧬', name: 'Filler Mode' },
+    stream: { icon: '▶️', name: 'Stream Party' },
+    custom: { icon: '⭐', name: 'Custom Task' },
+  };
+  const teams = CONFIG.TEAMS || {};
+
+  container.innerHTML = `
           <div class="archive-card" style="margin-bottom:24px;">
               <div style="font-size:12px; font-weight:800; color:#fff; text-transform:uppercase;
                   letter-spacing:2px; margin-bottom:16px;">Mission Type</div>
@@ -6288,11 +6290,11 @@ function showSmDay(date) {
           <button type="button" onclick="createTeamMission()" class="btn-red"
               style="font-size:14px; padding:16px;">🚀 DEPLOY MISSION</button>
           <div id="create-result" style="margin-top:16px; text-align:center;"></div>`;
-  }
-  
-  // ==================== TAB: AGENTS ====================
-  function renderAdminAgentsTab(container) {
-      container.innerHTML = `
+}
+
+// ==================== TAB: AGENTS ====================
+function renderAdminAgentsTab(container) {
+  container.innerHTML = `
           <div class="archive-card" style="margin-bottom:24px;">
               <div style="font-size:12px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:2px; margin-bottom:16px;">👤 AGENT MANAGEMENT</div>
               <p style="font-size:11px; color:var(--text-muted); margin-bottom:24px; line-height:1.5;">Impersonate any agent to view their dashboard securely, or permanently delete an agent if they have ghosted.</p>
@@ -6308,134 +6310,134 @@ function showSmDay(date) {
               </div>
           </div>
       `;
-  }
+}
 
-  async function adminImpersonateAgent() {
-      let agNo = $('admin-target-agent')?.value?.trim();
-      if (!agNo) return showToast('Enter an Agent No', 'error');
-      agNo = agNo.padStart(3, '0');
-      
-      const prev = STATE.agentNo;
-      STATE.agentNo = agNo;
-      
-      Loading.show();
-      try {
-          const d = await Api.call('getDashboardData', { agentNo: agNo }, { cache: false });
-          if (d.success) {
-              STATE.data = d;
-              STATE.isAdmin = false;
-              if (typeof updateSidebarAgent === 'function') updateSidebarAgent(d.agent);
-              localStorage.setItem('arirang_agent', JSON.stringify({
-                 agentNo: agNo,
-                 profile: d.agent.profile,
-                 stats: d.agent.stats
-              }));
-              showToast('Impersonating Agent ' + agNo, 'success');
-              if (typeof closeAdminPanel === 'function') closeAdminPanel();
-              goTo('home');
-          } else {
-              STATE.agentNo = prev;
-              showToast(d.error || 'Agent not found', 'error');
-          }
-      } catch (e) {
-          STATE.agentNo = prev;
-          showToast('Network error', 'error');
-      } finally {
-          Loading.hide();
-      }
-  }
+async function adminImpersonateAgent() {
+  let agNo = $('admin-target-agent')?.value?.trim();
+  if (!agNo) return showToast('Enter an Agent No', 'error');
+  agNo = agNo.padStart(3, '0');
 
-  async function adminDeleteAgent() {
-      let agNo = $('admin-target-agent')?.value?.trim();
-      if (!agNo) return showToast('Enter an Agent No', 'error');
-      agNo = agNo.padStart(3, '0');
-      
-      if (!confirm('🛑 CRITICAL WARNING 🛑\\nAre you absolutely sure you want to PERMANENTLY delete Agent ' + agNo + '?\\n\\nThis wipes all their history, badges, and team contributions instantly.')) return;
-      
-      Loading.show();
-      try {
-          const d = await Api.call('adminDeleteAgent', { 
-              agentNo: agNo, 
-              adminKey: 'BTSSYNC2024' // Core password mapped from index.ts
-          }, { dedupe: false, cache: false });
-          
-          if (d.success) {
-              showToast('Agent ' + agNo + ' has been permanently deleted', 'success');
-              $('admin-target-agent').value = '';
-          } else {
-              showToast(d.error || 'Failed to delete agent', 'error');
-          }
-      } catch (e) {
-          showToast('Network error check logs', 'error');
-      } finally {
-          Loading.hide();
-      }
-  }
+  const prev = STATE.agentNo;
+  STATE.agentNo = agNo;
 
-  function selectMissionType(element, type) {
-      document.querySelectorAll('.mission-type-option').forEach(el => {
-          el.style.background = 'rgba(255,255,255,0.02)';
-          el.style.borderColor = 'var(--border-subtle)';
-          el.querySelector('div:nth-child(2)').style.color = 'var(--text-muted)';
-      });
-      element.style.background = 'var(--red-whisper)';
-      element.style.borderColor = 'var(--red-core)';
-      element.querySelector('div:nth-child(2)').style.color = 'var(--red-core)';
-      $('selected-mission-type').value = type;
+  Loading.show();
+  try {
+    const d = await Api.call('getDashboardData', { agentNo: agNo }, { cache: false });
+    if (d.success) {
+      STATE.data = d;
+      STATE.isAdmin = false;
+      if (typeof updateSidebarAgent === 'function') updateSidebarAgent(d.agent);
+      localStorage.setItem('arirang_agent', JSON.stringify({
+        agentNo: agNo,
+        profile: d.agent.profile,
+        stats: d.agent.stats
+      }));
+      showToast('Impersonating Agent ' + agNo, 'success');
+      if (typeof closeAdminPanel === 'function') closeAdminPanel();
+      goTo('home');
+    } else {
+      STATE.agentNo = prev;
+      showToast(d.error || 'Agent not found', 'error');
+    }
+  } catch (e) {
+    STATE.agentNo = prev;
+    showToast('Network error', 'error');
+  } finally {
+    Loading.hide();
   }
-  
-  function toggleAllTeams(checked) {
-      document.querySelectorAll('input[name="target-teams"]').forEach(cb => cb.checked = checked);
+}
+
+async function adminDeleteAgent() {
+  let agNo = $('admin-target-agent')?.value?.trim();
+  if (!agNo) return showToast('Enter an Agent No', 'error');
+  agNo = agNo.padStart(3, '0');
+
+  if (!confirm('🛑 CRITICAL WARNING 🛑\\nAre you absolutely sure you want to PERMANENTLY delete Agent ' + agNo + '?\\n\\nThis wipes all their history, badges, and team contributions instantly.')) return;
+
+  Loading.show();
+  try {
+    const d = await Api.call('adminDeleteAgent', {
+      agentNo: agNo,
+      adminKey: 'BTSSYNC2024' // Core password mapped from index.ts
+    }, { dedupe: false, cache: false });
+
+    if (d.success) {
+      showToast('Agent ' + agNo + ' has been permanently deleted', 'success');
+      $('admin-target-agent').value = '';
+    } else {
+      showToast(d.error || 'Failed to delete agent', 'error');
+    }
+  } catch (e) {
+    showToast('Network error check logs', 'error');
+  } finally {
+    Loading.hide();
   }
-  
-  async function createTeamMission() {
-      const type       = $('selected-mission-type')?.value;
-      const title      = $('mission-title')?.value?.trim();
-      const briefing   = $('mission-briefing')?.value?.trim();
-      const targetTrack = $('target-track')?.value?.trim();
-      const goalTarget = parseInt($('goal-target')?.value) || 100;
-      const xpReward   = parseInt($('xp-reward')?.value) || 5;
-      const targetTeams = Array.from(document.querySelectorAll('input[name="target-teams"]:checked')).map(cb => cb.value);
-  
-      if (!title)                return showCreateResult('❌ Please enter a mission title', true);
-      if (targetTeams.length === 0) return showCreateResult('❌ Please select at least one team', true);
-      if (!briefing)             return showCreateResult('❌ Please enter a mission briefing', true);
-  
-      Loading.show();
-      try {
-          const res = await Api.call('createTeamMission', {
-              type, title, briefing, targetTeams: JSON.stringify(targetTeams),
-              targetTrack, goalTarget, xpReward, week: STATE.week,
-              agentNo: STATE.agentNo, sessionToken: STATE.adminSession
-          }, { dedupe: false, cache: false });
-  
-          if (res.success) {
-              showCreateResult('✅ Mission Deployed Successfully!', false);
-              $('mission-title').value = '';
-              $('mission-briefing').value = '';
-              setTimeout(() => switchAdminTab('active', document.querySelector('.admin-tab[data-tab="active"]')), 1500);
-          } else {
-              showCreateResult('❌ ' + (res.error || 'Failed to create mission'), true);
-          }
-      } catch (e) {
-          showCreateResult('❌ ' + e.message, true);
-      } finally {
-          Loading.hide();
-      }
+}
+
+function selectMissionType(element, type) {
+  document.querySelectorAll('.mission-type-option').forEach(el => {
+    el.style.background = 'rgba(255,255,255,0.02)';
+    el.style.borderColor = 'var(--border-subtle)';
+    el.querySelector('div:nth-child(2)').style.color = 'var(--text-muted)';
+  });
+  element.style.background = 'var(--red-whisper)';
+  element.style.borderColor = 'var(--red-core)';
+  element.querySelector('div:nth-child(2)').style.color = 'var(--red-core)';
+  $('selected-mission-type').value = type;
+}
+
+function toggleAllTeams(checked) {
+  document.querySelectorAll('input[name="target-teams"]').forEach(cb => cb.checked = checked);
+}
+
+async function createTeamMission() {
+  const type = $('selected-mission-type')?.value;
+  const title = $('mission-title')?.value?.trim();
+  const briefing = $('mission-briefing')?.value?.trim();
+  const targetTrack = $('target-track')?.value?.trim();
+  const goalTarget = parseInt($('goal-target')?.value) || 100;
+  const xpReward = parseInt($('xp-reward')?.value) || 5;
+  const targetTeams = Array.from(document.querySelectorAll('input[name="target-teams"]:checked')).map(cb => cb.value);
+
+  if (!title) return showCreateResult('❌ Please enter a mission title', true);
+  if (targetTeams.length === 0) return showCreateResult('❌ Please select at least one team', true);
+  if (!briefing) return showCreateResult('❌ Please enter a mission briefing', true);
+
+  Loading.show();
+  try {
+    const res = await Api.call('createTeamMission', {
+      type, title, briefing, targetTeams: JSON.stringify(targetTeams),
+      targetTrack, goalTarget, xpReward, week: STATE.week,
+      agentNo: STATE.agentNo, sessionToken: STATE.adminSession
+    }, { dedupe: false, cache: false });
+
+    if (res.success) {
+      showCreateResult('✅ Mission Deployed Successfully!', false);
+      $('mission-title').value = '';
+      $('mission-briefing').value = '';
+      setTimeout(() => switchAdminTab('active', document.querySelector('.admin-tab[data-tab="active"]')), 1500);
+    } else {
+      showCreateResult('❌ ' + (res.error || 'Failed to create mission'), true);
+    }
+  } catch (e) {
+    showCreateResult('❌ ' + e.message, true);
+  } finally {
+    Loading.hide();
   }
-  
-  // ==================== TAB: ACTIVE MISSIONS ====================
-  
-  async function loadActiveTeamMissions(container) {
-      if (!container) container = $('admin-panel-body');
-      container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">⏳ Accessing active mission database...</div>';
-  
-      try {
-          const res = await Api.call('getTeamMissions', { status: 'active', week: STATE.week }, { cache: false });
-          const missions = res.missions || [];
-  
-          if (missions.length > 0) {
-              container.innerHTML = `
+}
+
+// ==================== TAB: ACTIVE MISSIONS ====================
+
+async function loadActiveTeamMissions(container) {
+  if (!container) container = $('admin-panel-body');
+  container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">⏳ Accessing active mission database...</div>';
+
+  try {
+    const res = await Api.call('getTeamMissions', { status: 'active', week: STATE.week }, { cache: false });
+    const missions = res.missions || [];
+
+    if (missions.length > 0) {
+      container.innerHTML = `
                   <div style="margin-bottom:20px;">
                       <div style="font-size:14px; font-weight:900; color:#fff;
                           font-family:'Orbitron',sans-serif;">ACTIVE MISSIONS (${missions.length})</div>
@@ -6443,32 +6445,32 @@ function showSmDay(date) {
                           Select a team to approve or fail their progress</div>
                   </div>
                   ${missions.map(m => renderAdminMissionCard(m)).join('')}`;
-          } else {
-              container.innerHTML = `
+    } else {
+      container.innerHTML = `
                   <div style="text-align:center; padding:60px 20px;">
                       <div style="font-size:48px; margin-bottom:16px; opacity:0.5;">📭</div>
                       <div style="font-size:14px; font-weight:800; color:#fff;">No Active Missions</div>
                       <div style="font-size:11px; color:var(--text-muted); margin-top:8px;">
                           Deploy a new mission from the Create tab.</div>
                   </div>`;
-          }
-      } catch (e) {
-          container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--fail);">
+    }
+  } catch (e) {
+    container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--fail);">
               Failed to load missions.<br>${e.message}</div>`;
-      }
   }
-  
-  function renderAdminMissionCard(mission) {
-      const targetTeams    = mission.targetTeams || mission.target_teams || [];
-      const completedTeams = mission.completedTeams || mission.completed_teams || [];
-      const goalTarget     = mission.goalTarget || mission.goal_target || 100;
-      const xpReward       = mission.xpReward || mission.xp_reward || 5;
-      const progress       = mission.progress || {};
-      const missionType    = CONFIG.MISSION_TYPES?.[mission.type || mission.mission_type] || { icon: '🎯', name: 'Mission' };
-      const mid            = getMissionId(mission);
-      const allCompleted   = targetTeams.length > 0 && targetTeams.every(t => completedTeams.includes(t));
-  
-      return `
+}
+
+function renderAdminMissionCard(mission) {
+  const targetTeams = mission.targetTeams || mission.target_teams || [];
+  const completedTeams = mission.completedTeams || mission.completed_teams || [];
+  const goalTarget = mission.goalTarget || mission.goal_target || 100;
+  const xpReward = mission.xpReward || mission.xp_reward || 5;
+  const progress = mission.progress || {};
+  const missionType = CONFIG.MISSION_TYPES?.[mission.type || mission.mission_type] || { icon: '🎯', name: 'Mission' };
+  const mid = getMissionId(mission);
+  const allCompleted = targetTeams.length > 0 && targetTeams.every(t => completedTeams.includes(t));
+
+  return `
           <div class="archive-card" style="margin-bottom:20px; padding:20px;
               border-top:3px solid ${allCompleted ? 'var(--green)' : 'var(--red-core)'};">
               <div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:20px;">
@@ -6494,11 +6496,11 @@ function showSmDay(date) {
               <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
                   gap:10px; margin-bottom:20px;">
                   ${targetTeams.map(team => {
-                      const done = completedTeams.includes(team);
-                      const tp   = progress[team] || 0;
-                      const pct  = goalTarget ? Math.min(100, (tp / goalTarget) * 100) : 0;
-                      const tc   = teamColor(team);
-                      return `
+    const done = completedTeams.includes(team);
+    const tp = progress[team] || 0;
+    const pct = goalTarget ? Math.min(100, (tp / goalTarget) * 100) : 0;
+    const tc = teamColor(team);
+    return `
                           <div onclick="window.showTeamActionModal('${mid}','${team}')"
                               style="padding:12px; background:${done ? 'var(--green-soft)' : 'rgba(255,255,255,0.02)'};
                               border:1px solid ${done ? 'var(--green-border)' : 'var(--border-subtle)'};
@@ -6517,7 +6519,7 @@ function showSmDay(date) {
                               </div>
                               <div style="font-size:9px; color:var(--text-ghost); text-align:right;">${tp}/${goalTarget}</div>
                           </div>`;
-                  }).join('')}
+  }).join('')}
               </div>
   
               <div style="display:flex; gap:10px; border-top:1px solid var(--border-subtle); padding-top:16px;">
@@ -6527,20 +6529,20 @@ function showSmDay(date) {
                       style="flex:1; border-color:var(--fail); color:var(--fail);">✕ Cancel</button>
               </div>
           </div>`;
-  }
-  
-  // ==================== MISSION ACTION MODAL (single definition) ====================
-  
-  function showTeamActionModal(missionId, teamName) {
-      document.querySelectorAll('.admin-confirm-modal').forEach(m => m.remove());
-  
-      const modal = document.createElement('div');
-      modal.className = 'admin-confirm-modal spy-modal-overlay';
-      modal.style.cssText = `position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:9999999;
+}
+
+// ==================== MISSION ACTION MODAL (single definition) ====================
+
+function showTeamActionModal(missionId, teamName) {
+  document.querySelectorAll('.admin-confirm-modal').forEach(m => m.remove());
+
+  const modal = document.createElement('div');
+  modal.className = 'admin-confirm-modal spy-modal-overlay';
+  modal.style.cssText = `position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:9999999;
           display:flex; align-items:center; justify-content:center; padding:20px;
           backdrop-filter:blur(8px); animation:fadeIn 0.2s ease;`;
-  
-      modal.innerHTML = `
+
+  modal.innerHTML = `
           <div class="glass-card" style="border:1px solid var(--purple-core); padding:25px;
               width:100%; max-width:400px; text-align:center;
               box-shadow:0 0 40px rgba(124,58,237,0.2);" onclick="event.stopPropagation()">
@@ -6566,133 +6568,133 @@ function showSmDay(date) {
               <button onclick="this.closest('.admin-confirm-modal').remove()"
                   class="btn-ghost" style="margin-top:20px; width:100%;">Cancel / Close</button>
           </div>`;
-  
-      modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
-      document.body.appendChild(modal);
+
+  modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+  document.body.appendChild(modal);
+}
+window.showTeamActionModal = showTeamActionModal;
+
+// ==================== MISSION ACTIONS (single definitions) ====================
+
+async function executeTeamApproval(missionId, teamName) {
+  Loading.show();
+  try {
+    const res = await Api.call('completeTeamMission', {
+      missionId, team: teamName, agentNo: STATE.agentNo, sessionToken: STATE.adminSession
+    }, { dedupe: false, cache: false });
+
+    if (res.success) {
+      showToast(`✅ ${teamName} approved! +${res.xpAwarded || 5} XP`, 'success');
+      Api.invalidate();
+      loadActiveTeamMissions($('admin-panel-body'));
+      if (typeof loadDashboard === 'function') loadDashboard();
+    } else {
+      showToast('❌ ' + (res.error || 'Failed to approve'), 'error');
+    }
+  } catch (e) {
+    showToast('❌ Error: ' + e.message, 'error');
+  } finally {
+    Loading.hide();
   }
-  window.showTeamActionModal = showTeamActionModal;
-  
-  // ==================== MISSION ACTIONS (single definitions) ====================
-  
-  async function executeTeamApproval(missionId, teamName) {
-      Loading.show();
-      try {
-          const res = await Api.call('completeTeamMission', {
-              missionId, team: teamName, agentNo: STATE.agentNo, sessionToken: STATE.adminSession
-          }, { dedupe: false, cache: false });
-  
-          if (res.success) {
-              showToast(`✅ ${teamName} approved! +${res.xpAwarded || 5} XP`, 'success');
-              Api.invalidate();
-              loadActiveTeamMissions($('admin-panel-body'));
-              if (typeof loadDashboard === 'function') loadDashboard();
-          } else {
-              showToast('❌ ' + (res.error || 'Failed to approve'), 'error');
-          }
-      } catch (e) {
-          showToast('❌ Error: ' + e.message, 'error');
-      } finally {
-          Loading.hide();
-      }
+}
+
+async function executeTeamFailure(missionId, teamName) {
+  if (!confirm(`⚠️ Confirm FAIL for ${teamName}?\nThey will receive 0 XP for this mission.`)) return;
+  Loading.show();
+  try {
+    const res = await Api.call('failTeamMission', {
+      missionId, team: teamName, agentNo: STATE.agentNo, sessionToken: STATE.adminSession
+    }, { dedupe: false, cache: false });
+
+    if (res.success) {
+      showToast(`🚫 ${teamName} marked as FAILED.`, 'info');
+      loadActiveTeamMissions($('admin-panel-body'));
+    } else {
+      showToast('❌ ' + (res.error || 'Failed to update status'), 'error');
+    }
+  } catch (e) {
+    showToast('❌ Error: ' + e.message, 'error');
+  } finally {
+    Loading.hide();
   }
-  
-  async function executeTeamFailure(missionId, teamName) {
-      if (!confirm(`⚠️ Confirm FAIL for ${teamName}?\nThey will receive 0 XP for this mission.`)) return;
-      Loading.show();
+}
+
+async function adminApproveAllTeams(missionId) {
+  if (!confirm('Approve mission for ALL remaining teams? This will award XP to all.')) return;
+  Loading.show();
+  try {
+    const res = await Api.call('getTeamMissions', { status: 'active', week: STATE.week }, { cache: false });
+    const mission = (res.missions || []).find(m => getMissionId(m) === missionId);
+
+    if (!mission) { showToast('❌ Mission not found', 'error'); return; }
+
+    const targetTeams = mission.targetTeams || mission.target_teams || [];
+    const completedTeams = mission.completedTeams || mission.completed_teams || [];
+    const remaining = targetTeams.filter(t => !completedTeams.includes(t));
+
+    if (remaining.length === 0) { showToast('All teams already approved!', 'info'); return; }
+
+    let ok = 0;
+    for (const team of remaining) {
       try {
-          const res = await Api.call('failTeamMission', {
-              missionId, team: teamName, agentNo: STATE.agentNo, sessionToken: STATE.adminSession
-          }, { dedupe: false, cache: false });
-  
-          if (res.success) {
-              showToast(`🚫 ${teamName} marked as FAILED.`, 'info');
-              loadActiveTeamMissions($('admin-panel-body'));
-          } else {
-              showToast('❌ ' + (res.error || 'Failed to update status'), 'error');
-          }
-      } catch (e) {
-          showToast('❌ Error: ' + e.message, 'error');
-      } finally {
-          Loading.hide();
-      }
+        const r = await Api.call('completeTeamMission', {
+          missionId, team, agentNo: STATE.agentNo, sessionToken: STATE.adminSession
+        }, { dedupe: false, cache: false });
+        if (r.success) ok++;
+      } catch (e) { console.error(`Failed to approve ${team}:`, e); }
+    }
+
+    showToast(`✅ Approved ${ok}/${remaining.length} teams`, 'success');
+    Api.invalidate();
+    loadActiveTeamMissions($('admin-panel-body'));
+  } catch (e) {
+    showToast('❌ Error: ' + e.message, 'error');
+  } finally {
+    Loading.hide();
   }
-  
-  async function adminApproveAllTeams(missionId) {
-      if (!confirm('Approve mission for ALL remaining teams? This will award XP to all.')) return;
-      Loading.show();
-      try {
-          const res = await Api.call('getTeamMissions', { status: 'active', week: STATE.week }, { cache: false });
-          const mission = (res.missions || []).find(m => getMissionId(m) === missionId);
-  
-          if (!mission) { showToast('❌ Mission not found', 'error'); return; }
-  
-          const targetTeams    = mission.targetTeams || mission.target_teams || [];
-          const completedTeams = mission.completedTeams || mission.completed_teams || [];
-          const remaining      = targetTeams.filter(t => !completedTeams.includes(t));
-  
-          if (remaining.length === 0) { showToast('All teams already approved!', 'info'); return; }
-  
-          let ok = 0;
-          for (const team of remaining) {
-              try {
-                  const r = await Api.call('completeTeamMission', {
-                      missionId, team, agentNo: STATE.agentNo, sessionToken: STATE.adminSession
-                  }, { dedupe: false, cache: false });
-                  if (r.success) ok++;
-              } catch (e) { console.error(`Failed to approve ${team}:`, e); }
-          }
-  
-          showToast(`✅ Approved ${ok}/${remaining.length} teams`, 'success');
-          Api.invalidate();
-          loadActiveTeamMissions($('admin-panel-body'));
-      } catch (e) {
-          showToast('❌ Error: ' + e.message, 'error');
-      } finally {
-          Loading.hide();
-      }
+}
+
+async function adminCancelMission(missionId) {
+  if (!confirm('⚠️ Cancel and delete this mission?')) return;
+  Loading.show();
+  try {
+    const res = await Api.call('cancelTeamMission', {
+      missionId, agentNo: STATE.agentNo, sessionToken: STATE.adminSession
+    }, { dedupe: false, cache: false });
+
+    if (res.success) {
+      showToast('✅ Mission cancelled', 'success');
+      Api.invalidate();
+      loadActiveTeamMissions($('admin-panel-body'));
+    } else {
+      showToast('❌ ' + (res.error || 'Failed'), 'error');
+    }
+  } catch (e) {
+    showToast('❌ Error: ' + e.message, 'error');
+  } finally {
+    Loading.hide();
   }
-  
-  async function adminCancelMission(missionId) {
-      if (!confirm('⚠️ Cancel and delete this mission?')) return;
-      Loading.show();
-      try {
-          const res = await Api.call('cancelTeamMission', {
-              missionId, agentNo: STATE.agentNo, sessionToken: STATE.adminSession
-          }, { dedupe: false, cache: false });
-  
-          if (res.success) {
-              showToast('✅ Mission cancelled', 'success');
-              Api.invalidate();
-              loadActiveTeamMissions($('admin-panel-body'));
-          } else {
-              showToast('❌ ' + (res.error || 'Failed'), 'error');
-          }
-      } catch (e) {
-          showToast('❌ Error: ' + e.message, 'error');
-      } finally {
-          Loading.hide();
-      }
-  }
-  
-  // Single window export block
-  window.executeTeamApproval  = executeTeamApproval;
-  window.executeTeamFailure   = executeTeamFailure;
-  window.adminApproveAllTeams = adminApproveAllTeams;
-  window.adminCancelMission   = adminCancelMission;
-  
-  // ==================== TAB: VERIFICATION CENTER ====================
-  
-  async function renderWeekConfirmation(container) {
-      if (!container) container = $('admin-panel-body');
-      if (!container) return;
-  
-      container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">⏳ Verifying agent protocols...</div>';
-  
-      try {
-          const summary = await Api.call('getWeeklySummary', { week: STATE.week }, { cache: false });
-          const teams = summary.teams || {};
-  
-          let html = `
+}
+
+// Single window export block
+window.executeTeamApproval = executeTeamApproval;
+window.executeTeamFailure = executeTeamFailure;
+window.adminApproveAllTeams = adminApproveAllTeams;
+window.adminCancelMission = adminCancelMission;
+
+// ==================== TAB: VERIFICATION CENTER ====================
+
+async function renderWeekConfirmation(container) {
+  if (!container) container = $('admin-panel-body');
+  if (!container) return;
+
+  container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">⏳ Verifying agent protocols...</div>';
+
+  try {
+    const summary = await Api.call('getWeeklySummary', { week: STATE.week }, { cache: false });
+    const teams = summary.teams || {};
+
+    let html = `
               <div style="margin-bottom:24px; display:flex; justify-content:space-between; align-items:center;">
                   <div>
                       <h4 style="color:#fff; font-family:'Orbitron',sans-serif; letter-spacing:1px; margin:0;">
@@ -6701,21 +6703,21 @@ function showSmDay(date) {
                   </div>
               </div>
               <div style="display:flex; flex-direction:column; gap:16px;">`;
-  
-          Object.keys(CONFIG.TEAMS).forEach(teamName => {
-              const info = teams[teamName] || {};
-              const tc   = teamColor(teamName);
-              const att  = info.attendanceConfirmed;
-              const pol  = info.policeConfirmed;
-  
-              const statusBtn = (key, current, val, label, color) => `
+
+    Object.keys(CONFIG.TEAMS).forEach(teamName => {
+      const info = teams[teamName] || {};
+      const tc = teamColor(teamName);
+      const att = info.attendanceConfirmed;
+      const pol = info.policeConfirmed;
+
+      const statusBtn = (key, current, val, label, color) => `
                   <button onclick="window.smartUpdateStatus('${teamName}','${key}',${val})"
                       style="flex:1; padding:10px; border:1px solid ${color}; border-radius:6px;
                       background:${current === (val === true || val === 'true') ? color : 'transparent'};
                       color:${current === (val === true || val === 'true') ? (color === 'var(--green)' ? '#000' : '#fff') : color};
                       font-weight:800; font-size:10px; cursor:pointer; transition:all 0.2s;">${label}</button>`;
-  
-              html += `
+
+      html += `
                   <div class="glass-card" style="padding:20px; border-left:4px solid ${tc};">
                       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                           <span style="color:${tc}; font-weight:800; font-size:14px;">
@@ -6744,9 +6746,9 @@ function showSmDay(date) {
                           </div>
                       </div>
                   </div>`;
-          });
-  
-          html += `</div>
+    });
+
+    html += `</div>
               <div style="margin-top:32px; padding-top:24px; border-top:1px dashed var(--border-light);">
                   <button onclick="window.toggleResultsRelease()" class="btn-red"
                       style="background:linear-gradient(135deg, var(--gold-core), #b8860b); color:#000;">
@@ -6756,63 +6758,63 @@ function showSmDay(date) {
                       text-transform:uppercase; letter-spacing:1px;">
                       Ensure all teams are verified before publishing.</p>
               </div>`;
-  
-          container.innerHTML = html;
-      } catch (e) {
-          container.innerHTML = `<div style="text-align:center; color:var(--fail); padding:40px;">
+
+    container.innerHTML = html;
+  } catch (e) {
+    container.innerHTML = `<div style="text-align:center; color:var(--fail); padding:40px;">
               Failed to load Verification Center.</div>`;
-      }
   }
-  window.renderWeekConfirmation = renderWeekConfirmation;
-  
-  async function smartUpdateStatus(team, key, value) {
-      Loading.show();
-      try {
-          const res = await Api.call('updateTeamStatus', {
-              team, key, value, sessionToken: STATE.adminSession
-          }, { dedupe: false, cache: false });
-          if (res.success) {
-              showToast('Status Updated', 'success');
-              renderWeekConfirmation($('admin-panel-body'));
-          } else {
-              showToast('Update failed: ' + (res.error || ''), 'error');
-          }
-      } catch (e) { showToast('Update failed', 'error'); }
-      finally { Loading.hide(); }
-  }
-  window.smartUpdateStatus = smartUpdateStatus;
-  
-  // TODO: Implement this function
-  async function toggleResultsRelease() {
-      Loading.show();
-      try {
-          const res = await Api.call('toggleResultsRelease', {
-              week: STATE.week, agentNo: STATE.agentNo, sessionToken: STATE.adminSession
-          }, { dedupe: false, cache: false });
-          if (res.success) {
-              showToast(res.released ? '📢 Results Published!' : '🔒 Results Hidden', 'success');
-              renderWeekConfirmation($('admin-panel-body'));
-          } else {
-              showToast('Failed: ' + (res.error || ''), 'error');
-          }
-      } catch (e) { showToast('Error: ' + e.message, 'error'); }
-      finally { Loading.hide(); }
-  }
-  window.toggleResultsRelease = toggleResultsRelease;
-  
-  // ==================== TAB: SOTD ====================
-  
-  async function renderAdminSOTD(container) {
-      container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">📡 Accessing Audio Database...</div>';
-      const todayKST = getKSTDateString();
-  
-      let current = null;
-      try {
-          const res = await Api.call('getSongOfDay', { date: todayKST }, { cache: false });
-          if (res.success && res.song) current = res.song;
-      } catch (e) { /* no song yet */ }
-  
-      container.innerHTML = `
+}
+window.renderWeekConfirmation = renderWeekConfirmation;
+
+async function smartUpdateStatus(team, key, value) {
+  Loading.show();
+  try {
+    const res = await Api.call('updateTeamStatus', {
+      team, key, value, sessionToken: STATE.adminSession
+    }, { dedupe: false, cache: false });
+    if (res.success) {
+      showToast('Status Updated', 'success');
+      renderWeekConfirmation($('admin-panel-body'));
+    } else {
+      showToast('Update failed: ' + (res.error || ''), 'error');
+    }
+  } catch (e) { showToast('Update failed', 'error'); }
+  finally { Loading.hide(); }
+}
+window.smartUpdateStatus = smartUpdateStatus;
+
+// TODO: Implement this function
+async function toggleResultsRelease() {
+  Loading.show();
+  try {
+    const res = await Api.call('toggleResultsRelease', {
+      week: STATE.week, agentNo: STATE.agentNo, sessionToken: STATE.adminSession
+    }, { dedupe: false, cache: false });
+    if (res.success) {
+      showToast(res.released ? '📢 Results Published!' : '🔒 Results Hidden', 'success');
+      renderWeekConfirmation($('admin-panel-body'));
+    } else {
+      showToast('Failed: ' + (res.error || ''), 'error');
+    }
+  } catch (e) { showToast('Error: ' + e.message, 'error'); }
+  finally { Loading.hide(); }
+}
+window.toggleResultsRelease = toggleResultsRelease;
+
+// ==================== TAB: SOTD ====================
+
+async function renderAdminSOTD(container) {
+  container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">📡 Accessing Audio Database...</div>';
+  const todayKST = getKSTDateString();
+
+  let current = null;
+  try {
+    const res = await Api.call('getSongOfDay', { date: todayKST }, { cache: false });
+    if (res.success && res.song) current = res.song;
+  } catch (e) { /* no song yet */ }
+
+  container.innerHTML = `
           <div class="archive-card" style="border-top:3px solid var(--purple-core); margin-bottom:24px;">
               <div style="font-size:14px; font-weight:900; color:var(--purple-mid);
                   font-family:'Orbitron',sans-serif; letter-spacing:1px; margin-bottom:20px;">🎵 SOTD PROTOCOL</div>
@@ -6860,53 +6862,53 @@ function showSmDay(date) {
                       ${current ? '💾 UPDATE DATABASE' : '🚀 PUBLISH TRACK'}</button>
               </div>
           </div>`;
-  }
-  window.renderAdminSOTD = renderAdminSOTD;
-  
-  async function submitAdminSOTD() {
-      const title   = $('admin-sotd-title')?.value.trim();
-      const artist  = $('admin-sotd-artist')?.value.trim();
-      const rawLink = $('admin-sotd-link')?.value.trim();
-      const hint    = $('admin-sotd-hint')?.value.trim();
-      const xp      = $('admin-sotd-xp')?.value;
-  
-      if (!title || !rawLink || !hint) { showToast('Please fill all required fields', 'error'); return; }
-  
-      const youtubeId = extractYouTubeId(rawLink);
-      if (!youtubeId) { showToast('Invalid YouTube URL', 'error'); return; }
-  
-      Loading.show();
-      try {
-          const res = await Api.call('setSongOfDay', {
-              agentNo: STATE.agentNo, sessionToken: STATE.adminSession,
-              date: getKSTDateString(), title, artist: artist || 'BTS',
-              youtubeId, hint, xpReward: parseInt(xp) || 1
-          }, { dedupe: false, cache: false });
-  
-          if (res.success) {
-              showToast('✅ Track Published!', 'success');
-              Api.invalidate('getSongOfDay');
-              setTimeout(() => renderAdminSOTD($('admin-panel-body')), 500);
-          } else {
-              showToast(res.error || 'Publish Failed', 'error');
-          }
-      } catch (e) { showToast('System Error', 'error'); }
-      finally { Loading.hide(); }
-  }
-  window.submitAdminSOTD = submitAdminSOTD;
-  
-  // ==================== TAB: LEAVES ====================
-  
-  async function loadLeavesAdmin(container) {
-      if (!container) container = $('admin-panel-body');
-      container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">⏳ Checking Ghost Protocol records...</div>';
-  
-      try {
-          const res = await Api.call('getAgentsOnLeave', { week: STATE.week }, { cache: false });
-          const agents = res.agents || [];
-  
-          if (agents.length === 0) {
-              container.innerHTML = `
+}
+window.renderAdminSOTD = renderAdminSOTD;
+
+async function submitAdminSOTD() {
+  const title = $('admin-sotd-title')?.value.trim();
+  const artist = $('admin-sotd-artist')?.value.trim();
+  const rawLink = $('admin-sotd-link')?.value.trim();
+  const hint = $('admin-sotd-hint')?.value.trim();
+  const xp = $('admin-sotd-xp')?.value;
+
+  if (!title || !rawLink || !hint) { showToast('Please fill all required fields', 'error'); return; }
+
+  const youtubeId = extractYouTubeId(rawLink);
+  if (!youtubeId) { showToast('Invalid YouTube URL', 'error'); return; }
+
+  Loading.show();
+  try {
+    const res = await Api.call('setSongOfDay', {
+      agentNo: STATE.agentNo, sessionToken: STATE.adminSession,
+      date: getKSTDateString(), title, artist: artist || 'BTS',
+      youtubeId, hint, xpReward: parseInt(xp) || 1
+    }, { dedupe: false, cache: false });
+
+    if (res.success) {
+      showToast('✅ Track Published!', 'success');
+      Api.invalidate('getSongOfDay');
+      setTimeout(() => renderAdminSOTD($('admin-panel-body')), 500);
+    } else {
+      showToast(res.error || 'Publish Failed', 'error');
+    }
+  } catch (e) { showToast('System Error', 'error'); }
+  finally { Loading.hide(); }
+}
+window.submitAdminSOTD = submitAdminSOTD;
+
+// ==================== TAB: LEAVES ====================
+
+async function loadLeavesAdmin(container) {
+  if (!container) container = $('admin-panel-body');
+  container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">⏳ Checking Ghost Protocol records...</div>';
+
+  try {
+    const res = await Api.call('getAgentsOnLeave', { week: STATE.week }, { cache: false });
+    const agents = res.agents || [];
+
+    if (agents.length === 0) {
+      container.innerHTML = `
                   <div style="text-align:center; padding:40px; background:rgba(0,255,102,0.05);
                       border:1px dashed var(--green-border); border-radius:12px;">
                       <div style="font-size:32px; margin-bottom:12px;">✅</div>
@@ -6914,10 +6916,10 @@ function showSmDay(date) {
                       <p style="color:var(--text-muted); font-size:10px; margin-top:6px;">
                           All personnel active for ${STATE.week}.</p>
                   </div>`;
-              return;
-          }
-  
-          container.innerHTML = `
+      return;
+    }
+
+    container.innerHTML = `
               <div style="margin-bottom:20px;">
                   <h4 style="color:#fff; font-family:'Orbitron',sans-serif; margin:0;">🛑 GHOST PROTOCOL REGISTRY</h4>
                   <p style="color:var(--text-muted); font-size:10px; margin-top:4px;">
@@ -6943,43 +6945,43 @@ function showSmDay(date) {
                       </div>
                   `).join('')}
               </div>`;
-      } catch (e) {
-          container.innerHTML = `<div style="text-align:center; color:var(--fail); padding:40px;">
+  } catch (e) {
+    container.innerHTML = `<div style="text-align:center; color:var(--fail); padding:40px;">
               Failed to load leave records.<br>${e.message}</div>`;
-      }
   }
-  
-  async function adminRevokeLeave(targetAgentNo) {
-      if (!confirm(`⚠️ Revoke leave for ${targetAgentNo}?`)) return;
-      Loading.show();
-      try {
-          const result = await Api.call('cancelLeave', {
-              agentNo: targetAgentNo, week: STATE.week
-          }, { dedupe: false, cache: false });
-  
-          if (result.success) {
-              showToast('✅ Leave revoked', 'success');
-              loadLeavesAdmin($('admin-panel-body'));
-          } else {
-              showToast('❌ Failed: ' + result.error, 'error');
-          }
-      } catch (e) { showToast('Error: ' + e.message, 'error'); }
-      finally { Loading.hide(); }
-  }
-  window.adminRevokeLeave = adminRevokeLeave;
-  
-  // ==================== TAB: HISTORY ====================
-  
-  async function loadMissionHistory(container) {
-      if (!container) container = $('admin-panel-body');
-      container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">⏳ Accessing Archives...</div>';
-  
-      try {
-          const res = await Api.call('getTeamMissions', { status: 'all', week: STATE.week }, { cache: false });
-          const missions = (res.missions || []).filter(m => m.status !== 'active');
-  
-          if (missions.length > 0) {
-              container.innerHTML = `
+}
+
+async function adminRevokeLeave(targetAgentNo) {
+  if (!confirm(`⚠️ Revoke leave for ${targetAgentNo}?`)) return;
+  Loading.show();
+  try {
+    const result = await Api.call('cancelLeave', {
+      agentNo: targetAgentNo, week: STATE.week
+    }, { dedupe: false, cache: false });
+
+    if (result.success) {
+      showToast('✅ Leave revoked', 'success');
+      loadLeavesAdmin($('admin-panel-body'));
+    } else {
+      showToast('❌ Failed: ' + result.error, 'error');
+    }
+  } catch (e) { showToast('Error: ' + e.message, 'error'); }
+  finally { Loading.hide(); }
+}
+window.adminRevokeLeave = adminRevokeLeave;
+
+// ==================== TAB: HISTORY ====================
+
+async function loadMissionHistory(container) {
+  if (!container) container = $('admin-panel-body');
+  container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);">⏳ Accessing Archives...</div>';
+
+  try {
+    const res = await Api.call('getTeamMissions', { status: 'all', week: STATE.week }, { cache: false });
+    const missions = (res.missions || []).filter(m => m.status !== 'active');
+
+    if (missions.length > 0) {
+      container.innerHTML = `
                   <div style="margin-bottom:20px;">
                       <h4 style="color:#fff; font-family:'Orbitron',sans-serif; margin:0;">📜 DECLASSIFIED ARCHIVES</h4>
                       <p style="color:var(--text-muted); font-size:10px; margin-top:4px;">
@@ -7010,8 +7012,8 @@ function showSmDay(date) {
                           </div>
                       `).join('')}
                   </div>`;
-          } else {
-              container.innerHTML = `
+    } else {
+      container.innerHTML = `
                   <div style="text-align:center; padding:60px 20px; background:rgba(255,255,255,0.02);
                       border:1px dashed var(--border-light); border-radius:12px;">
                       <div style="font-size:48px; margin-bottom:16px; opacity:0.4;">🗄️</div>
@@ -7019,12 +7021,12 @@ function showSmDay(date) {
                       <p style="color:var(--text-muted); font-size:11px; margin:0;">
                           No completed or cancelled missions for this week.</p>
                   </div>`;
-          }
-      } catch (e) {
-          container.innerHTML = `<div style="text-align:center; color:var(--fail); padding:40px;">
+    }
+  } catch (e) {
+    container.innerHTML = `<div style="text-align:center; color:var(--fail); padding:40px;">
               Failed to load history.<br>${e.message}</div>`;
-      }
   }
+}
 // =============================================
 // ██████  ADMIN DIAGNOSTICS (0 Scrobble Checker)
 // =============================================
@@ -7033,10 +7035,10 @@ function showSmDay(date) {
  * Renders the UI for the Diagnostics Tab
  */
 function renderAdminDiagnosticsTab(container) {
-    if (!container) container = $('admin-panel-body');
-    if (!container) return;
+  if (!container) container = $('admin-panel-body');
+  if (!container) return;
 
-    container.innerHTML = `
+  container.innerHTML = `
         <div class="archive-card" style="margin-bottom:24px; border-top:3px solid var(--wave-foam);">
             <div style="font-size:14px; font-weight:900; color:var(--wave-foam); font-family:'Orbitron',sans-serif; letter-spacing:1px; margin-bottom:16px;">
                 🕵️‍♂️ AGENT DIAGNOSTICS
@@ -7063,16 +7065,16 @@ function renderAdminDiagnosticsTab(container) {
  * Executes the deep-scan on a specific agent
  */
 async function runAgentDiagnosis() {
-    const resultsDiv = document.getElementById('debug-results');
-    const agentInput = document.getElementById('debug-agent-id');
-    const agentNo = agentInput?.value.trim().toUpperCase();
+  const resultsDiv = document.getElementById('debug-results');
+  const agentInput = document.getElementById('debug-agent-id');
+  const agentNo = agentInput?.value.trim().toUpperCase();
 
-    if (!agentNo) {
-        showToast("Enter an Agent ID", "error");
-        return;
-    }
+  if (!agentNo) {
+    showToast("Enter an Agent ID", "error");
+    return;
+  }
 
-    resultsDiv.innerHTML = `
+  resultsDiv.innerHTML = `
         <div style="text-align:center; padding:40px;">
             <div class="spinner" style="margin:0 auto 15px;"></div>
             <div style="color:var(--wave-foam); font-family:var(--font-mono); font-size:10px; letter-spacing:2px; animation:pulse 1s infinite;">
@@ -7081,54 +7083,55 @@ async function runAgentDiagnosis() {
         </div>
     `;
 
-    try {
-        // 1. Force a refresh and request debug metadata from the backend
-        const res = await Api.call('refreshAgentStats', { 
-            agentNo: agentNo,
-            debug: true // Signals backend to return raw Last.fm logs
-        }, { dedupe: false, cache: false });
+  try {
+    // 1. Force a refresh and request debug metadata from the backend
+    const res = await Api.call('refreshAgentStats', {
+      agentNo: agentNo,
+      debug: true // Signals backend to return raw Last.fm logs
+    }, { dedupe: false, cache: false });
 
-        if (!res.success) {
-            resultsDiv.innerHTML = `
+    if (!res.success) {
+      resultsDiv.innerHTML = `
                 <div class="glass-card" style="border-left:4px solid var(--fail); padding:20px;">
                     <div style="color:var(--fail); font-weight:900; font-size:13px; margin-bottom:8px;">❌ DIAGNOSIS FAILED</div>
                     <div style="color:var(--text-secondary); font-size:11px; font-family:var(--font-mono);">${res.error || 'Agent not found in database.'}</div>
                 </div>`;
-            return;
-        }
+      return;
+    }
 
-        const debug = res.debug || {};
-        const stats = res.stats || {};
-        const tColor = teamColor(res.team || 'Unknown');
-        
-        // 2. Intelligence Analysis (Logic to determine why scrobbles are 0)
-        let statusTag = { text: 'HEALTHY', color: 'var(--green)' };
-        let findings = [];
-        
-        if (!debug.lastfm_username) {
-            if (res.alreadySynced) {
-              statusTag = { text: 'COOLDOWN', color: 'var(--courage-amber)' };
-              findings.push("⏱️ System is in cooldown. Please wait 5 minutes before running another deep scan.");
-           } else {
-            statusTag = { text: 'CRITICAL', color: 'var(--fail)' };
-            findings.push("❌ No Last.fm account linked to this Agent ID.");
-        } else if (debug.last_api_error) {
-            statusTag = { text: 'SYNC ERROR', color: 'var(--fail)' };
-            findings.push(`❌ Last.fm API Error: ${debug.last_api_error}`);
-        } else if (debug.raw_scrobble_count === 0) {
-            statusTag = { text: 'INACTIVE', color: 'var(--courage-amber)' };
-            findings.push("⚠️ Last.fm returned 0 total tracks for the week. The user is not scrobbling.");
-        } else if (debug.filtered_scrobble_count === 0 && debug.raw_scrobble_count > 0) {
-            statusTag = { text: 'FILTER BLOCK', color: 'var(--red-core)' };
-            findings.push("🚨 Agent is scrobbling, but 0 tracks matched Arirang/BTS criteria. Possible Artist Name mismatch (e.g. 'Agust D' vs 'SUGA').");
-        }
+    const debug = res.debug || {};
+    const stats = res.stats || {};
+    const tColor = teamColor(res.team || 'Unknown');
 
-        if (res.onLeave) {
-            findings.push("💤 Note: Agent is currently on Leave (Ghost Protocol).");
-        }
+    // 2. Intelligence Analysis (Logic to determine why scrobbles are 0)
+    let statusTag = { text: 'HEALTHY', color: 'var(--green)' };
+    let findings = [];
 
-        // 3. Build the Report HTML
-        resultsDiv.innerHTML = `
+    if (!debug.lastfm_username) {
+      if (res.alreadySynced) {
+        statusTag = { text: 'COOLDOWN', color: 'var(--courage-amber)' };
+        findings.push("⏱️ System is in cooldown. Please wait 5 minutes before running another deep scan.");
+      } else {
+        statusTag = { text: 'CRITICAL', color: 'var(--fail)' };
+        findings.push("❌ No Last.fm account linked to this Agent ID.");
+      }
+    } else if (debug.last_api_error) {
+      statusTag = { text: 'SYNC ERROR', color: 'var(--fail)' };
+      findings.push(`❌ Last.fm API Error: ${debug.last_api_error}`);
+    } else if (debug.raw_scrobble_count === 0) {
+      statusTag = { text: 'INACTIVE', color: 'var(--courage-amber)' };
+      findings.push("⚠️ Last.fm returned 0 total tracks for the week. The user is not scrobbling.");
+    } else if (debug.filtered_scrobble_count === 0 && debug.raw_scrobble_count > 0) {
+      statusTag = { text: 'FILTER BLOCK', color: 'var(--red-core)' };
+      findings.push("🚨 Agent is scrobbling, but 0 tracks matched Arirang/BTS criteria. Possible Artist Name mismatch (e.g. 'Agust D' vs 'SUGA').");
+    }
+
+    if (res.onLeave) {
+      findings.push("💤 Note: Agent is currently on Leave (Ghost Protocol).");
+    }
+
+    // 3. Build the Report HTML
+    resultsDiv.innerHTML = `
             <div class="glass-card" style="padding:20px; border-top:2px solid ${statusTag.color};">
                 
                 <!-- Header Stats -->
@@ -7167,10 +7170,10 @@ async function runAgentDiagnosis() {
                 <!-- Analysis List -->
                 <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:15px; border:1px solid var(--border-subtle);">
                     <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Intelligence Findings:</div>
-                    ${findings.length > 0 
-                        ? findings.map(f => `<div style="font-size:11px; color:#fff; margin-bottom:8px; line-height:1.4;">${f}</div>`).join('')
-                        : `<div style="font-size:11px; color:var(--green);">✓ No anomalies detected. System operating within normal parameters.</div>`
-                    }
+                    ${findings.length > 0
+        ? findings.map(f => `<div style="font-size:11px; color:#fff; margin-bottom:8px; line-height:1.4;">${f}</div>`).join('')
+        : `<div style="font-size:11px; color:var(--green);">✓ No anomalies detected. System operating within normal parameters.</div>`
+      }
                 </div>
 
                 <!-- Raw Metadata (Toggleable for high-level debug) -->
@@ -7185,21 +7188,21 @@ ${JSON.stringify(debug, null, 2)}
             </div>
         `;
 
-        showToast(`Diagnosis for ${agentNo} complete`, 'info');
+    showToast(`Diagnosis for ${agentNo} complete`, 'info');
 
-    } catch (e) {
-        console.error("Diagnosis Error:", e);
-        resultsDiv.innerHTML = `<div class="glass-card" style="padding:20px; color:var(--fail);">System Error: ${e.message}</div>`;
-    }
+  } catch (e) {
+    console.error("Diagnosis Error:", e);
+    resultsDiv.innerHTML = `<div class="glass-card" style="padding:20px; color:var(--fail);">System Error: ${e.message}</div>`;
+  }
 }
-  
-  // ==================== TAB: SYSTEM CONTROLS ====================
-  
-  function renderAdminSystemTab(container) {
-      if (!container) container = $('admin-panel-body');
-      if (!container) return;
-  
-      container.innerHTML = `
+
+// ==================== TAB: SYSTEM CONTROLS ====================
+
+function renderAdminSystemTab(container) {
+  if (!container) container = $('admin-panel-body');
+  if (!container) return;
+
+  container.innerHTML = `
           <div class="archive-card" style="margin-bottom:24px; border-top:3px solid var(--red-core);">
               <div style="font-size:14px; font-weight:900; color:var(--red-core);
                   font-family:'Orbitron',sans-serif; letter-spacing:1px; margin-bottom:20px;">⚙️ SYSTEM CONTROLS</div>
@@ -7230,141 +7233,141 @@ ${JSON.stringify(debug, null, 2)}
                       font-weight:800; cursor:pointer;">⏻ EXIT ADMIN MODE</button>
               </div>
           </div>`;
-  }
-  window.renderAdminSystemTab = renderAdminSystemTab;
+}
+window.renderAdminSystemTab = renderAdminSystemTab;
 
-  
-  // TODO: Implement these system actions
-  window.adminTriggerSync    = window.adminTriggerSync    || function() { showToast('Not yet implemented', 'info'); };
-  window.adminCheckSync      = window.adminCheckSync      || function() { showToast('Not yet implemented', 'info'); };
-  window.adminFinalizeWeek   = window.adminFinalizeWeek   || function() { showToast('Not yet implemented', 'info'); };
-  window.adminGenerateUnits  = window.adminGenerateUnits  || function() { showToast('Not yet implemented', 'info'); };
-  // =============================================
-  // ██████  148 PROTOCOL (RM's Strategic Dashboard)
-  // =============================================
-  
-  // Ensure RM Config exists
-  const RM_CONFIG = {
-    IMAGE: 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/6c9cf38a7be372187ebd244d19a5e0357d4983c8/team%20pfps/baed0eb48e6ac22807df156ce76d8b4f.jpg',
-    QUOTES: [
-      "Yeah, we the mess, gonna get a bigger mop here.",
-      "This that K, gotta get a better pop here.",
-      "You gon' hear this one playin' 'round the clock, yeah.",
-      "'Round the clock, clock, clock, clock.",
-      "Everything lit, it's fire, everything big, it's fire.",
-      "She wanna dance on fire, everything gas, it's fire.",
-      "Don't stand too close, too close to fire.",
-      "Oh, we can go all night (Go all night).",
-      "Yeah, we should go all night, all night.",
-      "Hold up, chill, and take a bubble bath, bae.",
-      "Do the math and go, just say what you say.",
-      "Came back for what's mine, we don't stop.",
-    ],
+
+// TODO: Implement these system actions
+window.adminTriggerSync = window.adminTriggerSync || function () { showToast('Not yet implemented', 'info'); };
+window.adminCheckSync = window.adminCheckSync || function () { showToast('Not yet implemented', 'info'); };
+window.adminFinalizeWeek = window.adminFinalizeWeek || function () { showToast('Not yet implemented', 'info'); };
+window.adminGenerateUnits = window.adminGenerateUnits || function () { showToast('Not yet implemented', 'info'); };
+// =============================================
+// ██████  148 PROTOCOL (RM's Strategic Dashboard)
+// =============================================
+
+// Ensure RM Config exists
+const RM_CONFIG = {
+  IMAGE: 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/6c9cf38a7be372187ebd244d19a5e0357d4983c8/team%20pfps/baed0eb48e6ac22807df156ce76d8b4f.jpg',
+  QUOTES: [
+    "Yeah, we the mess, gonna get a bigger mop here.",
+    "This that K, gotta get a better pop here.",
+    "You gon' hear this one playin' 'round the clock, yeah.",
+    "'Round the clock, clock, clock, clock.",
+    "Everything lit, it's fire, everything big, it's fire.",
+    "She wanna dance on fire, everything gas, it's fire.",
+    "Don't stand too close, too close to fire.",
+    "Oh, we can go all night (Go all night).",
+    "Yeah, we should go all night, all night.",
+    "Hold up, chill, and take a bubble bath, bae.",
+    "Do the math and go, just say what you say.",
+    "Came back for what's mine, we don't stop.",
+  ],
 };
-  
-  function getTodoKey() {
-    return `p148_${STATE.agentNo}_${new Date().toDateString()}`;
-  }
-  
-  function getSavedTodos() {
-    try {
-      return JSON.parse(localStorage.getItem(getTodoKey()) || '{}');
-    } catch {
-      return {};
-    }
-  }
-  
-  async function render148Protocol() {
-    const container = $('protocolContent'); // Ensure your HTML uses <div id="protocolContent"></div>
-    if (!container) return;
-  
-    showPageLoading(container);
-  
-    const team = STATE.data?.agent?.profile?.team || 'Unknown';
-    const week = STATE.week;
-  
-    try {
-      // 1. FETCH DATA (Parallel)
-      const [goalsData, album2xData] = await Promise.all([
-        Api.call('getGoalsProgress', { week }, { cache: true, ttl: 60_000 }),
-        Api.call('getAlbum2xStatus', { week, team, agentNo: STATE.agentNo }, { cache: true, ttl: 60_000 }),
-      ]);
-  
-      const trackGoals = goalsData.trackGoals || {};
-      const albumGoals = goalsData.albumGoals || {};
-      
-      // 2. MATH & LOGIC (From your old app)
-      const teamMembers = STATE.data?.team?.sideMissionStats?.membersTotal || 10;
-      const activeEst = Math.ceil(teamMembers * 0.6) || 1; // 60% active estimate
-      
-      const daysLeft = getDaysRemaining(week);
-      const safeDays = Math.max(1, daysLeft);
-      const isUrgent = daysLeft <= 1;
-  
-      const tasks = [];
-      let totalNeeded = 0;
-  
-      // Process Track & Album Goals
-      const processGoals = (goals, type) => {
-        Object.entries(goals).forEach(([name, info]) => {
-          const current = info.teams?.[team]?.current || 0;
-          const goal = info.goal || 0;
-          
-          if (current < goal) {
-            const gap = goal - current;
-            // RM's Fair Share Formula
-            const myShare = Math.ceil(gap / activeEst) + 1;
-            const dailyTarget = Math.ceil(myShare / safeDays);
-            
-            tasks.push({
-              type, 
-              name, 
-              total: myShare,
-              daily: dailyTarget,
-              gap, 
-              teamCurrent: current, 
-              teamGoal: goal,
-            });
-            totalNeeded += myShare;
-          }
-        });
-      };
-  
-      processGoals(trackGoals, '🎵');
-      processGoals(albumGoals, '💿');
-      tasks.sort((a, b) => b.gap - a.gap); // Sort by biggest gap first
-  
-      // 2X Incomplete Members List (Who needs help)
-      const team2x = album2xData?.teams?.[team] || {};
-      const pending2x = (team2x.members || []).filter(m => !m.passed);
-  
-      // Daily Checkbox State
-      // Auto-ticked from streaming-derived stats; localStorage only used for the proof checkbox.
-      const savedTodo = getSavedTodos();
-      const today = getKSTDateString();
-      const quote = RM_CONFIG.QUOTES[Math.floor(Math.random() * RM_CONFIG.QUOTES.length)];
-      const sm = STATE.data?.agent?.sideMissions;
-      const unitPassed = !!STATE.data?.agent?.arirangUnit?.passed;
 
-      // Arirang 2X daily completion derived from per-track dailyGrid.
-      const dailyGrid = STATE.data?.agent?.album2xStatus?.dailyGrid?.[today] || {};
-      const today2xPassedCount = Object.values(dailyGrid).filter(c => c?.passed).length;
-      const is2xDailyAllPassed = today2xPassedCount >= 14;
+function getTodoKey() {
+  return `p148_${STATE.agentNo}_${new Date().toDateString()}`;
+}
 
-      // Only checkbox we still allow manual ticking for.
-      const isProofDone = !!savedTodo['t148_proof'];
-  
-      // Threat Level Logic
-      let threat = 'LOW', tColor = 'var(--green)', tIcon = '🟢';
-      if (isUrgent) { threat = 'CRITICAL'; tColor = 'var(--red-core)'; tIcon = '🔴'; }
-      else if (daysLeft <= 2) { threat = 'HIGH'; tColor = 'var(--courage-amber)'; tIcon = '🟡'; }
-      else if (totalNeeded > 100) { threat = 'ELEVATED'; tColor = 'var(--courage-amber)'; tIcon = '🟠'; }
-  
-      // ==========================================
-      // 3. BUILD THE UI (ARIRANG THEME)
-      // ==========================================
-      
-      let html = `
+function getSavedTodos() {
+  try {
+    return JSON.parse(localStorage.getItem(getTodoKey()) || '{}');
+  } catch {
+    return {};
+  }
+}
+
+async function render148Protocol() {
+  const container = $('protocolContent'); // Ensure your HTML uses <div id="protocolContent"></div>
+  if (!container) return;
+
+  showPageLoading(container);
+
+  const team = STATE.data?.agent?.profile?.team || 'Unknown';
+  const week = STATE.week;
+
+  try {
+    // 1. FETCH DATA (Parallel)
+    const [goalsData, album2xData] = await Promise.all([
+      Api.call('getGoalsProgress', { week }, { cache: true, ttl: 60_000 }),
+      Api.call('getAlbum2xStatus', { week, team, agentNo: STATE.agentNo }, { cache: true, ttl: 60_000 }),
+    ]);
+
+    const trackGoals = goalsData.trackGoals || {};
+    const albumGoals = goalsData.albumGoals || {};
+
+    // 2. MATH & LOGIC (From your old app)
+    const teamMembers = STATE.data?.team?.sideMissionStats?.membersTotal || 10;
+    const activeEst = Math.ceil(teamMembers * 0.6) || 1; // 60% active estimate
+
+    const daysLeft = getDaysRemaining(week);
+    const safeDays = Math.max(1, daysLeft);
+    const isUrgent = daysLeft <= 1;
+
+    const tasks = [];
+    let totalNeeded = 0;
+
+    // Process Track & Album Goals
+    const processGoals = (goals, type) => {
+      Object.entries(goals).forEach(([name, info]) => {
+        const current = info.teams?.[team]?.current || 0;
+        const goal = info.goal || 0;
+
+        if (current < goal) {
+          const gap = goal - current;
+          // RM's Fair Share Formula
+          const myShare = Math.ceil(gap / activeEst) + 1;
+          const dailyTarget = Math.ceil(myShare / safeDays);
+
+          tasks.push({
+            type,
+            name,
+            total: myShare,
+            daily: dailyTarget,
+            gap,
+            teamCurrent: current,
+            teamGoal: goal,
+          });
+          totalNeeded += myShare;
+        }
+      });
+    };
+
+    processGoals(trackGoals, '🎵');
+    processGoals(albumGoals, '💿');
+    tasks.sort((a, b) => b.gap - a.gap); // Sort by biggest gap first
+
+    // 2X Incomplete Members List (Who needs help)
+    const team2x = album2xData?.teams?.[team] || {};
+    const pending2x = (team2x.members || []).filter(m => !m.passed);
+
+    // Daily Checkbox State
+    // Auto-ticked from streaming-derived stats; localStorage only used for the proof checkbox.
+    const savedTodo = getSavedTodos();
+    const today = getKSTDateString();
+    const quote = RM_CONFIG.QUOTES[Math.floor(Math.random() * RM_CONFIG.QUOTES.length)];
+    const sm = STATE.data?.agent?.sideMissions;
+    const unitPassed = !!STATE.data?.agent?.arirangUnit?.passed;
+
+    // Arirang 2X daily completion derived from per-track dailyGrid.
+    const dailyGrid = STATE.data?.agent?.album2xStatus?.dailyGrid?.[today] || {};
+    const today2xPassedCount = Object.values(dailyGrid).filter(c => c?.passed).length;
+    const is2xDailyAllPassed = today2xPassedCount >= 14;
+
+    // Only checkbox we still allow manual ticking for.
+    const isProofDone = !!savedTodo['t148_proof'];
+
+    // Threat Level Logic
+    let threat = 'LOW', tColor = 'var(--green)', tIcon = '🟢';
+    if (isUrgent) { threat = 'CRITICAL'; tColor = 'var(--red-core)'; tIcon = '🔴'; }
+    else if (daysLeft <= 2) { threat = 'HIGH'; tColor = 'var(--courage-amber)'; tIcon = '🟡'; }
+    else if (totalNeeded > 100) { threat = 'ELEVATED'; tColor = 'var(--courage-amber)'; tIcon = '🟠'; }
+
+    // ==========================================
+    // 3. BUILD THE UI (ARIRANG THEME)
+    // ==========================================
+
+    let html = `
         <!-- RM Briefing Header -->
         <div class="archive-card" style="margin-bottom:24px; border-top:3px solid var(--purple-core); background:linear-gradient(135deg, rgba(167, 139, 250, 0.05), var(--bg-panel));">
           <div style="display:flex; gap:16px; align-items:flex-start;">
@@ -7416,10 +7419,10 @@ ${JSON.stringify(debug, null, 2)}
           </div>
         </div>
       `;
-  
-      // Pending 2X Members Alert
-      if (pending2x.length > 0) {
-        html += `
+
+    // Pending 2X Members Alert
+    if (pending2x.length > 0) {
+      html += `
           <div style="padding:16px; background:var(--red-whisper); border:1px solid var(--red-border); margin-bottom:24px; border-radius:12px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
               <span style="font-size:11px; font-weight:900; color:var(--red-core); letter-spacing:1px; text-transform:uppercase;">🚨 2X Incomplete</span>
@@ -7437,68 +7440,68 @@ ${JSON.stringify(debug, null, 2)}
             </div>
           </div>
         `;
-      }
-  
-      // Daily Planner List
-      html += `
+    }
+
+    // Daily Planner List
+    html += `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border-light);">
           <span style="font-size:11px; color:var(--purple-mid); text-transform:uppercase; letter-spacing:2px; font-weight:900;">📋 Personal Target</span>
           <span style="font-size:10px; color:var(--text-muted); font-family:'Share Tech Mono', monospace;">${new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
         </div>
       `;
-  
-      // Render Dynamic Goal Tasks
-      if (tasks.length === 0) {
-        html += `
+
+    // Render Dynamic Goal Tasks
+    if (tasks.length === 0) {
+      html += `
           <div style="text-align:center; padding:30px; background:var(--green-soft); border:1px solid var(--green-border); border-radius:12px; margin-bottom:16px;">
             <div style="font-size:32px; margin-bottom:12px;">🎉</div>
             <div style="font-size:13px; font-weight:800; color:var(--green); text-transform:uppercase; letter-spacing:1px;">All Team Targets Cleared</div>
             <div style="font-size:10px; color:var(--text-muted); margin-top:6px;">Assist other agents with their missions.</div>
           </div>
         `;
-      } else {
-        // ✅ CORRECT: today's per-track scrobbles from goal_daily_scrobbles (via backend)
-        const todayDailyScrobbles = STATE.data?.agent?.todayTrackScrobbles || {};
+    } else {
+      // ✅ CORRECT: today's per-track scrobbles from goal_daily_scrobbles (via backend)
+      const todayDailyScrobbles = STATE.data?.agent?.todayTrackScrobbles || {};
 
-        html += tasks.map(task => {
-          const id = `t148_${task.name.replace(/[^a-zA-Z0-9]/g, '')}`;
-          const pct = task.teamGoal > 0 ? Math.min(100, (task.teamCurrent / task.teamGoal) * 100) : 0;
+      html += tasks.map(task => {
+        const id = `t148_${task.name.replace(/[^a-zA-Z0-9]/g, '')}`;
+        const pct = task.teamGoal > 0 ? Math.min(100, (task.teamCurrent / task.teamGoal) * 100) : 0;
 
-          const isUrgentTask = isUrgent || pct > 95;
-          const dailyText = isUrgentTask
-              ? `<span style="color:var(--red-core); font-weight:900;">⚠️ PUSH NOW</span>`
-              : `<span style="color:var(--courage-amber); font-family:'Share Tech Mono', monospace;">${task.daily}/DAY</span>`;
+        const isUrgentTask = isUrgent || pct > 95;
+        const dailyText = isUrgentTask
+          ? `<span style="color:var(--red-core); font-weight:900;">⚠️ PUSH NOW</span>`
+          : `<span style="color:var(--courage-amber); font-family:'Share Tech Mono', monospace;">${task.daily}/DAY</span>`;
 
-          const label = `${task.type} <strong>${sanitize(task.name)}</strong> <span style="color:var(--text-muted);">×${task.total}</span> — ${dailyText}`;
+        const label = `${task.type} <strong>${sanitize(task.name)}</strong> <span style="color:var(--text-muted);">×${task.total}</span> — ${dailyText}`;
 
-          // Agent's streams today for this specific track (exact, from goal_daily_scrobbles)
-          const personalTodayCount = Object.entries(todayDailyScrobbles).reduce((sum, [trackName, count]) => {
-            const trackLower = trackName.toLowerCase();
-            const taskNameLower = task.name.toLowerCase();
-            const aliases = task.aliases || [];
-            const matchesName = trackLower.includes(taskNameLower) || taskNameLower.includes(trackLower);
-            const matchesAlias = aliases.some(alias => trackLower.includes(alias.toLowerCase()) || alias.toLowerCase().includes(trackLower));
-            if (matchesName || matchesAlias) {
-              return sum + Number(count);
-            }
-            return sum;
-          }, 0);
+        // Agent's streams today for this specific track (exact, from goal_daily_scrobbles)
+        const personalTodayCount = Object.entries(todayDailyScrobbles).reduce((sum, [trackName, count]) => {
+          const trackLower = trackName.toLowerCase();
+          const taskNameLower = task.name.toLowerCase();
+          const aliases = task.aliases || [];
+          const matchesName = trackLower.includes(taskNameLower) || taskNameLower.includes(trackLower);
+          const matchesAlias = aliases.some(alias => trackLower.includes(alias.toLowerCase()) || alias.toLowerCase().includes(trackLower));
+          if (matchesName || matchesAlias) {
+            return sum + Number(count);
+          }
+          return sum;
+        }, 0);
 
-         // ✅ Ticks when agent hits their daily fair share today (or team goal is 100%)
-          const autoChecked = pct >= 100 || personalTodayCount >= task.daily;
-          
-          // Calculate User's Daily Progress Percentage
-          const dailyProgressPct = task.daily > 0 ? Math.min(100, (personalTodayCount / task.daily) * 100) : 0;
+        // ✅ Ticks when agent hits their daily fair share today (or team goal is 100%)
+        const autoChecked = pct >= 100 || personalTodayCount >= task.daily;
 
-          // Render the task using their personal daily progress instead of team overall
-          return render148Task(id, label, autoChecked, dailyProgressPct, `${fmt(personalTodayCount)}/${fmt(task.daily)}`, false);
-        }).join('');
+        // Calculate User's Daily Progress Percentage
+        const dailyProgressPct = task.daily > 0 ? Math.min(100, (personalTodayCount / task.daily) * 100) : 0;
 
-        
-      }
-  
-      // Static Daily Habits
-      html += `
+        // Render the task using their personal daily progress instead of team overall
+        return render148Task(id, label, autoChecked, dailyProgressPct, `${fmt(personalTodayCount)}/${fmt(task.daily)}`, false);
+      }).join('');
+
+
+    }
+
+    // Static Daily Habits
+    html += `
         <div style="margin-top:24px; padding-top:16px; border-top:1px dashed var(--border-light);">
           <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px;">Habits</div>
           ${render148Task('t148_2x', '💿 Complete Arirang 2X (28 streams)', is2xDailyAllPassed, Math.min(100, (today2xPassedCount / 14) * 100), `${today2xPassedCount}/14`, false)}
@@ -7507,90 +7510,90 @@ ${JSON.stringify(debug, null, 2)}
           ${render148Task('t148_proof', '📸 Post Recents Proof in GC', isProofDone, undefined, undefined, true)}
         </div>
       `;
-  
-      container.innerHTML = html;
 
-      // Refresh auto-ticks when the day changes (KST).
-      schedule148DailyAutoRefresh();
-    } catch (e) {
-      showPageError(container, 'render148Protocol');
+    container.innerHTML = html;
+
+    // Refresh auto-ticks when the day changes (KST).
+    schedule148DailyAutoRefresh();
+  } catch (e) {
+    showPageError(container, 'render148Protocol');
+  }
+}
+
+function schedule148DailyAutoRefresh() {
+  if (window.__148DailyAutoRefreshSet) return;
+  window.__148DailyAutoRefreshSet = true;
+
+  window.__148DailyAutoRefreshLastDate = window.__148DailyAutoRefreshLastDate || getKSTDateString();
+
+  Timers.setInterval('148-daily-auto-refresh', () => {
+    if (STATE.page !== 'protocol148') return;
+    const todayNow = getKSTDateString();
+    if (window.__148DailyAutoRefreshLastDate !== todayNow) {
+      window.__148DailyAutoRefreshLastDate = todayNow;
+      Api.invalidate();
+      render148Protocol();
+    }
+  }, 60_000);
+}
+
+// =============================================
+// HELPER: Toggle Logic for Checkboxes
+// =============================================
+
+function toggle148Task(taskId, element) {
+  if (!element) return;
+
+  const saved = getSavedTodos();
+  const newState = !saved[taskId];
+  saved[taskId] = newState;
+  localStorage.setItem(getTodoKey(), JSON.stringify(saved));
+
+  if (typeof navigator.vibrate === 'function') navigator.vibrate(10);
+
+  const checkbox = element.querySelector('.check-box');
+  const textDiv = element.querySelector('.task-text');
+
+  // Arirang Theme styling updates on click
+  if (newState) {
+    element.style.background = 'var(--green-soft)';
+    element.style.borderColor = 'var(--green-border)';
+    element.style.borderLeftColor = 'var(--green)';
+    if (checkbox) {
+      checkbox.textContent = '✓';
+      checkbox.style.color = 'var(--green)';
+      checkbox.style.borderColor = 'var(--green)';
+      checkbox.style.background = 'rgba(0,255,102,0.1)';
+    }
+    if (textDiv) {
+      textDiv.style.color = 'var(--text-muted)';
+      textDiv.style.textDecoration = 'line-through';
+    }
+  } else {
+    element.style.background = 'var(--bg-lifted)';
+    element.style.borderColor = 'var(--border-subtle)';
+    element.style.borderLeftColor = 'var(--text-muted)';
+    if (checkbox) {
+      checkbox.textContent = '';
+      checkbox.style.color = 'transparent';
+      checkbox.style.borderColor = 'var(--text-muted)';
+      checkbox.style.background = 'transparent';
+    }
+    if (textDiv) {
+      textDiv.style.color = '#fff';
+      textDiv.style.textDecoration = 'none';
     }
   }
+}
 
-  function schedule148DailyAutoRefresh() {
-      if (window.__148DailyAutoRefreshSet) return;
-      window.__148DailyAutoRefreshSet = true;
+function render148Task(id, text, isChecked, progressPct, progressText, clickable = false) {
+  const bg = isChecked ? 'var(--green-soft)' : 'var(--bg-lifted)';
+  const border = isChecked ? 'var(--green-border)' : 'var(--border-subtle)';
+  const leftBorder = isChecked ? 'var(--green)' : 'var(--text-muted)';
+  const isClickable = !!clickable;
+  const onClickAttr = isClickable ? `onclick="toggle148Task('${id}', this)"` : '';
 
-      window.__148DailyAutoRefreshLastDate = window.__148DailyAutoRefreshLastDate || getKSTDateString();
-
-      Timers.setInterval('148-daily-auto-refresh', () => {
-          if (STATE.page !== 'protocol148') return;
-          const todayNow = getKSTDateString();
-          if (window.__148DailyAutoRefreshLastDate !== todayNow) {
-              window.__148DailyAutoRefreshLastDate = todayNow;
-              Api.invalidate();
-              render148Protocol();
-          }
-      }, 60_000);
-  }
-  
-  // =============================================
-  // HELPER: Toggle Logic for Checkboxes
-  // =============================================
-  
-  function toggle148Task(taskId, element) {
-    if (!element) return;
-  
-    const saved = getSavedTodos();
-    const newState = !saved[taskId];
-    saved[taskId] = newState;
-    localStorage.setItem(getTodoKey(), JSON.stringify(saved));
-  
-    if (typeof navigator.vibrate === 'function') navigator.vibrate(10);
-  
-    const checkbox = element.querySelector('.check-box');
-    const textDiv = element.querySelector('.task-text');
-  
-    // Arirang Theme styling updates on click
-    if (newState) {
-      element.style.background = 'var(--green-soft)';
-      element.style.borderColor = 'var(--green-border)';
-      element.style.borderLeftColor = 'var(--green)';
-      if (checkbox) {
-        checkbox.textContent = '✓';
-        checkbox.style.color = 'var(--green)';
-        checkbox.style.borderColor = 'var(--green)';
-        checkbox.style.background = 'rgba(0,255,102,0.1)';
-      }
-      if (textDiv) {
-        textDiv.style.color = 'var(--text-muted)';
-        textDiv.style.textDecoration = 'line-through';
-      }
-    } else {
-      element.style.background = 'var(--bg-lifted)';
-      element.style.borderColor = 'var(--border-subtle)';
-      element.style.borderLeftColor = 'var(--text-muted)';
-      if (checkbox) {
-        checkbox.textContent = '';
-        checkbox.style.color = 'transparent';
-        checkbox.style.borderColor = 'var(--text-muted)';
-        checkbox.style.background = 'transparent';
-      }
-      if (textDiv) {
-        textDiv.style.color = '#fff';
-        textDiv.style.textDecoration = 'none';
-      }
-    }
-  }
-  
-  function render148Task(id, text, isChecked, progressPct, progressText, clickable = false) {
-    const bg = isChecked ? 'var(--green-soft)' : 'var(--bg-lifted)';
-    const border = isChecked ? 'var(--green-border)' : 'var(--border-subtle)';
-    const leftBorder = isChecked ? 'var(--green)' : 'var(--text-muted)';
-    const isClickable = !!clickable;
-    const onClickAttr = isClickable ? `onclick="toggle148Task('${id}', this)"` : '';
-    
-    return `
+  return `
       <div ${onClickAttr} style="
         display:flex; align-items:center; gap:14px; padding:16px; margin-bottom:8px;
         background:${bg}; border:1px solid ${border}; border-left:3px solid ${leftBorder};
@@ -7620,21 +7623,21 @@ ${JSON.stringify(debug, null, 2)}
         </div>
       </div>
     `;
-  }
-  
-  window.toggle148Task = toggle148Task;
-  
-  // =============================================
-  // ██████  INFO MODAL
-  // =============================================
-  
-  function show148Info() {
-    document.querySelectorAll('.spy-modal-overlay').forEach(e => e.remove());
-    const modal = document.createElement('div');
-    modal.className = 'spy-modal-overlay';
-    modal.style.cssText = `position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:100000; display:flex; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(8px); animation:fadeIn 0.3s ease;`;
-  
-    modal.innerHTML = `
+}
+
+window.toggle148Task = toggle148Task;
+
+// =============================================
+// ██████  INFO MODAL
+// =============================================
+
+function show148Info() {
+  document.querySelectorAll('.spy-modal-overlay').forEach(e => e.remove());
+  const modal = document.createElement('div');
+  modal.className = 'spy-modal-overlay';
+  modal.style.cssText = `position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:100000; display:flex; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(8px); animation:fadeIn 0.3s ease;`;
+
+  modal.innerHTML = `
       <div style="background:var(--bg-panel); border:1px solid var(--purple-core); border-radius:16px; width:100%; max-width:380px; box-shadow:0 20px 50px rgba(167, 139, 250, 0.15); overflow:hidden;">
           
           <div style="padding:20px; background:var(--purple-whisper); border-bottom:1px solid var(--purple-border); display:flex; justify-content:space-between; align-items:center;">
@@ -7683,17 +7686,17 @@ ${JSON.stringify(debug, null, 2)}
           </div>
       </div>
     `;
-  
-    document.body.appendChild(modal);
-  }
-  window.show148Info = show148Info;
-  
-  
-  // =============================================
-  // ██████  GUIDE PAGE
-  // =============================================
-  
-  // =============================================
+
+  document.body.appendChild(modal);
+}
+window.show148Info = show148Info;
+
+
+// =============================================
+// ██████  GUIDE PAGE
+// =============================================
+
+// =============================================
 // ██████  GUIDE PAGE
 // =============================================
 
@@ -7724,12 +7727,12 @@ function renderGuidePage() {
   ];
 
   const quickLinks = [
-    ['🏠', 'HQ',   'home'],
+    ['🏠', 'HQ', 'home'],
     ['🎯', 'Goals', 'goals'],
-    ['💿', '2X',    'album2x'],
-    ['🧠', '148',   'protocol148'],
+    ['💿', '2X', 'album2x'],
+    ['🧠', '148', 'protocol148'],
     ['🛡️', 'Side', 'sidemissions'],
-    ['⚡', 'Unit',  'unit'],
+    ['⚡', 'Unit', 'unit'],
   ];
 
   container.innerHTML = `
@@ -7820,86 +7823,86 @@ function renderNarrativeCard(missionKey) {
     </div>
   `;
 }
-  // =============================================
-  // ██████  KEYBOARD SHORTCUTS
-  // =============================================
-  // v2.0: Uses a Map for clarity, ignores input fields.
-  
-  const KEYBOARD_SHORTCUTS = new Map([
-    ['1', 'home'],
-    ['2', 'profile'],
-    ['3', 'goals'],
-    ['4', 'album2x'],
-    ['5', 'unit'],
-    ['6', 'sidemissions'],
-    ['7', 'rankings'],
-    ['8', 'protocol148'],
-  ]);
-  
-  document.addEventListener('keydown', e => {
-    // Skip if user is typing in an input/textarea
-    const tag = e.target.tagName;
-    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
-  
-    // Page shortcuts
-    const page = KEYBOARD_SHORTCUTS.get(e.key);
-    if (page) {
-      goTo(page);
-      return;
+// =============================================
+// ██████  KEYBOARD SHORTCUTS
+// =============================================
+// v2.0: Uses a Map for clarity, ignores input fields.
+
+const KEYBOARD_SHORTCUTS = new Map([
+  ['1', 'home'],
+  ['2', 'profile'],
+  ['3', 'goals'],
+  ['4', 'album2x'],
+  ['5', 'unit'],
+  ['6', 'sidemissions'],
+  ['7', 'rankings'],
+  ['8', 'protocol148'],
+]);
+
+document.addEventListener('keydown', e => {
+  // Skip if user is typing in an input/textarea
+  const tag = e.target.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+
+  // Page shortcuts
+  const page = KEYBOARD_SHORTCUTS.get(e.key);
+  if (page) {
+    goTo(page);
+    return;
+  }
+
+  // Sync shortcut
+  if (e.key === 'r' && !e.ctrlKey && !e.metaKey) {
+    syncData();
+  }
+});
+
+
+// =============================================
+// ██████  LOGIN KEYBOARD SUPPORT
+// =============================================
+
+document.getElementById('loginPw')?.addEventListener('keypress', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+document.getElementById('loginId')?.addEventListener('keypress', e => {
+  if (e.key === 'Enter') document.getElementById('loginPw')?.focus();
+});
+
+document.getElementById('findIG')?.addEventListener('keypress', e => {
+  if (e.key === 'Enter') findAgent();
+});
+
+document.getElementById('chatInput')?.addEventListener('keypress', e => {
+  if (e.key === 'Enter') sendChat();
+});
+
+
+// =============================================
+// ██████  CLEANUP ON PAGE CLOSE
+// =============================================
+
+window.addEventListener('beforeunload', () => {
+  // Fire-and-forget cleanup
+  if (STATE.agentNo) {
+    // Use sendBeacon for reliable delivery during unload
+    try {
+      const payload = JSON.stringify({
+        action: 'removeOnlineUser',
+        agentNo: STATE.agentNo,
+      });
+      navigator.sendBeacon(CONFIG.API_URL, payload);
+    } catch {
+      // Fallback to fetch (may not complete)
+      Api.call('removeOnlineUser', { agentNo: STATE.agentNo }, { silent: true, dedupe: false }).catch(() => { });
     }
-  
-    // Sync shortcut
-    if (e.key === 'r' && !e.ctrlKey && !e.metaKey) {
-      syncData();
-    }
-  });
-  
-  
-  // =============================================
-  // ██████  LOGIN KEYBOARD SUPPORT
-  // =============================================
-  
-  document.getElementById('loginPw')?.addEventListener('keypress', e => {
-    if (e.key === 'Enter') doLogin();
-  });
-  
-  document.getElementById('loginId')?.addEventListener('keypress', e => {
-    if (e.key === 'Enter') document.getElementById('loginPw')?.focus();
-  });
-  
-  document.getElementById('findIG')?.addEventListener('keypress', e => {
-    if (e.key === 'Enter') findAgent();
-  });
-  
-  document.getElementById('chatInput')?.addEventListener('keypress', e => {
-    if (e.key === 'Enter') sendChat();
-  });
-  
-  
-  // =============================================
-  // ██████  CLEANUP ON PAGE CLOSE
-  // =============================================
-  
-  window.addEventListener('beforeunload', () => {
-    // Fire-and-forget cleanup
-    if (STATE.agentNo) {
-      // Use sendBeacon for reliable delivery during unload
-      try {
-        const payload = JSON.stringify({
-          action: 'removeOnlineUser',
-          agentNo: STATE.agentNo,
-        });
-        navigator.sendBeacon(CONFIG.API_URL, payload);
-      } catch {
-        // Fallback to fetch (may not complete)
-        Api.call('removeOnlineUser', { agentNo: STATE.agentNo }, { silent: true, dedupe: false }).catch(() => {});
-      }
-    }
-  
-    // Clear all timers
-    Timers.clearAll();
-  });
-  // --- Missing Function Fixes ---
+  }
+
+  // Clear all timers
+  Timers.clearAll();
+});
+// --- Missing Function Fixes ---
 
 function openLeaveModal() {
   const modal = document.createElement('div');
@@ -7921,122 +7924,122 @@ function openLeaveModal() {
 }
 
 async function markMissionComplete(missionId) {
-  if(!confirm("Confirm mission completion?")) return;
+  if (!confirm("Confirm mission completion?")) return;
   Loading.show();
   try {
     const res = await Api.call('updateMissionProgress', { missionId, agentNo: STATE.agentNo, status: 'completed' });
-    if(res.success) {
+    if (res.success) {
       showToast("Mission status updated!", "success");
       Api.invalidate();
       renderSecretMissions();
     }
-  } catch(e) { showToast("Update failed", "error"); }
+  } catch (e) { showToast("Update failed", "error"); }
   finally { Loading.hide(); }
 }
 
 function copyShareText(week, total, winner, teamsJson) {
   const teams = JSON.parse(teamsJson.replace(/&quot;/g, '"'));
-  const teamList = teams.map((t, i) => `${i+1}. ${t.t}: ${t.xp} XP`).join('\n');
+  const teamList = teams.map((t, i) => `${i + 1}. ${t.t}: ${t.xp} XP`).join('\n');
   const text = `📊 ARIRANG MISSION: ${week} RESULTS\n\n🏆 WINNER: ${winner || 'NONE'}\n🎵 TOTAL STREAMS: ${total.toLocaleString()}\n\nSTANDINGS:\n${teamList}\n\n#ARIRANG_MISSION #BTS #ARMY`;
-  
+
   navigator.clipboard.writeText(text).then(() => {
     showToast("Caption copied to clipboard!", "success");
   });
 }
-  
-  // =============================================
+
+// =============================================
 // ██████  WINDOW EXPORTS
 // =============================================
 // v2.1: Added operative database & police functions
 
 const WINDOW_EXPORTS = {
-    // Auth
-    doLogin, doLogout, findAgent,
+  // Auth
+  doLogin, doLogout, findAgent,
 
-    // Navigation
-    goTo, toggleSidebar, toggleNavGroup, openSidebar, closeSidebar,
+  // Navigation
+  goTo, toggleSidebar, toggleNavGroup, openSidebar, closeSidebar,
 
-    // Dashboard
-    loadDashboard, syncData, handleManualSync,
+  // Dashboard
+  loadDashboard, syncData, handleManualSync,
 
-    // Profile actions
-    openPasswordModal, closePasswordModal, changePassword,
-    deleteAccountConfirm, promptDeleteAccount,
-    applyLeave, cancelLeave, submitAttendance,
-    openLeaveModal, cancelLeaveRequest,
+  // Profile actions
+  openPasswordModal, closePasswordModal, changePassword,
+  deleteAccountConfirm, promptDeleteAccount,
+  applyLeave, cancelLeave, submitAttendance,
+  openLeaveModal, cancelLeaveRequest,
 
-    // Pages
-    renderHome, renderProfile, renderTrackGoals, renderAlbumGoals, renderAlbum2x,
-    renderUnit, renderSideMissions, loadRankings, switchRankTab,
-    renderTeams, loadFeed, loadChat, sendChat,
-    renderAnnouncements, renderGuidePage,
-    renderSongOfDay, submitSongAnswer,
-    renderSecretMissions, renderBadgesPage, renderSummary,
-    render148Protocol, toggle148Task, show148Info,
-    toggleGuideSection,
-    renderOperatives,
+  // Pages
+  renderHome, renderProfile, renderTrackGoals, renderAlbumGoals, renderAlbum2x,
+  renderUnit, renderSideMissions, loadRankings, switchRankTab,
+  renderTeams, loadFeed, loadChat, sendChat,
+  renderAnnouncements, renderGuidePage,
+  renderSongOfDay, submitSongAnswer,
+  renderSecretMissions, renderBadgesPage, renderSummary,
+  render148Protocol, toggle148Task, show148Info,
+  toggleGuideSection,
+  renderOperatives,
 
-    // Notifications
-    checkNotifications, showNotificationCenter, dismissHT, checkHTOnboarding,
+  // Notifications
+  checkNotifications, showNotificationCenter, dismissHT, checkHTOnboarding,
 
-    // Admin
-    showAdminPanel, adminExitMode,
-    adminTriggerSync, adminCheckSync,
-    adminFinalizeWeek, adminGenerateUnits,
-    adminReleaseResults, adminCancelMission,
-    smartUpdateStatus,
+  // Admin
+  showAdminPanel, adminExitMode,
+  adminTriggerSync, adminCheckSync,
+  adminFinalizeWeek, adminGenerateUnits,
+  adminReleaseResults, adminCancelMission,
+  smartUpdateStatus,
 
-    // Effects
-    fireConfetti,
+  // Effects
+  fireConfetti,
 };
 
 Object.entries(WINDOW_EXPORTS).forEach(([name, fn]) => {
-    window[name] = fn;
+  window[name] = fn;
 });
-  
-  
-  // =============================================
-  // ██████  NOTIFICATION SYSTEM INIT
-  // =============================================
-  
-  setupNotificationChecks();
-  
-  
-  // =============================================
-  // ██████  🚀 START
-  // =============================================
-  // Entry point: check if user has a saved session,
-  // if so skip login and go straight to dashboard.
-  
-  checkAuth();
-  // =============================================
-  // ██████  NAV GROUP TOGGLE (Collapsible sidebar sections)
-  // =============================================
-  
-  function toggleNavGroup(toggle) {
-    if (!toggle) return;
-    const body = toggle.nextElementSibling;
-    if (!body) return;
-  
-    // Check if it is currently open
-    const isOpen = body.classList.contains('open');
-  
-    // Toggle the "open" class on the body and the header
-    if (isOpen) {
-      body.classList.remove('open');
-      toggle.classList.remove('open');
-      // Reset max-height so it shrinks back to 0
-      body.style.maxHeight = "0px";
-    } else {
-      body.classList.add('open');
-      toggle.classList.add('open');
-      // Set to a large enough pixel value so animation works
-      body.style.maxHeight = "5000px"; 
-    }
-    
-    if (navigator.vibrate) navigator.vibrate(5);
+
+
+// =============================================
+// ██████  NOTIFICATION SYSTEM INIT
+// =============================================
+
+setupNotificationChecks();
+
+
+// =============================================
+// ██████  🚀 START
+// =============================================
+// Entry point: check if user has a saved session,
+// if so skip login and go straight to dashboard.
+
+checkAuth();
+// =============================================
+// ██████  NAV GROUP TOGGLE (Collapsible sidebar sections)
+// =============================================
+
+function toggleNavGroup(toggle) {
+  if (!toggle) return;
+  const body = toggle.nextElementSibling;
+  if (!body) return;
+
+  // Check if it is currently open
+  const isOpen = body.classList.contains('open');
+
+  // Toggle the "open" class on the body and the header
+  if (isOpen) {
+    body.classList.remove('open');
+    toggle.classList.remove('open');
+    // Reset max-height so it shrinks back to 0
+    body.style.maxHeight = "0px";
+  } else {
+    body.classList.add('open');
+    toggle.classList.add('open');
+    // Set to a large enough pixel value so animation works
+    body.style.maxHeight = "5000px";
+  }
+
+  if (navigator.vibrate) navigator.vibrate(5);
 }
-  
+
 window.toggleNavGroup = toggleNavGroup;
 /**
  * HT Onboarding System
@@ -8044,7 +8047,7 @@ window.toggleNavGroup = toggleNavGroup;
  */
 function checkHTOnboarding() {
   const onboardingKey = `ht_welcome_seen_${STATE.agentNo}`;
-  
+
   // If they've seen it already, stop here
   if (localStorage.getItem(onboardingKey)) return;
 
@@ -8097,37 +8100,37 @@ function checkHTOnboarding() {
 function dismissHT(targetPage) {
   const onboardingKey = `ht_welcome_seen_${STATE.agentNo}`;
   localStorage.setItem(onboardingKey, 'true');
-  
+
   const el = document.getElementById('ht-onboarding-overlay');
   if (el) el.remove();
-  
+
   if (targetPage) goTo(targetPage);
 }
-  
-  
-  // =============================================
-  // ██████  UPDATED renderGuide — uses new glass-card style
-  // =============================================
-  
-  function renderGuide(page) {
-    return '';
-  }
-  
-  
-  // =============================================
-  // ██████  RING PROGRESS COMPONENT
-  // =============================================
-  
-  function renderRingProgress(percent, label, color = 'var(--red-core)', size = 64) {
-    const r = (size - 6) / 2;
-    const circumference = 2 * Math.PI * r;
-    const offset = circumference - (percent / 100) * circumference;
-  
-    return `
+
+
+// =============================================
+// ██████  UPDATED renderGuide — uses new glass-card style
+// =============================================
+
+function renderGuide(page) {
+  return '';
+}
+
+
+// =============================================
+// ██████  RING PROGRESS COMPONENT
+// =============================================
+
+function renderRingProgress(percent, label, color = 'var(--red-core)', size = 64) {
+  const r = (size - 6) / 2;
+  const circumference = 2 * Math.PI * r;
+  const offset = circumference - (percent / 100) * circumference;
+
+  return `
       <div class="ring-progress" style="width:${size}px;height:${size}px;">
         <svg viewBox="0 0 ${size} ${size}">
-          <circle class="ring-track" cx="${size/2}" cy="${size/2}" r="${r}"/>
-          <circle class="ring-fill" cx="${size/2}" cy="${size/2}" r="${r}"
+          <circle class="ring-track" cx="${size / 2}" cy="${size / 2}" r="${r}"/>
+          <circle class="ring-fill" cx="${size / 2}" cy="${size / 2}" r="${r}"
             stroke="${color}"
             stroke-dasharray="${circumference}"
             stroke-dashoffset="${offset}"/>
@@ -8135,35 +8138,35 @@ function dismissHT(targetPage) {
         <div class="ring-label" style="color:${color};">${label}</div>
       </div>
     `;
-  }
-  
-  // =============================================
-  // ██████  UNIT PAGE — TREASURE HUB REDESIGN
-  // =============================================
-  
-  function renderUnit() {
-      if (!STATE.data) return;
-      const container = $('unitContent');
-      if (!container) return;
-  
-      const unit = STATE.data.agent.arirangUnit;
-      const team = STATE.data.team;
-      const n = MISSION_NARRATIVES.arirangUnit; // From your config
-  
-      let html = renderGuide('unit') || '';
-  
-      if (!unit) {
-          html += `
+}
+
+// =============================================
+// ██████  UNIT PAGE — TREASURE HUB REDESIGN
+// =============================================
+
+function renderUnit() {
+  if (!STATE.data) return;
+  const container = $('unitContent');
+  if (!container) return;
+
+  const unit = STATE.data.agent.arirangUnit;
+  const team = STATE.data.team;
+  const n = MISSION_NARRATIVES.arirangUnit; // From your config
+
+  let html = renderGuide('unit') || '';
+
+  if (!unit) {
+    html += `
               <div class="glass-card" style="text-align:center; padding:40px; color:var(--text-muted);">
                   <div style="font-size:32px; margin-bottom:10px; opacity:0.5;">🔒</div>
                   <p style="font-size:12px;">No unit assigned this week</p>
               </div>`;
-          container.innerHTML = html;
-          return;
-      }
-  
-      // 1. Narrative Context Card
-      html += `
+    container.innerHTML = html;
+    return;
+  }
+
+  // 1. Narrative Context Card
+  html += `
           <div class="archive-card" style="margin-bottom:24px; border-top:3px solid #60a5fa; background:linear-gradient(135deg, rgba(96,165,250,0.05), var(--bg-panel));">
               <div style="display:flex; gap:16px; align-items:flex-start;">
                   <div style="width:48px; height:48px; border-radius:50%; background:rgba(96,165,250,0.1); border:1px solid #60a5fa; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">
@@ -8177,17 +8180,17 @@ function dismissHT(targetPage) {
               </div>
           </div>
       `;
-  
-      // 2. Your Progress Hub
-      html += `<div style="font-size:10px; color:#60a5fa; font-weight:900; letter-spacing:4px; text-transform:uppercase; margin-bottom:12px; margin-left:4px;">[ // Your Assignment ]</div>`;
-      
-      html += `<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px;">`;
-      html += renderUnitTrackModern(unit.track1, unit.track1Count, unit.required, '📀');
-      html += renderUnitTrackModern(unit.track2, unit.track2Count, unit.required, '💎');
-      html += `</div>`;
-  
-      // Completion Status
-      html += `
+
+  // 2. Your Progress Hub
+  html += `<div style="font-size:10px; color:#60a5fa; font-weight:900; letter-spacing:4px; text-transform:uppercase; margin-bottom:12px; margin-left:4px;">[ // Your Assignment ]</div>`;
+
+  html += `<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px;">`;
+  html += renderUnitTrackModern(unit.track1, unit.track1Count, unit.required, '📀');
+  html += renderUnitTrackModern(unit.track2, unit.track2Count, unit.required, '💎');
+  html += `</div>`;
+
+  // Completion Status
+  html += `
           <div class="glass-card" style="padding:20px; text-align:center; margin-bottom:32px; border-color:${unit.passed ? 'var(--green)' : 'var(--border-light)'};">
               <div style="font-size:32px; margin-bottom:12px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));">${unit.passed ? '🎉' : '⏳'}</div>
               <div style="font-size:14px; font-weight:900; color:${unit.passed ? 'var(--green)' : 'var(--fail)'}; letter-spacing:1px; text-transform:uppercase;">
@@ -8198,9 +8201,9 @@ function dismissHT(targetPage) {
               </div>
           </div>
       `;
-  
-      // 2.5 Unit Members Intelligence (per-agent green/red)
-      html += `
+
+  // 2.5 Unit Members Intelligence (per-agent green/red)
+  html += `
           <div id="unitMembersBox" class="glass-card" style="padding:20px; border-top:3px solid var(--wave-foam); margin-bottom:24px;">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                   <h3 style="margin:0; font-size:13px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;">
@@ -8216,19 +8219,19 @@ function dismissHT(targetPage) {
           </div>
       `;
 
-      // 3. Team Hubs (Global Network)
-      const teamComps = STATE.data.teamComparison || [];
-      
-      html += `<div style="font-size:10px; color:var(--text-ghost); font-weight:900; letter-spacing:4px; text-transform:uppercase; margin-bottom:12px; margin-left:4px;">[ // Global Network ]</div>`;
-      
-      html += `<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:12px;">`;
-      
-      teamComps.forEach(tc => {
-          const isMyTeam = tc.team === team.name;
-          const passed = tc.arirangUnitPassed;
-          const cColor = teamColor(tc.team);
-          
-          html += `
+  // 3. Team Hubs (Global Network)
+  const teamComps = STATE.data.teamComparison || [];
+
+  html += `<div style="font-size:10px; color:var(--text-ghost); font-weight:900; letter-spacing:4px; text-transform:uppercase; margin-bottom:12px; margin-left:4px;">[ // Global Network ]</div>`;
+
+  html += `<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:12px;">`;
+
+  teamComps.forEach(tc => {
+    const isMyTeam = tc.team === team.name;
+    const passed = tc.arirangUnitPassed;
+    const cColor = teamColor(tc.team);
+
+    html += `
               <div class="glass-card" style="padding:16px; text-align:center; transition:transform 0.3s; ${isMyTeam ? `border-color:${cColor}; background:${cColor}08;` : ''}">
                   <div style="width:40px; height:40px; margin:0 auto 12px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; background:var(--bg-deep); border:2px solid ${passed ? 'var(--green)' : 'var(--border-light)'}; ${passed ? 'box-shadow:0 0 15px rgba(0,255,102,0.2);' : ''}">
                       ${passed ? '🏆' : teamEmoji(tc.team)}
@@ -8240,34 +8243,34 @@ function dismissHT(targetPage) {
                   ${isMyTeam ? `<div style="font-size:8px; color:#fff; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:8px; display:inline-block; margin-top:8px; font-weight:700;">YOUR TEAM</div>` : ''}
               </div>
           `;
-      });
-      
-      html += `</div>`;
-      container.innerHTML = html;
+  });
 
-      // Async fill: per-member unit completion.
-      renderUnitMembersBox(team?.name).catch(() => {
-          const box = $('unitMembersBox');
-          if (box) {
-              box.innerHTML = `
+  html += `</div>`;
+  container.innerHTML = html;
+
+  // Async fill: per-member unit completion.
+  renderUnitMembersBox(team?.name).catch(() => {
+    const box = $('unitMembersBox');
+    if (box) {
+      box.innerHTML = `
                   <div style="text-align:center; color:var(--fail); font-size:11px; padding:10px;">
                       Failed to load per-agent Unit status.
                   </div>
               `;
-          }
-      });
+    }
+  });
 
-      scheduleUnitMembersDailyRefresh();
-  }
-  
-  // Helper function for the individual Unit tracks
-  function renderUnitTrackModern(name, count, req, icon) {
-      const isExempt = typeof count === 'string';
-      const current = isExempt ? req : (count || 0);
-      const pct = Math.min(100, (current / req) * 100);
-      const done = isExempt || current >= req;
-  
-      return `
+  scheduleUnitMembersDailyRefresh();
+}
+
+// Helper function for the individual Unit tracks
+function renderUnitTrackModern(name, count, req, icon) {
+  const isExempt = typeof count === 'string';
+  const current = isExempt ? req : (count || 0);
+  const pct = Math.min(100, (current / req) * 100);
+  const done = isExempt || current >= req;
+
+  return `
           <div class="glass-card" style="padding:20px 16px; text-align:center; border-top:3px solid ${done ? 'var(--green)' : '#60a5fa'}; position:relative; overflow:hidden;">
               <div style="font-size:24px; margin-bottom:12px; filter:drop-shadow(0 2px 5px rgba(0,0,0,0.5));">${icon}</div>
               
@@ -8284,89 +8287,89 @@ function dismissHT(targetPage) {
               </div>
           </div>
       `;
+}
+
+// ==================== Unit Members Intelligence Helpers ====================
+function computeArirangUnitPassedForAgent(agent) {
+  // Some payloads may already include a boolean flag.
+  if (typeof agent?.arirangUnitPassed === 'boolean') return agent.arirangUnitPassed;
+
+  const u = agent?.arirangUnit;
+  if (!u) return null;
+  if (typeof u?.passed === 'boolean') return u.passed;
+
+  // Fallback: compute from track counts if available.
+  const required = Number(u?.required ?? 25) || 25;
+  const t1 = u?.track1Count;
+  const t2 = u?.track2Count;
+
+  const t1Done = (typeof t1 === 'string') ? true
+    : (typeof t1 === 'number') ? t1 >= required
+      : null;
+
+  const t2Done = (typeof t2 === 'string') ? true
+    : (typeof t2 === 'number') ? t2 >= required
+      : null;
+
+  if (t1Done === null && t2Done === null) return null;
+  if (t1Done === null) return t2Done;
+  if (t2Done === null) return t1Done;
+  return t1Done && t2Done;
+}
+
+function buildUnitMemberPill(memberName, passed) {
+  const n = displayName(memberName);
+  if (passed === true) {
+    return `<span style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(0,255,102,0.05); border:1px solid rgba(0,255,102,0.15); border-radius:6px; font-size:10px; color:#fff;">✓ ${n}</span>`;
   }
-
-  // ==================== Unit Members Intelligence Helpers ====================
-  function computeArirangUnitPassedForAgent(agent) {
-      // Some payloads may already include a boolean flag.
-      if (typeof agent?.arirangUnitPassed === 'boolean') return agent.arirangUnitPassed;
-
-      const u = agent?.arirangUnit;
-      if (!u) return null;
-      if (typeof u?.passed === 'boolean') return u.passed;
-
-      // Fallback: compute from track counts if available.
-      const required = Number(u?.required ?? 25) || 25;
-      const t1 = u?.track1Count;
-      const t2 = u?.track2Count;
-
-      const t1Done = (typeof t1 === 'string') ? true
-          : (typeof t1 === 'number') ? t1 >= required
-          : null;
-
-      const t2Done = (typeof t2 === 'string') ? true
-          : (typeof t2 === 'number') ? t2 >= required
-          : null;
-
-      if (t1Done === null && t2Done === null) return null;
-      if (t1Done === null) return t2Done;
-      if (t2Done === null) return t1Done;
-      return t1Done && t2Done;
+  if (passed === false) {
+    return `<span style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(255,20,95,0.1); border:1px solid rgba(255,20,95,0.2); border-radius:6px; font-size:10px; color:#fff;">✗ ${n}</span>`;
   }
+  return `<span style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:6px; font-size:10px; color:var(--text-muted);">? ${n}</span>`;
+}
 
-  function buildUnitMemberPill(memberName, passed) {
-      const n = displayName(memberName);
-      if (passed === true) {
-          return `<span style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(0,255,102,0.05); border:1px solid rgba(0,255,102,0.15); border-radius:6px; font-size:10px; color:#fff;">✓ ${n}</span>`;
-      }
-      if (passed === false) {
-          return `<span style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(255,20,95,0.1); border:1px solid rgba(255,20,95,0.2); border-radius:6px; font-size:10px; color:#fff;">✗ ${n}</span>`;
-      }
-      return `<span style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:6px; font-size:10px; color:var(--text-muted);">? ${n}</span>`;
-  }
+async function renderUnitMembersBox(myTeamName) {
+  const box = $('unitMembersBox');
+  if (!box) return;
 
-  async function renderUnitMembersBox(myTeamName) {
-      const box = $('unitMembersBox');
-      if (!box) return;
+  const teamName = myTeamName || STATE.data?.agent?.profile?.team;
+  if (!teamName) return;
 
-      const teamName = myTeamName || STATE.data?.agent?.profile?.team;
-      if (!teamName) return;
-
-      // Loading state.
-      box.innerHTML = `
+  // Loading state.
+  box.innerHTML = `
           <div style="text-align:center; padding:12px; color:var(--text-muted); font-size:11px;">
               Updating today...
           </div>
       `;
 
-      const d = await Api.call('getOperativeDatabase', { week: STATE.week }, { cache: true, ttl: 60_000 });
-      const agents = d?.agents || [];
-      const teamMembers = agents.filter(a => (a?.team || '') === teamName);
+  const d = await Api.call('getOperativeDatabase', { week: STATE.week }, { cache: true, ttl: 60_000 });
+  const agents = d?.agents || [];
+  const teamMembers = agents.filter(a => (a?.team || '') === teamName);
 
-      if (teamMembers.length === 0) {
-          box.innerHTML = `<div style="text-align:center; padding:14px; color:var(--text-muted); font-size:11px;">No squad agents found.</div>`;
-          return;
-      }
+  if (teamMembers.length === 0) {
+    box.innerHTML = `<div style="text-align:center; padding:14px; color:var(--text-muted); font-size:11px;">No squad agents found.</div>`;
+    return;
+  }
 
-      const memberStatuses = teamMembers.map(a => ({
-          name: a?.name || a?.agentNo,
-          passed: computeArirangUnitPassedForAgent(a)
-      }));
+  const memberStatuses = teamMembers.map(a => ({
+    name: a?.name || a?.agentNo,
+    passed: computeArirangUnitPassedForAgent(a)
+  }));
 
-      const hasAnyUnitData = memberStatuses.some(m => m.passed !== null);
-      if (!hasAnyUnitData) {
-          box.innerHTML = `
+  const hasAnyUnitData = memberStatuses.some(m => m.passed !== null);
+  if (!hasAnyUnitData) {
+    box.innerHTML = `
               <div style="text-align:center; padding:14px; color:var(--text-muted); font-size:11px; line-height:1.6;">
                   HQ is not providing per-agent Unit completion stats yet.
               </div>
           `;
-          return;
-      }
+    return;
+  }
 
-      const passedMembers = memberStatuses.filter(m => m.passed === true);
-      const failedMembers = memberStatuses.filter(m => m.passed !== true); // includes false + null
+  const passedMembers = memberStatuses.filter(m => m.passed === true);
+  const failedMembers = memberStatuses.filter(m => m.passed !== true); // includes false + null
 
-      box.innerHTML = `
+  box.innerHTML = `
           <div style="margin-bottom:20px;">
               <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
                   <span>Team Weekly Completion</span>
@@ -8401,49 +8404,49 @@ function dismissHT(targetPage) {
               </div>
           ` : ''}
       `;
-  }
+}
 
-  function scheduleUnitMembersDailyRefresh() {
-      if (window.__unitMembersDailyRefreshSet) return;
-      window.__unitMembersDailyRefreshSet = true;
+function scheduleUnitMembersDailyRefresh() {
+  if (window.__unitMembersDailyRefreshSet) return;
+  window.__unitMembersDailyRefreshSet = true;
 
-      window.__unitMembersDailyRefreshLastDate = window.__unitMembersDailyRefreshLastDate || getKSTDateString();
+  window.__unitMembersDailyRefreshLastDate = window.__unitMembersDailyRefreshLastDate || getKSTDateString();
 
-      Timers.setInterval('unit-members-daily-refresh', () => {
-          if (STATE.page !== 'unit') return;
-          const today = getKSTDateString();
-          if (window.__unitMembersDailyRefreshLastDate !== today) {
-              window.__unitMembersDailyRefreshLastDate = today;
-              Api.invalidate();
-              renderUnit();
-          }
-      }, 60_000);
-  }
+  Timers.setInterval('unit-members-daily-refresh', () => {
+    if (STATE.page !== 'unit') return;
+    const today = getKSTDateString();
+    if (window.__unitMembersDailyRefreshLastDate !== today) {
+      window.__unitMembersDailyRefreshLastDate = today;
+      Api.invalidate();
+      renderUnit();
+    }
+  }, 60_000);
+}
 
-  // =============================================
-  // ██████  PROFILE — ALL WEEKS CAREER HISTORY
-  // =============================================
-  
-  async function loadCareerHistory() {
-    const container = $('profileCareer');
-    if (!container) return;
-  
-    showPageLoading(container);
-  
-    try {
-      const d = await Api.call('getAgentCareerStats', {
-        agentNo: STATE.agentNo
-      }, { cache: true, ttl: 120_000 });
-  
-      if (!d.success || !d.weeks?.length) {
-        container.innerHTML = '<div style="color:var(--text-muted);font-size:0.75rem;">No history yet — complete your first week!</div>';
-        return;
-      }
-  
-      // Aggregate stats
-      const totals = d.totals || {};
-  
-      container.innerHTML = `
+// =============================================
+// ██████  PROFILE — ALL WEEKS CAREER HISTORY
+// =============================================
+
+async function loadCareerHistory() {
+  const container = $('profileCareer');
+  if (!container) return;
+
+  showPageLoading(container);
+
+  try {
+    const d = await Api.call('getAgentCareerStats', {
+      agentNo: STATE.agentNo
+    }, { cache: true, ttl: 120_000 });
+
+    if (!d.success || !d.weeks?.length) {
+      container.innerHTML = '<div style="color:var(--text-muted);font-size:0.75rem;">No history yet — complete your first week!</div>';
+      return;
+    }
+
+    // Aggregate stats
+    const totals = d.totals || {};
+
+    container.innerHTML = `
         <!-- Lifetime aggregates -->
         <div class="grid-4" style="margin-bottom:16px;">
           <div class="stat-box"><div class="sv gold">${fmt(totals.totalXP || 0)}</div><div class="sl">Lifetime XP</div></div>
@@ -8455,8 +8458,8 @@ function dismissHT(targetPage) {
         <!-- Week-by-week breakdown -->
         <div style="max-height:300px;overflow-y:auto;">
           ${d.weeks.map(w => {
-            const missions = [w.tracksPassed, w.albumsPassed, w.album2xPassed, w.unitPassed, w.sidePassed].filter(Boolean).length;
-            return `
+      const missions = [w.tracksPassed, w.albumsPassed, w.album2xPassed, w.unitPassed, w.sidePassed].filter(Boolean).length;
+      return `
               <div class="m-row" style="border-left:3px solid ${missions >= 5 ? 'var(--green)' : missions >= 3 ? 'var(--gold-core)' : 'var(--fail)'};">
                 <div style="flex:1;">
                   <div style="font-size:0.75rem;font-weight:700;">${w.week}</div>
@@ -8467,60 +8470,60 @@ function dismissHT(targetPage) {
                   <div style="font-size:0.5rem;color:var(--text-muted);">${fmt(w.streams || 0)} streams</div>
                 </div>
               </div>`;
-          }).join('')}
+    }).join('')}
         </div>
       `;
-    } catch {
-      container.innerHTML = '<div style="color:var(--text-muted);font-size:0.75rem;">Failed to load history</div>';
-    }
+  } catch {
+    container.innerHTML = '<div style="color:var(--text-muted);font-size:0.75rem;">Failed to load history</div>';
   }
-  
-  
-  // =============================================
-  // ██████  OPERATIVE DATABASE (Full agent roster)
-  // =============================================
-  
-  // =============================================
-  // ██████  OPERATIVE DATABASE
-  // =============================================
- // =============================================
+}
+
+
+// =============================================
+// ██████  OPERATIVE DATABASE (Full agent roster)
+// =============================================
+
+// =============================================
+// ██████  OPERATIVE DATABASE
+// =============================================
+// =============================================
 // ██████  OPERATIVE DATABASE & HELPER CHECK
 // =============================================
 
 async function renderOperatives() {
-    const container = $('operativesContent');
-    if (!container) return;
+  const container = $('operativesContent');
+  if (!container) return;
 
-    showPageLoading(container);
+  showPageLoading(container);
 
-    try {
-        // 1. Fetch Data
-        const d = await Api.call('getOperativeDatabase', { week: STATE.week }, { cache: true, ttl: 60000 });
-        const agents = d.agents || [];
-        const myTeam = STATE.data?.agent?.profile?.team;
+  try {
+    // 1. Fetch Data
+    const d = await Api.call('getOperativeDatabase', { week: STATE.week }, { cache: true, ttl: 60000 });
+    const agents = d.agents || [];
+    const myTeam = STATE.data?.agent?.profile?.team;
 
-        // 2. Group by Team & Status
-        const byTeam = {};
-        Object.keys(CONFIG.TEAMS).forEach(t => byTeam[t] = { active: [], leave: [] });
+    // 2. Group by Team & Status
+    const byTeam = {};
+    Object.keys(CONFIG.TEAMS).forEach(t => byTeam[t] = { active: [], leave: [] });
 
-        agents.forEach(a => {
-            const t = a.team || 'Unknown';
-            if (!byTeam[t]) byTeam[t] = { active: [], leave: [] };
-            if (a.onLeave) byTeam[t].leave.push(a);
-            else byTeam[t].active.push(a);
-        });
+    agents.forEach(a => {
+      const t = a.team || 'Unknown';
+      if (!byTeam[t]) byTeam[t] = { active: [], leave: [] };
+      if (a.onLeave) byTeam[t].leave.push(a);
+      else byTeam[t].active.push(a);
+    });
 
-        // 3. Sort Alphabetically
-        Object.values(byTeam).forEach(data => {
-            data.active.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-            data.leave.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-        });
+    // 3. Sort Alphabetically
+    Object.values(byTeam).forEach(data => {
+      data.active.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+      data.leave.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    });
 
-        let grandTotalActive = 0;
-        let grandTotalLeave = 0;
+    let grandTotalActive = 0;
+    let grandTotalLeave = 0;
 
-        // 4. Build Header & Search
-        let html = `
+    // 4. Build Header & Search
+    let html = `
             <div style="margin-bottom:20px; position:relative;">
                 <span style="position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:14px; pointer-events:none;">🔍</span>
                 <input type="text" id="opSearch" oninput="window.filterOperativesModern(this.value)"
@@ -8538,19 +8541,19 @@ async function renderOperatives() {
             <div id="opList" style="display:flex; flex-direction:column; gap:20px;">
         `;
 
-        // 5. Render Team Cards
-        for (const [team, data] of Object.entries(byTeam)) {
-            if (data.active.length === 0 && data.leave.length === 0) continue;
+    // 5. Render Team Cards
+    for (const [team, data] of Object.entries(byTeam)) {
+      if (data.active.length === 0 && data.leave.length === 0) continue;
 
-            grandTotalActive += data.active.length;
-            grandTotalLeave += data.leave.length;
+      grandTotalActive += data.active.length;
+      grandTotalLeave += data.leave.length;
 
-            const isMyTeam = team === myTeam;
-            const tColor = teamColor(team);
-            const teamIdClean = team.replace(/\s+/g, '');
-            const totalAgents = data.active.length + data.leave.length;
+      const isMyTeam = team === myTeam;
+      const tColor = teamColor(team);
+      const teamIdClean = team.replace(/\s+/g, '');
+      const totalAgents = data.active.length + data.leave.length;
 
-            html += `
+      html += `
                 <div class="archive-card team-op-section" style="border-top: 3px solid ${tColor}; padding:0; overflow:hidden;" data-team="${team}">
                     
                     <!-- TEAM HEADER (Collapsible) -->
@@ -8605,10 +8608,10 @@ async function renderOperatives() {
                     </div>
                 </div>
             `;
-        }
+    }
 
-        // 6. Overall Summary Footer
-        html += `
+    // 6. Overall Summary Footer
+    html += `
             </div><!-- end opList -->
 
             <!-- OVERALL STATS -->
@@ -8675,35 +8678,35 @@ async function renderOperatives() {
             <div id="police-lastfm-container" style="display:none; margin-top:24px;"></div>
         `;
 
-        container.innerHTML = html;
+    container.innerHTML = html;
 
-        // Trigger calculations & cleanup
-        window.cleanupOldCheckmarks();
-        window.updateAllAttendanceStatsModern();
+    // Trigger calculations & cleanup
+    window.cleanupOldCheckmarks();
+    window.updateAllAttendanceStatsModern();
 
-    } catch (e) {
-        console.error('renderOperatives error:', e);
-        showPageError(container, 'renderOperatives');
-    }
+  } catch (e) {
+    console.error('renderOperatives error:', e);
+    showPageError(container, 'renderOperatives');
+  }
 }
 
 // ── Helper: Render Individual Row ──
 function renderAgentRowModern(agent, isLeave, teamIdClean) {
-    const today = new Date().toISOString().split('T')[0];
-    const agentNo = agent.agentNo || 'N/A';
-    const storageKey = `helper_check_${agentNo}_${today}`;
-    const isChecked = localStorage.getItem(storageKey) === 'true';
+  const today = new Date().toISOString().split('T')[0];
+  const agentNo = agent.agentNo || 'N/A';
+  const storageKey = `helper_check_${agentNo}_${today}`;
+  const isChecked = localStorage.getItem(storageKey) === 'true';
 
-    let displayName = agent.name ? sanitize(agent.name) : 'Unknown Agent';
-    if (displayName.toUpperCase().startsWith('AGENT') || !agent.name) displayName = 'Classified Agent';
+  let displayName = agent.name ? sanitize(agent.name) : 'Unknown Agent';
+  if (displayName.toUpperCase().startsWith('AGENT') || !agent.name) displayName = 'Classified Agent';
 
-    const statusBadge = isLeave
-        ? `<span style="font-size:8px; font-weight:800; padding:4px 8px; background:rgba(255,149,0,0.1); color:var(--courage-amber); border-radius:12px; border:1px solid rgba(255,149,0,0.3);">GHOST</span>`
-        : (agent.attendanceSubmitted
-            ? `<span style="font-size:8px; font-weight:800; padding:4px 8px; background:rgba(0,255,102,0.1); color:var(--green); border-radius:12px; border:1px solid rgba(0,255,102,0.3);">SUBMITTED</span>`
-            : ``);
+  const statusBadge = isLeave
+    ? `<span style="font-size:8px; font-weight:800; padding:4px 8px; background:rgba(255,149,0,0.1); color:var(--courage-amber); border-radius:12px; border:1px solid rgba(255,149,0,0.3);">GHOST</span>`
+    : (agent.attendanceSubmitted
+      ? `<span style="font-size:8px; font-weight:800; padding:4px 8px; background:rgba(0,255,102,0.1); color:var(--green); border-radius:12px; border:1px solid rgba(0,255,102,0.3);">SUBMITTED</span>`
+      : ``);
 
-    return `
+  return `
         <div class="op-row-modern ${isLeave ? 'on-leave' : ''} ${isChecked ? 'checked' : ''}" 
              data-agent="${agentNo}" data-team-ref="${teamIdClean}"
              data-search="${(agent.name || '').toLowerCase()} ${agentNo.toLowerCase()}"
@@ -8737,137 +8740,137 @@ function renderAgentRowModern(agent, isLeave, teamIdClean) {
 }
 
 // ── Helper: Checkbox Toggle ──
-window.toggleHelperCheckModern = function(event, wrapper, agentNo, teamId) {
-    event.stopPropagation();
-    const today = new Date().toISOString().split('T')[0];
-    const storageKey = `helper_check_${agentNo}_${today}`;
+window.toggleHelperCheckModern = function (event, wrapper, agentNo, teamId) {
+  event.stopPropagation();
+  const today = new Date().toISOString().split('T')[0];
+  const storageKey = `helper_check_${agentNo}_${today}`;
 
-    const row = wrapper.closest('.op-row-modern');
-    const checkbox = wrapper.querySelector('.helper-checkbox');
-    if (!row || !checkbox) return;
+  const row = wrapper.closest('.op-row-modern');
+  const checkbox = wrapper.querySelector('.helper-checkbox');
+  if (!row || !checkbox) return;
 
-    const isNowChecked = !row.classList.contains('checked');
+  const isNowChecked = !row.classList.contains('checked');
 
-    if (isNowChecked) {
-        row.classList.add('checked');
-        wrapper.style.borderColor = 'var(--green)';
-        wrapper.style.background = 'rgba(0,255,102,0.1)';
-        checkbox.style.color = 'var(--green)';
-        checkbox.textContent = '✓';
-        localStorage.setItem(storageKey, 'true');
-        if (navigator.vibrate) navigator.vibrate(10);
-        row.style.transform = 'scale(1.02)';
-        setTimeout(() => { row.style.transform = ''; }, 150);
-    } else {
-        row.classList.remove('checked');
-        wrapper.style.borderColor = 'var(--text-muted)';
-        wrapper.style.background = 'transparent';
-        checkbox.style.color = 'transparent';
-        checkbox.textContent = '';
-        localStorage.removeItem(storageKey);
-    }
+  if (isNowChecked) {
+    row.classList.add('checked');
+    wrapper.style.borderColor = 'var(--green)';
+    wrapper.style.background = 'rgba(0,255,102,0.1)';
+    checkbox.style.color = 'var(--green)';
+    checkbox.textContent = '✓';
+    localStorage.setItem(storageKey, 'true');
+    if (navigator.vibrate) navigator.vibrate(10);
+    row.style.transform = 'scale(1.02)';
+    setTimeout(() => { row.style.transform = ''; }, 150);
+  } else {
+    row.classList.remove('checked');
+    wrapper.style.borderColor = 'var(--text-muted)';
+    wrapper.style.background = 'transparent';
+    checkbox.style.color = 'transparent';
+    checkbox.textContent = '';
+    localStorage.removeItem(storageKey);
+  }
 
-    window.updateTeamStatsModern(teamId);
-    window.updateAllAttendanceStatsModern();
+  window.updateTeamStatsModern(teamId);
+  window.updateAllAttendanceStatsModern();
 };
 
 // ── Helper: Calculate Stats ──
-window.updateTeamStatsModern = function(teamId) {
-    const activeItems = document.querySelectorAll(`.op-row-modern[data-team-ref="${teamId}"]:not(.on-leave)`);
-    const totalActive = activeItems.length;
-    let presentCount = 0;
+window.updateTeamStatsModern = function (teamId) {
+  const activeItems = document.querySelectorAll(`.op-row-modern[data-team-ref="${teamId}"]:not(.on-leave)`);
+  const totalActive = activeItems.length;
+  let presentCount = 0;
 
-    activeItems.forEach(item => {
-        if (item.classList.contains('checked')) presentCount++;
-    });
+  activeItems.forEach(item => {
+    if (item.classList.contains('checked')) presentCount++;
+  });
 
-    const percentage = totalActive > 0 ? Math.round((presentCount / totalActive) * 100) : 0;
+  const percentage = totalActive > 0 ? Math.round((presentCount / totalActive) * 100) : 0;
 
-    const presentEl = $(`present-${teamId}`);
-    const barEl = $(`bar-${teamId}`);
-    const percentEl = $(`percent-${teamId}`);
+  const presentEl = $(`present-${teamId}`);
+  const barEl = $(`bar-${teamId}`);
+  const percentEl = $(`percent-${teamId}`);
 
-    if (presentEl) presentEl.textContent = presentCount;
-    if (barEl) barEl.style.width = `${percentage}%`;
-    if (percentEl) {
-        percentEl.textContent = `(${percentage}%)`;
-        if (percentage >= 80) percentEl.style.color = 'var(--green)';
-        else if (percentage >= 50) percentEl.style.color = 'var(--courage-amber)';
-        else percentEl.style.color = 'var(--fail)';
-    }
+  if (presentEl) presentEl.textContent = presentCount;
+  if (barEl) barEl.style.width = `${percentage}%`;
+  if (percentEl) {
+    percentEl.textContent = `(${percentage}%)`;
+    if (percentage >= 80) percentEl.style.color = 'var(--green)';
+    else if (percentage >= 50) percentEl.style.color = 'var(--courage-amber)';
+    else percentEl.style.color = 'var(--fail)';
+  }
 
-    return { present: presentCount, total: totalActive };
+  return { present: presentCount, total: totalActive };
 };
 
-window.updateAllAttendanceStatsModern = function() {
-    const teamSections = document.querySelectorAll('.team-op-section');
-    let overallPresent = 0;
-    let overallActive = 0;
+window.updateAllAttendanceStatsModern = function () {
+  const teamSections = document.querySelectorAll('.team-op-section');
+  let overallPresent = 0;
+  let overallActive = 0;
 
-    teamSections.forEach(section => {
-        const teamName = section.getAttribute('data-team');
-        const teamIdClean = teamName.replace(/\s+/g, '');
-        const stats = window.updateTeamStatsModern(teamIdClean);
-        overallPresent += stats.present;
-        overallActive += stats.total;
-    });
+  teamSections.forEach(section => {
+    const teamName = section.getAttribute('data-team');
+    const teamIdClean = teamName.replace(/\s+/g, '');
+    const stats = window.updateTeamStatsModern(teamIdClean);
+    overallPresent += stats.present;
+    overallActive += stats.total;
+  });
 
-    const percentage = overallActive > 0 ? Math.round((overallPresent / overallActive) * 100) : 0;
+  const percentage = overallActive > 0 ? Math.round((overallPresent / overallActive) * 100) : 0;
 
-    const presentEl = $('overall-present');
-    const barEl = $('overall-bar');
-    const percentEl = $('overall-percent');
+  const presentEl = $('overall-present');
+  const barEl = $('overall-bar');
+  const percentEl = $('overall-percent');
 
-    if (presentEl) presentEl.textContent = overallPresent;
-    if (barEl) barEl.style.width = `${percentage}%`;
-    if (percentEl) {
-        percentEl.textContent = `(${percentage}%)`;
-        if (percentage >= 80) percentEl.style.color = 'var(--green)';
-        else if (percentage >= 50) percentEl.style.color = 'var(--courage-amber)';
-        else percentEl.style.color = 'var(--fail)';
-    }
+  if (presentEl) presentEl.textContent = overallPresent;
+  if (barEl) barEl.style.width = `${percentage}%`;
+  if (percentEl) {
+    percentEl.textContent = `(${percentage}%)`;
+    if (percentage >= 80) percentEl.style.color = 'var(--green)';
+    else if (percentage >= 50) percentEl.style.color = 'var(--courage-amber)';
+    else percentEl.style.color = 'var(--fail)';
+  }
 };
 
 // ── Helper: Cleanup Old Data ──
-window.cleanupOldCheckmarks = function() {
-    const today = new Date().toISOString().split('T')[0];
-    const keysToRemove = [];
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('helper_check_') && !key.endsWith(today)) {
-            keysToRemove.push(key);
-        }
+window.cleanupOldCheckmarks = function () {
+  const today = new Date().toISOString().split('T')[0];
+  const keysToRemove = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('helper_check_') && !key.endsWith(today)) {
+      keysToRemove.push(key);
     }
-    keysToRemove.forEach(key => localStorage.removeItem(key));
+  }
+  keysToRemove.forEach(key => localStorage.removeItem(key));
 };
 
 // ── Helper: Search Filter ──
-window.filterOperativesModern = function(query) {
-    const q = (query || '').toLowerCase().trim();
-    const rows = document.querySelectorAll('.op-row-modern');
+window.filterOperativesModern = function (query) {
+  const q = (query || '').toLowerCase().trim();
+  const rows = document.querySelectorAll('.op-row-modern');
 
-    rows.forEach(row => {
-        const name = row.getAttribute('data-search') || '';
-        row.style.display = name.includes(q) ? 'flex' : 'none';
-    });
+  rows.forEach(row => {
+    const name = row.getAttribute('data-search') || '';
+    row.style.display = name.includes(q) ? 'flex' : 'none';
+  });
 
-    // Hide empty teams
-    const teamCards = document.querySelectorAll('.team-op-section');
-    teamCards.forEach(card => {
-        const hasVisible = Array.from(card.querySelectorAll('.op-row-modern')).some(r => r.style.display !== 'none');
-        card.style.display = hasVisible ? 'block' : 'none';
+  // Hide empty teams
+  const teamCards = document.querySelectorAll('.team-op-section');
+  teamCards.forEach(card => {
+    const hasVisible = Array.from(card.querySelectorAll('.op-row-modern')).some(r => r.style.display !== 'none');
+    card.style.display = hasVisible ? 'block' : 'none';
 
-        // Auto-expand if searching
-        const body = card.querySelector('.nav-group-body');
-        const header = card.querySelector('[onclick*="toggleNavGroup"]');
-        if (q.length > 0 && hasVisible) {
-            if (body) {
-                body.classList.add('open');
-                body.style.maxHeight = '6000px';
-            }
-            if (header) header.classList.add('open');
-        }
-    });
+    // Auto-expand if searching
+    const body = card.querySelector('.nav-group-body');
+    const header = card.querySelector('[onclick*="toggleNavGroup"]');
+    if (q.length > 0 && hasVisible) {
+      if (body) {
+        body.classList.add('open');
+        body.style.maxHeight = '6000px';
+      }
+      if (header) header.classList.add('open');
+    }
+  });
 };
 
 
@@ -8875,55 +8878,55 @@ window.filterOperativesModern = function(query) {
 // ██████  POLICE VERIFICATION LOGIC
 // =============================================
 
-window.showPoliceLoginModern = function() {
-    const modal = $('police-login-modal');
-    const section = $('police-section');
-    if (modal) {
-        modal.style.display = 'block';
-        const input = $('police-password');
-        if (input) input.focus();
-    }
-    if (section) section.style.display = 'none';
+window.showPoliceLoginModern = function () {
+  const modal = $('police-login-modal');
+  const section = $('police-section');
+  if (modal) {
+    modal.style.display = 'block';
+    const input = $('police-password');
+    if (input) input.focus();
+  }
+  if (section) section.style.display = 'none';
 };
 
-window.verifyPoliceAccessModern = async function() {
-    const input = $('police-password');
-    const password = input?.value?.trim();
+window.verifyPoliceAccessModern = async function () {
+  const input = $('police-password');
+  const password = input?.value?.trim();
 
-    if (!password) {
-        showToast('Enter password', 'error');
-        return;
-    }
+  if (!password) {
+    showToast('Enter password', 'error');
+    return;
+  }
 
-    const loginModal = $('police-login-modal');
-    const container = $('police-lastfm-container');
-    if (loginModal) loginModal.style.display = 'none';
-    if (container) {
-        container.style.display = 'block';
-        container.innerHTML = `
+  const loginModal = $('police-login-modal');
+  const container = $('police-lastfm-container');
+  if (loginModal) loginModal.style.display = 'none';
+  if (container) {
+    container.style.display = 'block';
+    container.innerHTML = `
             <div class="glass-card" style="text-align:center; padding:30px;">
                 <div class="spinner" style="margin:0 auto 10px;"></div>
                 <div style="color:var(--text-muted); font-size:11px;">Accessing Last.fm Database...</div>
             </div>
         `;
+  }
+
+  try {
+    const res = await Api.call('getPoliceData', {
+      password: password,
+      week: STATE.week
+    }, { dedupe: false, cache: false });
+
+    if (!res.success) {
+      showToast(res.error || '❌ Access Denied', 'error');
+      if (input) input.value = '';
+      if (loginModal) loginModal.style.display = 'block';
+      if (container) container.style.display = 'none';
+      return;
     }
 
-    try {
-        const res = await Api.call('getPoliceData', {
-            password: password,
-            week: STATE.week
-        }, { dedupe: false, cache: false });
-
-        if (!res.success) {
-            showToast(res.error || '❌ Access Denied', 'error');
-            if (input) input.value = '';
-            if (loginModal) loginModal.style.display = 'block';
-            if (container) container.style.display = 'none';
-            return;
-        }
-
-        const teams = res.teams || {};
-        let html = `
+    const teams = res.teams || {};
+    let html = `
             <div class="glass-card" style="padding:16px; margin-bottom:20px; border-left:3px solid var(--red-core); display:flex; justify-content:space-between; align-items:center;">
                 <div>
                     <div style="font-size:14px; font-weight:900; color:var(--red-core); text-transform:uppercase;">Police Terminal</div>
@@ -8933,10 +8936,10 @@ window.verifyPoliceAccessModern = async function() {
             </div>
         `;
 
-        for (const [teamName, members] of Object.entries(teams)) {
-            const teamColorVal = teamColor(teamName);
+    for (const [teamName, members] of Object.entries(teams)) {
+      const teamColorVal = teamColor(teamName);
 
-            html += `
+      html += `
                 <div class="archive-card" style="margin-bottom:12px; padding:0; border-top:3px solid ${teamColorVal}; overflow:hidden;">
                     <div onclick="toggleNavGroup(this)" style="padding:16px; background:linear-gradient(135deg, ${teamColorVal}11, transparent); display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
                         <div style="display:flex; align-items:center; gap:12px;">
@@ -8952,10 +8955,10 @@ window.verifyPoliceAccessModern = async function() {
                     <div class="nav-group-body open" style="padding:0 16px 16px; max-height: none;">
                         <div style="display:flex; flex-direction:column; gap:4px; margin-top:10px;">
                         ${members.map(m => {
-                            const usernames = m.usernames || [];
-                            const hasLastFm = usernames.length > 0;
+        const usernames = m.usernames || [];
+        const hasLastFm = usernames.length > 0;
 
-                            return `
+        return `
                                 <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:8px;">
                                     <div style="min-width:0; flex:1;">
                                         <div style="color:#fff; font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
@@ -8979,60 +8982,60 @@ window.verifyPoliceAccessModern = async function() {
                                     </div>
                                 </div>
                             `;
-                        }).join('')}
+      }).join('')}
                         </div>
                     </div>
                 </div>
             `;
-        }
+    }
 
-        if (container) container.innerHTML = html;
-        showToast('👮 Police access granted', 'success');
+    if (container) container.innerHTML = html;
+    showToast('👮 Police access granted', 'success');
 
-    } catch (e) {
-        console.error('Police data error:', e);
-        if (container) {
-            container.innerHTML = `
+  } catch (e) {
+    console.error('Police data error:', e);
+    if (container) {
+      container.innerHTML = `
                 <div class="glass-card" style="text-align:center; padding:20px; border-left:3px solid var(--fail);">
                     <div style="color:var(--fail); font-size:11px; font-weight:700;">⚠️ Failed to load: ${e.message}</div>
                 </div>
             `;
-        }
     }
+  }
 };
 
 // ── Helper: Logout Police ──
-window.logoutPoliceModern = function() {
-    const section = $('police-section');
-    const loginModal = $('police-login-modal');
-    const container = $('police-lastfm-container');
-    const input = $('police-password');
+window.logoutPoliceModern = function () {
+  const section = $('police-section');
+  const loginModal = $('police-login-modal');
+  const container = $('police-lastfm-container');
+  const input = $('police-password');
 
-    if (section) section.style.display = 'block';
-    if (loginModal) loginModal.style.display = 'none';
-    if (container) { container.style.display = 'none'; container.innerHTML = ''; }
-    if (input) input.value = '';
+  if (section) section.style.display = 'block';
+  if (loginModal) loginModal.style.display = 'none';
+  if (container) { container.style.display = 'none'; container.innerHTML = ''; }
+  if (input) input.value = '';
 
-    showToast('🔒 Police panel locked', 'info');
+  showToast('🔒 Police panel locked', 'info');
 };
-  // =============================================
-  // ██████  TEAM COMPARISON PAGE
-  // =============================================
-  async function renderComparison() {
-    const container = $('comparisonContent');
-    if (!container) return;
+// =============================================
+// ██████  TEAM COMPARISON PAGE
+// =============================================
+async function renderComparison() {
+  const container = $('comparisonContent');
+  if (!container) return;
 
-    const teams = STATE.data?.teamComparison || [];
-    if (!teams.length) {
-        container.innerHTML = '<div class="glass-card" style="padding:40px; text-align:center;">No data.</div>';
-        return;
-    }
+  const teams = STATE.data?.teamComparison || [];
+  if (!teams.length) {
+    container.innerHTML = '<div class="glass-card" style="padding:40px; text-align:center;">No data.</div>';
+    return;
+  }
 
-    // Sort by XP to find the leader
-    const sorted = [...teams].sort((a, b) => b.teamXP - a.teamXP);
-    const topXP = sorted[0].teamXP || 1; // Avoid divide by zero
+  // Sort by XP to find the leader
+  const sorted = [...teams].sort((a, b) => b.teamXP - a.teamXP);
+  const topXP = sorted[0].teamXP || 1; // Avoid divide by zero
 
-    let html = `
+  let html = `
         <div class="archive-card" style="margin-bottom:20px; border-color:var(--red-border);">
             <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:2px; margin-bottom:15px; text-align:center;">
                 📊 Live Battle Statistics (Relative to Leader)
@@ -9040,27 +9043,27 @@ window.logoutPoliceModern = function() {
             <div class="comparison-list">
     `;
 
-    sorted.forEach((tm, i) => {
-        const tColor = teamColor(tm.team);
-        const pct = Math.max(5, (tm.teamXP / topXP) * 100); // Min 5% so bar is visible
-        
-        // Define the 5 missions to check
-        const missionIcons = [
-            { icon: '🎵', key: 'trackGoalPassed' },
-            { icon: '📀', key: 'albumGoalPassed' },
-            { icon: '🔁', key: 'album2xPassed' },
-            { icon: '⚡', key: 'arirangUnitPassed' },
-            { icon: '🛡️', key: 'sideMissionPassed' }
-        ];
+  sorted.forEach((tm, i) => {
+    const tColor = teamColor(tm.team);
+    const pct = Math.max(5, (tm.teamXP / topXP) * 100); // Min 5% so bar is visible
 
-        const dotsHtml = missionIcons.map(m => `
+    // Define the 5 missions to check
+    const missionIcons = [
+      { icon: '🎵', key: 'trackGoalPassed' },
+      { icon: '📀', key: 'albumGoalPassed' },
+      { icon: '🔁', key: 'album2xPassed' },
+      { icon: '⚡', key: 'arirangUnitPassed' },
+      { icon: '🛡️', key: 'sideMissionPassed' }
+    ];
+
+    const dotsHtml = missionIcons.map(m => `
             <div class="comp-dot ${tm[m.key] ? 'passed' : 'failed'}">
                 <span>${m.icon}</span>
                 <span>${tm[m.key] ? '●' : '○'}</span>
             </div>
         `).join('');
 
-        html += `
+    html += `
             <div class="comp-row" style="--team-color: ${tColor}">
                 <div class="comp-rank-badge">${i + 1}</div>
                 
@@ -9078,51 +9081,51 @@ window.logoutPoliceModern = function() {
                 </div>
             </div>
         `;
-    });
+  });
 
-    html += `
+  html += `
             </div>
         </div>
         <button onclick="goTo('teams')" class="btn-outline" style="width:100%">View Detailed Squad Standings</button>
     `;
 
-    container.innerHTML = html;
+  container.innerHTML = html;
 }
-  
-  // =============================================
-  // ██████  ATTENDANCE PAGE (Simple Version)
-  // =============================================
-  
-  function renderAttendancePage() {
-    const container = $('attendanceContent');
-    if (!container) return;
-  
-    const a = STATE.data?.agent;
-    if (!a) return;
-  
-    const att = a.attendance || {};
-    const team = a.profile?.team || 'Unknown';
-    
-    const kstDate = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
-    const kstDay = kstDate.getDay(); 
-    const isWeekend = kstDay === 0 || kstDay === 6;
-  
-    let html = renderGuide('attendance') || '';
-    html += renderNarrativeCard('attendance') || '';
-  
-    // 1. SIMPLE STATUS & ACTION CARD
-    html += `<div class="glass-card" style="padding:30px 20px; text-align:center; margin-bottom:24px;">`;
-  
-    if (att.submitted) {
-      // Already Submitted
-      html += `
+
+// =============================================
+// ██████  ATTENDANCE PAGE (Simple Version)
+// =============================================
+
+function renderAttendancePage() {
+  const container = $('attendanceContent');
+  if (!container) return;
+
+  const a = STATE.data?.agent;
+  if (!a) return;
+
+  const att = a.attendance || {};
+  const team = a.profile?.team || 'Unknown';
+
+  const kstDate = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  const kstDay = kstDate.getDay();
+  const isWeekend = kstDay === 0 || kstDay === 6;
+
+  let html = renderGuide('attendance') || '';
+  html += renderNarrativeCard('attendance') || '';
+
+  // 1. SIMPLE STATUS & ACTION CARD
+  html += `<div class="glass-card" style="padding:30px 20px; text-align:center; margin-bottom:24px;">`;
+
+  if (att.submitted) {
+    // Already Submitted
+    html += `
         <div style="font-size:40px; margin-bottom:12px;">✅</div>
         <div style="font-size:16px; font-weight:800; color:var(--green); letter-spacing:1px; margin-bottom:8px;">Attendance Submitted</div>
         <div style="font-size:12px; color:var(--text-muted);">You're all set for this week. Thank you!</div>
       `;
-    } else if (isWeekend) {
-      // Weekend - Ready to Submit
-      html += `
+  } else if (isWeekend) {
+    // Weekend - Ready to Submit
+    html += `
         <div style="font-size:40px; margin-bottom:12px;">📸</div>
         <div style="font-size:16px; font-weight:800; color:var(--gold-core); letter-spacing:1px; margin-bottom:12px;">Weekly Check-In</div>
         <div style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:24px;">
@@ -9133,19 +9136,19 @@ window.logoutPoliceModern = function() {
           ✓ Mark Attendance
         </button>
       `;
-    } else {
-      // Weekday - Locked
-      html += `
+  } else {
+    // Weekday - Locked
+    html += `
         <div style="font-size:40px; margin-bottom:12px; opacity:0.5;">🔒</div>
         <div style="font-size:14px; font-weight:800; color:var(--text-muted); letter-spacing:1px; margin-bottom:8px;">Locked Until Weekend</div>
         <div style="font-size:11px; color:var(--text-ghost);">The attendance portal opens on Saturday at 3:00 PM KST.</div>
       `;
-    }
-    
-    html += `</div>`;
-  
-    // 2. TEAM PROGRESS
-    html += `
+  }
+
+  html += `</div>`;
+
+  // 2. TEAM PROGRESS
+  html += `
       <div class="archive-card" style="border-top:3px solid var(--gold-core);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <span style="font-size:12px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:1px;">👥 Team Progress</span>
@@ -9161,84 +9164,84 @@ window.logoutPoliceModern = function() {
         </div>
       </div>
     `;
-  
-    container.innerHTML = html;
-  }
-  
-  // Simple, direct submit function
-  async function submitAttendance() {
-    Loading.show();
-    try {
-      const d = await Api.call('submitAttendance', { agentNo: STATE.agentNo }, { dedupe: false, cache: false });
-      if (d.success) {
-        showToast('Attendance Marked!', 'success');
-        Api.invalidate(); // Clear cache to refresh UI
-        setTimeout(() => loadDashboard(), 1000);
-      } else {
-        showToast(d.error || 'Failed to submit', 'error');
-      }
-    } catch (e) {
-      showToast('Network Error', 'error');
-    } finally {
-      Loading.hide();
-    }
-  }
-  
-  // =============================================
-  // ██████  POLICE PAGE (Dedicated)
-  // =============================================
-  
-  // =============================================
-  // ██████  POLICE PAGE (Simplified Integrity)
-  // =============================================
-  
-  function renderPolicePage() {
-    const container = $('policeContent');
-    if (!container) return;
-  
-    const a = STATE.data?.agent;
-    if (!a) return;
-  
-    const pol = a.policeStatus || {};
-    const resultsReleased = pol.resultsReleased === true;
-    
-    // If results not released yet, always show 0 to the user
-    const reports = resultsReleased ? (pol.confirmedReports || 0) : 0;
-    const max = pol.maxAllowed || 3;
-    const severity = reports === 0 ? 'clean' : reports < max ? 'warning' : 'exceeded';
-    
-    const sConfig = {
-      'clean': { 
-        color: 'var(--green)', 
-        icon: '🛡️', 
-        title: 'INTEGRITY CLEAR', 
-        bg: 'linear-gradient(135deg, rgba(0,255,102,0.05), var(--bg-panel))', 
-        border: 'var(--green-border)' 
-      },
-      'warning': { 
-        color: 'var(--courage-amber)', 
-        icon: '⚠️', 
-        title: 'WARNING ISSUED', 
-        bg: 'linear-gradient(135deg, rgba(255,149,0,0.05), var(--bg-panel))', 
-        border: 'rgba(255,149,0,0.3)' 
-      },
-      'exceeded': { 
-        color: 'var(--fail)', 
-        icon: '🚨', 
-        title: 'LIMIT EXCEEDED', 
-        bg: 'linear-gradient(135deg, rgba(255,59,92,0.1), var(--bg-panel))', 
-        border: 'var(--red-border)' 
-      }
-    };
-    
-    const s = sConfig[severity];
-  
-    let html = renderGuide('police') || '';
-    html += renderNarrativeCard('police') || '';
 
-    // If results haven't been released by admin yet, show a notice
-    if (!resultsReleased) {
-      html += `
+  container.innerHTML = html;
+}
+
+// Simple, direct submit function
+async function submitAttendance() {
+  Loading.show();
+  try {
+    const d = await Api.call('submitAttendance', { agentNo: STATE.agentNo }, { dedupe: false, cache: false });
+    if (d.success) {
+      showToast('Attendance Marked!', 'success');
+      Api.invalidate(); // Clear cache to refresh UI
+      setTimeout(() => loadDashboard(), 1000);
+    } else {
+      showToast(d.error || 'Failed to submit', 'error');
+    }
+  } catch (e) {
+    showToast('Network Error', 'error');
+  } finally {
+    Loading.hide();
+  }
+}
+
+// =============================================
+// ██████  POLICE PAGE (Dedicated)
+// =============================================
+
+// =============================================
+// ██████  POLICE PAGE (Simplified Integrity)
+// =============================================
+
+function renderPolicePage() {
+  const container = $('policeContent');
+  if (!container) return;
+
+  const a = STATE.data?.agent;
+  if (!a) return;
+
+  const pol = a.policeStatus || {};
+  const resultsReleased = pol.resultsReleased === true;
+
+  // If results not released yet, always show 0 to the user
+  const reports = resultsReleased ? (pol.confirmedReports || 0) : 0;
+  const max = pol.maxAllowed || 3;
+  const severity = reports === 0 ? 'clean' : reports < max ? 'warning' : 'exceeded';
+
+  const sConfig = {
+    'clean': {
+      color: 'var(--green)',
+      icon: '🛡️',
+      title: 'INTEGRITY CLEAR',
+      bg: 'linear-gradient(135deg, rgba(0,255,102,0.05), var(--bg-panel))',
+      border: 'var(--green-border)'
+    },
+    'warning': {
+      color: 'var(--courage-amber)',
+      icon: '⚠️',
+      title: 'WARNING ISSUED',
+      bg: 'linear-gradient(135deg, rgba(255,149,0,0.05), var(--bg-panel))',
+      border: 'rgba(255,149,0,0.3)'
+    },
+    'exceeded': {
+      color: 'var(--fail)',
+      icon: '🚨',
+      title: 'LIMIT EXCEEDED',
+      bg: 'linear-gradient(135deg, rgba(255,59,92,0.1), var(--bg-panel))',
+      border: 'var(--red-border)'
+    }
+  };
+
+  const s = sConfig[severity];
+
+  let html = renderGuide('police') || '';
+  html += renderNarrativeCard('police') || '';
+
+  // If results haven't been released by admin yet, show a notice
+  if (!resultsReleased) {
+    html += `
         <div style="padding:14px 18px; border-radius:12px; margin-bottom:20px; background:rgba(255,149,0,0.06); border:1px solid rgba(255,149,0,0.2); display:flex; gap:12px; align-items:center;">
           <span style="font-size:20px;">\uD83D\uDD12</span>
           <div>
@@ -9247,14 +9250,14 @@ window.logoutPoliceModern = function() {
           </div>
         </div>
       `;
-    }
-  
-    // 1. MAIN STATUS CARD
-    html += `
+  }
+
+  // 1. MAIN STATUS CARD
+  html += `
       <div class="archive-card" style="padding:30px 20px; text-align:center; margin-bottom:24px; background:${s.bg}; border-top:4px solid ${s.color};">
         <div style="font-size:48px; margin-bottom:16px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.3));">${s.icon}</div>
         
-        <div style="font-size:40px; font-weight:900; font-family:'Share Tech Mono', monospace; color:${s.color}; line-height:1; margin-bottom:12px; text-shadow:0 0 20px ${severity==='clean' ? 'rgba(0,255,102,0.3)' : 'rgba(255,59,92,0.3)'};">
+        <div style="font-size:40px; font-weight:900; font-family:'Share Tech Mono', monospace; color:${s.color}; line-height:1; margin-bottom:12px; text-shadow:0 0 20px ${severity === 'clean' ? 'rgba(0,255,102,0.3)' : 'rgba(255,59,92,0.3)'};">
           ${reports} <span style="font-size:18px; color:var(--text-muted);">/ ${max}</span>
         </div>
         
@@ -9267,9 +9270,9 @@ window.logoutPoliceModern = function() {
         </div>
       </div>
     `;
-  
-    // 2. STRIKE INDICATOR VISUAL
-    html += `
+
+  // 2. STRIKE INDICATOR VISUAL
+  html += `
       <div class="glass-card" style="padding:20px; margin-bottom:24px;">
         <div style="font-size:10px; font-weight:800; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin-bottom:16px; text-align:center;">Violation Record</div>
         
@@ -9294,9 +9297,9 @@ window.logoutPoliceModern = function() {
         </div>
       </div>
     `;
-  
-    // 3. HOW TO AVOID A REPORT (Direct & Simple)
-    html += `
+
+  // 3. HOW TO AVOID A REPORT (Direct & Simple)
+  html += `
       <div class="archive-card" style="padding:24px 20px; border-left:3px solid var(--gold-core);">
         <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
           <span style="font-size:20px;">💡</span>
@@ -9319,40 +9322,40 @@ window.logoutPoliceModern = function() {
         </div>
       </div>
     `;
-  
-    container.innerHTML = html;
+
+  container.innerHTML = html;
+}
+// =============================================
+// ██████  PLAYLISTS PAGE
+// =============================================
+
+window.toggleMakerPanel = function () {
+  const form = document.getElementById('maker-form');
+  const arrow = document.getElementById('maker-arrow');
+  if (!form) return;
+
+  if (form.style.display === 'none' || form.style.display === '') {
+    form.style.display = 'block';
+    if (arrow) arrow.style.transform = 'rotate(180deg)';
+  } else {
+    form.style.display = 'none';
+    if (arrow) arrow.style.transform = 'rotate(0deg)';
   }
-  // =============================================
-  // ██████  PLAYLISTS PAGE
-  // =============================================
-  
-  window.toggleMakerPanel = function() {
-      const form = document.getElementById('maker-form');
-      const arrow = document.getElementById('maker-arrow');
-      if (!form) return;
-      
-      if (form.style.display === 'none' || form.style.display === '') {
-          form.style.display = 'block';
-          if(arrow) arrow.style.transform = 'rotate(180deg)';
-      } else {
-          form.style.display = 'none';
-          if(arrow) arrow.style.transform = 'rotate(0deg)';
-      }
+};
+
+async function renderPlaylists() {
+  const container = $('playlistsContent');
+  if (!container) return;
+
+  // Platform Icons Helper
+  const getPlatformIcon = (plat) => {
+    if (plat === 'Spotify') return '<span style="color:#1DB954">🎧</span>';
+    if (plat === 'Apple Music') return '<span style="color:#FA243C">🍎</span>';
+    if (plat === 'YouTube') return '<span style="color:#FF0000">▶️</span>';
+    return '🎵';
   };
-  
-  async function renderPlaylists() {
-      const container = $('playlistsContent');
-      if (!container) return;
-  
-      // Platform Icons Helper
-      const getPlatformIcon = (plat) => {
-          if(plat === 'Spotify') return '<span style="color:#1DB954">🎧</span>';
-          if(plat === 'Apple Music') return '<span style="color:#FA243C">🍎</span>';
-          if(plat === 'YouTube') return '<span style="color:#FF0000">▶️</span>';
-          return '🎵';
-      };
-  
-      container.innerHTML = `
+
+  container.innerHTML = `
           ${renderGuide('playlists') || ''}
           
           <!-- Maker Panel -->
@@ -9422,24 +9425,24 @@ window.logoutPoliceModern = function() {
               <div style="text-align:center; padding:30px; color:var(--text-muted);"><div class="spinner" style="margin:0 auto 10px;"></div>Loading database...</div>
           </div>
       `;
-  
-      // Fetch Lists
-      try {
-          const data = await Api.call('getPlaylists', {}, { cache: true, ttl: 60_000 });
-          const playlists = data.playlists || [];
-          const listEl = $('playlists-list');
-          
-          if (playlists.length > 0) {
-              playlists.reverse(); 
-              
-              listEl.innerHTML = playlists.map(pl => {
-                  const link = pl.link || pl.url || '#'; 
-                  const name = pl.name || 'Untitled Playlist';
-                  const platform = pl.platform || 'Spotify';
-                  const team = pl.team || 'All';
-                  const tColor = team === 'All' ? 'var(--wave-foam)' : teamColor(team);
-  
-                  return `
+
+  // Fetch Lists
+  try {
+    const data = await Api.call('getPlaylists', {}, { cache: true, ttl: 60_000 });
+    const playlists = data.playlists || [];
+    const listEl = $('playlists-list');
+
+    if (playlists.length > 0) {
+      playlists.reverse();
+
+      listEl.innerHTML = playlists.map(pl => {
+        const link = pl.link || pl.url || '#';
+        const name = pl.name || 'Untitled Playlist';
+        const platform = pl.platform || 'Spotify';
+        const team = pl.team || 'All';
+        const tColor = team === 'All' ? 'var(--wave-foam)' : teamColor(team);
+
+        return `
                   <a href="${sanitize(link)}" target="_blank" style="text-decoration:none;">
                       <div class="glass-card" style="padding:14px; display:flex; align-items:center; gap:14px; transition:transform 0.2s, border-color 0.2s;" onmouseover="this.style.borderColor='${tColor}'" onmouseout="this.style.borderColor='var(--border-light)'">
                           <div style="width:40px; height:40px; border-radius:8px; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; border:1px solid var(--border-subtle);">
@@ -9456,72 +9459,72 @@ window.logoutPoliceModern = function() {
                       </div>
                   </a>
               `}).join('');
-          } else {
-              listEl.innerHTML = `<div class="glass-card" style="text-align:center; padding:30px; color:var(--text-muted); font-size:11px;">No playlists available in database.</div>`;
-          }
-      } catch (e) {
-          $('playlists-list').innerHTML = `<div style="text-align:center; padding:20px; color:var(--fail); font-size:11px;">Failed to load network.</div>`;
-      }
+    } else {
+      listEl.innerHTML = `<div class="glass-card" style="text-align:center; padding:30px; color:var(--text-muted); font-size:11px;">No playlists available in database.</div>`;
+    }
+  } catch (e) {
+    $('playlists-list').innerHTML = `<div style="text-align:center; padding:20px; color:var(--fail); font-size:11px;">Failed to load network.</div>`;
   }
-  
-  window.submitNewPlaylist = async function() {
-      const nameInput = $('pl-name');
-      const urlInput = $('pl-url');
-      const platformInput = $('pl-platform');
-      const teamInput = $('pl-team');
-      const passwordInput = $('pl-password');
-      
-      if (!nameInput || !urlInput || !passwordInput) return;
-  
-      const name = nameInput.value.trim();
-      const url = urlInput.value.trim();
-      const platform = platformInput.value;
-      const team = teamInput.value;
-      const password = passwordInput.value.trim();
-      
-      if (!name || !url || !password) {
-          showToast('Fill all required fields', 'error');
-          return;
-      }
-  
-      Loading.show();
-  
-      try {
-          const result = await Api.call('addPlaylist', {
-              password: password,
-              name: name,
-              url: url,
-              platform: platform,
-              type: 'Playlist',
-              team: team,
-              targetWeek: STATE.week || 'Week 1'
-          }, { dedupe: false, cache: false });
-  
-          if (result.success) {
-              showToast('Playlist Published', 'success');
-              
-              // Clear Form
-              nameInput.value = '';
-              urlInput.value = '';
-              passwordInput.value = '';
-              
-              window.toggleMakerPanel();
-              Api.invalidate('getPlaylists');
-              renderPlaylists();
-          } else {
-              showToast(result.error || 'Authentication Failed', 'error');
-          }
-      } catch (e) {
-          showToast('Network Error', 'error');
-      } finally {
-          Loading.hide();
-      }
+}
+
+window.submitNewPlaylist = async function () {
+  const nameInput = $('pl-name');
+  const urlInput = $('pl-url');
+  const platformInput = $('pl-platform');
+  const teamInput = $('pl-team');
+  const passwordInput = $('pl-password');
+
+  if (!nameInput || !urlInput || !passwordInput) return;
+
+  const name = nameInput.value.trim();
+  const url = urlInput.value.trim();
+  const platform = platformInput.value;
+  const team = teamInput.value;
+  const password = passwordInput.value.trim();
+
+  if (!name || !url || !password) {
+    showToast('Fill all required fields', 'error');
+    return;
   }
-  // =============================================
-  // ██████  GC LINKS PAGE
-  // =============================================
-  
-  async function renderGCLinks() {
+
+  Loading.show();
+
+  try {
+    const result = await Api.call('addPlaylist', {
+      password: password,
+      name: name,
+      url: url,
+      platform: platform,
+      type: 'Playlist',
+      team: team,
+      targetWeek: STATE.week || 'Week 1'
+    }, { dedupe: false, cache: false });
+
+    if (result.success) {
+      showToast('Playlist Published', 'success');
+
+      // Clear Form
+      nameInput.value = '';
+      urlInput.value = '';
+      passwordInput.value = '';
+
+      window.toggleMakerPanel();
+      Api.invalidate('getPlaylists');
+      renderPlaylists();
+    } else {
+      showToast(result.error || 'Authentication Failed', 'error');
+    }
+  } catch (e) {
+    showToast('Network Error', 'error');
+  } finally {
+    Loading.hide();
+  }
+}
+// =============================================
+// ██████  GC LINKS PAGE
+// =============================================
+
+async function renderGCLinks() {
   const container = $('gclinksContent');
   if (!container || !STATE.data) return;
 
@@ -9530,7 +9533,7 @@ window.logoutPoliceModern = function() {
 
   const teamLink = CONFIG.GC_LINKS?.teams?.[team] || '';
   const mainLink = CONFIG.GC_LINKS?.main || '';
-  const plLink   = CONFIG.GC_LINKS?.playlist || '';
+  const plLink = CONFIG.GC_LINKS?.playlist || '';
 
   container.innerHTML = `
     ${renderGuide('gc-links') || ''}
@@ -9554,13 +9557,13 @@ window.logoutPoliceModern = function() {
         </div>
 
         ${teamLink
-          ? `<a href="${teamLink}" target="_blank" class="btn-red" style="display:block; text-align:center; text-decoration:none; background:${tColor}; color:#000; font-weight:900;">
+      ? `<a href="${teamLink}" target="_blank" class="btn-red" style="display:block; text-align:center; text-decoration:none; background:${tColor}; color:#000; font-weight:900;">
               ENTER TEAM COMM-LINK →
             </a>`
-          : `<div class="btn-outline" style="display:block; text-align:center; opacity:0.5; border-color:${tColor}; color:${tColor}; cursor:default;">
+      : `<div class="btn-outline" style="display:block; text-align:center; opacity:0.5; border-color:${tColor}; color:${tColor}; cursor:default;">
               Link Unavailable
             </div>`
-        }
+    }
       </div>
 
       <!-- ── PLAYLIST CHANNEL ── -->
@@ -9573,9 +9576,9 @@ window.logoutPoliceModern = function() {
           </div>
         </div>
         ${plLink
-          ? `<a href="${plLink}" target="_blank" class="btn-outline" style="display:block; text-align:center; text-decoration:none; border-color:var(--wave-foam); color:var(--wave-foam);">VIEW PLAYLISTS →</a>`
-          : `<div class="btn-outline" style="display:block; text-align:center; opacity:0.5; border-color:var(--wave-foam); color:var(--wave-foam); cursor:default;">Link Unavailable</div>`
-        }
+      ? `<a href="${plLink}" target="_blank" class="btn-outline" style="display:block; text-align:center; text-decoration:none; border-color:var(--wave-foam); color:var(--wave-foam);">VIEW PLAYLISTS →</a>`
+      : `<div class="btn-outline" style="display:block; text-align:center; opacity:0.5; border-color:var(--wave-foam); color:var(--wave-foam); cursor:default;">Link Unavailable</div>`
+    }
       </div>
 
       <!-- ── MAIN GC ── -->
@@ -9588,9 +9591,9 @@ window.logoutPoliceModern = function() {
           </div>
         </div>
         ${mainLink
-          ? `<a href="${mainLink}" target="_blank" class="btn-outline" style="display:block; text-align:center; text-decoration:none; border-color:var(--vinyl-gold); color:var(--vinyl-gold);">OPEN MAIN GC →</a>`
-          : `<div class="btn-outline" style="display:block; text-align:center; opacity:0.5; border-color:var(--vinyl-gold); color:var(--vinyl-gold); cursor:default;">Link Unavailable</div>`
-        }
+      ? `<a href="${mainLink}" target="_blank" class="btn-outline" style="display:block; text-align:center; text-decoration:none; border-color:var(--vinyl-gold); color:var(--vinyl-gold);">OPEN MAIN GC →</a>`
+      : `<div class="btn-outline" style="display:block; text-align:center; opacity:0.5; border-color:var(--vinyl-gold); color:var(--vinyl-gold); cursor:default;">Link Unavailable</div>`
+    }
       </div>
 
     </div>
@@ -9901,9 +9904,9 @@ function renderArirangShip(isAwakened) {
       <div class="arirang__label">
         <span class="arirang__label-icon">${isAwakened ? '⛵' : '🔒'}</span>
         ${isAwakened
-          ? 'THE ARIRANG IS READY TO SAIL'
-          : 'COLLECT ALL 7 CREW TO SET SAIL'
-        }
+      ? 'THE ARIRANG IS READY TO SAIL'
+      : 'COLLECT ALL 7 CREW TO SET SAIL'
+    }
       </div>
     </div>
   `;
@@ -9922,18 +9925,18 @@ function renderActionSection(collected, total, isAwakened) {
       <div class="ms-status-label">Voyage Status</div>
       <div class="ms-status-value ${isAwakened ? '' : 'ms-status-value--muted'}">
         ${isAwakened
-          ? '⛵ ALL 7 CREW ABOARD'
-          : `⏳ ${remaining} MEMBER${remaining !== 1 ? 'S' : ''} REMAINING`
-        }
+      ? '⛵ ALL 7 CREW ABOARD'
+      : `⏳ ${remaining} MEMBER${remaining !== 1 ? 'S' : ''} REMAINING`
+    }
       </div>
     </div>
 
     <div class="ms-action-section">
       <div class="ms-status-msg ${isAwakened ? 'ms-status-msg--on' : 'ms-status-msg--off'}">
         ${isAwakened
-          ? '✦ The Arirang awaits your command, Captain ARMY ✦'
-          : `${collected}/${total} crew aboard · Stream Arirang to unlock all members`
-        }
+      ? '✦ The Arirang awaits your command, Captain ARMY ✦'
+      : `${collected}/${total} crew aboard · Stream Arirang to unlock all members`
+    }
       </div>
       <button class="ms-launch-btn"
               data-action="launch-voyage"
@@ -10498,7 +10501,7 @@ window.launchTheVoyage = function () {
   function setStageColor(color) {
     if (_rainbowInterval) { clearInterval(_rainbowInterval); _rainbowInterval = null; }
     if (color === 'rainbow') {
-      const cols = ['#a855f7','#e879f9','#6366f1','#22c55e','#fbbf24','#ef4444','#3b82f6','#f97316'];
+      const cols = ['#a855f7', '#e879f9', '#6366f1', '#22c55e', '#fbbf24', '#ef4444', '#3b82f6', '#f97316'];
       let idx = 0;
       _rainbowInterval = setInterval(() => {
         root.style.setProperty('--cs-theme', cols[idx]);
@@ -10565,7 +10568,7 @@ window.launchTheVoyage = function () {
     for (let i = 0; i < 60; i++) {
       const s = document.createElement('div');
       s.className = 'cs-star';
-      s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*3}s;--star-size:${1+Math.random()*2}px;`;
+      s.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-delay:${Math.random() * 3}s;--star-size:${1 + Math.random() * 2}px;`;
       starContainer.appendChild(s);
     }
   }
@@ -10580,7 +10583,7 @@ window.launchTheVoyage = function () {
       bomb.className = 'cs-crowd-bomb cs-crowd-dark'; // start dark for ignition effect
       const size = 14 + Math.floor(i % 4) * 3;
       const delay = (i * 0.15).toFixed(2);
-      bomb.style.cssText = `--cb-size:${size}px;animation-duration:${(2.5+Math.random()*1.5).toFixed(1)}s;animation-delay:${delay}s;`;
+      bomb.style.cssText = `--cb-size:${size}px;animation-duration:${(2.5 + Math.random() * 1.5).toFixed(1)}s;animation-delay:${delay}s;`;
       bomb.innerHTML = `<div class="cs-cb-sphere"></div><div class="cs-cb-handle"></div>`;
       crowdRow.appendChild(bomb);
     }
@@ -11933,103 +11936,103 @@ const VOYAGE_SHIP_CSS = `
 `;
 // Auto-inject page styles on load
 ensureMagicShipStyles();
-  
-  // =============================================
-  // ██████  ADMIN SYSTEM CONTROLS & LOGIC
-  // =============================================
-  
-  async function adminReleaseResults() {
-      if (!STATE.adminSession) {
-          showToast('Login as admin first', 'error');
-          return;
+
+// =============================================
+// ██████  ADMIN SYSTEM CONTROLS & LOGIC
+// =============================================
+
+async function adminReleaseResults() {
+  if (!STATE.adminSession) {
+    showToast('Login as admin first', 'error');
+    return;
+  }
+  try {
+    const summary = await Api.call('getWeeklySummary', { week: STATE.week }, { cache: false });
+    const currentlyReleased = summary.resultsReleased === true;
+    const newState = !currentlyReleased;
+    if (!confirm(`${newState ? 'RELEASE' : 'HIDE'} results for ${STATE.week}?`)) return;
+
+    Loading.show();
+    const d = await Api.call('toggleResultsRelease', {
+      week: STATE.week,
+      released: newState,
+      adminSession: STATE.adminSession,
+      agentNo: STATE.agentNo,
+    }, { dedupe: false, cache: false });
+
+    if (d.success) {
+      showToast(newState ? 'Results released! 📢' : 'Results hidden 🔒', 'success');
+      Api.invalidate('getWeeklySummary');
+      if (typeof renderWeekConfirmation === 'function') {
+        renderWeekConfirmation(document.getElementById('admin-panel-body'));
       }
-      try {
-          const summary = await Api.call('getWeeklySummary', { week: STATE.week }, { cache: false });
-          const currentlyReleased = summary.resultsReleased === true;
-          const newState = !currentlyReleased;
-          if (!confirm(`${newState ? 'RELEASE' : 'HIDE'} results for ${STATE.week}?`)) return;
-  
-          Loading.show();
-          const d = await Api.call('toggleResultsRelease', {
-              week: STATE.week,
-              released: newState,
-              adminSession: STATE.adminSession,
-              agentNo: STATE.agentNo,
-          }, { dedupe: false, cache: false });
-  
-          if (d.success) {
-              showToast(newState ? 'Results released! 📢' : 'Results hidden 🔒', 'success');
-              Api.invalidate('getWeeklySummary');
-              if (typeof renderWeekConfirmation === 'function') {
-                  renderWeekConfirmation(document.getElementById('admin-panel-body'));
-              }
-          } else {
-              showToast(`❌ ${d.error}`, 'error');
-          }
-      } catch (e) {
-          showToast('❌ ' + e.message, 'error');
-      } finally {
-          Loading.hide();
-      }
+    } else {
+      showToast(`❌ ${d.error}`, 'error');
+    }
+  } catch (e) {
+    showToast('❌ ' + e.message, 'error');
+  } finally {
+    Loading.hide();
   }
-  
-  async function adminTriggerSync() {
-      if (!confirm('Trigger a full database sync? This forces Last.fm checks for all agents.')) return;
-      Loading.show();
-      try {
-          const d = await Api.call('initiateFairSync', { adminKey: 'BTSSYNC2024' }, { dedupe: false, cache: false });
-          if (d.success) {
-              showToast(`✅ Sync complete: ${d.progress?.completed}/${d.progress?.total} agents`, 'success');
-              Api.invalidate(); 
-          } else {
-              showToast(`❌ Error: ${d.error}`, 'error');
-          }
-      } catch (e) { showToast('❌ ' + e.message, 'error'); }
-      finally { Loading.hide(); }
-  }
-  
-  async function adminCheckSync() {
-      Loading.show();
-      try {
-          const d = await Api.call('getSyncStatus', {}, { cache: false });
-          if (d.success && d.lastSync) {
-              alert(`📊 SYNC STATUS:\n\nSynced: ${d.lastSync.synced} agents\nFailed: ${d.lastSync.failed} agents\nDuration: ${d.lastSync.duration}ms\nTime: ${new Date(d.lastSync.timestamp).toLocaleString()}`);
-          } else { showToast('No sync data available yet', 'info'); }
-      } catch (e) { showToast('❌ ' + e.message, 'error'); }
-      finally { Loading.hide(); }
-  }
-  
-  async function adminFinalizeWeek() {
-      if (!confirm(`⚠️ FINAL WARNING: Finalize ${STATE.week}?\nThis checks Side Missions, issues Police warnings, and locks the week.`)) return;
-      Loading.show();
-      try {
-          const d = await Api.call('finalizeWeek', { adminKey: 'BTSSYNC2024', week: STATE.week }, { dedupe: false, cache: false });
-          if (d.success) {
-              showToast('✅ Week successfully finalized!', 'success');
-              Api.invalidate();
-          } else { showToast(`❌ ${d.error}`, 'error'); }
-      } catch (e) { showToast('❌ ' + e.message, 'error'); }
-      finally { Loading.hide(); }
-  }
-  
-  async function adminGenerateUnits() {
-      if (!confirm('🔄 Generate Arirang Unit rotation for next week?')) return;
-      Loading.show();
-      try {
-          const d = await Api.call('generateUnitRotation', { adminKey: 'BTSSYNC2024' }, { dedupe: false, cache: false });
-          if (d.success) { showToast('✅ Next week units generated successfully', 'success'); }
-          else { showToast(`❌ ${d.error}`, 'error'); }
-      } catch (e) { showToast('❌ ' + e.message, 'error'); }
-      finally { Loading.hide(); }
-  }
-  
-  // =============================================
-  // ██████  FINAL ROUTING & SIDEBAR LOGIC
-  // =============================================
-  
-  // 1. Register all pages to the renderer
-  // Locate this block near the end of your file and update it:
-  const ROUTER_MAP = {
+}
+
+async function adminTriggerSync() {
+  if (!confirm('Trigger a full database sync? This forces Last.fm checks for all agents.')) return;
+  Loading.show();
+  try {
+    const d = await Api.call('initiateFairSync', { adminKey: 'BTSSYNC2024' }, { dedupe: false, cache: false });
+    if (d.success) {
+      showToast(`✅ Sync complete: ${d.progress?.completed}/${d.progress?.total} agents`, 'success');
+      Api.invalidate();
+    } else {
+      showToast(`❌ Error: ${d.error}`, 'error');
+    }
+  } catch (e) { showToast('❌ ' + e.message, 'error'); }
+  finally { Loading.hide(); }
+}
+
+async function adminCheckSync() {
+  Loading.show();
+  try {
+    const d = await Api.call('getSyncStatus', {}, { cache: false });
+    if (d.success && d.lastSync) {
+      alert(`📊 SYNC STATUS:\n\nSynced: ${d.lastSync.synced} agents\nFailed: ${d.lastSync.failed} agents\nDuration: ${d.lastSync.duration}ms\nTime: ${new Date(d.lastSync.timestamp).toLocaleString()}`);
+    } else { showToast('No sync data available yet', 'info'); }
+  } catch (e) { showToast('❌ ' + e.message, 'error'); }
+  finally { Loading.hide(); }
+}
+
+async function adminFinalizeWeek() {
+  if (!confirm(`⚠️ FINAL WARNING: Finalize ${STATE.week}?\nThis checks Side Missions, issues Police warnings, and locks the week.`)) return;
+  Loading.show();
+  try {
+    const d = await Api.call('finalizeWeek', { adminKey: 'BTSSYNC2024', week: STATE.week }, { dedupe: false, cache: false });
+    if (d.success) {
+      showToast('✅ Week successfully finalized!', 'success');
+      Api.invalidate();
+    } else { showToast(`❌ ${d.error}`, 'error'); }
+  } catch (e) { showToast('❌ ' + e.message, 'error'); }
+  finally { Loading.hide(); }
+}
+
+async function adminGenerateUnits() {
+  if (!confirm('🔄 Generate Arirang Unit rotation for next week?')) return;
+  Loading.show();
+  try {
+    const d = await Api.call('generateUnitRotation', { adminKey: 'BTSSYNC2024' }, { dedupe: false, cache: false });
+    if (d.success) { showToast('✅ Next week units generated successfully', 'success'); }
+    else { showToast(`❌ ${d.error}`, 'error'); }
+  } catch (e) { showToast('❌ ' + e.message, 'error'); }
+  finally { Loading.hide(); }
+}
+
+// =============================================
+// ██████  FINAL ROUTING & SIDEBAR LOGIC
+// =============================================
+
+// 1. Register all pages to the renderer
+// Locate this block near the end of your file and update it:
+const ROUTER_MAP = {
   'home': renderHome,
   'profile': renderProfile,
   'guide': renderGuidePage,
@@ -12058,168 +12061,168 @@ ensureMagicShipStyles();
 };
 Object.assign(PAGE_RENDERERS, ROUTER_MAP);
 
-  
-  // 2. Sidebar Core Functions
-  function openSidebar() {
-    const sb = $('sidebar'), ov = $('sidebarOverlay');
-    if (sb) sb.classList.add('open');
-    if (ov) { ov.style.display = 'block'; setTimeout(() => ov.classList.add('active'), 10); }
-    document.body.classList.add('sidebar-open');
-  }
-  
-  function closeSidebar() {
-    const sb = $('sidebar'), ov = $('sidebarOverlay');
-    if (sb) sb.classList.remove('open');
-    if (ov) { ov.classList.remove('active'); setTimeout(() => ov.style.display = 'none', 300); }
-    document.body.classList.remove('sidebar-open');
-  }
-  
-  function toggleSidebar() {
-    const sb = $('sidebar');
-    if (!sb) return;
-    sb.classList.contains('open') ? closeSidebar() : openSidebar();
-  }
-  
-  // 3. Mobile Swipe-to-Close Support
-  (function setupSwipeClose() {
-    let startX = 0, tracking = false;
-    const sidebar = document.getElementById('sidebar');
-    if (!sidebar) return;
-  
-    sidebar.addEventListener('touchstart', e => { startX = e.touches[0].clientX; tracking = true; }, { passive: true });
-    sidebar.addEventListener('touchmove', e => {
-      if (!tracking) return;
-      const dx = e.touches[0].clientX - startX;
-      if (dx < -60) { closeSidebar(); tracking = false; }
-    }, { passive: true });
-    sidebar.addEventListener('touchend', () => { tracking = false; }, { passive: true });
-  })();
-  
- // =============================================
+
+// 2. Sidebar Core Functions
+function openSidebar() {
+  const sb = $('sidebar'), ov = $('sidebarOverlay');
+  if (sb) sb.classList.add('open');
+  if (ov) { ov.style.display = 'block'; setTimeout(() => ov.classList.add('active'), 10); }
+  document.body.classList.add('sidebar-open');
+}
+
+function closeSidebar() {
+  const sb = $('sidebar'), ov = $('sidebarOverlay');
+  if (sb) sb.classList.remove('open');
+  if (ov) { ov.classList.remove('active'); setTimeout(() => ov.style.display = 'none', 300); }
+  document.body.classList.remove('sidebar-open');
+}
+
+function toggleSidebar() {
+  const sb = $('sidebar');
+  if (!sb) return;
+  sb.classList.contains('open') ? closeSidebar() : openSidebar();
+}
+
+// 3. Mobile Swipe-to-Close Support
+(function setupSwipeClose() {
+  let startX = 0, tracking = false;
+  const sidebar = document.getElementById('sidebar');
+  if (!sidebar) return;
+
+  sidebar.addEventListener('touchstart', e => { startX = e.touches[0].clientX; tracking = true; }, { passive: true });
+  sidebar.addEventListener('touchmove', e => {
+    if (!tracking) return;
+    const dx = e.touches[0].clientX - startX;
+    if (dx < -60) { closeSidebar(); tracking = false; }
+  }, { passive: true });
+  sidebar.addEventListener('touchend', () => { tracking = false; }, { passive: true });
+})();
+
+// =============================================
 // ██████  GLOBAL WINDOW EXPORTS
 // =============================================
 // v2.3: Fixed filterOperatives alias, removed non-existent functions
 
 const EXPORTS = {
-    // ── Auth ──
-    doLogin,
-    doLogout,
-    findAgent,
+  // ── Auth ──
+  doLogin,
+  doLogout,
+  findAgent,
 
-    // ── Navigation ──
-    goTo,
-    toggleSidebar,
-    openSidebar,
-    closeSidebar,
-    toggleNavGroup,
+  // ── Navigation ──
+  goTo,
+  toggleSidebar,
+  openSidebar,
+  closeSidebar,
+  toggleNavGroup,
 
-    // ── Dashboard & Sync ──
-    loadDashboard,
-    syncData,
-    handleManualSync,
+  // ── Dashboard & Sync ──
+  loadDashboard,
+  syncData,
+  handleManualSync,
 
-    // ── Profile & Account ──
-    openPasswordModal,
-    closePasswordModal,
-    changePassword,
-    deleteAccountConfirm,
-    promptDeleteAccount,
+  // ── Profile & Account ──
+  openPasswordModal,
+  closePasswordModal,
+  changePassword,
+  deleteAccountConfirm,
+  promptDeleteAccount,
 
-    // ── Leave System ──
-    applyLeave,
-    cancelLeave,
-    openLeaveModal,
-    confirmLeaveApplication,
-    cancelLeaveRequest,
+  // ── Leave System ──
+  applyLeave,
+  cancelLeave,
+  openLeaveModal,
+  confirmLeaveApplication,
+  cancelLeaveRequest,
 
-    // ── Attendance ──
-    submitAttendance,
+  // ── Attendance ──
+  submitAttendance,
 
-    // ── Page Renderers ──
-    renderHome,
-    renderProfile,
-    renderTrackGoals,
-    renderAlbumGoals,
-    renderAlbum2x,
-    renderUnit,
-    renderSideMissions,
-    renderTeams,
-    renderAnnouncements,
-    renderGuidePage,
-    renderSongOfDay,
-    renderSecretMissions,
-    renderBadgesPage,
-    renderSummary,
-    render148Protocol,
-    renderOperatives,
-    renderComparison,
-    renderAttendancePage,
-    renderPolicePage,
-    renderPlaylists,
-    renderMagicShip,
-    renderRingProgress,
+  // ── Page Renderers ──
+  renderHome,
+  renderProfile,
+  renderTrackGoals,
+  renderAlbumGoals,
+  renderAlbum2x,
+  renderUnit,
+  renderSideMissions,
+  renderTeams,
+  renderAnnouncements,
+  renderGuidePage,
+  renderSongOfDay,
+  renderSecretMissions,
+  renderBadgesPage,
+  renderSummary,
+  render148Protocol,
+  renderOperatives,
+  renderComparison,
+  renderAttendancePage,
+  renderPolicePage,
+  renderPlaylists,
+  renderMagicShip,
+  renderRingProgress,
 
-    // ── Rankings ──
-    loadRankings,
-    switchRankTab,
+  // ── Rankings ──
+  loadRankings,
+  switchRankTab,
 
-    // ── Feed & Chat ──
-    loadFeed,
-    loadChat,
-    sendChat,
+  // ── Feed & Chat ──
+  loadFeed,
+  loadChat,
+  sendChat,
 
-    // ── Career & Streak ──
-    loadCareerHistory,
+  // ── Career & Streak ──
+  loadCareerHistory,
 
-    // ── Song of the Day ──
-    submitSongAnswer,
+  // ── Song of the Day ──
+  submitSongAnswer,
 
-    // ── 148 Protocol ──
-    toggle148Task,
-    show148Info,
+  // ── 148 Protocol ──
+  toggle148Task,
+  show148Info,
 
-    // ── Guide ──
-    toggleGuideSection,
+  // ── Guide ──
+  toggleGuideSection,
 
-    // ── Notifications ──
-    checkNotifications,
-    showNotificationCenter,
-    checkHTOnboarding,
-    dismissHT,
-    subscribeToPushNotifications,
+  // ── Notifications ──
+  checkNotifications,
+  showNotificationCenter,
+  checkHTOnboarding,
+  dismissHT,
+  subscribeToPushNotifications,
 
-    // ── Magic Ship ──
-    launchTheVoyage,
+  // ── Magic Ship ──
+  launchTheVoyage,
 
-    // ── Missions ──
-    markMissionComplete,
+  // ── Missions ──
+  markMissionComplete,
 
-    // ── Search / Filter ──
-    // filterOperatives is now an alias for filterOperativesModern (attached via window.x = fn)
-    filterOperatives: function(q) { 
-        if (typeof window.filterOperativesModern === 'function') {
-            window.filterOperativesModern(q); 
-        }
-    },
+  // ── Search / Filter ──
+  // filterOperatives is now an alias for filterOperativesModern (attached via window.x = fn)
+  filterOperatives: function (q) {
+    if (typeof window.filterOperativesModern === 'function') {
+      window.filterOperativesModern(q);
+    }
+  },
 
-    // ── Share ──
-    copyShareText,
+  // ── Share ──
+  copyShareText,
 
-    // ── Admin ──
-    showAdminPanel,
-    adminExitMode,
-    adminTriggerSync,
-    adminCheckSync,
-    adminFinalizeWeek,
-    adminGenerateUnits,
-    adminReleaseResults,
-    smartUpdateStatus,
-    renderAdminAgentsTab,
-    adminImpersonateAgent,
-    adminDeleteAgent,
+  // ── Admin ──
+  showAdminPanel,
+  adminExitMode,
+  adminTriggerSync,
+  adminCheckSync,
+  adminFinalizeWeek,
+  adminGenerateUnits,
+  adminReleaseResults,
+  smartUpdateStatus,
+  renderAdminAgentsTab,
+  adminImpersonateAgent,
+  adminDeleteAgent,
 
-    // ── Effects ──
-    fireConfetti,
+  // ── Effects ──
+  fireConfetti,
 };
 
 // Attach everything to window exactly once
@@ -12228,37 +12231,37 @@ Object.assign(window, EXPORTS);
 // ── Post-export: verify nothing is missing ──
 // Run this in browser console if you suspect a broken export:
 // Object.keys(EXPORTS).forEach(n => { if (typeof window[n] !== 'function') console.warn('MISSING:', n); });
-  
-  // =============================================
-  // ██████  INITIATE APP
-  // =============================================
-  
-  
-  // =============================================
-  // END OF app.js v2.0 — STABLE & SECURE
-  // =============================================
+
+// =============================================
+// ██████  INITIATE APP
+// =============================================
+
+
+// =============================================
+// END OF app.js v2.0 — STABLE & SECURE
+// =============================================
 
 // ==================== 100XP POPUP (ARIRANG — PSYCHO EDITION) ====================
 function check100XPPopup() {
-    if (!STATE.data || !STATE.data.agent || !STATE.data.agent.stats) return;
-    const currentWeekXP = parseInt(STATE.data.agent.stats.totalXP) || 0;
-    const storageKey = `arirang_${STATE.agentNo}_100xp_popup_${STATE.week}`;
-    
-    if (currentWeekXP >= 100 && !localStorage.getItem(storageKey)) {
-        if (STATE.week === 'Week 1' || STATE.week === 'Week 2' || STATE.week === 'Week 3') return;
-        const modalId = 'xp-100-modal';
-        if (document.getElementById(modalId)) return;
+  if (!STATE.data || !STATE.data.agent || !STATE.data.agent.stats) return;
+  const currentWeekXP = parseInt(STATE.data.agent.stats.totalXP) || 0;
+  const storageKey = `arirang_${STATE.agentNo}_100xp_popup_${STATE.week}`;
 
-        let badgeUrl = '';
-        if (typeof getTacticalBadges === 'function') {
-            const badges = getTacticalBadges(STATE.agentNo, currentWeekXP);
-            if (badges && badges.length > 0) {
-                badgeUrl = badges[0].imageUrl;
-            }
-        }
-        if (!badgeUrl) badgeUrl = CONFIG.TACTICAL_POOL[0];
+  if (currentWeekXP >= 100 && !localStorage.getItem(storageKey)) {
+    if (STATE.week === 'Week 1' || STATE.week === 'Week 2' || STATE.week === 'Week 3') return;
+    const modalId = 'xp-100-modal';
+    if (document.getElementById(modalId)) return;
 
-        const modalHtml = `
+    let badgeUrl = '';
+    if (typeof getTacticalBadges === 'function') {
+      const badges = getTacticalBadges(STATE.agentNo, currentWeekXP);
+      if (badges && badges.length > 0) {
+        badgeUrl = badges[0].imageUrl;
+      }
+    }
+    if (!badgeUrl) badgeUrl = CONFIG.TACTICAL_POOL[0];
+
+    const modalHtml = `
             <div id="${modalId}" class="spy-modal-overlay" style="
                 z-index: 100000;
                 position: fixed;
@@ -12689,11 +12692,10 @@ function check100XPPopup() {
             </div>
         `;
 
-        document.body.insertAdjacentHTML('beforeend', modalHtml);
-    }
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+  }
 }
 
 if (typeof window !== 'undefined') {
-    window.check100XPPopup = check100XPPopup;
+  window.check100XPPopup = check100XPPopup;
 }
-
