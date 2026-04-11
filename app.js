@@ -5474,7 +5474,7 @@ function showSmDay(date) {
     const levelBadges = getLevelBadges(STATE.agentNo, xp);
     const tacticalBadges = (typeof getTacticalBadges === 'function' && STATE.week !== 'Week 1' && STATE.week !== 'Week 2' && STATE.week !== 'Week 3') 
       ? getTacticalBadges(STATE.agentNo, xp) 
-      :
+      :[];
     
     // Attempt to pull Album 2X badge for current week
     const album2xBadge = getAlbum2xBadge(STATE.agentNo, STATE.week);
