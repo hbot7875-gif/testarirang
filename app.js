@@ -7312,11 +7312,17 @@ function showSmDay(date) {
             return sum;
           }, 0);
 
-          // ✅ Ticks when agent hits their daily fair share today (or team goal is 100%)
+         // ✅ Ticks when agent hits their daily fair share today (or team goal is 100%)
           const autoChecked = pct >= 100 || personalTodayCount >= task.daily;
+          
+          // Calculate User's Daily Progress Percentage
+          const dailyProgressPct = task.daily > 0 ? Math.min(100, (personalTodayCount / task.daily) * 100) : 0;
 
-          return render148Task(id, label, autoChecked, pct, `${fmt(task.teamCurrent)}/${fmt(task.teamGoal)}`, false);
+          // Render the task using their personal daily progress instead of team overall
+          return render148Task(id, label, autoChecked, dailyProgressPct, `${fmt(personalTodayCount)}/${fmt(task.daily)}`, false);
         }).join('');
+
+        
       }
   
       // Static Daily Habits
