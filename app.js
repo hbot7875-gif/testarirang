@@ -7104,8 +7104,12 @@ async function runAgentDiagnosis() {
         // 2. Intelligence Analysis (Logic to determine why scrobbles are 0)
         let statusTag = { text: 'HEALTHY', color: 'var(--green)' };
         let findings = [];
-
+        
         if (!debug.lastfm_username) {
+            if (res.alreadySynced) {
+              statusTag = { text: 'COOLDOWN', color: 'var(--courage-amber)' };
+              findings.push("⏱️ System is in cooldown. Please wait 5 minutes before running another deep scan.");
+           } else {
             statusTag = { text: 'CRITICAL', color: 'var(--fail)' };
             findings.push("❌ No Last.fm account linked to this Agent ID.");
         } else if (debug.last_api_error) {
