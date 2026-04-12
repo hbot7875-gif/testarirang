@@ -146,7 +146,7 @@ const CONFIG = {
   },
   // Tactical Badge System (BTS 2.0 Set)
   TACTICAL_BADGE_REPO: 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/main/2.0badges/',
-  TOTAL_TACTICAL_IMAGES: 61,
+  TOTAL_TACTICAL_IMAGES: 155,
 
   get TACTICAL_POOL() {
     if (this._tacticalPoolCache) return this._tacticalPoolCache;
