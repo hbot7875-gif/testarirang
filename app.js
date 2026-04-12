@@ -2473,6 +2473,13 @@ function renderProfile() {
     const team = p.team || 'Unknown';
     const tColor = teamColor(team);
 
+    // ✅ NEW: Calculate today's 2X status
+    const todayKST = getKSTDateString();
+    const todayData = album2xStatus.dailyGrid?.[todayKST] || {};
+    const tracksToday = Object.values(todayData).filter(c => c?.passed).length;
+    const isTodayDone = tracksToday >= 14;
+    const isWeeklyDone = album2xStatus.passed === true;
+
     const isExempt = album2xStatus.passed === true &&
       Object.values(album2xStatus.tracks || {}).some(v => v === 'Exempt');
 
@@ -2543,16 +2550,20 @@ function renderProfile() {
           <div class="sl">Album Streams</div>
         </div>
         <div class="stat-box">
-          <div class="sv ${album2xStatus.passed ? 'green' : 'red'}" style="font-size: 10px;">${album2xStatus.passed ?
-            `<span style="color:var(--green); font-family:var(--font-mono); font-size:10px; border:1px solid var(--green); padding:2px 8px; border-radius:4px; background:rgba(0,255,0,0.1);">[✓] SECURED</span>` :
-            `<span style="color:var(--fail); font-family:var(--font-mono); font-size:10px; border:1px solid var(--fail); padding:2px 8px; border-radius:4px; background:rgba(255,0,0,0.1); animation:pulse 2s infinite;">[!] PENDING_ACTION</span>`
-          }</div>
+          <div class="sv" style="font-size: 10px;">
+            ${isWeeklyDone ? 
+              `<span style="color:var(--green); font-family:var(--font-mono); font-size:10px; border:1px solid var(--green); padding:2px 8px; border-radius:4px; background:rgba(0,255,102,0.1);">[✓] WEEK SECURED</span>` :
+              isTodayDone ?
+              `<span style="color:var(--green); font-family:var(--font-mono); font-size:10px; border:1px solid var(--green); padding:2px 8px; border-radius:4px; background:rgba(0,255,102,0.1);">[✓] TODAY SECURED</span>` :
+              `<span style="color:var(--fail); font-family:var(--font-mono); font-size:10px; border:1px solid var(--fail); padding:2px 8px; border-radius:4px; background:rgba(255,0,0,0.1); animation:pulse 2s infinite;">[!] PENDING_ACTION</span>`
+            }
+          </div>
           <div class="sl">2X Status</div>
         </div>
       </div>
     `;
 
-    // --- ✨ NEW: DAILY 2X PROTOCOL STRIP ---
+    // --- ✨ DAILY 2X PROTOCOL STRIP ---
     const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     
     html += `
@@ -2561,21 +2572,20 @@ function renderProfile() {
         <div style="display:grid; grid-template-columns: repeat(7, 1fr); gap:6px;">
           ${weekDates.map((date, i) => {
             const dayData = album2xStatus.dailyGrid?.[date] || {};
-            // Count how many tracks passed (need 14 for "2X")
             const passedCount = Object.values(dayData).filter(c => c?.passed).length;
             const isDone = passedCount >= 14;
-            const isFuture = date > getKSTDateString();
+            const isFuture = date > todayKST;
             
             let mark = passedCount > 0 ? passedCount : '—';
             let color = 'var(--text-ghost)';
             let border = 'var(--border-subtle)';
 
             if (isDone) {
-              mark = '2X'; // Show 2X for full completion
+              mark = '2X';
               color = 'var(--red-core)';
               border = 'var(--red-border)';
             } else if (passedCount > 0) {
-              mark = '✓'; // Show tick for partial
+              mark = '✓';
               color = 'var(--green)';
               border = 'var(--green-border)';
             }
@@ -8545,9 +8555,12 @@ async function loadCareerHistory() {
       return;
     }
 
-    // ✅ FIX: Calculate Best Rank from actual history
-    const allRanks = d.weeks.map(w => parseInt(w.rank)).filter(r => r > 0);
-    const bestRank = allRanks.length > 0 ? Math.min(...allRanks) : '—';
+    // ✅ FIX: Calculate Best Global Rank (ignore 0 and 1 placeholders)
+    const allGlobalRanks = d.weeks
+      .map(w => parseInt(w.rank))
+      .filter(r => r > 1); // Ignore 0 (unranked) and 1 (placeholder)
+
+    const bestGlobal = allGlobalRanks.length > 0 ? Math.min(...allGlobalRanks) : '—';
     const totals = d.totals || {};
 
     container.innerHTML = `
@@ -8566,8 +8579,8 @@ async function loadCareerHistory() {
           <div class="sl">Weeks Active</div>
         </div>
         <div class="stat-box">
-          <div class="sv green">#${bestRank}</div>
-          <div class="sl">Best Rank</div>
+          <div class="sv green">${bestGlobal !== '—' ? '#' + bestGlobal : '—'}</div>
+          <div class="sl">Best Global Rank</div>
         </div>
       </div>
 
@@ -8612,7 +8625,6 @@ async function loadCareerHistory() {
     container.innerHTML = '<div style="color:var(--text-muted);font-size:0.75rem;">Failed to load history</div>';
   }
 }
-
 
 // =============================================
 // ██████  OPERATIVE DATABASE (Full agent roster)
