@@ -5446,16 +5446,18 @@ h3,
 }
 
 /* UI Elements (Sidebar items, Buttons, Section Labels) */
-.nav-item,
+/* Modified catch-all */
 .btn-red,
 .btn-outline,
-.section-label,
 .label-tag,
-.ticker-label {
+.section-label,
+input,
+select,
+textarea {
   font-family: var(--font-ui) !important;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 2px !important;
+  letter-spacing: 1px;
 }
 
 /* Data & Numbers (XP, Scrobbles, Rank Numbers) */
