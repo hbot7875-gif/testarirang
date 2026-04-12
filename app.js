@@ -5468,49 +5468,72 @@ function renderSecretMissionCard(mission, team, isAssigned = false) {
 // ██████  BADGES PAGE
 // =============================================
 
-function renderBadgesPage() {
+async function renderBadgesPage() {
   const container = $('badgesContent');
   if (!container) return;
 
-  const xp = parseInt(STATE.data?.agent?.stats?.totalXP) || 0;
-  const levelBadges = getLevelBadges(STATE.agentNo, xp);
-  const tacticalBadges = (typeof getTacticalBadges === 'function' && STATE.week !== 'Week 1' && STATE.week !== 'Week 2' && STATE.week !== 'Week 3')
-    ? getTacticalBadges(STATE.agentNo, xp)
-    : [];
+  showPageLoading(container);
 
-  // Attempt to pull Album 2X badge for current week
-  const album2xBadge = getAlbum2xBadge(STATE.agentNo, STATE.week);
+  try {
+    // Fetch lifetime career stats (includes all weeks)
+    const careerData = await Api.call('getAgentCareerStats', { 
+      agentNo: STATE.agentNo 
+    }, { cache: true, ttl: 60000 });
 
-  const classicBadges = [...levelBadges];
-  if (album2xBadge) classicBadges.push(album2xBadge);
+    if (!careerData.success) throw new Error("Failed to load career data");
 
-  if (classicBadges.length === 0 && tacticalBadges.length === 0) {
-    container.innerHTML = `
-        <div style="text-align:center;padding:30px;">
-          <div style="font-size:36px;margin-bottom:10px;">🎖️</div>
-          <p style="color:var(--text-muted);font-size:12px;">Earn 50 XP to get your first badge!</p>
-          <p style="color:var(--text-muted);font-size:10px;margin-top:6px;">Current: ${fmt(xp)} XP</p>
-        </div>`;
-    return;
-  }
+    const lifetimeXP = parseInt(careerData.totals?.totalXP) || 0;
+    const weeksHistory = careerData.weeks || [];
 
-  let html = `
-      <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">
-        You have <strong>${classicBadges.length + tacticalBadges.length}</strong> badge${(classicBadges.length + tacticalBadges.length) !== 1 ? 's' : ''} • ${fmt(xp)} XP total
+    // Generate ALL level badges (based on lifetime XP)
+    const levelBadges = getLevelBadges(STATE.agentNo, lifetimeXP);
+    
+    // Generate ALL tactical badges (no week restrictions)
+    const tacticalBadges = (typeof getTacticalBadges === 'function')
+      ? getTacticalBadges(STATE.agentNo, lifetimeXP)
+      : [];
+
+    // Collect ALL Album 2X badges from every week passed
+    const achievementBadges = [];
+    weeksHistory.forEach(wk => {
+      if (wk.album2xPassed) {
+        const b = getAlbum2xBadge(STATE.agentNo, wk.week);
+        if (b) achievementBadges.push(b);
+      }
+    });
+
+    // Empty state
+    if (levelBadges.length === 0 && tacticalBadges.length === 0 && achievementBadges.length === 0) {
+      container.innerHTML = `
+          <div style="text-align:center;padding:60px 20px;">
+            <div style="font-size:48px;margin-bottom:20px;filter:grayscale(1);opacity:0.3;">🎖️</div>
+            <p style="color:var(--text-muted);font-size:14px;font-weight:600;">Your badge drawer is currently empty.</p>
+            <p style="color:var(--text-ghost);font-size:12px;margin-top:8px;">Earn 50 Lifetime XP to unlock your first clearance badge.</p>
+            <p style="color:var(--red-core);font-family:monospace;font-size:11px;margin-top:15px;letter-spacing:1px;">LIFETIME PROGRESS: ${lifetimeXP} / 50 XP</p>
+          </div>`;
+      return;
+    }
+
+    // Header with total badge count
+    let html = `
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:24px;background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;border:1px solid var(--border-subtle);">
+        Archive contains <strong>${levelBadges.length + tacticalBadges.length + achievementBadges.length}</strong> clearance badges earned since Week 1.<br>
+        <span style="color:var(--text-primary);font-weight:700;">LIFETIME SERVICE XP: ${lifetimeXP}</span>
       </div>
     `;
 
-  if (classicBadges.length > 0) {
-    html += `
-        <div style="margin-bottom:16px; font-family:'Orbitron',sans-serif; color:var(--wave-foam); font-size:12px; letter-spacing:1px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px;">
-          STANDARD CLEARANCES
+    // Render Achievement + Level Badges (Holo Style)
+    if (levelBadges.length > 0 || achievementBadges.length > 0) {
+      html += `
+        <div style="margin-bottom:16px; font-family:'Orbitron',sans-serif; color:var(--wave-foam); font-size:12px; letter-spacing:2px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; text-transform:uppercase;">
+          Clearance Archive
         </div>
-        <div class="badge-grid" style="margin-bottom:24px;">
-          ${classicBadges.map(b => `
+        <div class="badge-grid" style="margin-bottom:32px;">
+          ${[...achievementBadges, ...levelBadges].map(b => `
             <div class="holo-badge-container">
               <div class="holo-circle">
                 <div class="holo-inner">
-                  <img src="${b.imageUrl}" alt="${sanitize(b.name)}" onerror="this.style.display='none'" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                  <img src="${b.imageUrl}" alt="${sanitize(b.name)}" loading="lazy">
                   <div class="holo-shine"></div>
                 </div>
               </div>
@@ -5518,15 +5541,16 @@ function renderBadgesPage() {
             </div>`).join('')}
         </div>
       `;
-  }
+    }
 
-  if (tacticalBadges.length > 0) {
-    html += `
-        <div style="margin-bottom:16px; font-family:'Orbitron',sans-serif; color:var(--red-core); font-size:12px; letter-spacing:1px; border-bottom:1px solid rgba(255,20,95,0.3); padding-bottom:6px;">
-          CLASSIFIED MERITS
+    // Render Tactical Badges (Crimson Style)
+    if (tacticalBadges.length > 0) {
+      html += `
+        <div style="margin-bottom:16px; font-family:'Orbitron',sans-serif; color:var(--red-core); font-size:12px; letter-spacing:2px; border-bottom:1px solid rgba(255,20,95,0.3); padding-bottom:6px; text-transform:uppercase;">
+          Classified Merits
         </div>
         <div class="tactical-grid">
-          ${tacticalBadges.map((badge, i) => `
+          ${tacticalBadges.map((badge) => `
             <div class="tactical-card-container">
                 <div class="tactical-card">
                     <div class="corner-tl"></div>
@@ -5541,11 +5565,15 @@ function renderBadgesPage() {
           `).join('')}
         </div>
       `;
+    }
+
+    container.innerHTML = html;
+
+  } catch (err) {
+    console.error("Badge Drawer Error:", err);
+    showPageError(container, 'renderBadgesPage');
   }
-
-  container.innerHTML = html;
 }
-
 
 // =============================================
 // ██████  WEEKLY SUMMARY
