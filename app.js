@@ -2274,7 +2274,7 @@ function buildMissionCard(icon, title, passed, goalsList, targetPage) {
  * @param {string} containerId — DOM id to render into
  * @param {object} agent — STATE.data.agent
  */
-function renderAttendancePoliceWidget(containerId, agent) {
+function PoliceWidget(containerId, agent) {
   const el = $(containerId);
   if (!el) return;
 
@@ -9150,23 +9150,41 @@ function renderAttendancePage() {
   const istDay = istTime.getDay();   // 0 = Sunday, 6 = Saturday
   const istHour = istTime.getHours();
 
-  // 2. Get Week Info
-  const liveWeekStr = STATE.data?.week || "";  // e.g., "Week 4"
-  const liveWeekNum = parseInt(liveWeekStr.replace(/\D/g, "")) || 0;  // 4
-  const selectedWeek = STATE.week;  // User's dropdown selection
+  // 2. Get the selected week from dropdown
+  const selectedWeek = STATE.week;
+  const selectedWeekNum = parseInt(selectedWeek.replace(/\D/g, "")) || 0;
 
+  // 3. Find which week we're in based on WEEK_DATES
+  let currentWeekNum = 0;
+  const weekDates = CONFIG.WEEK_DATES;
+  const todayIST = istTime.toISOString().split('T')[0]; // "2026-04-12"
+
+  for (const [weekName, startDate] of Object.entries(weekDates)) {
+    const weekNum = parseInt(weekName.replace(/\D/g, ""));
+    const weekStart = new Date(startDate + 'T00:00:00+05:30');
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 7); // +7 days
+
+    if (istTime >= weekStart && istTime < weekEnd) {
+      currentWeekNum = weekNum;
+      break;
+    }
+  }
+
+  // 4. ATTENDANCE WINDOW LOGIC
   let isWindowOpen = false;
   let attendanceTargetWeek = "";
 
-  // 3. WINDOW LOGIC (Sat 3pm IST to Sun 3pm IST for PREVIOUS week)
   if (istDay === 6 && istHour >= 15) {
-      // Saturday 3 PM onwards → Collect attendance for PREVIOUS week
+      // SATURDAY 3 PM+ → Collect for the week that is ENDING
+      // (The week that started last Sunday)
       isWindowOpen = true;
-      attendanceTargetWeek = `Week ${liveWeekNum - 1}`;
-  } else if (istDay === 0 && istHour < 15) {
-      // Sunday before 3 PM → Still collecting for PREVIOUS week
+      attendanceTargetWeek = `Week ${currentWeekNum}`;
+  } 
+  else if (istDay === 0 && istHour < 15) {
+      // SUNDAY BEFORE 3 PM → Still collect for the week that just ended
       isWindowOpen = true;
-      attendanceTargetWeek = `Week ${liveWeekNum - 1}`;
+      attendanceTargetWeek = `Week ${currentWeekNum - 1}`;
   }
 
   const att = a.attendance || {};
@@ -9177,9 +9195,8 @@ function renderAttendancePage() {
 
   html += `<div class="glass-card" style="padding:30px 20px; text-align:center; margin-bottom:24px;">`;
 
-  // 4. DISPLAY LOGIC
+  // 5. DISPLAY LOGIC
   if (isWindowOpen && selectedWeek === attendanceTargetWeek) {
-      // Window is open and user is viewing the correct week
       if (att.submitted) {
           html += `
             <div style="font-size:40px; margin-bottom:12px;">✅</div>
@@ -9200,29 +9217,21 @@ function renderAttendancePage() {
           `;
       }
   } else {
-      // Window is closed OR user is looking at the wrong week
       let lockTitle = "Portal Closed";
       let lockSub = "The portal opens Saturdays at 3:00 PM IST.";
 
       if (isWindowOpen && selectedWeek !== attendanceTargetWeek) {
-          // Portal is open for a different week
           lockTitle = "Wrong Week Selected";
           lockSub = `The portal is currently open for <strong>${attendanceTargetWeek}</strong>. Switch to that week from the sidebar to submit.`;
-      } else if (selectedWeek === `Week ${liveWeekNum}`) {
-          // User is viewing current live week (which hasn't finished yet)
+      } else if (selectedWeekNum === currentWeekNum) {
           lockTitle = "Week In Progress";
           lockSub = `Attendance for ${selectedWeek} will open next Saturday at 3:00 PM IST.`;
+      } else if (selectedWeekNum > currentWeekNum) {
+          lockTitle = "Mission Future";
+          lockSub = "You cannot submit attendance for a week that hasn't started.";
       } else if (istDay === 0 && istHour >= 15) {
-          // Sunday after 3 PM - deadline passed
           lockTitle = "Deadline Passed";
-          lockSub = `The ${attendanceTargetWeek} attendance window closed today at 3:00 PM IST.`;
-      } else {
-          // Check if viewing future week
-          const selectedWeekNum = parseInt(selectedWeek.replace(/\D/g, "")) || 0;
-          if (selectedWeekNum > liveWeekNum) {
-              lockTitle = "Mission Not Started";
-              lockSub = "You cannot submit attendance for a week that hasn't begun.";
-          }
+          lockSub = `The attendance window for ${selectedWeek} closed today at 3:00 PM IST.`;
       }
 
       html += `
@@ -9234,7 +9243,7 @@ function renderAttendancePage() {
 
   html += `</div>`;
 
-  // 5. Team Progress
+  // 6. Team Progress
   if (att.teamStats) {
       html += `
       <div class="archive-card" style="border-top:3px solid var(--gold-core);">
