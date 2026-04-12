@@ -2054,7 +2054,6 @@ async function renderHomeStreakWidget(stats) {
   if (!el) return;
 
   try {
-    // Fetch live streak data to get accurate 'todayCompleted' status
     const d = await Api.call('getStreakData', { agentNo: STATE.agentNo }, { cache: true, ttl: 30000, silent: true });
 
     let streak = stats.streak || 0;
@@ -2064,9 +2063,11 @@ async function renderHomeStreakWidget(stats) {
 
     if (d.success && d.streak) {
       streak = d.streak.current || 0;
-      best = d.streak.best || best;
+      
+      // V2 IMPROVEMENT: Better best streak calculation
+      best = Math.max(stats.bestStreak || 0, d.streak.best || 0, streak);
 
-      // True Logic: Only "Secured" if they streamed today
+      // V1 LOGIC: Full status hierarchy
       if (d.streak.todayCompleted) {
         statusText = '✓ SECURED';
         statusColor = 'var(--green)';
@@ -2092,7 +2093,7 @@ async function renderHomeStreakWidget(stats) {
       </div>
     `;
   } catch (e) {
-    // Fallback if API fails
+    // V1 FALLBACK: Show cached data with proper formatting
     const streak = stats.streak || 0;
     const best = stats.bestStreak || streak;
     el.innerHTML = `
@@ -2103,6 +2104,7 @@ async function renderHomeStreakWidget(stats) {
         </div>
         <div style="text-align:right;">
           <div style="font-size:10px; font-weight:800; color:var(--courage-amber);">Best: ${best}</div>
+          <div style="font-size:9px; color:var(--text-muted); font-style:italic;">Offline</div>
         </div>
       </div>
     `;
@@ -2480,7 +2482,7 @@ function renderProfile() {
     if (album2xBadge) currentWeekBadges.push(album2xBadge);
     currentWeekBadges.push(...xpBadges);
 
-    // ✅ CATCH-ALL LAST.FM LOGIC: checks a.lastfms, a.lastfm, p.lastfms, p.lastfm
+    // ✅ CATCH-ALL LAST.FM LOGIC
     const rawLastfm = a.lastfms || a.lastfm || p.lastfms || p.lastfm;
     const lastfmUsernames = Array.isArray(rawLastfm)
       ? rawLastfm
@@ -2488,202 +2490,241 @@ function renderProfile() {
     const hasLastfm = lastfmUsernames.length > 0;
 
     // ✅ SAFE week dates
-    const daysArray = getWeekDates(STATE.week);
-    const weekDates = {
-      start: daysArray[0],
-      end: daysArray[6]
+    const weekDates = getWeekDates(STATE.week);
+    const weekDatesObj = {
+      start: weekDates[0],
+      end: weekDates[6]
     };
 
     let html = '';
 
     // --- 0. PROFILE AGENT CARD ---
     html += `
-            <div class="profile-agent-card" style="--team-color: ${tColor}">
-                <div style="display: flex; align-items: center; gap: 20px; position: relative; z-index: 5;">
-                    <div class="profile-pfp-large" style="--team-color: ${tColor};">
-                        <img src="${teamPfp(team)}" alt="Agent">
-                        <div class="online-dot"></div>
-                    </div>
-                    <div style="flex: 1;">
-                        <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); letter-spacing: 2px;">FILE # ${a.agentNo || STATE.agentNo}</div>
-                        <div class="name-display" style="font-size: 22px; font-weight: 900; color: #fff; line-height: 1.1; margin: 4px 0;">${sanitize(p.name || 'Agent')}</div>
-                        <div style="display: flex; gap: 10px; margin-top: 8px;">
-                            <span class="micro-tag" style="color: ${tColor}; border-color: ${tColor}">${team.toUpperCase()}</span>
-                            <span class="micro-tag" style="color: var(--wave-foam); border-color: var(--wave-foam)">RANK #${a.rank || '—'}</span>
-                        </div>
-                    </div>
-                    <div class="radar-box"></div>
-                </div>
+      <div class="profile-agent-card" style="--team-color: ${tColor}">
+        <div style="display: flex; align-items: center; gap: 20px; position: relative; z-index: 5;">
+          <div class="profile-pfp-large" style="--team-color: ${tColor};">
+            <img src="${teamPfp(team)}" alt="Agent">
+            <div class="online-dot"></div>
+          </div>
+          <div style="flex: 1;">
+            <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); letter-spacing: 2px;">FILE # ${a.agentNo || STATE.agentNo}</div>
+            <div class="name-display" style="font-size: 22px; font-weight: 900; color: #fff; line-height: 1.1; margin: 4px 0;">${sanitize(p.name || 'Agent')}</div>
+            <div style="display: flex; gap: 10px; margin-top: 8px;">
+              <span class="micro-tag" style="color: ${tColor}; border-color: ${tColor}">${team.toUpperCase()}</span>
+              <span class="micro-tag" style="color: var(--wave-foam); border-color: var(--wave-foam)">RANK #${a.rank || '—'}</span>
             </div>
-        `;
+          </div>
+          <div class="radar-box"></div>
+        </div>
+      </div>
+    `;
 
     // --- 1. STATS GRID ---
     html += `
-            <div class="grid-3" style="margin-bottom:24px;">
-                <div class="stat-box" style="border-top:2px solid var(--red-core);">
-                    <div class="sv red" style="font-size:20px;">${fmt(stats.totalXP)}</div>
-                    <div class="sl">XP (${STATE.week})</div>
-                </div>
-                <div class="stat-box" style="border-top:2px solid var(--wave-foam);">
-                    <div class="sv white" style="font-size:20px;">#${a.rank || '—'}</div>
-                    <div class="sl">Global Rank</div>
-                </div>
-                <div class="stat-box" style="border-top:2px solid var(--gold-core);">
-                    <div class="sv gold" style="font-size:20px;">#${a.teamRank || '—'}</div>
-                    <div class="sl">Team Rank</div>
-                </div>
-                <div class="stat-box">
-                    <div class="sv white">${fmt(stats.trackScrobbles)}</div>
-                    <div class="sl">Track Streams</div>
-                </div>
-                <div class="stat-box">
-                    <div class="sv white">${fmt(stats.albumScrobbles)}</div>
-                    <div class="sl">Album Streams</div>
-                </div>
-                <div class="stat-box">
-                    <div class="sv ${album2xStatus.passed ? 'green' : 'red'}" style="font-size: 10px;">${album2xStatus.passed ?
-        `<span style="color:var(--green); font-family:var(--font-mono); font-size:10px; border:1px solid var(--green); padding:2px 8px; border-radius:4px; background:rgba(0,255,0,0.1);">[✓] SECURED</span>` :
-        `<span style="color:var(--fail); font-family:var(--font-mono); font-size:10px; border:1px solid var(--fail); padding:2px 8px; border-radius:4px; background:rgba(255,0,0,0.1); animation:pulse 2s infinite;">[!] PENDING_ACTION</span>`
-      }</div>
-                    <div class="sl">2X Status</div>
-                </div>
-            </div>
-        `;
+      <div class="grid-3" style="margin-bottom:24px;">
+        <div class="stat-box" style="border-top:2px solid var(--red-core);">
+          <div class="sv red" style="font-size:20px;">${fmt(stats.totalXP)}</div>
+          <div class="sl">XP (${STATE.week})</div>
+        </div>
+        <div class="stat-box" style="border-top:2px solid var(--wave-foam);">
+          <div class="sv white" style="font-size:20px;">#${a.rank || '—'}</div>
+          <div class="sl">Global Rank</div>
+        </div>
+        <div class="stat-box" style="border-top:2px solid var(--gold-core);">
+          <div class="sv gold" style="font-size:20px;">#${a.teamRank || '—'}</div>
+          <div class="sl">Team Rank</div>
+        </div>
+        <div class="stat-box">
+          <div class="sv white">${fmt(stats.trackScrobbles)}</div>
+          <div class="sl">Track Streams</div>
+        </div>
+        <div class="stat-box">
+          <div class="sv white">${fmt(stats.albumScrobbles)}</div>
+          <div class="sl">Album Streams</div>
+        </div>
+        <div class="stat-box">
+          <div class="sv ${album2xStatus.passed ? 'green' : 'red'}" style="font-size: 10px;">${album2xStatus.passed ?
+            `<span style="color:var(--green); font-family:var(--font-mono); font-size:10px; border:1px solid var(--green); padding:2px 8px; border-radius:4px; background:rgba(0,255,0,0.1);">[✓] SECURED</span>` :
+            `<span style="color:var(--fail); font-family:var(--font-mono); font-size:10px; border:1px solid var(--fail); padding:2px 8px; border-radius:4px; background:rgba(255,0,0,0.1); animation:pulse 2s infinite;">[!] PENDING_ACTION</span>`
+          }</div>
+          <div class="sl">2X Status</div>
+        </div>
+      </div>
+    `;
+
+    // --- ✨ NEW: DAILY 2X PROTOCOL STRIP ---
+    const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    
+    html += `
+      <div class="glass-card" style="padding:14px; margin-bottom:24px; border-top:1px solid var(--border-light);">
+        <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px;">Daily 2X Protocol Status</div>
+        <div style="display:grid; grid-template-columns: repeat(7, 1fr); gap:6px;">
+          ${weekDates.map((date, i) => {
+            const dayData = album2xStatus.dailyGrid?.[date] || {};
+            // Count how many tracks passed (need 14 for "2X")
+            const passedCount = Object.values(dayData).filter(c => c?.passed).length;
+            const isDone = passedCount >= 14;
+            const isFuture = date > getKSTDateString();
+            
+            let mark = passedCount > 0 ? passedCount : '—';
+            let color = 'var(--text-ghost)';
+            let border = 'var(--border-subtle)';
+
+            if (isDone) {
+              mark = '2X'; // Show 2X for full completion
+              color = 'var(--red-core)';
+              border = 'var(--red-border)';
+            } else if (passedCount > 0) {
+              mark = '✓'; // Show tick for partial
+              color = 'var(--green)';
+              border = 'var(--green-border)';
+            }
+
+            return `
+              <div style="text-align:center; padding:8px 0; background:rgba(255,255,255,0.02); border:1px solid ${isFuture ? 'transparent' : border}; border-radius:6px; opacity:${isFuture ? 0.3 : 1};">
+                <div style="font-size:7px; color:var(--text-muted); font-weight:800;">${dayLabels[i]}</div>
+                <div style="font-family:var(--font-mono); font-size:11px; font-weight:900; color:${color}; margin-top:2px;">${mark}</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
 
     // --- 2. CONTRIBUTIONS ---
     html += `
-            <div style="display:flex; align-items:center; gap:12px; margin:0 0 16px 0;">
-                <div style="font-size:16px;">🎧</div>
-                <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Agent Contributions</div>
-                <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(74,144,164,0.3), transparent);"></div>
-            </div>
+      <div style="display:flex; align-items:center; gap:12px; margin:0 0 16px 0;">
+        <div style="font-size:16px;">🎧</div>
+        <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Agent Contributions</div>
+        <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(74,144,164,0.3), transparent);"></div>
+      </div>
 
-            <div class="layered-grid" style="margin-bottom:24px;">
-                <div class="glass-card" style="padding:16px;">
-                    <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Top Tracks</div>
-                    <div style="max-height:150px; overflow-y:auto; padding-right:4px;">
-                        ${Object.entries(trackContributions).length > 0
-        ? Object.entries(trackContributions).sort((x, y) => y[1] - x[1]).map(([n, c]) => `
-                                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-subtle); font-size:11px;">
-                                    <span style="color:#fff;">${sanitize(n)}</span>
-                                    <span style="font-family:'Share Tech Mono', monospace; color:var(--wave-foam);">${fmt(c)}</span>
-                                </div>`).join('')
-        : '<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No track data yet</div>'
-      }
-                    </div>
-                </div>
-                <div class="glass-card" style="padding:16px;">
-                    <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Top Albums</div>
-                    <div style="max-height:150px; overflow-y:auto; padding-right:4px;">
-                        ${Object.entries(albumContributions).length > 0
-        ? Object.entries(albumContributions).sort((x, y) => y[1] - x[1]).map(([n, c]) => `
-                                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-subtle); font-size:11px;">
-                                    <span style="color:#fff;">${sanitize(n)}</span>
-                                    <span style="font-family:'Share Tech Mono', monospace; color:var(--wave-foam);">${fmt(c)}</span>
-                                </div>`).join('')
-        : '<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No album data yet</div>'
-      }
-                    </div>
-                </div>
-            </div>
-        `;
+      <div class="layered-grid" style="margin-bottom:24px;">
+        <div class="glass-card" style="padding:16px;">
+          <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Top Tracks</div>
+          <div style="max-height:150px; overflow-y:auto; padding-right:4px;">
+            ${Object.entries(trackContributions).length > 0
+              ? Object.entries(trackContributions).sort((x, y) => y[1] - x[1]).map(([n, c]) => `
+                  <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-subtle); font-size:11px;">
+                    <span style="color:#fff;">${sanitize(n)}</span>
+                    <span style="font-family:'Share Tech Mono', monospace; color:var(--wave-foam);">${fmt(c)}</span>
+                  </div>`).join('')
+              : '<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No track data yet</div>'
+            }
+          </div>
+        </div>
+        <div class="glass-card" style="padding:16px;">
+          <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Top Albums</div>
+          <div style="max-height:150px; overflow-y:auto; padding-right:4px;">
+            ${Object.entries(albumContributions).length > 0
+              ? Object.entries(albumContributions).sort((x, y) => y[1] - x[1]).map(([n, c]) => `
+                  <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-subtle); font-size:11px;">
+                    <span style="color:#fff;">${sanitize(n)}</span>
+                    <span style="font-family:'Share Tech Mono', monospace; color:var(--wave-foam);">${fmt(c)}</span>
+                  </div>`).join('')
+              : '<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No album data yet</div>'
+            }
+          </div>
+        </div>
+      </div>
+    `;
 
     // --- 2.5. LAST.FM VERIFICATION ---
     html += `
-            <div style="display:flex; align-items:center; gap:12px; margin:0 0 16px 0;">
-                <div style="font-size:16px;">🎵</div>
-                <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Last.fm Account</div>
-                <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(74,144,164,0.3), transparent);"></div>
-            </div>
+      <div style="display:flex; align-items:center; gap:12px; margin:0 0 16px 0;">
+        <div style="font-size:16px;">🎵</div>
+        <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Last.fm Account</div>
+        <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(74,144,164,0.3), transparent);"></div>
+      </div>
 
-            <div class="glass-card" style="padding:16px; margin-bottom:24px;">
-                ${hasLastfm ? `
-                    <div style="display:flex; flex-direction:column; gap:8px;">
-                        ${lastfmUsernames.map((u, i) => `
-                            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:8px;">
-                                <div>
-                                    <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:3px;">
-                                        ${lastfmUsernames.length > 1 ? `Account ${i + 1}` : 'Linked Account'}
-                                    </div>
-                                    <div style="font-family:var(--font-mono); font-size:13px; color:#fff; font-weight:700;">
-                                        ${sanitize(u)}
-                                    </div>
-                                </div>
-                                <div style="display:flex; gap:6px; flex-shrink:0; margin-left:12px;">
-                                    <a href="https://www.last.fm/user/${encodeURIComponent(u)}" 
-                                       target="_blank" rel="noopener"
-                                       style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; background:var(--red-whisper); border:1px solid var(--red-border); border-radius:7px; color:var(--red-core); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; text-decoration:none; transition:all 0.2s; white-space:nowrap;"
-                                       onmouseover="this.style.background='rgba(255,20,95,0.15)'; this.style.borderColor='var(--red-core)'"
-                                       onmouseout="this.style.background='var(--red-whisper)'; this.style.borderColor='var(--red-border)'">
-                                        🔗 Profile
-                                    </a>
-                                    ${weekDates ? `
-                                    <a href="https://www.last.fm/user/${encodeURIComponent(u)}/library?from=${weekDates.start}&to=${weekDates.end}" 
-                                       target="_blank" rel="noopener"
-                                       style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; background:rgba(74,144,164,0.08); border:1px solid rgba(74,144,164,0.25); border-radius:7px; color:var(--wave-foam); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; text-decoration:none; transition:all 0.2s; white-space:nowrap;"
-                                       onmouseover="this.style.background='rgba(74,144,164,0.15)'"
-                                       onmouseout="this.style.background='rgba(74,144,164,0.08)'">
-                                        📊 This Week
-                                    </a>
-                                    ` : ''}
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div style="margin-top:12px; padding:10px 14px; background:rgba(74,144,164,0.05); border:1px solid rgba(74,144,164,0.15); border-radius:8px; display:flex; align-items:flex-start; gap:10px;">
-                        <span style="font-size:14px; flex-shrink:0;">ℹ️</span>
-                        <span style="font-size:10px; color:var(--text-muted); line-height:1.5;">
-                            This is the Last.fm account your streams are tracked from. Use <strong style="color:var(--wave-foam);">This Week</strong> to verify your scrobbles are counting. If something looks wrong, contact your team admin.
-                        </span>
-                    </div>
-                ` : `
-                    <div style="text-align:center; padding:20px 0;">
-                        <div style="font-size:28px; margin-bottom:10px; opacity:0.4;">🎵</div>
-                        <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">No Last.fm account linked</div>
-                        <div style="font-size:10px; color:var(--text-ghost);">Contact your team admin to link your account</div>
-                    </div>
-                `}
-            </div>
-        `;
+      <div class="glass-card" style="padding:16px; margin-bottom:24px;">
+        ${hasLastfm ? `
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            ${lastfmUsernames.map((u, i) => `
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:8px;">
+                <div>
+                  <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:3px;">
+                    ${lastfmUsernames.length > 1 ? `Account ${i + 1}` : 'Linked Account'}
+                  </div>
+                  <div style="font-family:var(--font-mono); font-size:13px; color:#fff; font-weight:700;">
+                    ${sanitize(u)}
+                  </div>
+                </div>
+                <div style="display:flex; gap:6px; flex-shrink:0; margin-left:12px;">
+                  <a href="https://www.last.fm/user/${encodeURIComponent(u)}" 
+                     target="_blank" rel="noopener"
+                     style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; background:var(--red-whisper); border:1px solid var(--red-border); border-radius:7px; color:var(--red-core); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; text-decoration:none; transition:all 0.2s; white-space:nowrap;"
+                     onmouseover="this.style.background='rgba(255,20,95,0.15)'; this.style.borderColor='var(--red-core)'"
+                     onmouseout="this.style.background='var(--red-whisper)'; this.style.borderColor='var(--red-border)'">
+                    🔗 Profile
+                  </a>
+                  ${weekDatesObj.start ? `
+                  <a href="https://www.last.fm/user/${encodeURIComponent(u)}/library?from=${weekDatesObj.start}&to=${weekDatesObj.end}" 
+                     target="_blank" rel="noopener"
+                     style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; background:rgba(74,144,164,0.08); border:1px solid rgba(74,144,164,0.25); border-radius:7px; color:var(--wave-foam); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; text-decoration:none; transition:all 0.2s; white-space:nowrap;"
+                     onmouseover="this.style.background='rgba(74,144,164,0.15)'"
+                     onmouseout="this.style.background='rgba(74,144,164,0.08)'">
+                    📊 This Week
+                  </a>
+                  ` : ''}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div style="margin-top:12px; padding:10px 14px; background:rgba(74,144,164,0.05); border:1px solid rgba(74,144,164,0.15); border-radius:8px; display:flex; align-items:flex-start; gap:10px;">
+            <span style="font-size:14px; flex-shrink:0;">ℹ️</span>
+            <span style="font-size:10px; color:var(--text-muted); line-height:1.5;">
+              This is the Last.fm account your streams are tracked from. Use <strong style="color:var(--wave-foam);">This Week</strong> to verify your scrobbles are counting. If something looks wrong, contact your team admin.
+            </span>
+          </div>
+        ` : `
+          <div style="text-align:center; padding:20px 0;">
+            <div style="font-size:28px; margin-bottom:10px; opacity:0.4;">🎵</div>
+            <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">No Last.fm account linked</div>
+            <div style="font-size:10px; color:var(--text-ghost);">Contact your team admin to link your account</div>
+          </div>
+        `}
+      </div>
+    `;
 
     // --- 3. BADGES ---
     html += `
-            <div style="display:flex; align-items:center; gap:12px; margin:0 0 16px 0;">
-                <div style="font-size:16px;">🎖️</div>
-                <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--vinyl-gold);">Recent Honors</div>
-                <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(212,175,55,0.3), transparent);"></div>
-            </div>
-        `;
+      <div style="display:flex; align-items:center; gap:12px; margin:0 0 16px 0;">
+        <div style="font-size:16px;">🎖️</div>
+        <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--vinyl-gold);">Recent Honors</div>
+        <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(212,175,55,0.3), transparent);"></div>
+      </div>
+    `;
 
     if (currentWeekBadges.length > 0) {
       html += `
-                <div class="glass-card" style="padding:16px; margin-bottom:24px;">
-                    <div class="badge-grid">
-                        ${currentWeekBadges.map(b => `
-                            <div class="holo-badge-container">
-                                <div class="holo-circle">
-                                    <div class="holo-inner">
-                                        <img src="${b.imageUrl}" alt="${sanitize(b.name)}" onerror="this.style.display='none'">
-                                        <div class="holo-shine"></div>
-                                    </div>
-                                </div>
-                                <div class="badge-label">${sanitize(b.name)}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <button onclick="goTo('badges')" class="btn-outline" style="width:100%; margin-top:15px; font-size:10px;">
-                        🎒 View Full Archive →
-                    </button>
+        <div class="glass-card" style="padding:16px; margin-bottom:24px;">
+          <div class="badge-grid">
+            ${currentWeekBadges.map(b => `
+              <div class="holo-badge-container">
+                <div class="holo-circle">
+                  <div class="holo-inner">
+                    <img src="${b.imageUrl}" alt="${sanitize(b.name)}" onerror="this.style.display='none'">
+                    <div class="holo-shine"></div>
+                  </div>
                 </div>
-            `;
+                <div class="badge-label">${sanitize(b.name)}</div>
+              </div>
+            `).join('')}
+          </div>
+          <button onclick="goTo('badges')" class="btn-outline" style="width:100%; margin-top:15px; font-size:10px;">
+            🎒 View Full Archive →
+          </button>
+        </div>
+      `;
     } else {
       html += `
-                <div class="glass-card" style="padding:30px 20px; text-align:center; margin-bottom:24px;">
-                    <div style="font-size:32px; margin-bottom:12px; opacity:0.5;">🔒</div>
-                    <p style="font-size:12px; color:var(--text-muted); margin:0;">Earn <strong style="color:var(--vinyl-gold);">50 XP</strong> this week to unlock an honor badge.</p>
-                    <button onclick="goTo('badges')" class="btn-outline" style="margin-top:16px; font-size:10px;">🎒 View Badge Drawer</button>
-                </div>
-            `;
+        <div class="glass-card" style="padding:30px 20px; text-align:center; margin-bottom:24px;">
+          <div style="font-size:32px; margin-bottom:12px; opacity:0.5;">🔒</div>
+          <p style="font-size:12px; color:var(--text-muted); margin:0;">Earn <strong style="color:var(--vinyl-gold);">50 XP</strong> this week to unlock an honor badge.</p>
+          <button onclick="goTo('badges')" class="btn-outline" style="margin-top:16px; font-size:10px;">🎒 View Badge Drawer</button>
+        </div>
+      `;
     }
 
     // --- 3.5 TACTICAL BADGES ---
@@ -2693,73 +2734,73 @@ function renderProfile() {
 
     if (coolBadges.length > 0) {
       html += `
-                <div style="display:flex; align-items:center; gap:12px; margin:24px 0 16px 0;">
-                    <div style="font-size:16px;">🛡️</div>
-                    <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Classified Merits</div>
-                    <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(74,144,164,0.3), transparent);"></div>
-                </div>
+        <div style="display:flex; align-items:center; gap:12px; margin:24px 0 16px 0;">
+          <div style="font-size:16px;">🛡️</div>
+          <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Classified Merits</div>
+          <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(74,144,164,0.3), transparent);"></div>
+        </div>
 
-                <div class="glass-card" style="padding:16px; margin-bottom:24px;">
-                    <div class="tactical-grid">
-                        ${coolBadges.map(b => `
-                            <div class="tactical-card-container">
-                                <div class="tactical-card">
-                                    <div class="corner-tl"></div>
-                                    <div class="corner-br"></div>
-                                    <div class="tactical-inner">
-                                        <img src="${b.imageUrl}" alt="Badge">
-                                    </div>
-                                    <div class="tactical-shine"></div>
-                                </div>
-                                <div class="tactical-label">MERIT ${b.name.split(' ')[1]}</div>
-                            </div>
-                        `).join('')}
-                    </div>
+        <div class="glass-card" style="padding:16px; margin-bottom:24px;">
+          <div class="tactical-grid">
+            ${coolBadges.map(b => `
+              <div class="tactical-card-container">
+                <div class="tactical-card">
+                  <div class="corner-tl"></div>
+                  <div class="corner-br"></div>
+                  <div class="tactical-inner">
+                    <img src="${b.imageUrl}" alt="Badge">
+                  </div>
+                  <div class="tactical-shine"></div>
                 </div>
-            `;
+                <div class="tactical-label">MERIT ${b.name.split(' ')[1]}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
     }
 
     // --- 4. GHOST PROTOCOL (LEAVE) ---
     html += `
-            <div class="archive-card" style="margin-bottom:24px; border-color:${isExempt ? 'var(--text-muted)' : 'var(--courage-amber)'}; background:${isExempt ? 'var(--bg-panel)' : 'rgba(255,149,0,0.03)'};">
-                <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between;">
-                    <div style="flex:1; min-width:200px;">
-                        <div style="font-size:13px; font-weight:800; color:${isExempt ? 'var(--text-muted)' : 'var(--courage-amber)'}; letter-spacing:1px; display:flex; align-items:center; gap:8px;">
-                            <span>${isExempt ? '💤' : '📝'}</span>
-                            ${isExempt ? 'GHOST PROTOCOL: ACTIVE' : 'REQUEST LEAVE OF ABSENCE'}
-                        </div>
-                        <div style="font-size:10px; color:var(--text-secondary); margin-top:6px; line-height:1.5;">
-                            ${isExempt
-        ? 'You are exempt from missions this week. No XP awarded. Rest well, Agent.'
-        : "Can't stream this week? Apply for leave to protect your team stats. (0 XP earned)"}
-                        </div>
-                    </div>
-                    <div>
-                        ${!isExempt ? `
-                        <button onclick="openLeaveModal()" class="btn-outline" style="border-color:var(--courage-amber); color:var(--courage-amber); white-space:nowrap;">
-                            Apply Leave
-                        </button>
-                        ` : `
-                        <button onclick="cancelLeaveRequest()" class="btn-outline" style="border-color:var(--fail); color:var(--fail); white-space:nowrap;">
-                            Cancel Leave
-                        </button>
-                        `}
-                    </div>
-                </div>
+      <div class="archive-card" style="margin-bottom:24px; border-color:${isExempt ? 'var(--text-muted)' : 'var(--courage-amber)'}; background:${isExempt ? 'var(--bg-panel)' : 'rgba(255,149,0,0.03)'};">
+        <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between;">
+          <div style="flex:1; min-width:200px;">
+            <div style="font-size:13px; font-weight:800; color:${isExempt ? 'var(--text-muted)' : 'var(--courage-amber)'}; letter-spacing:1px; display:flex; align-items:center; gap:8px;">
+              <span>${isExempt ? '💤' : '📝'}</span>
+              ${isExempt ? 'GHOST PROTOCOL: ACTIVE' : 'REQUEST LEAVE OF ABSENCE'}
             </div>
-        `;
+            <div style="font-size:10px; color:var(--text-secondary); margin-top:6px; line-height:1.5;">
+              ${isExempt
+                ? 'You are exempt from missions this week. No XP awarded. Rest well, Agent.'
+                : "Can't stream this week? Apply for leave to protect your team stats. (0 XP earned)"}
+            </div>
+          </div>
+          <div>
+            ${!isExempt ? `
+            <button onclick="openLeaveModal()" class="btn-outline" style="border-color:var(--courage-amber); color:var(--courage-amber); white-space:nowrap;">
+              Apply Leave
+            </button>
+            ` : `
+            <button onclick="cancelLeaveRequest()" class="btn-outline" style="border-color:var(--fail); color:var(--fail); white-space:nowrap;">
+              Cancel Leave
+            </button>
+            `}
+          </div>
+        </div>
+      </div>
+    `;
 
     // --- 5. RETIREMENT ---
     html += `
-            <div style="text-align:center; padding-top:20px; border-top:1px dashed rgba(255,59,92,0.3);">
-                <p style="font-size:10px; color:var(--text-muted); margin-bottom:12px;">Leaving permanently? This action cannot be undone.</p>
-                <button onclick="promptDeleteAccount()" style="background:transparent; border:1px solid var(--fail); color:var(--fail); padding:10px 24px; border-radius:8px; font-size:10px; font-weight:800; cursor:pointer; text-transform:uppercase; letter-spacing:1px; transition:all 0.3s;"
-                    onmouseover="this.style.background='rgba(255,59,92,0.1)'"
-                    onmouseout="this.style.background='transparent'">
-                    ⚠️ Retire From Mission
-                </button>
-            </div>
-        `;
+      <div style="text-align:center; padding-top:20px; border-top:1px dashed rgba(255,59,92,0.3);">
+        <p style="font-size:10px; color:var(--text-muted); margin-bottom:12px;">Leaving permanently? This action cannot be undone.</p>
+        <button onclick="promptDeleteAccount()" style="background:transparent; border:1px solid var(--fail); color:var(--fail); padding:10px 24px; border-radius:8px; font-size:10px; font-weight:800; cursor:pointer; text-transform:uppercase; letter-spacing:1px; transition:all 0.3s;"
+          onmouseover="this.style.background='rgba(255,59,92,0.1)'"
+          onmouseout="this.style.background='transparent'">
+          ⚠️ Retire From Mission
+        </button>
+      </div>
+    `;
 
     container.innerHTML = html;
 
@@ -2769,16 +2810,16 @@ function renderProfile() {
   } catch (err) {
     console.error('renderProfile crashed:', err);
     container.innerHTML = `
-            <div class="glass-card" style="padding:24px; border-left:3px solid var(--fail); margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:800; color:var(--fail); margin-bottom:8px;">⚠️ Profile Failed To Load</div>
-                <div style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono); line-height:1.6;">
-                    ${err.message}
-                </div>
-                <button onclick="renderProfile()" class="btn-outline" style="margin-top:16px; font-size:10px;">
-                    ↺ Retry
-                </button>
-            </div>
-        `;
+      <div class="glass-card" style="padding:24px; border-left:3px solid var(--fail); margin-bottom:16px;">
+        <div style="font-size:13px; font-weight:800; color:var(--fail); margin-bottom:8px;">⚠️ Profile Failed To Load</div>
+        <div style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono); line-height:1.6;">
+          ${err.message}
+        </div>
+        <button onclick="renderProfile()" class="btn-outline" style="margin-top:16px; font-size:10px;">
+          ↺ Retry
+        </button>
+      </div>
+    `;
   }
 }
 // =============================================
@@ -8495,8 +8536,8 @@ async function loadCareerHistory() {
   showPageLoading(container);
 
   try {
-    const d = await Api.call('getAgentCareerStats', {
-      agentNo: STATE.agentNo
+    const d = await Api.call('getAgentCareerStats', { 
+      agentNo: STATE.agentNo 
     }, { cache: true, ttl: 120_000 });
 
     if (!d.success || !d.weeks?.length) {
@@ -8504,37 +8545,70 @@ async function loadCareerHistory() {
       return;
     }
 
-    // Aggregate stats
+    // ✅ FIX: Calculate Best Rank from actual history
+    const allRanks = d.weeks.map(w => parseInt(w.rank)).filter(r => r > 0);
+    const bestRank = allRanks.length > 0 ? Math.min(...allRanks) : '—';
     const totals = d.totals || {};
 
     container.innerHTML = `
-        <!-- Lifetime aggregates -->
-        <div class="grid-4" style="margin-bottom:16px;">
-          <div class="stat-box"><div class="sv gold">${fmt(totals.totalXP || 0)}</div><div class="sl">Lifetime XP</div></div>
-          <div class="stat-box"><div class="sv white">${fmt(totals.totalStreams || 0)}</div><div class="sl">Total Streams</div></div>
-          <div class="stat-box"><div class="sv purple">${d.weeks.length}</div><div class="sl">Weeks Active</div></div>
-          <div class="stat-box"><div class="sv green">${totals.bestRank || '—'}</div><div class="sl">Best Rank</div></div>
+      <!-- Lifetime aggregates -->
+      <div class="grid-4" style="margin-bottom:16px;">
+        <div class="stat-box">
+          <div class="sv gold">${fmt(totals.totalXP || 0)}</div>
+          <div class="sl">Lifetime XP</div>
         </div>
-  
-        <!-- Week-by-week breakdown -->
-        <div style="max-height:300px;overflow-y:auto;">
-          ${d.weeks.map(w => {
-      const missions = [w.tracksPassed, w.albumsPassed, w.album2xPassed, w.unitPassed, w.sidePassed].filter(Boolean).length;
-      return `
-              <div class="m-row" style="border-left:3px solid ${missions >= 5 ? 'var(--green)' : missions >= 3 ? 'var(--gold-core)' : 'var(--fail)'};">
-                <div style="flex:1;">
-                  <div style="font-size:0.75rem;font-weight:700;">${w.week}</div>
-                  <div style="font-size:0.5625rem;color:var(--text-muted);">${missions}/5 missions • Rank #${w.rank || '—'}</div>
-                </div>
-                <div style="text-align:right;">
-                  <div style="font-size:0.8125rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--red-core);">${fmt(w.xp || 0)}</div>
-                  <div style="font-size:0.5rem;color:var(--text-muted);">${fmt(w.streams || 0)} streams</div>
-                </div>
-              </div>`;
-    }).join('')}
+        <div class="stat-box">
+          <div class="sv white">${fmt(totals.totalStreams || 0)}</div>
+          <div class="sl">Total Streams</div>
         </div>
-      `;
-  } catch {
+        <div class="stat-box">
+          <div class="sv purple">${d.weeks.length}</div>
+          <div class="sl">Weeks Active</div>
+        </div>
+        <div class="stat-box">
+          <div class="sv green">#${bestRank}</div>
+          <div class="sl">Best Rank</div>
+        </div>
+      </div>
+
+      <!-- Week-by-week breakdown -->
+      <div style="max-height:300px;overflow-y:auto;">
+        ${d.weeks.map(w => {
+          const missions = [
+            w.tracksPassed, 
+            w.albumsPassed, 
+            w.album2xPassed, 
+            w.unitPassed, 
+            w.sidePassed
+          ].filter(Boolean).length;
+          
+          return `
+            <div class="m-row" style="border-left:3px solid ${
+              missions >= 5 ? 'var(--green)' : 
+              missions >= 3 ? 'var(--gold-core)' : 
+              'var(--fail)'
+            };">
+              <div style="flex:1;">
+                <div style="font-size:0.75rem;font-weight:700;">${w.week}</div>
+                <div style="font-size:0.5625rem;color:var(--text-muted);">
+                  ${missions}/5 missions • Rank #${w.rank || '—'}
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:0.8125rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--red-core);">
+                  ${fmt(w.xp || 0)}
+                </div>
+                <div style="font-size:0.5rem;color:var(--text-muted);">
+                  ${fmt(w.streams || 0)} streams
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  } catch (err) {
+    console.error('Career history error:', err);
     container.innerHTML = '<div style="color:var(--text-muted);font-size:0.75rem;">Failed to load history</div>';
   }
 }
