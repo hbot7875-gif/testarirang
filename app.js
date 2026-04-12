@@ -9144,12 +9144,17 @@ function renderAttendancePage() {
   const a = STATE.data?.agent;
   if (!a) return;
 
+  const liveWeek = STATE.data.week; 
+  const selectedWeek = STATE.week;
+
   const att = a.attendance || {};
   const team = a.profile?.team || 'Unknown';
 
   const kstDate = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
   const kstDay = kstDate.getDay();
   const isWeekend = kstDay === 0 || kstDay === 6;
+
+  const isWindowOpen = isWeekend && (selectedWeek === liveWeek);
 
   let html = renderGuide('attendance') || '';
   html += renderNarrativeCard('attendance') || '';
@@ -9158,53 +9163,54 @@ function renderAttendancePage() {
   html += `<div class="glass-card" style="padding:30px 20px; text-align:center; margin-bottom:24px;">`;
 
   if (att.submitted) {
-    // Already Submitted
     html += `
-        <div style="font-size:40px; margin-bottom:12px;">✅</div>
-        <div style="font-size:16px; font-weight:800; color:var(--green); letter-spacing:1px; margin-bottom:8px;">Attendance Submitted</div>
-        <div style="font-size:12px; color:var(--text-muted);">You're all set for this week. Thank you!</div>
-      `;
-  } else if (isWeekend) {
-    // Weekend - Ready to Submit
+      <div style="font-size:40px; margin-bottom:12px;">✅</div>
+      <div style="font-size:16px; font-weight:800; color:var(--green); letter-spacing:1px; margin-bottom:8px;">Attendance Submitted</div>
+      <div style="font-size:12px; color:var(--text-muted);">You're all set for ${selectedWeek}.</div>
+    `;
+  } else if (isWindowOpen) {
     html += `
-        <div style="font-size:40px; margin-bottom:12px;">📸</div>
-        <div style="font-size:16px; font-weight:800; color:var(--gold-core); letter-spacing:1px; margin-bottom:12px;">Weekly Check-In</div>
-        <div style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:24px;">
-          1. Drop your Spotify "Recently Played" screenshot in the <strong>${team.replace('Team ', '')} GC</strong>.<br>
-          2. Click the button below to log your attendance.
-        </div>
-        <button class="btn-red" onclick="submitAttendance()" style="max-width:250px;">
-          ✓ Mark Attendance
-        </button>
-      `;
+      <div style="font-size:40px; margin-bottom:12px;">📸</div>
+      <div style="font-size:16px; font-weight:800; color:var(--gold-core); letter-spacing:1px; margin-bottom:12px;">Weekly Check-In</div>
+      <div style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:24px;">
+        1. Drop your Spotify "Recently Played" screenshot in the <strong>${team.replace('Team ', '')} GC</strong>.<br>
+        2. Click the button below to log your attendance.
+      </div>
+      <button class="btn-red" onclick="submitAttendance()" style="max-width:250px;">
+        ✓ Mark Attendance
+      </button>
+    `;
   } else {
-    // Weekday - Locked
     html += `
-        <div style="font-size:40px; margin-bottom:12px; opacity:0.5;">🔒</div>
-        <div style="font-size:14px; font-weight:800; color:var(--text-muted); letter-spacing:1px; margin-bottom:8px;">Locked Until Weekend</div>
-        <div style="font-size:11px; color:var(--text-ghost);">The attendance portal opens on Saturday at 3:00 PM KST.</div>
-      `;
+      <div style="font-size:40px; margin-bottom:12px; opacity:0.5;">🔒</div>
+      <div style="font-size:14px; font-weight:800; color:var(--text-muted); letter-spacing:1px; margin-bottom:8px;">
+        ${selectedWeek > liveWeek ? 'Mission Not Started' : 'Locked Until Weekend'}
+      </div>
+      <div style="font-size:11px; color:var(--text-ghost);">
+        ${selectedWeek > liveWeek ? 'This week is scheduled for the future.' : 'The portal opens on Saturday 3:00 PM KST.'}
+      </div>
+    `;
   }
 
   html += `</div>`;
 
-  // 2. TEAM PROGRESS
+  // 2. TEAM PROGRESS (RESTORED)
   html += `
-      <div class="archive-card" style="border-top:3px solid var(--gold-core);">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <span style="font-size:12px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:1px;">👥 Team Progress</span>
-          <span style="font-size:16px; font-weight:900; font-family:'Share Tech Mono', monospace; color:var(--gold-core);">${att.teamStats?.percentage || 0}%</span>
-        </div>
-        
-        <div class="pbar" style="height:8px; margin-bottom:12px; background:rgba(255,255,255,0.05);">
-          <div class="pfill gold" style="width:${att.teamStats?.percentage || 0}%;"></div>
-        </div>
-        
-        <div style="font-size:11px; color:var(--text-muted); text-align:right;">
-          ${att.teamStats?.submitted || 0} / ${att.teamStats?.total || 0} Agents Submitted
-        </div>
+    <div class="archive-card" style="border-top:3px solid var(--gold-core);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span style="font-size:12px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:1px;">👥 Team Progress</span>
+        <span style="font-size:16px; font-weight:900; font-family:'Share Tech Mono', monospace; color:var(--gold-core);">${att.teamStats?.percentage || 0}%</span>
       </div>
-    `;
+      
+      <div class="pbar" style="height:8px; margin-bottom:12px; background:rgba(255,255,255,0.05);">
+        <div class="pfill gold" style="width:${att.teamStats?.percentage || 0}%;"></div>
+      </div>
+      
+      <div style="font-size:11px; color:var(--text-muted); text-align:right;">
+        ${att.teamStats?.submitted || 0} / ${att.teamStats?.total || 0} Agents Submitted
+      </div>
+    </div>
+  `;
 
   container.innerHTML = html;
 }
