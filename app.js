@@ -5475,61 +5475,69 @@ async function renderBadgesPage() {
   showPageLoading(container);
 
   try {
-    // Fetch lifetime career stats (includes all weeks)
+    // 1. Fetch full career history
     const careerData = await Api.call('getAgentCareerStats', { 
       agentNo: STATE.agentNo 
     }, { cache: true, ttl: 60000 });
 
-    if (!careerData.success) throw new Error("Failed to load career data");
+    if (!careerData.success) throw new Error("Database connection lost");
 
-    const lifetimeXP = parseInt(careerData.totals?.totalXP) || 0;
     const weeksHistory = careerData.weeks || [];
-
-    // Generate ALL level badges (based on lifetime XP)
-    const levelBadges = getLevelBadges(STATE.agentNo, lifetimeXP);
     
-    // Generate ALL tactical badges (no week restrictions)
-    const tacticalBadges = (typeof getTacticalBadges === 'function')
-      ? getTacticalBadges(STATE.agentNo, lifetimeXP)
-      : [];
+    // Arrays to hold our final badge collections
+    let allHoloBadges = [];
+    let allTacticalBadges = [];
 
-    // Collect ALL Album 2X badges from every week passed
-    const achievementBadges = [];
+    // 2. Loop through every week exactly as it happened
     weeksHistory.forEach(wk => {
+      const weekName = wk.week; // "Week 1", "Week 2", etc.
+      const weeklyXP = parseInt(wk.xp) || 0;
+
+      // --- A. Copy the Level Badges for this week ---
+      const levelBadges = getLevelBadges(STATE.agentNo, weeklyXP);
+      allHoloBadges.push(...levelBadges);
+
+      // --- B. Copy the Album 2X Badge for this week ---
       if (wk.album2xPassed) {
-        const b = getAlbum2xBadge(STATE.agentNo, wk.week);
-        if (b) achievementBadges.push(b);
+        const b = getAlbum2xBadge(STATE.agentNo, weekName);
+        if (b) allHoloBadges.push(b);
+      }
+
+      // --- C. Copy the Tactical Badges (Classified Merits) ---
+      // Logic: Only active from Week 4 onwards
+      const isTacticalActive = (weekName !== 'Week 1' && weekName !== 'Week 2' && weekName !== 'Week 3');
+      if (isTacticalActive) {
+        const tBadges = getTacticalBadges(STATE.agentNo, weeklyXP);
+        allTacticalBadges.push(...tBadges);
       }
     });
 
-    // Empty state
-    if (levelBadges.length === 0 && tacticalBadges.length === 0 && achievementBadges.length === 0) {
+    // 3. If everything is empty, show the "New Agent" message
+    if (allHoloBadges.length === 0 && allTacticalBadges.length === 0) {
       container.innerHTML = `
           <div style="text-align:center;padding:60px 20px;">
             <div style="font-size:48px;margin-bottom:20px;filter:grayscale(1);opacity:0.3;">🎖️</div>
-            <p style="color:var(--text-muted);font-size:14px;font-weight:600;">Your badge drawer is currently empty.</p>
-            <p style="color:var(--text-ghost);font-size:12px;margin-top:8px;">Earn 50 Lifetime XP to unlock your first clearance badge.</p>
-            <p style="color:var(--red-core);font-family:monospace;font-size:11px;margin-top:15px;letter-spacing:1px;">LIFETIME PROGRESS: ${lifetimeXP} / 50 XP</p>
+            <p style="color:var(--text-muted);font-size:14px;font-weight:600;">Your Archive is currently empty.</p>
+            <p style="color:var(--text-ghost);font-size:12px;margin-top:8px;">Stream to earn badges. They will be archived here automatically.</p>
           </div>`;
       return;
     }
 
-    // Header with total badge count
+    // 4. Build the UI
     let html = `
       <div style="font-size:11px;color:var(--text-muted);margin-bottom:24px;background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;border:1px solid var(--border-subtle);">
-        Archive contains <strong>${levelBadges.length + tacticalBadges.length + achievementBadges.length}</strong> clearance badges earned since Week 1.<br>
-        <span style="color:var(--text-primary);font-weight:700;">LIFETIME SERVICE XP: ${lifetimeXP}</span>
+        Digital Archive synced. Found <strong>${allHoloBadges.length + allTacticalBadges.length}</strong> items from previous weeks.
       </div>
     `;
 
-    // Render Achievement + Level Badges (Holo Style)
-    if (levelBadges.length > 0 || achievementBadges.length > 0) {
+    // Render the Holo Collection (Milestones & Album 2X)
+    if (allHoloBadges.length > 0) {
       html += `
         <div style="margin-bottom:16px; font-family:'Orbitron',sans-serif; color:var(--wave-foam); font-size:12px; letter-spacing:2px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px; text-transform:uppercase;">
-          Clearance Archive
+          Standard Clearances
         </div>
         <div class="badge-grid" style="margin-bottom:32px;">
-          ${[...achievementBadges, ...levelBadges].map(b => `
+          ${allHoloBadges.map(b => `
             <div class="holo-badge-container">
               <div class="holo-circle">
                 <div class="holo-inner">
@@ -5543,14 +5551,14 @@ async function renderBadgesPage() {
       `;
     }
 
-    // Render Tactical Badges (Crimson Style)
-    if (tacticalBadges.length > 0) {
+    // Render the Tactical Collection (Classified Merits)
+    if (allTacticalBadges.length > 0) {
       html += `
         <div style="margin-bottom:16px; font-family:'Orbitron',sans-serif; color:var(--red-core); font-size:12px; letter-spacing:2px; border-bottom:1px solid rgba(255,20,95,0.3); padding-bottom:6px; text-transform:uppercase;">
           Classified Merits
         </div>
         <div class="tactical-grid">
-          ${tacticalBadges.map((badge) => `
+          ${allTacticalBadges.map((badge) => `
             <div class="tactical-card-container">
                 <div class="tactical-card">
                     <div class="corner-tl"></div>
@@ -5570,7 +5578,7 @@ async function renderBadgesPage() {
     container.innerHTML = html;
 
   } catch (err) {
-    console.error("Badge Drawer Error:", err);
+    console.error("Archive Sync Failed:", err);
     showPageError(container, 'renderBadgesPage');
   }
 }
