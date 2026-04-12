@@ -4098,7 +4098,6 @@ h4,
 }
 
 /* UI Elements & Buttons */
-.nav-item,
 .btn-red,
 .btn-outline,
 .label-tag,
@@ -4109,6 +4108,7 @@ textarea {
   font-family: var(--font-ui) !important;
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 /* Data, Stats, and XP */
@@ -4641,11 +4641,11 @@ textarea {
 
 .narrative-name {
   font-family: var(--font-display);
-  font-size: 12px;
+  font-size: 15px; /* Slightly larger since it's not all caps */
   font-weight: 800;
   color: var(--n-color);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  text-transform: none; /* <--- FIXES THE NAME */
+  letter-spacing: 0.5px;
 }
 
 .narrative-role {
