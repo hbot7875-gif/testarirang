@@ -5393,63 +5393,97 @@ async function renderSecretMissions() {
 
     let html = renderGuide('secretmissions') || '';
 
-    // Status Header Card
+    // --- 1. STATUS HEADER CARD ---
     html += `
-              <div class="archive-card" style="margin-bottom:24px; border-top:3px solid var(--purple-core); background:linear-gradient(135deg, rgba(167, 139, 250, 0.05), var(--bg-panel));">
-                  <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px;">
-                      <div>
-                          <div style="font-size:14px; font-weight:900; color:#fff; font-family:'Orbitron', sans-serif;">CLASSIFIED OPS</div>
-                          <div style="font-size:10px; color:${teamColor(myTeam)}; font-weight:800; letter-spacing:1px; margin-top:4px;">TEAM ${myTeam.replace('Team ', '').toUpperCase()}</div>
-                      </div>
-                      <div style="text-align:right;">
-                          <div style="font-size:20px; font-weight:900; font-family:'Share Tech Mono', monospace; color:var(--purple-mid); line-height:1;">+${myStats.secretXP || 0}</div>
-                          <div style="font-size:8px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">BONUS XP SECURED</div>
-                      </div>
-                  </div>
-  
-                  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
-                      <div style="background:rgba(0,0,0,0.4); padding:12px; border:1px solid var(--border-subtle); border-radius:8px; text-align:center;">
-                          <div style="font-size:16px; font-weight:900; font-family:'Share Tech Mono', monospace; color:var(--green);">${myStats.completed || 0}</div>
-                          <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">COMPLETED</div>
-                      </div>
-                      <div style="background:rgba(0,0,0,0.4); padding:12px; border:1px solid var(--border-subtle); border-radius:8px; text-align:center;">
-                          <div style="font-size:16px; font-weight:900; font-family:'Share Tech Mono', monospace; color:var(--courage-amber);">${activeMissions.length}</div>
-                          <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">ACTIVE</div>
-                      </div>
-                      <div style="background:rgba(0,0,0,0.4); padding:12px; border:1px solid var(--border-subtle); border-radius:8px; text-align:center;">
-                          <div style="font-size:16px; font-weight:900; font-family:'Share Tech Mono', monospace; color:#fff;">${CONFIG.SECRET_MISSIONS?.maxMissionsPerTeam || 5}</div>
-                          <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">MAX / WEEK</div>
-                      </div>
-                  </div>
-              </div>
-          `;
+      <div class="archive-card" style="margin-bottom:24px; border-top:3px solid var(--purple-core); background:linear-gradient(135deg, rgba(167, 139, 250, 0.05), var(--bg-panel));">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px;">
+          <div>
+            <div style="font-size:14px; font-weight:900; color:#fff; font-family:'Orbitron', sans-serif;">CLASSIFIED OPS</div>
+            <div style="font-size:10px; color:${teamColor(myTeam)}; font-weight:800; letter-spacing:1px; margin-top:4px;">TEAM ${myTeam.replace('Team ', '').toUpperCase()}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:20px; font-weight:900; font-family:'Share Tech Mono', monospace; color:var(--purple-mid); line-height:1;">+${myStats.secretXP || 0}</div>
+            <div style="font-size:8px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">BONUS XP SECURED</div>
+          </div>
+        </div>
 
-    // Assigned Missions (Urgent)
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+          <div style="background:rgba(0,0,0,0.4); padding:12px; border:1px solid var(--border-subtle); border-radius:8px; text-align:center;">
+            <div style="font-size:16px; font-weight:900; font-family:'Share Tech Mono', monospace; color:var(--green);">${myStats.completed || 0}</div>
+            <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">COMPLETED</div>
+          </div>
+          <div style="background:rgba(0,0,0,0.4); padding:12px; border:1px solid var(--border-subtle); border-radius:8px; text-align:center;">
+            <div style="font-size:16px; font-weight:900; font-family:'Share Tech Mono', monospace; color:var(--courage-amber);">${activeMissions.length}</div>
+            <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">ACTIVE</div>
+          </div>
+          <div style="background:rgba(0,0,0,0.4); padding:12px; border:1px solid var(--border-subtle); border-radius:8px; text-align:center;">
+            <div style="font-size:16px; font-weight:900; font-family:'Share Tech Mono', monospace; color:#fff;">${CONFIG.SECRET_MISSIONS?.maxMissionsPerTeam || 5}</div>
+            <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-top:4px;">MAX / WEEK</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // --- 2. ASSIGNED MISSIONS (URGENT) ---
     if (myAssigned.length > 0) {
       html += `
-                  <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-                      <span style="font-size:16px;">🎯</span>
-                      <div style="font-size:11px; font-weight:900; color:var(--courage-amber); text-transform:uppercase; letter-spacing:2px;">ACTION REQUIRED</div>
-                      <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(255,149,0,0.3), transparent);"></div>
-                  </div>
-                  ${myAssigned.map(m => renderSecretMissionCard(m, myTeam, true)).join('')}
-              `;
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+          <span style="font-size:16px;">🎯</span>
+          <div style="font-size:11px; font-weight:900; color:var(--courage-amber); text-transform:uppercase; letter-spacing:2px;">ACTION REQUIRED</div>
+          <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(255,149,0,0.3), transparent);"></div>
+        </div>
+        ${myAssigned.map(m => renderSecretMissionCard(m, myTeam, true)).join('')}
+      `;
     }
 
-    // Active Missions
+    // --- 3. ACTIVE TEAM MISSIONS ---
     html += `
-              <div style="display:flex; align-items:center; gap:12px; margin:24px 0 16px;">
-                  <span style="font-size:16px;">🔓</span>
-                  <div style="font-size:11px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px;">ACTIVE TEAM MISSIONS</div>
-                  <div style="flex:1; height:1px; background:linear-gradient(90deg, var(--border-light), transparent);"></div>
-              </div>
-          `;
+      <div style="display:flex; align-items:center; gap:12px; margin:24px 0 16px;">
+        <span style="font-size:16px;">🔓</span>
+        <div style="font-size:11px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px;">ACTIVE TEAM MISSIONS</div>
+        <div style="flex:1; height:1px; background:linear-gradient(90deg, var(--border-light), transparent);"></div>
+      </div>
+    `;
 
     if (activeMissions.length > 0) {
       html += activeMissions.map(m => renderSecretMissionCard(m, myTeam, false)).join('');
     } else {
       html += `<div class="glass-card" style="padding:40px; text-align:center; color:var(--text-muted); font-size:11px;">No active secret missions right now. Keep an eye on the radar.</div>`;
     }
+
+    // --- 4. TEAM INTELLIGENCE HUD (NO SCROLLING) ---
+    html += `
+      <div style="display:flex; align-items:center; gap:12px; margin:32px 0 16px;">
+        <span style="font-size:16px;">📊</span>
+        <div style="font-size:11px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px;">TEAM INTELLIGENCE HUD</div>
+        <div style="flex:1; height:1px; background:linear-gradient(90deg, var(--border-light), transparent);"></div>
+      </div>
+
+      <div class="intel-hud-grid">
+        ${Object.keys(CONFIG.TEAMS).map(tName => {
+          const isMe = tName === myTeam;
+          const tStats = statsData.teams?.[tName] || { secretXP: 0, completed: 0 };
+          const tColor = teamColor(tName);
+          const pfp = teamPfp(tName);
+          
+          return `
+            <div class="intel-hud-card ${isMe ? 'is-me' : ''}" style="--team-color: ${tColor};">
+              <div class="hud-card-inner">
+                <div class="hud-pfp">
+                  <img src="${pfp}" alt="${tName}">
+                </div>
+                <div class="hud-info">
+                  <div class="hud-team" style="color: ${tColor}">${tName.replace('Team ', '')}</div>
+                  <div class="hud-xp">+${tStats.secretXP || 0} XP</div>
+                  <div class="hud-stats">${tStats.completed || 0}/5 DONE</div>
+                </div>
+              </div>
+              ${isMe ? '<div class="hud-tag">YOUR SQUAD</div>' : ''}
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
 
     // Clear notifications logic
     STATE.lastChecked.missionCount = activeMissions.length;
@@ -5468,51 +5502,51 @@ function renderSecretMissionCard(mission, team, isAssigned = false) {
   const xp = mission.xpReward || 5;
 
   return `
-          <div class="glass-card" style="margin-bottom:16px; border-left:4px solid ${isAssigned ? 'var(--courage-amber)' : 'var(--purple-core)'}; padding:20px;">
-              
-              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
-                  <div style="display:flex; gap:12px; align-items:center;">
-                      <div style="width:40px; height:40px; border-radius:10px; background:rgba(255,255,255,0.05); border:1px solid var(--border-subtle); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">
-                          ${mType.icon}
-                      </div>
-                      <div>
-                          <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; display:flex; gap:8px;">
-                              ${mType.name} 
-                              ${isAssigned ? '<span style="color:var(--courage-amber); font-weight:800;">[ ASSIGNED TO YOU ]</span>' : ''}
-                          </div>
-                          <div style="font-size:14px; font-weight:800; color:#fff; line-height:1.3;">${sanitize(mission.title)}</div>
-                      </div>
-                  </div>
-                  
-                  <div style="background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); padding:6px 12px; border-radius:8px; text-align:center;">
-                      <div style="font-size:14px; font-weight:900; color:var(--vinyl-gold); font-family:'Share Tech Mono', monospace;">+${xp}</div>
-                      <div style="font-size:8px; color:var(--text-secondary); text-transform:uppercase;">XP</div>
-                  </div>
-              </div>
-              
-              <div style="font-size:12px; color:var(--text-secondary); line-height:1.6; padding:12px; background:rgba(0,0,0,0.3); border-radius:8px; border:1px solid var(--border-subtle);">
-                  ${sanitize(mission.briefing || mission.description || 'Proceed with mission parameters.')}
-              </div>
-  
-              ${mission.goalTarget ? `
-                  <div style="margin-top:16px;">
-                      <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:1px;">
-                          <span>Target Progress</span>
-                          <span style="color:#fff; font-weight:800;">${mission.progress?.[team] || 0} / ${mission.goalTarget}</span>
-                      </div>
-                      <div class="pbar" style="height:6px; background:rgba(255,255,255,0.05);">
-                          <div class="pfill purple" style="width:${Math.min(100, ((mission.progress?.[team] || 0) / mission.goalTarget) * 100)}%;"></div>
-                      </div>
-                  </div>
-              ` : ''}
-  
-              ${isAssigned ? `
-                  <button onclick="markMissionComplete('${mission.id}')" class="btn-red" style="margin-top:20px; width:100%; font-size:12px; padding:14px; background:linear-gradient(135deg, var(--green), #00b34a); box-shadow:0 10px 20px rgba(0,255,102,0.2);">
-                      ✓ MARK MISSION COMPLETE
-                  </button>
-              ` : ''}
+    <div class="glass-card" style="margin-bottom:16px; border-left:4px solid ${isAssigned ? 'var(--courage-amber)' : 'var(--purple-core)'}; padding:20px;">
+      
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+        <div style="display:flex; gap:12px; align-items:center;">
+          <div style="width:40px; height:40px; border-radius:10px; background:rgba(255,255,255,0.05); border:1px solid var(--border-subtle); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">
+            ${mType.icon}
           </div>
-      `;
+          <div>
+            <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; display:flex; gap:8px;">
+              ${mType.name} 
+              ${isAssigned ? '<span style="color:var(--courage-amber); font-weight:800;">[ ASSIGNED TO YOU ]</span>' : ''}
+            </div>
+            <div style="font-size:14px; font-weight:800; color:#fff; line-height:1.3;">${sanitize(mission.title)}</div>
+          </div>
+        </div>
+        
+        <div style="background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); padding:6px 12px; border-radius:8px; text-align:center;">
+          <div style="font-size:14px; font-weight:900; color:var(--vinyl-gold); font-family:'Share Tech Mono', monospace;">+${xp}</div>
+          <div style="font-size:8px; color:var(--text-secondary); text-transform:uppercase;">XP</div>
+        </div>
+      </div>
+      
+      <div style="font-size:12px; color:var(--text-secondary); line-height:1.6; padding:12px; background:rgba(0,0,0,0.3); border-radius:8px; border:1px solid var(--border-subtle);">
+        ${sanitize(mission.briefing || mission.description || 'Proceed with mission parameters.')}
+      </div>
+
+      ${mission.goalTarget ? `
+        <div style="margin-top:16px;">
+          <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:1px;">
+            <span>Target Progress</span>
+            <span style="color:#fff; font-weight:800;">${mission.progress?.[team] || 0} / ${mission.goalTarget}</span>
+          </div>
+          <div class="pbar" style="height:6px; background:rgba(255,255,255,0.05);">
+            <div class="pfill purple" style="width:${Math.min(100, ((mission.progress?.[team] || 0) / mission.goalTarget) * 100)}%;"></div>
+          </div>
+        </div>
+      ` : ''}
+
+      ${isAssigned ? `
+        <button onclick="markMissionComplete('${mission.id}')" class="btn-red" style="margin-top:20px; width:100%; font-size:12px; padding:14px; background:linear-gradient(135deg, var(--green), #00b34a); box-shadow:0 10px 20px rgba(0,255,102,0.2);">
+          ✓ MARK MISSION COMPLETE
+        </button>
+      ` : ''}
+    </div>
+  `;
 }
 
 // =============================================
