@@ -6517,3 +6517,96 @@ img {
   text-transform: uppercase;
   letter-spacing: 2px;
 }
+/* ── SECRET MISSIONS TACTICAL HUD ── */
+
+.intel-hud-grid {
+    display: grid;
+    /* 2 columns on mobile, auto-fills on desktop */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+/* On Desktop/Tablet, use more columns */
+@media (min-width: 600px) {
+    .intel-hud-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+}
+
+.intel-hud-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 12px;
+    transition: all 0.3s ease;
+}
+
+.hud-card-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.hud-pfp {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid var(--team-color);
+    margin-bottom: 8px;
+    overflow: hidden;
+    background: #000;
+}
+
+.hud-pfp img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hud-team {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.hud-xp {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 900;
+    color: #fff;
+}
+
+.hud-stats {
+    font-size: 8px;
+    color: var(--text-muted);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+/* Highlight Your Team */
+.intel-hud-card.is-me {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--team-color);
+    box-shadow: inset 0 0 10px var(--team-color);
+}
+
+.hud-tag {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--team-color);
+    color: #000;
+    font-size: 6px;
+    font-weight: 900;
+    padding: 1px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+}
