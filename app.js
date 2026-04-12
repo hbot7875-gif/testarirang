@@ -8228,9 +8228,10 @@ function renderUnit() {
 
   const unit = STATE.data.agent.arirangUnit;
   const team = STATE.data.team;
-  const n = MISSION_NARRATIVES.arirangUnit; // From your config
 
+  // 1. THIS IS THE ONLY PART YOU NEED
   let html = renderGuide('unit') || '';
+  html += renderNarrativeCard('arirangUnit'); 
 
   if (!unit) {
     html += `
@@ -8241,23 +8242,6 @@ function renderUnit() {
     container.innerHTML = html;
     return;
   }
-
-  // 1. Narrative Context Card
-  html += `
-          <div class="archive-card" style="margin-bottom:24px; border-top:3px solid #60a5fa; background:linear-gradient(135deg, rgba(96,165,250,0.05), var(--bg-panel));">
-              <div style="display:flex; gap:16px; align-items:flex-start;">
-                  <div style="width:48px; height:48px; border-radius:50%; background:rgba(96,165,250,0.1); border:1px solid #60a5fa; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">
-                      ${n.member || '🐻'}
-                  </div>
-                  <div style="flex:1;">
-                      <div style="font-size:10px; color:#60a5fa; font-weight:900; text-transform:uppercase; letter-spacing:2px; margin-bottom:6px;">${n.memberName} — ${n.meaning}</div>
-                      <div style="font-size:12px; color:var(--text-primary); font-style:italic; line-height:1.6; margin-bottom:10px;">"${n.quote}"</div>
-                      <div style="font-size:10px; color:var(--text-muted); line-height:1.5;">${n.bridge}</div>
-                  </div>
-              </div>
-          </div>
-      `;
-
   // 2. Your Progress Hub
   html += `<div style="font-size:10px; color:#60a5fa; font-weight:900; letter-spacing:4px; text-transform:uppercase; margin-bottom:12px; margin-left:4px;">[ // Your Assignment ]</div>`;
 
