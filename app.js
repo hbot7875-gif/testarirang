@@ -6,7 +6,7 @@
 // KEY IMPROVEMENTS OVER v1.0:
 // ───────────────────────────────────────────────
 // ✅ ApiClient with smart caching (3-5x fewer API calls)
-// ✅ Request deduplication (no duplicate in-flight requests)f
+// ✅ Request deduplication (no duplicate in-flight requests)
 // ✅ 15s request timeout via AbortControllerf
 // ✅ Timers manager (prevents interval stacking / memory leaks)
 // ✅ Visibility-aware polling (pauses when tab is hidden)
@@ -1009,15 +1009,12 @@ function doLogout() {
 // NO EXTRA BRACKET HERE
 /** Restore admin session from localStorage if still valid */
 function restoreAdminSession() {
+  // Comment out everything inside this function
+  /*
   if (STATE.agentNo !== CONFIG.ADMIN_AGENT_NO) return;
-
   const session = localStorage.getItem('adminSession');
-  const expiry = localStorage.getItem('adminExpiry');
-
-  if (session && expiry && Date.now() < parseInt(expiry, 10)) {
-    STATE.isAdmin = true;
-    STATE.adminSession = session;
-  }
+  ...
+  */
 }
 
 
@@ -1734,16 +1731,101 @@ async function renderHome() {
           <span class="ticker-item">⚡ 148 Protocol recalculating strategic scrobble share...</span>
         </div>
       </div>
-    </div>
-  `;
+    `;
 
     // ═══════════════════════════════════════
     // 3. STREAK BANNER
     // ═══════════════════════════════════════
-    html += `<div id="streakWidget" style="margin-bottom: 24px;"></div>`;
+    html += `<div id="streakWidget" style="margin-bottom:24px;"></div>`;
 
     // ═══════════════════════════════════════
-    // 4. STATS HERO GRID
+    // 4. TEAM WARNING BANNER
+    // ═══════════════════════════════════════
+    if (D.team?.isAtRisk) {
+      const warn = D.team.warningStatus || {};
+      const daysAchieved = warn.daysAchieved || 0;
+      const daysRequired = warn.daysRequired || 3;
+      const warningWeek = warn.warningWeek || 'last week';
+      const recoveryWeek = warn.recoveryWeek || STATE.week;
+      const progressPct = Math.min(100, Math.round((daysAchieved / daysRequired) * 100));
+      const daysLeft = daysRequired - daysAchieved;
+
+      html += `
+        <div class="archive-card" style="margin-bottom:24px; border:2px solid var(--fail); background:rgba(255,59,92,0.08); padding:20px; border-radius:12px;">
+          <div style="display:flex; align-items:flex-start; gap:15px;">
+            <div style="font-size:28px; flex-shrink:0;">🚨</div>
+            <div style="flex:1; min-width:0;">
+
+              <!-- Title -->
+              <div style="font-size:13px; font-weight:900; color:var(--fail); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">
+                ⚠️ Your Team Has a Warning
+              </div>
+
+              <!-- Simple explanation -->
+              <p style="font-size:12px; color:#fff; margin:0 0 12px; line-height:1.7;">
+                Your team did not complete the
+                <strong style="color:var(--courage-amber);">daily side missions</strong>
+                together last week
+                <span style="color:var(--text-muted);">(${warningWeek})</span>.<br>
+                This week <span style="color:var(--text-muted);">(${recoveryWeek})</span> is your chance to fix it.
+              </p>
+
+              <!-- What they need to do -->
+              <div style="background:rgba(0,0,0,0.25); padding:14px; border-radius:10px; border-left:3px solid var(--courage-amber); margin-bottom:14px;">
+                <div style="font-size:11px; color:var(--courage-amber); font-weight:900; margin-bottom:8px;">
+                  👉 What your team needs to do:
+                </div>
+                <div style="font-size:11px; color:#fff; line-height:1.9;">
+                  ✅ Every member must complete <strong>all side missions</strong> on the same day<br>
+                  ✅ This needs to happen on <strong>any ${daysRequired} days</strong> this week<br>
+                  ✅ The ${daysRequired} days <strong>do not need to be in a row</strong>
+                </div>
+              </div>
+
+              <!-- Consequence -->
+              <div style="background:rgba(255,59,92,0.08); padding:12px; border-radius:10px; border-left:3px solid var(--fail); margin-bottom:14px;">
+                <div style="font-size:11px; color:var(--fail); font-weight:900; margin-bottom:4px;">
+                  ❌ What happens if you don't:
+                </div>
+                <div style="font-size:11px; color:var(--text-secondary); line-height:1.6;">
+                  If your team does not reach ${daysRequired} days by the end of this week,
+                  <strong style="color:#fff;">the team will be disbanded</strong> and all members
+                  will be <strong style="color:#fff;">reassigned to other teams</strong>.
+                </div>
+              </div>
+
+              <!-- Progress bar -->
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <span style="font-size:10px; color:var(--text-muted); font-weight:700;">Recovery Progress</span>
+                  <span style="font-size:11px; font-weight:900; color:${daysAchieved >= daysRequired ? 'var(--green)' : 'var(--courage-amber)'};">
+                    ${daysAchieved} of ${daysRequired} days done
+                  </span>
+                </div>
+                <div class="pbar" style="height:10px; background:rgba(0,0,0,0.4); border-radius:6px;">
+                  <div class="pfill" style="width:${progressPct}%; background:${daysAchieved >= daysRequired ? 'var(--green)' : 'var(--courage-amber)'}; border-radius:6px; transition:width 0.5s;"></div>
+                </div>
+                <div style="margin-top:8px; text-align:center;">
+                  ${daysAchieved >= daysRequired ? `
+                    <span style="font-size:11px; color:var(--green); font-weight:800;">
+                      ✅ You made it! Warning will be removed at the end of this week.
+                    </span>
+                  ` : `
+                    <span style="font-size:11px; color:var(--text-muted);">
+                      ${daysLeft} more day${daysLeft !== 1 ? 's' : ''} needed — keep going! 💪
+                    </span>
+                  `}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ═══════════════════════════════════════
+    // 5. STATS HERO GRID
     // ═══════════════════════════════════════
     html += `
       <div class="hero-stats-grid">
@@ -1763,7 +1845,7 @@ async function renderHome() {
     `;
 
     // ═══════════════════════════════════════
-    // 5. GLOBAL GOAL
+    // 6. GLOBAL GOAL
     // ═══════════════════════════════════════
     const gg = D.globalArirangGoal || {};
     const ggPct = Math.min(100, gg.percentage || 0);
@@ -1785,8 +1867,7 @@ async function renderHome() {
     `;
 
     // ═══════════════════════════════════════
-    // 6. TEAM OBJECTIVES (Track & Album Goals)
-    //    Uses goalsData fetched at the top
+    // 7. TEAM OBJECTIVES (Track & Album Goals)
     // ═══════════════════════════════════════
     const trackEntries = Object.entries(trackGoals);
     const albumEntries = Object.entries(albumGoals);
@@ -1801,12 +1882,12 @@ async function renderHome() {
               <span style="font-family:var(--font-mono); font-size:9px; color:var(--text-ghost);">${sanitize(team.replace('Team ', ''))}</span>
             </div>
             ${trackEntries.length ? trackEntries.slice(0, 3).map(([name, goalInfo]) => {
-        const prog = goalInfo.teams?.[team] || { current: 0 };
-        const goal = goalInfo.goal || 1;
-        const cur = prog.current || 0;
-        const pct = Math.min(100, Math.round((cur / goal) * 100));
-        const done = pct >= 100;
-        return `
+              const prog = goalInfo.teams?.[team] || { current: 0 };
+              const goal = goalInfo.goal || 1;
+              const cur = prog.current || 0;
+              const pct = Math.min(100, Math.round((cur / goal) * 100));
+              const done = pct >= 100;
+              return `
                 <div style="margin-bottom:8px;">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
                     <span style="font-size:10px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:55%;">${sanitize(name)}</span>
@@ -1817,7 +1898,7 @@ async function renderHome() {
                   </div>
                 </div>
               `;
-      }).join('') : '<div style="font-size:10px; color:var(--text-ghost);">No track targets set</div>'}
+            }).join('') : '<div style="font-size:10px; color:var(--text-ghost);">No track targets set</div>'}
             <div style="text-align:center; margin-top:8px;">
               <span onclick="goTo('trackgoals')" style="font-size:9px; color:var(--wave-foam); cursor:pointer; font-weight:700;">
                 ${trackEntries.length > 3 ? `View All ${trackEntries.length} →` : 'Details →'}
@@ -1831,12 +1912,12 @@ async function renderHome() {
               <span style="font-family:var(--font-mono); font-size:9px; color:var(--text-ghost);">${sanitize(team.replace('Team ', ''))}</span>
             </div>
             ${albumEntries.length ? albumEntries.slice(0, 3).map(([name, goalInfo]) => {
-        const prog = goalInfo.teams?.[team] || { current: 0 };
-        const goal = goalInfo.goal || 1;
-        const cur = prog.current || 0;
-        const pct = Math.min(100, Math.round((cur / goal) * 100));
-        const done = pct >= 100;
-        return `
+              const prog = goalInfo.teams?.[team] || { current: 0 };
+              const goal = goalInfo.goal || 1;
+              const cur = prog.current || 0;
+              const pct = Math.min(100, Math.round((cur / goal) * 100));
+              const done = pct >= 100;
+              return `
                 <div style="margin-bottom:8px;">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
                     <span style="font-size:10px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:55%;">${sanitize(name)}</span>
@@ -1847,7 +1928,7 @@ async function renderHome() {
                   </div>
                 </div>
               `;
-      }).join('') : '<div style="font-size:10px; color:var(--text-ghost);">No album targets set</div>'}
+            }).join('') : '<div style="font-size:10px; color:var(--text-ghost);">No album targets set</div>'}
             <div style="text-align:center; margin-top:8px;">
               <span onclick="goTo('albumgoals')" style="font-size:9px; color:var(--wave-foam); cursor:pointer; font-weight:700;">
                 ${albumEntries.length > 3 ? `View All ${albumEntries.length} →` : 'Details →'}
@@ -1860,7 +1941,7 @@ async function renderHome() {
     }
 
     // ═══════════════════════════════════════
-    // 7. DAILY DIRECTIVES
+    // 8. DAILY DIRECTIVES
     // ═══════════════════════════════════════
     const a2xData = a.album2xStatus || {};
     const dailyGrid = a2xData.dailyGrid?.[today] || {};
@@ -1884,7 +1965,7 @@ async function renderHome() {
     `;
 
     // ═══════════════════════════════════════
-    // 8. LIVE BATTLEFIELD
+    // 9. LIVE BATTLEFIELD
     // ═══════════════════════════════════════
     const tc = D.teamComparison || [];
 
@@ -1944,7 +2025,7 @@ async function renderHome() {
     }
 
     // ═══════════════════════════════════════
-    // 9. TOP AGENTS LEADERBOARD
+    // 10. TOP AGENTS LEADERBOARD
     // ═══════════════════════════════════════
     const rankings = D.rankings || [];
     if (rankings.length) {
@@ -1978,7 +2059,7 @@ async function renderHome() {
     }
 
     // ═══════════════════════════════════════
-    // 10. LATEST ANNOUNCEMENTS
+    // 11. LATEST ANNOUNCEMENTS
     // ═══════════════════════════════════════
     const anns = D.announcements || [];
     if (anns.length) {
@@ -2001,7 +2082,7 @@ async function renderHome() {
     }
 
     // ═══════════════════════════════════════
-    // 11. WIDGET SLOTS (async post-render)
+    // 12. WIDGET SLOTS (async post-render)
     // ═══════════════════════════════════════
     html += `
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:24px;">
@@ -2044,7 +2125,6 @@ async function renderHome() {
   }
 }
 
-
 /* ═══════════════════════════════════════════
    POST-RENDER WIDGETS
    ═══════════════════════════════════════════ */
@@ -2063,11 +2143,8 @@ async function renderHomeStreakWidget(stats) {
 
     if (d.success && d.streak) {
       streak = d.streak.current || 0;
-      
-      // V2 IMPROVEMENT: Better best streak calculation
       best = Math.max(stats.bestStreak || 0, d.streak.best || 0, streak);
 
-      // V1 LOGIC: Full status hierarchy
       if (d.streak.todayCompleted) {
         statusText = '✓ SECURED';
         statusColor = 'var(--green)';
@@ -2093,7 +2170,6 @@ async function renderHomeStreakWidget(stats) {
       </div>
     `;
   } catch (e) {
-    // V1 FALLBACK: Show cached data with proper formatting
     const streak = stats.streak || 0;
     const best = stats.bestStreak || streak;
     el.innerHTML = `
@@ -2110,6 +2186,7 @@ async function renderHomeStreakWidget(stats) {
     `;
   }
 }
+
 async function loadHomeActivityWidget() {
   const el = $('homeActivityWidget');
   if (!el) return;
@@ -2144,10 +2221,8 @@ async function updateTickerWithActivity() {
         return `<span class="ticker-item">● ${sanitize(text)}</span>`;
       }).join('');
     }
-  } catch (e) { }
+  } catch (e) {}
 }
-
-
 
 /* ═══════════════════════════════════════════
    HELPER — Mission row for home page
@@ -2170,7 +2245,6 @@ function missionRow(icon, label, pct, page, color) {
     </div>
   `;
 }
-
 
 /* ═══════════════════════════════════════════
    HELPER — Load activity feed widget
@@ -2195,7 +2269,6 @@ async function loadActivityWidget(el) {
     el.innerHTML = '<div style="font-size:0.625rem; color:var(--text-ghost);">Feed unavailable</div>';
   }
 }
-
 
 /* ═══════════════════════════════════════════
    HELPER — fmt / esc / timeAgo
@@ -5691,18 +5764,16 @@ async function renderSummary() {
   const selectedWeek = STATE.week;
   const isCompleted = isWeekCompleted(selectedWeek);
 
-  // --- 1. LOCKED VIEW (week still running) ---
   if (!isCompleted) {
     container.innerHTML = `
-              <div class="glass-card" style="text-align:center; padding:60px 20px;">
-                  <div style="font-size:48px; margin-bottom:16px; opacity:0.5; filter:grayscale(1);">⏳</div>
-                  <div style="font-size:16px; font-weight:800; color:#fff; letter-spacing:1px; margin-bottom:8px;">MISSION IN PROGRESS</div>
-                  <div style="font-size:11px; color:var(--text-muted);">Intel report pending end of week operations.</div>
-              </div>`;
+      <div class="glass-card" style="text-align:center; padding:60px 20px;">
+        <div style="font-size:48px; margin-bottom:16px; opacity:0.5; filter:grayscale(1);">⏳</div>
+        <div style="font-size:16px; font-weight:800; color:#fff; letter-spacing:1px; margin-bottom:8px;">MISSION IN PROGRESS</div>
+        <div style="font-size:11px; color:var(--text-muted);">Intel report pending end of week operations.</div>
+      </div>`;
     return;
   }
 
-  // --- 2. LOADING SKELETON ---
   showPageLoading(container);
 
   try {
@@ -5716,11 +5787,13 @@ async function renderSummary() {
 
     if (!isReleased) {
       container.innerHTML = `
-                  <div class="archive-card" style="text-align:center; padding:60px 20px; border-color:var(--courage-amber); background:rgba(255,149,0,0.03);">
-                      <div style="font-size:48px; margin-bottom:16px; opacity:0.8;">🔒</div>
-                      <div style="font-size:14px; font-weight:900; color:var(--courage-amber); text-transform:uppercase; letter-spacing:2px; margin-bottom:8px;">Verification in Progress</div>
-                      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6;">HQ is currently verifying Attendance & Police Reports.<br>Results will be broadcasted shortly.</div>
-                  </div>`;
+        <div class="archive-card" style="text-align:center; padding:60px 20px; border-color:var(--courage-amber); background:rgba(255,149,0,0.03);">
+          <div style="font-size:48px; margin-bottom:16px; opacity:0.8;">🔒</div>
+          <div style="font-size:14px; font-weight:900; color:var(--courage-amber); text-transform:uppercase; letter-spacing:2px; margin-bottom:8px;">Verification in Progress</div>
+          <div style="font-size:11px; color:var(--text-secondary); line-height:1.6;">
+            HQ is currently verifying Attendance & Police Reports.<br>Results will be broadcasted shortly.
+          </div>
+        </div>`;
       return;
     }
 
@@ -5729,215 +5802,271 @@ async function renderSummary() {
     const albumGoals = goals.albumGoals || {};
     const topAgents = rankings.rankings || [];
 
-    const sortedTeams = Object.entries(teams).sort((a, b) => (b[1].teamXP || 0) - (a[1].teamXP || 0));
-    const winnerEntry = sortedTeams.find(([t, info]) => info.isWinner === true);
+    // ✅ Combined streams per track/album across ALL teams
+    const goalBreakdown = [];
+    let totalGlobalStreams = 0;
+
+    const processGoalSet = (goalSet, type) => {
+      Object.entries(goalSet).forEach(([name, info]) => {
+        let combined = 0;
+        Object.values(info.teams || {}).forEach(s => combined += (s.current || 0));
+        totalGlobalStreams += combined;
+        goalBreakdown.push({ name, total: combined, type });
+      });
+    };
+    processGoalSet(trackGoals, 'track');
+    processGoalSet(albumGoals, 'album');
+
+    const trackRows = goalBreakdown.filter(g => g.type === 'track').sort((a, b) => b.total - a.total);
+    const albumRows = goalBreakdown.filter(g => g.type === 'album').sort((a, b) => b.total - a.total);
+
+    const totalTrackStreams = trackRows.reduce((a, g) => a + g.total, 0);
+    const totalAlbumStreams = albumRows.reduce((a, g) => a + g.total, 0);
+
+    // Sort teams by XP
+    const sortedTeams = Object.entries(teams).sort(
+      (a, b) => (b[1].teamXP || 0) - (a[1].teamXP || 0)
+    );
+    const winnerEntry = sortedTeams.find(([, info]) => info.isWinner === true);
     const winner = winnerEntry ? winnerEntry[0] : null;
 
-    // Calculate stream totals
-    let totalTrackStreams = 0;
-    let totalAlbumStreams = 0;
-
-    Object.entries(trackGoals).forEach(([name, info]) => {
-      let t = 0;
-      Object.values(info.teams || {}).forEach(s => t += (s.current || 0));
-      totalTrackStreams += t;
-    });
-    Object.entries(albumGoals).forEach(([name, info]) => {
-      let t = 0;
-      Object.values(info.teams || {}).forEach(s => t += (s.current || 0));
-      totalAlbumStreams += t;
-    });
-
-    const dateStr = CONFIG.WEEK_DATES[selectedWeek]
-      ? new Date(CONFIG.WEEK_DATES[selectedWeek]).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+    const dateStr = CONFIG.WEEK_DATES?.[selectedWeek]
+      ? new Date(CONFIG.WEEK_DATES[selectedWeek]).toLocaleDateString('en-US', {
+          month: 'long', day: 'numeric', year: 'numeric'
+        })
       : '';
 
     const qualificationLabels = sortedTeams.map(([t, info]) => {
       const checks = [
         { label: 'Tracks', passed: info.trackGoalPassed },
         { label: 'Albums', passed: info.albumGoalPassed },
-        { label: '2X', passed: info.album2xPassed },
-        { label: 'Unit', passed: info.arirangUnitPassed },
-        { label: 'Side', passed: info.sideMissionPassed },
+        { label: '2X',     passed: info.album2xPassed },
+        { label: 'Unit',   passed: info.arirangUnitPassed },
+        { label: 'Side',   passed: info.sideMissionPassed },
         { label: 'Attend', passed: info.attendanceConfirmed },
         { label: 'Police', passed: info.policeConfirmed }
       ];
-      const passedCount = checks.filter(c => c.passed).length;
-      const failedNames = checks.filter(c => !c.passed).map(c => c.label);
-      return { team: t, info, checks, passedCount, failedNames, allPassed: passedCount === 7 };
+      return {
+        team: t,
+        info,
+        checks,
+        passedCount: checks.filter(c => c.passed).length,
+        failedNames: checks.filter(c => !c.passed).map(c => c.label),
+        allPassed:   checks.every(c => c.passed)
+      };
     });
 
-    const teamsDataForShare = JSON.stringify(sortedTeams.map(([t, info]) => ({ t, xp: info.teamXP }))).replace(/"/g, '&quot;');
+    const teamsDataForShare = JSON.stringify(
+      sortedTeams.map(([t, info]) => ({ t, xp: info.teamXP || 0 }))
+    ).replace(/"/g, '&quot;');
 
-    let html = `
-              <!-- WINNER OR NO WINNER -->
-              ${winner ? `
-                  <div class="archive-card" style="text-align:center; margin-bottom:24px; border-color:var(--vinyl-gold); background:radial-gradient(ellipse at top, rgba(212,175,55,0.1), transparent 70%);">
-                      <div style="font-size:48px; margin-bottom:12px; filter:drop-shadow(0 0 10px rgba(212,175,55,0.4));">🏆</div>
-                      <div style="font-size:10px; color:var(--vinyl-gold); font-weight:900; letter-spacing:4px; margin-bottom:6px;">MISSION SECURED BY</div>
-                      <div style="font-size:28px; font-weight:900; color:#fff; font-family:'Orbitron', sans-serif; letter-spacing:2px; text-shadow:0 0 20px rgba(212,175,55,0.4);">${winner.toUpperCase()}</div>
-                  </div>
-              ` : `
-                  <div class="archive-card" style="text-align:center; margin-bottom:24px; border-color:var(--fail); background:radial-gradient(ellipse at top, rgba(255,59,92,0.1), transparent 70%);">
-                      <div style="font-size:48px; margin-bottom:12px; opacity:0.8;">⬡</div>
-                      <div style="font-size:12px; color:var(--fail); font-weight:900; letter-spacing:4px; margin-bottom:8px;">EXTRACTION FAILED</div>
-                      <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; margin-bottom:16px;">No team successfully cleared all 7 checkpoints.<br><span style="color:var(--text-muted);">The trophy remains secured at HQ.</span></div>
-                      <div style="display:flex; justify-content:center; gap:6px; flex-wrap:wrap;">
-                          ${['Tracks', 'Albums', '2X', 'Unit', 'Side', 'Attend', 'Police'].map(m =>
-      `<span style="font-size:8px; font-weight:700; padding:4px 8px; background:rgba(255,255,255,0.05); border:1px solid var(--border-light); border-radius:6px; color:var(--text-muted);">${m}</span>`
-    ).join('')}
-                      </div>
-                  </div>
-              `}
-  
-              <!-- POSTER FOR SHARING -->
-              <div style="text-align:center; margin-bottom:12px;">
-                  <span style="color:var(--text-muted); font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase;">📸 Screenshot to share intel</span>
-              </div>
-  
-              <div id="shareable-stats-card" style="background:#0a0a0f; border:1px solid var(--border-mid); border-radius:16px; overflow:hidden; margin:0 auto 24px; max-width:380px;">
-                  <!-- Poster Header -->
-                  <div style="background:linear-gradient(135deg, var(--red-core), #b30033); padding:24px 16px; text-align:center; position:relative; overflow:hidden;">
-                      <div style="position:absolute; inset:0; background:repeating-radial-gradient(circle, transparent 0, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 12px);"></div>
-                      <div style="position:relative; z-index:2;">
-                          <div style="color:rgba(255,255,255,0.7); font-size:9px; font-weight:900; letter-spacing:4px;">INTELLIGENCE REPORT</div>
-                          <div style="color:#fff; font-family:'Orbitron', sans-serif; font-size:18px; font-weight:900; margin-top:6px; letter-spacing:1px;">ARIRANG MISSION</div>
-                          <div style="color:rgba(255,255,255,0.6); font-size:10px; font-family:'Share Tech Mono', monospace; margin-top:8px;">${selectedWeek}${dateStr ? ' // ' + dateStr : ''}</div>
-                      </div>
-                  </div>
-  
-                  <!-- Total Streams -->
-                  <div style="padding:24px 16px; text-align:center; border-bottom:1px solid var(--border-subtle);">
-                      <div style="color:var(--text-muted); font-size:9px; font-weight:800; letter-spacing:3px; margin-bottom:8px;">TOTAL STREAMS</div>
-                      <div style="color:var(--vinyl-gold); font-size:42px; font-weight:900; font-family:'Share Tech Mono', monospace; line-height:1; text-shadow:0 0 20px rgba(212,175,55,0.3);">${fmt(totalTrackStreams + totalAlbumStreams)}</div>
-                      <div style="display:flex; justify-content:center; gap:20px; margin-top:16px;">
-                          <div style="display:flex; align-items:center; gap:6px;">
-                              <span style="font-size:14px;">🎵</span>
-                              <span style="color:var(--wave-foam); font-size:11px; font-weight:800; font-family:monospace;">${fmt(totalTrackStreams)}</span>
-                          </div>
-                          <div style="width:1px; background:var(--border-subtle);"></div>
-                          <div style="display:flex; align-items:center; gap:6px;">
-                              <span style="font-size:14px;">💿</span>
-                              <span style="color:var(--purple-mid); font-size:11px; font-weight:800; font-family:monospace;">${fmt(totalAlbumStreams)}</span>
-                          </div>
-                      </div>
-                  </div>
-  
-                  <!-- Standings -->
-                  <div style="padding:16px;">
-                      <div style="color:var(--red-core); font-size:9px; font-weight:900; letter-spacing:2px; margin-bottom:12px; text-align:center;">SQUAD STANDINGS</div>
-                      <div style="display:flex; flex-direction:column; gap:8px;">
-                          ${sortedTeams.map(([t, info], i) => `
-                              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:rgba(255,255,255,0.02); border-radius:6px;">
-                                  <div style="display:flex; align-items:center; gap:10px;">
-                                      <span style="font-size:14px; width:16px; text-align:center;">${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '<span style="color:var(--text-ghost); font-size:10px; font-weight:900;">' + (i + 1) + '</span>'}</span>
-                                      <span style="color:${teamColor(t)}; font-size:11px; font-weight:800;">${t.toUpperCase()}</span>
-                                  </div>
-                                  <span style="color:#fff; font-size:11px; font-weight:900; font-family:monospace;">${fmt(info.teamXP || 0)} XP</span>
-                              </div>
-                          `).join('')}
-                      </div>
-                  </div>
-  
-                  <!-- Watermark -->
-                  <div style="background:#050508; padding:12px; text-align:center; border-top:1px solid #111;">
-                      <div style="color:var(--text-muted); font-size:9px; font-weight:800; letter-spacing:4px;">HOPETRACKER AGENCY</div>
-                  </div>
-              </div>
-  
-              <!-- Copy Caption Button -->
-              <button onclick="copyShareText('${selectedWeek}', ${totalTrackStreams + totalAlbumStreams}, '${winner || ''}', '${teamsDataForShare}')" style="width:100%; max-width:380px; margin:0 auto 35px; display:flex; height:46px; border-radius:12px; font-size:12px; font-weight:700; background:linear-gradient(135deg, var(--red-core), #b30033); border:none; color:#fff; cursor:pointer; align-items:center; justify-content:center; gap:8px;">
-                  📋 Copy Caption to Share
-              </button>
-  
-              <!-- Section: Team Intel -->
-              <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px;">
-                  <div style="flex:1; height:1px; background:var(--border-subtle);"></div>
-                  <div style="color:var(--text-muted); font-size:10px; font-weight:900; letter-spacing:3px;">TEAM INTEL</div>
-                  <div style="flex:1; height:1px; background:var(--border-subtle);"></div>
-              </div>
-  
-              <!-- TEAM STANDINGS with 7-checkpoint detail -->
-              <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:35px;">
-                  ${qualificationLabels.map((q, i) => {
-      const isWinner = q.info.isWinner === true;
-      const isQualified = q.allPassed;
+    const html = `
 
-      return `
-                          <div class="glass-card" style="padding:16px; border-left:4px solid ${isWinner ? 'var(--vinyl-gold)' : (isQualified ? 'var(--green)' : 'var(--fail)')};">
-                              <div style="display:flex; align-items:center; gap:12px;">
-                                  <div style="width:28px; height:28px; border-radius:8px; background:${isWinner ? 'var(--vinyl-gold)' : 'var(--bg-deep)'}; color:${isWinner ? '#000' : 'var(--text-muted)'}; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:12px; flex-shrink:0;">
-                                      ${i + 1}
-                                  </div>
-                                  <div style="flex:1; min-width:0;">
-                                      <div style="display:flex; align-items:center; gap:8px;">
-                                          <span style="color:${teamColor(q.team)}; font-weight:800; font-size:14px;">${q.team.replace('Team ', '')}</span>
-                                          ${isWinner ? '<span style="font-size:14px;">🏆</span>' : ''}
-                                      </div>
-                                  </div>
-                                  <div style="text-align:right; flex-shrink:0;">
-                                      <div style="color:#fff; font-size:16px; font-weight:900; font-family:monospace;">${fmt(q.info.teamXP || 0)}</div>
-                                      <div style="color:var(--text-muted); font-size:8px; font-weight:800; letter-spacing:1px;">XP</div>
-                                  </div>
-                              </div>
-  
-                              <!-- 7 Checkpoint Pills -->
-                              <div style="display:flex; gap:4px; margin-top:12px; flex-wrap:wrap;">
-                                  ${q.checks.map(c => `
-                                      <span style="font-size:8px; font-weight:700; padding:4px 6px; border-radius:4px; letter-spacing:0.5px;
-                                          background:${c.passed ? 'var(--green-soft)' : 'var(--red-whisper)'};
-                                          color:${c.passed ? 'var(--green)' : 'var(--fail)'};
-                                          border:1px solid ${c.passed ? 'var(--green-border)' : 'var(--red-border)'};">
-                                          ${c.passed ? '✓' : '✗'} ${c.label}
-                                      </span>
-                                  `).join('')}
-                              </div>
-  
-                              <!-- Status line -->
-                              <div style="margin-top:10px;">
-                                  ${isQualified
-          ? '<span style="color:var(--green); font-size:10px; font-weight:800;">✓ ALL 7 PROTOCOLS CLEARED</span>'
-          : '<span style="color:var(--fail); font-size:9px; font-weight:700;">✗ ' + q.passedCount + '/7 CLEARED — Failed: ' + q.failedNames.join(', ') + '</span>'
-        }
-                              </div>
-                          </div>
-                      `;
-    }).join('')}
-              </div>
-  
-              <!-- Section: Elite Agents -->
-              <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px;">
-                  <div style="flex:1; height:1px; background:var(--border-subtle);"></div>
-                  <div style="color:var(--text-muted); font-size:10px; font-weight:900; letter-spacing:3px;">ELITE AGENTS</div>
-                  <div style="flex:1; height:1px; background:var(--border-subtle);"></div>
-              </div>
-  
-              <div class="archive-card" style="padding:0; margin-bottom:30px;">
-                  ${topAgents.slice(0, 5).map((agent, i) => {
-      const agentTeam = agent.team || 'Unknown';
-      const agentName = agent.name || 'Agent';
-      const agentXP = agent.totalXP || 0;
+      <!-- WINNER / FAIL BANNER -->
+      ${winner ? `
+        <div class="archive-card" style="text-align:center; margin-bottom:24px; border-color:var(--vinyl-gold); background:radial-gradient(ellipse at top, rgba(212,175,55,0.1), transparent 70%); padding:24px 16px;">
+          <div style="font-size:48px; margin-bottom:12px; filter:drop-shadow(0 0 10px rgba(212,175,55,0.4));">🏆</div>
+          <div style="font-size:10px; color:var(--vinyl-gold); font-weight:900; letter-spacing:4px; margin-bottom:6px;">MISSION SECURED BY</div>
+          <div style="font-size:clamp(18px, 6vw, 28px); font-weight:900; color:#fff; font-family:'Orbitron', sans-serif; letter-spacing:2px; text-shadow:0 0 20px rgba(212,175,55,0.4); word-break:break-word;">${winner.toUpperCase()}</div>
+        </div>
+      ` : `
+        <div class="archive-card" style="text-align:center; margin-bottom:24px; border-color:var(--fail); background:radial-gradient(ellipse at top, rgba(255,59,92,0.1), transparent 70%); padding:24px 16px;">
+          <div style="font-size:48px; margin-bottom:12px; opacity:0.8;">⬡</div>
+          <div style="font-size:12px; color:var(--fail); font-weight:900; letter-spacing:4px; margin-bottom:8px;">EXTRACTION FAILED</div>
+          <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; margin-bottom:16px;">
+            No team successfully cleared all 7 checkpoints.<br>
+            <span style="color:var(--text-muted);">The trophy remains secured at HQ.</span>
+          </div>
+          <div style="display:flex; justify-content:center; gap:6px; flex-wrap:wrap; row-gap:6px;">
+            ${['Tracks','Albums','2X','Unit','Side','Attend','Police'].map(m =>
+              `<span style="font-size:8px; font-weight:700; padding:4px 8px; background:rgba(255,255,255,0.05); border:1px solid var(--border-light); border-radius:6px; color:var(--text-muted);">${m}</span>`
+            ).join('')}
+          </div>
+        </div>
+      `}
 
-      return `
-                          <div style="display:flex; align-items:center; gap:12px; padding:16px; border-bottom:1px solid var(--border-subtle);">
-                              <div style="font-size:18px; width:28px; text-align:center;">${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '<span style="color:var(--text-ghost); font-weight:900; font-family:monospace;">' + (i + 1) + '</span>'}</div>
-                              <div style="flex:1; min-width:0;">
-                                  <div style="color:#fff; font-weight:800; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${sanitize(agentName)}</div>
-                                  <div style="color:${teamColor(agentTeam)}; font-size:10px; font-weight:700; margin-top:2px;">${agentTeam.replace('Team ', '')}</div>
-                              </div>
-                              <div style="text-align:right;">
-                                  <div style="color:var(--red-core); font-weight:900; font-size:16px; font-family:monospace;">${fmt(agentXP)}</div>
-                              </div>
-                          </div>
-                      `;
-    }).join('')}
+      <!-- SCREENSHOT HINT -->
+      <div style="text-align:center; margin-bottom:12px;">
+        <span style="color:var(--text-muted); font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase;">📸 Screenshot to share intel</span>
+      </div>
+
+      <!-- SHAREABLE CARD -->
+      <div id="shareable-stats-card" style="background:#0a0a0f; border:1px solid var(--border-mid); border-radius:16px; overflow:hidden; margin:0 auto 24px; max-width:min(380px, 100%);">
+
+        <!-- Header -->
+        <div style="background:linear-gradient(135deg, var(--red-core), #b30033); padding:20px 16px; text-align:center; position:relative; overflow:hidden;">
+          <div style="position:absolute; inset:0; background:repeating-radial-gradient(circle, transparent 0, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 12px);"></div>
+          <div style="position:relative; z-index:2;">
+            <div style="color:rgba(255,255,255,0.7); font-size:9px; font-weight:900; letter-spacing:4px;">INTELLIGENCE REPORT</div>
+            <div style="color:#fff; font-family:'Orbitron', sans-serif; font-size:16px; font-weight:900; margin-top:4px; letter-spacing:1px;">ARIRANG MISSION</div>
+            <div style="color:rgba(255,255,255,0.6); font-size:10px; font-family:'Share Tech Mono', monospace; margin-top:6px;">${selectedWeek}${dateStr ? ' • ' + dateStr : ''}</div>
+          </div>
+        </div>
+
+        <!-- Total Streams -->
+        <div style="padding:24px 16px; text-align:center; border-bottom:1px solid rgba(255,255,255,0.06);">
+          <div style="color:var(--text-muted); font-size:9px; font-weight:800; letter-spacing:3px; margin-bottom:8px;">TOTAL STREAMS</div>
+          <div style="color:var(--vinyl-gold); font-size:clamp(32px, 10vw, 48px); font-weight:900; font-family:'Share Tech Mono', monospace; line-height:1;">${fmt(totalGlobalStreams)}</div>
+          <div style="display:flex; justify-content:center; align-items:center; gap:20px; margin-top:14px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:12px;">🎵</span>
+              <span style="color:var(--wave-foam); font-size:12px; font-weight:800; font-family:monospace;">${fmt(totalTrackStreams)}</span>
+            </div>
+            <div style="width:1px; height:16px; background:rgba(255,255,255,0.1);"></div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:12px;">💿</span>
+              <span style="color:var(--purple-mid); font-size:12px; font-weight:800; font-family:monospace;">${fmt(totalAlbumStreams)}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOP TRACKS -->
+        ${trackRows.length > 0 ? `
+          <div style="padding:16px 16px 8px;">
+            <div style="color:var(--wave-foam); font-size:9px; font-weight:900; letter-spacing:2px; margin-bottom:12px;">TOP TRACKS</div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              ${trackRows.map((g, i) => `
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <span style="color:var(--text-ghost); font-size:10px; font-weight:700; width:14px; flex-shrink:0; text-align:right;">${i + 1}</span>
+                  <span style="color:var(--text-secondary); font-size:11px; font-weight:600; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${g.name}</span>
+                  <span style="color:#fff; font-size:12px; font-weight:900; font-family:'Share Tech Mono', monospace; flex-shrink:0;">${fmt(g.total)}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Divider -->
+        <div style="height:1px; background:rgba(255,255,255,0.05); margin:8px 16px;"></div>
+
+        <!-- TOP ALBUMS -->
+        ${albumRows.length > 0 ? `
+          <div style="padding:8px 16px 16px;">
+            <div style="color:var(--purple-mid); font-size:9px; font-weight:900; letter-spacing:2px; margin-bottom:12px;">TOP ALBUMS</div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              ${albumRows.map((g, i) => `
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <span style="color:var(--text-ghost); font-size:10px; font-weight:700; width:14px; flex-shrink:0; text-align:right;">${i + 1}</span>
+                  <span style="color:var(--text-secondary); font-size:11px; font-weight:600; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${g.name}</span>
+                  <span style="color:#fff; font-size:12px; font-weight:900; font-family:'Share Tech Mono', monospace; flex-shrink:0;">${fmt(g.total)}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Divider -->
+        <div style="height:1px; background:rgba(255,255,255,0.05); margin:0 16px;"></div>
+
+        <!-- TEAM STANDINGS -->
+        <div style="padding:16px;">
+          <div style="color:var(--vinyl-gold); font-size:9px; font-weight:900; letter-spacing:2px; margin-bottom:12px;">TEAM STANDINGS</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            ${sortedTeams.map(([t, info], i) => `
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:14px; flex-shrink:0; width:20px; text-align:center;">
+                  ${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `<span style="color:var(--text-ghost); font-size:10px; font-weight:700;">${i + 1}.</span>`}
+                </span>
+                <span style="color:${teamColor(t)}; font-size:12px; font-weight:800; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${t}</span>
+                <span style="color:#fff; font-size:12px; font-weight:900; font-family:'Share Tech Mono', monospace; flex-shrink:0;">${fmt(info.teamXP || 0)}</span>
               </div>
-  
-              <!-- Back Button -->
-              <button onclick="goTo('home')" class="btn-outline" style="width:100%; height:50px; font-size:12px;">
-                  ← Return to Mission Control
-              </button>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- Watermark -->
+        <div style="background:#050508; padding:14px; text-align:center; border-top:1px solid #111;">
+          <div style="color:var(--purple-mid); font-size:10px; font-weight:700; letter-spacing:1px;">Join the BTS comeback mission 💜</div>
+          <div style="color:var(--text-muted); font-size:9px; margin-top:4px; font-weight:600;">Want to join? 💜</div>
+          <div style="color:var(--text-ghost); font-size:8px; margin-top:6px; letter-spacing:2px;">@hopetracker • link in bio</div>
+        </div>
+
+      </div>
+
+      <!-- COPY BUTTON -->
+      <button
+        onclick="copyShareText('${selectedWeek}', ${totalGlobalStreams}, '${winner || ''}', '${teamsDataForShare}')"
+        style="width:100%; max-width:min(380px, 100%); margin:0 auto 35px; display:flex; height:46px; border-radius:12px; font-size:12px; font-weight:700; background:linear-gradient(135deg, var(--red-core), #b30033); border:none; color:#fff; cursor:pointer; align-items:center; justify-content:center; gap:8px;">
+        📋 Copy Caption to Share
+      </button>
+
+      <!-- SQUAD DEBRIEF -->
+      <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px;">
+        <div style="flex:1; height:1px; background:var(--border-subtle);"></div>
+        <div style="color:var(--text-muted); font-size:10px; font-weight:900; letter-spacing:3px;">SQUAD DEBRIEF</div>
+        <div style="flex:1; height:1px; background:var(--border-subtle);"></div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:35px;">
+        ${qualificationLabels.map((q, i) => {
+          const isWinner = q.info.isWinner === true;
+          const tColor = teamColor(q.team);
+          return `
+            <div class="glass-card" style="padding:16px; border-left:4px solid ${isWinner ? 'var(--vinyl-gold)' : (q.allPassed ? 'var(--green)' : 'var(--fail)')};">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
+                <div style="width:28px; height:28px; border-radius:8px; background:${isWinner ? 'var(--vinyl-gold)' : 'var(--bg-deep)'}; color:${isWinner ? '#000' : 'var(--text-muted)'}; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:12px; flex-shrink:0;">${i + 1}</div>
+                <div style="flex:1; min-width:0;">
+                  <span style="color:${tColor}; font-weight:800; font-size:15px; word-break:break-word;">${q.team.replace('Team ', '')}</span>
+                  ${isWinner ? '<span style="margin-left:6px;">🏆</span>' : ''}
+                </div>
+                <div style="text-align:right; flex-shrink:0;">
+                  <div style="color:#fff; font-size:clamp(14px, 4vw, 18px); font-weight:900; font-family:'Share Tech Mono', monospace;">${fmt(q.info.teamXP || 0)}</div>
+                  <div style="color:var(--text-muted); font-size:8px; font-weight:800; letter-spacing:1px; text-transform:uppercase;">XP</div>
+                </div>
+              </div>
+
+              <!-- Checkpoint pills -->
+              <div style="display:flex; gap:4px; flex-wrap:wrap; row-gap:6px;">
+                ${q.checks.map(c => `
+                  <span style="font-size:8px; font-weight:700; padding:4px 6px; border-radius:4px; letter-spacing:0.5px;
+                    background:${c.passed ? 'var(--green-soft)' : 'var(--red-whisper)'};
+                    color:${c.passed ? 'var(--green)' : 'var(--fail)'};
+                    border:1px solid ${c.passed ? 'var(--green-border)' : 'var(--red-border)'};">
+                    ${c.passed ? '✓' : '✗'} ${c.label}
+                  </span>
+                `).join('')}
+              </div>
+
+              <div style="margin-top:12px; font-size:10px;">
+                ${q.allPassed
+                  ? '<span style="color:var(--green); font-weight:800;">✓ ALL 7 PROTOCOLS CLEARED</span>'
+                  : `<span style="color:var(--fail); font-weight:700;">✗ FAILED: ${q.failedNames.join(', ')}</span>`}
+              </div>
+            </div>
           `;
+        }).join('')}
+      </div>
+
+      <!-- ELITE AGENTS -->
+      <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px;">
+        <div style="flex:1; height:1px; background:var(--border-subtle);"></div>
+        <div style="color:var(--text-muted); font-size:10px; font-weight:900; letter-spacing:3px;">ELITE AGENTS</div>
+        <div style="flex:1; height:1px; background:var(--border-subtle);"></div>
+      </div>
+
+      <div class="archive-card" style="padding:0; margin-bottom:30px;">
+        ${topAgents.slice(0, 5).map((agent, i) => `
+          <div style="display:flex; align-items:center; gap:12px; padding:16px; border-bottom:1px solid var(--border-subtle);">
+            <div style="font-size:18px; width:28px; text-align:center; flex-shrink:0;">
+              ${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `<span style="color:var(--text-ghost); font-weight:900; font-family:monospace; font-size:12px;">${i + 1}</span>`}
+            </div>
+            <div style="flex:1; min-width:0;">
+              <div style="color:#fff; font-weight:800; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${sanitize(agent.name || 'Agent')}</div>
+              <div style="color:${teamColor(agent.team || '')}; font-size:10px; font-weight:700; margin-top:2px;">${(agent.team || '').replace('Team ', '')}</div>
+            </div>
+            <div style="text-align:right; flex-shrink:0;">
+              <div style="color:var(--red-core); font-weight:900; font-size:16px; font-family:monospace;">${fmt(agent.totalXP || 0)}</div>
+              <div style="color:var(--text-muted); font-size:8px; font-weight:700; letter-spacing:1px;">XP</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <!-- BACK -->
+      <button onclick="goTo('home')" class="btn-outline" style="width:100%; height:50px; font-size:12px;">
+        ← Return to Mission Control
+      </button>
+    `;
 
     container.innerHTML = html;
 
@@ -6083,7 +6212,7 @@ function addAdminIndicator() {
   link.onclick = function (e) {
     e.preventDefault();
     e.stopPropagation();
-    STATE.isAdmin ? showAdminPanel() : showAdminLogin();
+    (STATE.isAdmin && STATE.adminSession) ? showAdminPanel() : showAdminLogin();
     closeSidebar();
   };
   nav.appendChild(link);
@@ -6177,7 +6306,7 @@ async function verifyAdminPassword() {
 // ==================== PANEL SHELL ====================
 
 function showAdminPanel() {
-  if (!STATE.isAdmin) { showToast('Admin access required', 'error'); return; }
+  if (!STATE.isAdmin || !STATE.adminSession) { showAdminLogin(); return; }
   if (!STATE.week) STATE.week = STATE.weeks?.[0] || 'Week 1';
   document.querySelectorAll('.admin-panel-overlay').forEach(p => p.remove());
 
@@ -6518,8 +6647,13 @@ async function createTeamMission() {
   const targetTrack = $('target-track')?.value?.trim();
   const goalTarget = parseInt($('goal-target')?.value) || 100;
   const xpReward = parseInt($('xp-reward')?.value) || 5;
-  const targetTeams = Array.from(document.querySelectorAll('input[name="target-teams"]:checked')).map(cb => cb.value);
+  
+  // ✅ FIX: Ensure consistent team name format
+  const targetTeams = Array.from(
+    document.querySelectorAll('input[name="target-teams"]:checked')
+  ).map(cb => cb.value.trim()); // ← Added .trim()
 
+  // Validation
   if (!title) return showCreateResult('❌ Please enter a mission title', true);
   if (targetTeams.length === 0) return showCreateResult('❌ Please select at least one team', true);
   if (!briefing) return showCreateResult('❌ Please enter a mission briefing', true);
@@ -6527,16 +6661,29 @@ async function createTeamMission() {
   Loading.show();
   try {
     const res = await Api.call('createTeamMission', {
-      type, title, briefing, targetTeams: JSON.stringify(targetTeams),
-      targetTrack, goalTarget, xpReward, week: STATE.week,
-      agentNo: STATE.agentNo, sessionToken: STATE.adminSession
+      type, 
+      title, 
+      briefing, 
+      targetTeams: JSON.stringify(targetTeams), // ← Already array of strings
+      targetTrack, 
+      goalTarget, 
+      xpReward, 
+      week: STATE.week,
+      agentNo: STATE.agentNo, 
+      sessionToken: STATE.adminSession
     }, { dedupe: false, cache: false });
 
     if (res.success) {
       showCreateResult('✅ Mission Deployed Successfully!', false);
       $('mission-title').value = '';
       $('mission-briefing').value = '';
-      setTimeout(() => switchAdminTab('active', document.querySelector('.admin-tab[data-tab="active"]')), 1500);
+      // ✅ Uncheck all team checkboxes
+      document.querySelectorAll('input[name="target-teams"]:checked')
+        .forEach(cb => cb.checked = false);
+      
+      setTimeout(() => {
+        switchAdminTab('active', document.querySelector('.admin-tab[data-tab="active"]'));
+      }, 1500);
     } else {
       showCreateResult('❌ ' + (res.error || 'Failed to create mission'), true);
     }
@@ -6892,8 +7039,12 @@ async function smartUpdateStatus(team, key, value) {
   Loading.show();
   try {
     const res = await Api.call('updateTeamStatus', {
-      team, key, value, sessionToken: STATE.adminSession
+      team, 
+      field: key,  // ← ONLY CHANGE: was just `key`
+      value, 
+      sessionToken: STATE.adminSession
     }, { dedupe: false, cache: false });
+
     if (res.success) {
       showToast('Status Updated', 'success');
       renderWeekConfirmation($('admin-panel-body'));
@@ -12181,13 +12332,28 @@ async function adminReleaseResults() {
     showToast('Login as admin first', 'error');
     return;
   }
-  try {
-    const summary = await Api.call('getWeeklySummary', { week: STATE.week }, { cache: false });
-    const currentlyReleased = summary.resultsReleased === true;
-    const newState = !currentlyReleased;
-    if (!confirm(`${newState ? 'RELEASE' : 'HIDE'} results for ${STATE.week}?`)) return;
 
-    Loading.show();
+  Loading.show();
+  try {
+    // 1. Fetch fresh status for the SPECIFIC week selected
+    const summary = await Api.call('getWeeklySummary', { week: STATE.week }, { cache: false });
+    
+    // 2. Fix: Check both boolean and string types (Supabase sometimes returns strings)
+    const currentlyReleased = (summary.resultsReleased === true || summary.resultsReleased === 'true');
+    
+    // 3. We want to toggle to the opposite state
+    const newState = !currentlyReleased;
+    
+    const confirmMsg = newState 
+      ? `🚀 PUBLISH results for ${STATE.week}?\n\nThis will reveal winners, calculate level-ups, and broadcast to the Activity Feed.` 
+      : `🔒 HIDE results for ${STATE.week}?`;
+
+    if (!confirm(confirmMsg)) {
+        Loading.hide();
+        return;
+    }
+
+    // 4. Execute the toggle
     const d = await Api.call('toggleResultsRelease', {
       week: STATE.week,
       released: newState,
@@ -12196,7 +12362,9 @@ async function adminReleaseResults() {
     }, { dedupe: false, cache: false });
 
     if (d.success) {
-      showToast(newState ? 'Results released! 📢' : 'Results hidden 🔒', 'success');
+      showToast(newState ? '📢 Results Published!' : '🔒 Results Hidden', 'success');
+      
+      // 5. Invalidate cache and refresh the Admin UI to show the new state
       Api.invalidate('getWeeklySummary');
       if (typeof renderWeekConfirmation === 'function') {
         renderWeekConfirmation(document.getElementById('admin-panel-body'));
@@ -12205,11 +12373,12 @@ async function adminReleaseResults() {
       showToast(`❌ ${d.error}`, 'error');
     }
   } catch (e) {
-    showToast('❌ ' + e.message, 'error');
+    showToast('❌ Error: ' + e.message, 'error');
   } finally {
     Loading.hide();
   }
 }
+window.adminReleaseResults = adminReleaseResults;
 
 async function adminTriggerSync() {
   if (!confirm('Trigger a full database sync? This forces Last.fm checks for all agents.')) return;
