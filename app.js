@@ -5597,7 +5597,8 @@ function renderSecretMissionCard(mission, team, isAssigned = false) {
         </div>
       </div>
       
-      <div style="font-size:12px; color:var(--text-secondary); line-height:1.6; padding:12px; background:rgba(0,0,0,0.3); border-radius:8px; border:1px solid var(--border-subtle);">
+      <!-- ✅ FIXED: Added white-space: pre-wrap; to preserve line breaks -->
+      <div style="font-size:12px; color:var(--text-secondary); line-height:1.6; padding:12px; background:rgba(0,0,0,0.3); border-radius:8px; border:1px solid var(--border-subtle); white-space: pre-wrap;">
         ${sanitize(mission.briefing || mission.description || 'Proceed with mission parameters.')}
       </div>
 
