@@ -8416,14 +8416,15 @@ function renderArmyMission() {
       </div>
       <div style="display:flex; justify-content:space-between; gap:8px;">
         ${['S','M','T','W','T','F','S'].map((day, i) => {
-          const weekDates = getWeekDates(STATE.week);
-          const date = weekDates[i] || '';
+          // Use PT-based week dates instead of KST dates
+          const weekDatesPT = getWeekDatesPT(STATE.week);
+          const date = weekDatesPT[i] || '';
           
           // Use the global voting day ID to determine "Today"
           const votingToday = getVotingDayID();
           const isToday = date === votingToday;
           
-          // NO TIMEZONE MATH! Just use the date string directly to fetch the key.
+          // Check if this PT date has a vote saved
           let dayVoted = false;
           if (date) {
             const histKey = `p148_voting_${STATE.agentNo}_${date}`;
