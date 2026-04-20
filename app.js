@@ -233,14 +233,14 @@ const CONFIG = {
     'announcements': { icon: '📢', title: 'Announcements', text: 'Important news from HQ. Check regularly!' },
     'protocol148': { icon: '🧠', title: '148 Protocol', text: "RM's strategic analysis. Your personal daily streaming plan with exact numbers." },
     'guide': { icon: '📚', title: 'Agent Manual', text: 'Everything you need to know about the ARIRANG MISSION.' },
-    'army': { icon: '💜', title: 'Protocol 8: ARMY Voting', text: 'The 8th Mission. Cast your daily votes to support the targets. All agents must participate.' }, 
+    'army': { icon: '💜', title: 'The 8th Mission', text: 'Calling the 8th Member. Cast your daily votes to support the targets. All agents must participate.' },
   },
 
  // ═══════════════════════════════════════════════════
   // PROTOCOL 8 — ARMY MISSION (AMA 2026 Voting)
   // ═══════════════════════════════════════════════════
   VOTING_ACTIVE: true,
-  VOTING_MISSION_NAME: 'AMA 2026: OPERATION GOLDEN',
+  VOTING_MISSION_NAME: 'CALLING THE 8TH MEMBER',
   VOTING_CLOSE: '2026-05-08T11:59:00-07:00', // May 8 11:59 AM PT
   VOTING_RESET_HOUR_KST: 16, // Votes reset 4 PM KST (midnight PT)
   TURBO_DAYS: ['2026-04-21', '2026-04-28', '2026-05-05'],
@@ -7951,7 +7951,7 @@ async function render148Protocol() {
           ${render148Task('t148_unit', '⚡ Arirang Unit (25 streams)', unitPassed, undefined, undefined, false)}
           ${render148Task('t148_side', '🛡️ Side Missions (4 tracks)', !!sm?.todayAllPassed, undefined, undefined, false)}
           ${render148Task('t148_proof', '📸 Post Recents Proof in GC', isProofDone, undefined, undefined, true)}
-          ${CONFIG.VOTING_ACTIVE ? render148Task('t148_army_vote', '💜 Protocol 8: Cast Daily Votes (Web + IG)', isVotedToday, undefined, undefined, true) : ''}
+          ${CONFIG.VOTING_ACTIVE ? render148Task('t148_army_vote', '💜 The 8th Mission: Cast Daily Votes', isVotedToday, undefined, undefined, true) : ''}
         </div>
       `;
 
@@ -8204,7 +8204,7 @@ function renderArmyMission() {
         <div class="archive-card" style="border-top:4px solid var(--purple-core); margin-bottom:20px; background:linear-gradient(135deg, rgba(167,139,250,0.06), var(--bg-panel)); padding:20px;">
       <div style="text-align:center;">
         <div style="font-size:28px; margin-bottom:8px;">💜</div>
-        <div style="font-size:13px; font-weight:900; color:#fff; font-family:'Orbitron', sans-serif; letter-spacing:2px;">PROTOCOL 8: ARMY VOTING MISSION</div>
+        <div style="font-size:13px; font-weight:900; color:#fff; font-family:'Orbitron', sans-serif; letter-spacing:2px;">THE 8TH MISSION</div>
         <div style="font-size:10px; color:var(--purple-mid); font-weight:800; margin-top:4px; text-transform:uppercase; letter-spacing:2px;">${CONFIG.VOTING_MISSION_NAME}</div>
         <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">${getClosingCountdown()}</div>
       </div>
