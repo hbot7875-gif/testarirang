@@ -423,15 +423,15 @@ function getKSTDateString() {
  * A voting day starts at 12:00 AM PT = 4:00 PM KST
  */
 function getVotingDayID() {
-  const now = new Date();
-  const kstNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  const ptFormatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Los_Angeles',
+    year: 'numeric', month: '2-digit', day: '2-digit'
+  });
   
-  // PT is 16 hours behind KST (during PDT/April-May)
-  // Subtract 16 hours to get the actual PT date
-  const ptShifted = new Date(kstNow.getTime() - (16 * 60 * 60 * 1000));
-  return ptShifted.toISOString().split('T')[0]; // Returns YYYY-MM-DD in PT
+  const [month, day, year] = ptFormatter.format(new Date()).split('/');
+  return `${year}-${month}-${day}`;
 }
-
+  
 /**
  * Gets the storage key for voting that respects PT midnight (4 PM KST reset)
  */
