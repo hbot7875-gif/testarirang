@@ -236,20 +236,26 @@ const CONFIG = {
     'army': { icon: '💜', title: 'The 8th Mission', text: 'Calling the 8th Member. Cast your daily votes to support the targets. All agents must participate.' },
   },
 
- // ═══════════════════════════════════════════════════
-  // PROTOCOL 8 — ARMY MISSION (AMA 2026 Voting)
-  // ═══════════════════════════════════════════════════
-  VOTING_ACTIVE: true,
-  VOTING_MISSION_NAME: 'CALLING THE 8TH MEMBER',
-  VOTING_CLOSE: '2026-05-08T11:59:00-07:00', // May 8 11:59 AM PT
-  VOTING_RESET_HOUR_KST: 16, // Votes reset 4 PM KST (midnight PT)
-  TURBO_DAYS: ['2026-04-21', '2026-04-28', '2026-05-05'],
-  VOTING_CATEGORIES: [
-    { id: 'aoty', label: 'Artist of the Year', tag: '#aotybts', url: 'https://vote.theamas.com/artist-of-the-year/bts' },
-    { id: 'sots', label: 'Song of the Summer', tag: '#summersongswim', url: 'https://vote.theamas.com/song-of-the-summer/swim' },
-    { id: 'male', label: 'Best Male K-Pop Artist', tag: '#malekpopbts', url: 'https://vote.theamas.com/best-male-k-pop-artist/bts' },
-  ],
-};
+// ═══════════════════════════════════════════════════
+// PROTOCOL 8 — ARMY MISSION (AMA 2026 Voting)
+// ═══════════════════════════════════════════════════
+VOTING_ACTIVE: true,
+VOTING_MISSION_NAME: 'CALLING THE 8TH MEMBER',
+VOTING_CLOSE: '2026-05-08T11:59:00-07:00', // May 8 11:59 AM PT ✅
+VOTING_RESET_HOUR_KST: 16, // Votes reset 4 PM KST (midnight PT) ✅
+TURBO_DAYS: [
+  '2026-04-21',  // ✅ April 21 in PT
+  '2026-04-28',  // ✅ April 28 in PT
+  '2026-05-05',  // ✅ May 5 in PT
+],
+VOTING_CATEGORIES: [
+  { id: 'aoty', label: 'Artist of the Year', tag: '#aotybts', url: 'https://vote.theamas.com/artist-of-the-year/bts' },
+  { id: 'sots', label: 'Song of the Summer', tag: '#summersongswim', url: 'https://vote.theamas.com/song-of-the-summer/swim' },
+  { id: 'male', label: 'Best Male K-Pop Artist', tag: '#malekpopbts', url: 'https://vote.theamas.com/best-male-k-pop-artist/bts' },
+],
+}; // <-- ADD THIS CLOSING BRACE AND SEMICOLON
+
+
 
 const MISSION_NARRATIVES = {
   trackGoals: {
@@ -413,21 +419,21 @@ function getKSTDateString() {
   return `${kst.getFullYear()}-${String(kst.getMonth() + 1).padStart(2, '0')}-${String(kst.getDate()).padStart(2, '0')}`;
 }
 /**
- * Gets a Day ID for voting that resets at 4:00 PM KST (16:00)
+ * Gets the current voting day ID based on Pacific Time (PT)
+ * A voting day starts at 12:00 AM PT = 4:00 PM KST
  */
 function getVotingDayID() {
-  const kst = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
-  const hour = kst.getHours();
+  const now = new Date();
+  const kstNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
   
-  // If it's before 4:00 PM, we are still technically in "yesterday's" voting window
-  if (hour < 16) {
-    kst.setDate(kst.getDate() - 1);
-  }
-  return kst.toISOString().split('T')[0];
+  // PT is 16 hours behind KST (during PDT/April-May)
+  // Subtract 16 hours to get the actual PT date
+  const ptShifted = new Date(kstNow.getTime() - (16 * 60 * 60 * 1000));
+  return ptShifted.toISOString().split('T')[0]; // Returns YYYY-MM-DD in PT
 }
 
 /**
- * Gets the storage key for 148 Protocol that respects the 4 PM reset for voting items
+ * Gets the storage key for voting that respects PT midnight (4 PM KST reset)
  */
 function getVotingTodoKey() {
   return `p148_voting_${STATE.agentNo}_${getVotingDayID()}`;
@@ -8246,7 +8252,7 @@ window.show148Info = show148Info;
 
 /**
  * Renders the Army Division voting mission page.
- * Spy-coded framing: "Cyber Ballots", "Transmission Ciphers", "8th Division".
+ * Uses PT-based date logic (resets at 4 PM KST = midnight PT)
  */
 function renderArmyMission() {
   const container = $('armyContent');
@@ -8262,26 +8268,32 @@ function renderArmyMission() {
     return;
   }
 
-  const todayKST = getKSTDateString();
-  const isTurbo = CONFIG.TURBO_DAYS.includes(todayKST);
+  // --- OFFICIAL TIMEZONE CALCULATIONS ---
+  const now = new Date();
+  const kstNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  
+  // Create a "Voting Day ID" based on PT (Pacific Time)
+  // We subtract 16 hours from KST because PT is 16 hours behind KST
+  const ptShifted = new Date(kstNow.getTime() - (16 * 60 * 60 * 1000));
+  const votingDayID = ptShifted.toISOString().split('T')[0]; // This is the actual day in PT
 
-  // ── Countdown to 4 PM KST (= midnight PT) ──
+  // Check if it is currently Turbo based on PT Date
+  const isTurbo = CONFIG.TURBO_DAYS.includes(votingDayID);
+
+  // ── Countdown to 4 PM KST (= Midnight PT) ──
   function getResetCountdown() {
-    const now = new Date();
-    const kst = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
-    const reset = new Date(kst);
-    reset.setHours(16, 0, 0, 0); // 4 PM KST = 16:00
-    if (reset <= kst) reset.setDate(reset.getDate() + 1);
-    const diff = reset - kst;
-    const h = Math.floor(diff / 3_600_000);
-    const m = Math.floor((diff % 3_600_000) / 60_000);
-    const s = Math.floor((diff % 60_000) / 1_000);
-    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    const reset = new Date(kstNow);
+    reset.setHours(16, 0, 0, 0); 
+    if (reset <= kstNow) reset.setDate(reset.getDate() + 1);
+    const diff = reset - kstNow;
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   }
 
   // ── Closing countdown ──
   function getClosingCountdown() {
-    const now = new Date();
     const close = new Date(CONFIG.VOTING_CLOSE);
     const diff = close - now;
     if (diff <= 0) return 'VOTING CLOSED';
@@ -8293,14 +8305,14 @@ function renderArmyMission() {
 
   // ── Next turbo day ──
   function nextTurboLabel() {
-    const todayMs = new Date(todayKST + 'T00:00:00Z').getTime();
+    const todayMs = new Date(votingDayID + 'T00:00:00Z').getTime();
     const future = CONFIG.TURBO_DAYS.filter(d => new Date(d + 'T00:00:00Z').getTime() > todayMs);
     if (!future.length) return null;
     const d = new Date(future[0] + 'T00:00:00Z');
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
   }
 
-  // Use the 4 PM KST reset key
+  // Use the PT-based voting key
   const votingTodo = JSON.parse(localStorage.getItem(getVotingTodoKey()) || '{}');
   const isVotedToday = !!votingTodo['voted'];
 
@@ -8328,9 +8340,9 @@ function renderArmyMission() {
           letter-spacing:3px; text-shadow:0 0 10px rgba(167,139,250,0.5);">THE 8TH MISSION</div>
         <div style="font-size:11px; color:var(--purple-mid); font-weight:800; margin-top:6px; 
           text-transform:uppercase; letter-spacing:2px;">${CONFIG.VOTING_MISSION_NAME}</div>
-        <div style="font-size:11px; color:var(--text-muted); margin-top:12px; padding:8px 16px; 
+        <div style="font-size:10px; color:var(--text-muted); margin-top:12px; padding:6px 12px; 
           background:rgba(0,0,0,0.3); border-radius:20px; display:inline-block;">
-          ⏰ ${getClosingCountdown()}
+          PT Voting Day: ${votingDayID} • ${getClosingCountdown()}
         </div>
       </div>
     </div>
@@ -8356,19 +8368,25 @@ function renderArmyMission() {
     <div class="glass-card" style="padding:16px; margin-bottom:20px; display:flex; justify-content:space-between; 
       align-items:center; background:linear-gradient(135deg, rgba(167,139,250,0.08), var(--bg-panel));">
       <div>
-        <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px;">⏳ Votes Reset In</div>
+        <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px;">⏳ Next PT Reset</div>
         <div id="armyResetTimer" style="font-family:'Share Tech Mono', monospace; font-size:24px; 
           font-weight:900; color:var(--purple-core); text-shadow:0 0 10px rgba(167,139,250,0.4);">
           ${getResetCountdown()}
         </div>
       </div>
-      ${nextTurboLabel() ? `
-      <div style="text-align:right; padding:12px 16px; background:rgba(229,165,40,0.1); 
-        border:1px solid var(--gold-core); border-radius:8px;">
-        <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:1px;">⚡ Next Turbo</div>
-        <div style="font-size:13px; font-weight:900; color:var(--gold-core); 
-          text-shadow:0 0 8px rgba(229,165,40,0.5);">${nextTurboLabel()}</div>
-      </div>` : ''}
+      <div style="text-align:right;">
+        <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase;">PT System Time</div>
+        <div style="font-size:12px; color:#fff; font-weight:800;">
+          ${ptShifted.toLocaleTimeString('en-US', {hour: '2-digit', minute:'2-digit', hour12: true})}
+        </div>
+        ${nextTurboLabel() ? `
+        <div style="margin-top:8px; padding:8px 12px; background:rgba(229,165,40,0.1); 
+          border:1px solid var(--gold-core); border-radius:6px;">
+          <div style="font-size:8px; color:var(--text-ghost); text-transform:uppercase;">⚡ Next Turbo</div>
+          <div style="font-size:11px; font-weight:900; color:var(--gold-core); 
+            text-shadow:0 0 8px rgba(229,165,40,0.5);">${nextTurboLabel()}</div>
+        </div>` : ''}
+      </div>
     </div>
 
     <div class="glass-card" style="padding:18px; margin-bottom:20px; 
@@ -8381,14 +8399,15 @@ function renderArmyMission() {
         ${['S','M','T','W','T','F','S'].map((day, i) => {
           const weekDates = getWeekDates(STATE.week);
           const date = weekDates[i] || '';
-          const isToday = date === todayKST;
           
-          // Check actual voting history for this specific day
+          // Use the global voting day ID to determine "Today"
+          const votingToday = getVotingDayID();
+          const isToday = date === votingToday;
+          
+          // NO TIMEZONE MATH! Just use the date string directly to fetch the key.
           let dayVoted = false;
           if (date) {
-            const parts = date.split('-');
-            const localD = new Date(parts[0], parseInt(parts[1])-1, parseInt(parts[2]));
-            const histKey = `p148_voting_${STATE.agentNo}_${localD.toISOString().split('T')[0]}`;
+            const histKey = `p148_voting_${STATE.agentNo}_${date}`;
             try {
               const histData = JSON.parse(localStorage.getItem(histKey) || '{}');
               dayVoted = !!histData['voted'];
@@ -8604,7 +8623,7 @@ function renderArmyMission() {
           5️⃣ Drop your screenshot in the <strong style="color:var(--purple-core);">Team GC</strong> as proof
         </div>
         <div style="padding:8px 0;">
-          6️⃣ Votes reset daily at <strong style="color:var(--purple-core);">4 PM KST (midnight PT)</strong>
+          6️⃣ Votes reset daily at <strong style="color:var(--purple-core);">12:00 AM PT (4 PM KST)</strong>
         </div>
       </div>
     </div>
@@ -8638,7 +8657,7 @@ function renderArmyMission() {
       ${isVotedToday ? `
         <div style="font-size:11px; color:var(--green); margin-top:10px; font-weight:900; 
           text-shadow:0 0 10px rgba(0,255,102,0.5);">
-          ✓ Status: COMPLIANT 💜 Resets at 4 PM KST
+          ✓ Status: COMPLIANT 💜 Resets at 12 AM PT
         </div>` : ''}
     </div>
   `;
@@ -8657,18 +8676,13 @@ function renderArmyMission() {
   }, 1000);
 }
 /**
- * Copies Instagram voting comment to clipboard
- */
-/**
  * Copies Instagram voting comment to clipboard with visual feedback
  */
 window.copyVotingTag = function copyVotingTag(tagText, tagId) {
   const btn = $('copy-' + tagId);
   if (!btn) return;
   
-  // Copy to clipboard
   navigator.clipboard.writeText(tagText).then(() => {
-    // Visual feedback
     const originalText = btn.textContent;
     btn.textContent = '✓ COPIED!';
     btn.style.background = 'rgba(0,255,102,0.2)';
@@ -8688,13 +8702,9 @@ window.copyVotingTag = function copyVotingTag(tagText, tagId) {
     showToast('Failed to copy', 'error');
   });
 };
+
 /**
- * Submits the vote to the database and updates local state.
- * Also stores voting history for the 7-day streak tracker.
- */
-/**
- * Submits the vote to the database and updates local state.
- * Uses 4 PM KST reset logic.
+ * Submits the vote using PT-based day ID
  */
 window.completeArmyMission = async function completeArmyMission() {
   const vKey = getVotingTodoKey();
@@ -8702,7 +8712,7 @@ window.completeArmyMission = async function completeArmyMission() {
   const wasVoted = !!votingTodo['voted'];
 
   if (wasVoted) {
-    showToast('You have already voted today!', 'info');
+    showToast('You have already voted today (PT time)!', 'info');
     return;
   }
 
@@ -8714,7 +8724,7 @@ window.completeArmyMission = async function completeArmyMission() {
     }, { dedupe: false, cache: false });
 
     if (res.success) {
-      // Save using the 4PM-shifted key
+      // Save using PT-based key
       localStorage.setItem(vKey, JSON.stringify({ voted: true, timestamp: Date.now() }));
       
       showToast('💜 Votes confirmed and synced to HQ!', 'success');
