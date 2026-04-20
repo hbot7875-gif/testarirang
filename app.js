@@ -412,7 +412,26 @@ function getKSTDateString() {
   const kst = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
   return `${kst.getFullYear()}-${String(kst.getMonth() + 1).padStart(2, '0')}-${String(kst.getDate()).padStart(2, '0')}`;
 }
+/**
+ * Gets a Day ID for voting that resets at 4:00 PM KST (16:00)
+ */
+function getVotingDayID() {
+  const kst = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  const hour = kst.getHours();
+  
+  // If it's before 4:00 PM, we are still technically in "yesterday's" voting window
+  if (hour < 16) {
+    kst.setDate(kst.getDate() - 1);
+  }
+  return kst.toISOString().split('T')[0];
+}
 
+/**
+ * Gets the storage key for 148 Protocol that respects the 4 PM reset for voting items
+ */
+function getVotingTodoKey() {
+  return `p148_voting_${STATE.agentNo}_${getVotingDayID()}`;
+}
 /** Format ISO date to readable "Mar 22, 3:45 PM IST" */
 /** 
 * Formats a date string to a readable "Mar 22, 3:45 PM IST" 
@@ -8281,8 +8300,9 @@ function renderArmyMission() {
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
   }
 
-  const savedTodo = getSavedTodos();
-  const isVotedToday = !!savedTodo['t148_army_vote'];
+  // Use the 4 PM KST reset key
+  const votingTodo = JSON.parse(localStorage.getItem(getVotingTodoKey()) || '{}');
+  const isVotedToday = !!votingTodo['voted'];
 
   // ── LIVE SQUAD STANDINGS (Dynamic Data) ──
   const teamVotes = STATE.data?.armyVotingStats || [];
@@ -8368,10 +8388,10 @@ function renderArmyMission() {
           if (date) {
             const parts = date.split('-');
             const localD = new Date(parts[0], parseInt(parts[1])-1, parseInt(parts[2]));
-            const histKey = `p148_${STATE.agentNo}_${localD.toDateString()}`;
+            const histKey = `p148_voting_${STATE.agentNo}_${localD.toISOString().split('T')[0]}`;
             try {
               const histData = JSON.parse(localStorage.getItem(histKey) || '{}');
-              dayVoted = !!histData['t148_army_vote'];
+              dayVoted = !!histData['voted'];
             } catch(e) {}
           }
           
@@ -8508,11 +8528,11 @@ function renderArmyMission() {
             padding:10px; background:rgba(167,139,250,0.05); border-radius:6px; transition:all 0.3s;">
             📱 Open Post
           </a>
-          <button onclick="copyVotingTag('I\\'m voting for #aotybts', 'ig_aoty')" 
+          <button id="copy-ig_aoty" onclick="copyVotingTag('I\\'m voting for #aotybts', 'ig_aoty')" 
             style="flex:1; background:rgba(167,139,250,0.15); border:1px solid var(--purple-core); 
             color:var(--purple-mid); padding:10px; border-radius:6px; font-size:10px; 
             font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:1px;
-            transition:all 0.3s;">
+            transition:all 0.2s;">
             📋 Copy Comment
           </button>
         </div>
@@ -8536,14 +8556,14 @@ function renderArmyMission() {
             padding:10px; background:rgba(167,139,250,0.05); border-radius:6px; transition:all 0.3s;">
             📱 Open Post
           </a>
-          <button onclick="copyVotingTag('I\\'m voting for #malekpopbts', 'ig_kpop')" 
+          <button id="copy-ig_kpop" onclick="copyVotingTag('I\\'m voting for #malekpopbts', 'ig_kpop')" 
             style="flex:0.5; background:rgba(167,139,250,0.15); border:1px solid var(--purple-core); 
             color:var(--purple-mid); padding:10px; border-radius:6px; font-size:9px; 
             font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:1px;
             transition:all 0.3s;">
             📋 K-Pop
           </button>
-          <button onclick="copyVotingTag('I\\'m voting for #summersongswim', 'ig_song')" 
+          <button id="copy-ig_song" onclick="copyVotingTag('I\\'m voting for #summersongswim', 'ig_song')" 
             style="flex:0.5; background:rgba(167,139,250,0.15); border:1px solid var(--purple-core); 
             color:var(--purple-mid); padding:10px; border-radius:6px; font-size:9px; 
             font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:1px;
@@ -8639,8 +8659,12 @@ function renderArmyMission() {
 /**
  * Copies Instagram voting comment to clipboard
  */
+/**
+ * Copies Instagram voting comment to clipboard with visual feedback
+ */
 window.copyVotingTag = function copyVotingTag(tagText, tagId) {
-  const btn = $(`copy-${tagId}`);
+  const btn = $('copy-' + tagId);
+  if (!btn) return;
   
   // Copy to clipboard
   navigator.clipboard.writeText(tagText).then(() => {
@@ -8668,47 +8692,37 @@ window.copyVotingTag = function copyVotingTag(tagText, tagId) {
  * Submits the vote to the database and updates local state.
  * Also stores voting history for the 7-day streak tracker.
  */
+/**
+ * Submits the vote to the database and updates local state.
+ * Uses 4 PM KST reset logic.
+ */
 window.completeArmyMission = async function completeArmyMission() {
-  const saved = getSavedTodos();
-  const wasVoted = !!saved['t148_army_vote'];
+  const vKey = getVotingTodoKey();
+  const votingTodo = JSON.parse(localStorage.getItem(vKey) || '{}');
+  const wasVoted = !!votingTodo['voted'];
 
   if (wasVoted) {
-    // Optional: We usually don't let them un-vote in the database, 
-    // but we can clear their local checklist if they made a mistake.
-    delete saved['t148_army_vote'];
-    localStorage.setItem(getTodoKey(), JSON.stringify(saved));
-    showToast('Voting record cleared locally.', 'info');
-    renderArmyMission();
+    showToast('You have already voted today!', 'info');
     return;
   }
 
   Loading.show();
   try {
-    // 1. Send signal to HQ (Database)
     const res = await Api.call('submitArmyVote', { 
       agentNo: STATE.agentNo, 
       week: STATE.week 
     }, { dedupe: false, cache: false });
 
     if (res.success) {
-      // 2. Update local checklist
-      saved['t148_army_vote'] = true;
-      localStorage.setItem(getTodoKey(), JSON.stringify(saved));
-      
-      // 3. Store in voting history for 7-day streak tracker
-      const today = new Date();
-      const histKey = `p148_${STATE.agentNo}_${today.toDateString()}`;
-      localStorage.setItem(histKey, JSON.stringify({ 't148_army_vote': true }));
+      // Save using the 4PM-shifted key
+      localStorage.setItem(vKey, JSON.stringify({ voted: true, timestamp: Date.now() }));
       
       showToast('💜 Votes confirmed and synced to HQ!', 'success');
       
       if (typeof navigator.vibrate === 'function') navigator.vibrate([50, 30, 50]);
       
-      // 4. Force a dashboard refresh so the Live Leaderboard instantly updates
       Api.invalidate('getDashboardData'); 
       await loadDashboard(); 
-      
-      // 5. Re-render the army mission page
       renderArmyMission();
     } else {
       showToast(res.error || 'Failed to sync vote to HQ', 'error');
@@ -8720,6 +8734,7 @@ window.completeArmyMission = async function completeArmyMission() {
     Loading.hide();
   }
 };
+
 
 // =============================================
 // ██████  GUIDE PAGE
