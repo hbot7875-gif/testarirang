@@ -233,7 +233,22 @@ const CONFIG = {
     'announcements': { icon: '📢', title: 'Announcements', text: 'Important news from HQ. Check regularly!' },
     'protocol148': { icon: '🧠', title: '148 Protocol', text: "RM's strategic analysis. Your personal daily streaming plan with exact numbers." },
     'guide': { icon: '📚', title: 'Agent Manual', text: 'Everything you need to know about the ARIRANG MISSION.' },
+    'army': { icon: '💜', title: 'Protocol 8: ARMY Voting', text: 'The 8th Mission. Cast your daily votes to support the targets. All agents must participate.' }, 
   },
+
+ // ═══════════════════════════════════════════════════
+  // PROTOCOL 8 — ARMY MISSION (AMA 2026 Voting)
+  // ═══════════════════════════════════════════════════
+  VOTING_ACTIVE: true,
+  VOTING_MISSION_NAME: 'AMA 2026: OPERATION GOLDEN',
+  VOTING_CLOSE: '2026-05-08T11:59:00-07:00', // May 8 11:59 AM PT
+  VOTING_RESET_HOUR_KST: 16, // Votes reset 4 PM KST (midnight PT)
+  TURBO_DAYS: ['2026-04-21', '2026-04-28', '2026-05-05'],
+  VOTING_CATEGORIES: [
+    { id: 'aoty', label: 'Artist of the Year', tag: '#aotybts', url: 'https://vote.theamas.com/artist-of-the-year/bts' },
+    { id: 'sots', label: 'Song of the Summer', tag: '#summersongswim', url: 'https://vote.theamas.com/song-of-the-summer/swim' },
+    { id: 'male', label: 'Best Male K-Pop Artist', tag: '#malekpopbts', url: 'https://vote.theamas.com/best-male-k-pop-artist/bts' },
+  ],
 };
 
 const MISSION_NARRATIVES = {
@@ -1882,12 +1897,12 @@ async function renderHome() {
               <span style="font-family:var(--font-mono); font-size:9px; color:var(--text-ghost);">${sanitize(team.replace('Team ', ''))}</span>
             </div>
             ${trackEntries.length ? trackEntries.slice(0, 3).map(([name, goalInfo]) => {
-              const prog = goalInfo.teams?.[team] || { current: 0 };
-              const goal = goalInfo.goal || 1;
-              const cur = prog.current || 0;
-              const pct = Math.min(100, Math.round((cur / goal) * 100));
-              const done = pct >= 100;
-              return `
+        const prog = goalInfo.teams?.[team] || { current: 0 };
+        const goal = goalInfo.goal || 1;
+        const cur = prog.current || 0;
+        const pct = Math.min(100, Math.round((cur / goal) * 100));
+        const done = pct >= 100;
+        return `
                 <div style="margin-bottom:8px;">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
                     <span style="font-size:10px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:55%;">${sanitize(name)}</span>
@@ -1898,7 +1913,7 @@ async function renderHome() {
                   </div>
                 </div>
               `;
-            }).join('') : '<div style="font-size:10px; color:var(--text-ghost);">No track targets set</div>'}
+      }).join('') : '<div style="font-size:10px; color:var(--text-ghost);">No track targets set</div>'}
             <div style="text-align:center; margin-top:8px;">
               <span onclick="goTo('trackgoals')" style="font-size:9px; color:var(--wave-foam); cursor:pointer; font-weight:700;">
                 ${trackEntries.length > 3 ? `View All ${trackEntries.length} →` : 'Details →'}
@@ -1912,12 +1927,12 @@ async function renderHome() {
               <span style="font-family:var(--font-mono); font-size:9px; color:var(--text-ghost);">${sanitize(team.replace('Team ', ''))}</span>
             </div>
             ${albumEntries.length ? albumEntries.slice(0, 3).map(([name, goalInfo]) => {
-              const prog = goalInfo.teams?.[team] || { current: 0 };
-              const goal = goalInfo.goal || 1;
-              const cur = prog.current || 0;
-              const pct = Math.min(100, Math.round((cur / goal) * 100));
-              const done = pct >= 100;
-              return `
+        const prog = goalInfo.teams?.[team] || { current: 0 };
+        const goal = goalInfo.goal || 1;
+        const cur = prog.current || 0;
+        const pct = Math.min(100, Math.round((cur / goal) * 100));
+        const done = pct >= 100;
+        return `
                 <div style="margin-bottom:8px;">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
                     <span style="font-size:10px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:55%;">${sanitize(name)}</span>
@@ -1928,7 +1943,7 @@ async function renderHome() {
                   </div>
                 </div>
               `;
-            }).join('') : '<div style="font-size:10px; color:var(--text-ghost);">No album targets set</div>'}
+      }).join('') : '<div style="font-size:10px; color:var(--text-ghost);">No album targets set</div>'}
             <div style="text-align:center; margin-top:8px;">
               <span onclick="goTo('albumgoals')" style="font-size:9px; color:var(--wave-foam); cursor:pointer; font-weight:700;">
                 ${albumEntries.length > 3 ? `View All ${albumEntries.length} →` : 'Details →'}
@@ -2221,7 +2236,7 @@ async function updateTickerWithActivity() {
         return `<span class="ticker-item">● ${sanitize(text)}</span>`;
       }).join('');
     }
-  } catch (e) {}
+  } catch (e) { }
 }
 
 /* ═══════════════════════════════════════════
@@ -2275,10 +2290,8 @@ async function loadActivityWidget(el) {
    ═══════════════════════════════════════════ */
 function fmt(n) {
   if (n == null) return '0';
-  n = Number(n);
-  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
-  if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
-  return n.toLocaleString();
+  // Just return the full number with commas, no K or M
+  return Number(n).toLocaleString();
 }
 
 function esc(s) {
@@ -2546,7 +2559,6 @@ function renderProfile() {
     const team = p.team || 'Unknown';
     const tColor = teamColor(team);
 
-    // ✅ NEW: Calculate today's 2X status
     const todayKST = getKSTDateString();
     const todayData = album2xStatus.dailyGrid?.[todayKST] || {};
     const tracksToday = Object.values(todayData).filter(c => c?.passed).length;
@@ -2562,14 +2574,12 @@ function renderProfile() {
     if (album2xBadge) currentWeekBadges.push(album2xBadge);
     currentWeekBadges.push(...xpBadges);
 
-    // ✅ CATCH-ALL LAST.FM LOGIC
     const rawLastfm = a.lastfms || a.lastfm || p.lastfms || p.lastfm;
     const lastfmUsernames = Array.isArray(rawLastfm)
       ? rawLastfm
       : (rawLastfm ? [rawLastfm] : []);
     const hasLastfm = lastfmUsernames.length > 0;
 
-    // ✅ SAFE week dates
     const weekDates = getWeekDates(STATE.week);
     const weekDatesObj = {
       start: weekDates[0],
@@ -2624,52 +2634,56 @@ function renderProfile() {
         </div>
         <div class="stat-box">
           <div class="sv" style="font-size: 10px;">
-            ${isWeeklyDone ? 
-              `<span style="color:var(--green); font-family:var(--font-mono); font-size:10px; border:1px solid var(--green); padding:2px 8px; border-radius:4px; background:rgba(0,255,102,0.1);">[✓] WEEK SECURED</span>` :
-              isTodayDone ?
-              `<span style="color:var(--green); font-family:var(--font-mono); font-size:10px; border:1px solid var(--green); padding:2px 8px; border-radius:4px; background:rgba(0,255,102,0.1);">[✓] TODAY SECURED</span>` :
-              `<span style="color:var(--fail); font-family:var(--font-mono); font-size:10px; border:1px solid var(--fail); padding:2px 8px; border-radius:4px; background:rgba(255,0,0,0.1); animation:pulse 2s infinite;">[!] PENDING_ACTION</span>`
-            }
+            ${isWeeklyDone ?
+        `<span style="color:var(--green); font-family:var(--font-mono); font-size:10px; border:1px solid var(--green); padding:2px 8px; border-radius:4px; background:rgba(0,255,102,0.1);">[✓] WEEK SECURED</span>` :
+        isTodayDone ?
+          `<span style="color:var(--green); font-family:var(--font-mono); font-size:10px; border:1px solid var(--green); padding:2px 8px; border-radius:4px; background:rgba(0,255,102,0.1);">[✓] TODAY SECURED</span>` :
+          `<span style="color:var(--fail); font-family:var(--font-mono); font-size:10px; border:1px solid var(--fail); padding:2px 8px; border-radius:4px; background:rgba(255,0,0,0.1); animation:pulse 2s infinite;">[!] PENDING_ACTION</span>`
+      }
           </div>
           <div class="sl">2X Status</div>
         </div>
       </div>
     `;
 
-    // --- ✨ DAILY 2X PROTOCOL STRIP ---
+    // --- DAILY 2X PROTOCOL STRIP ---
     const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    
+
     html += `
       <div class="glass-card" style="padding:14px; margin-bottom:24px; border-top:1px solid var(--border-light);">
         <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px;">Daily 2X Protocol Status</div>
         <div style="display:grid; grid-template-columns: repeat(7, 1fr); gap:6px;">
           ${weekDates.map((date, i) => {
-            const dayData = album2xStatus.dailyGrid?.[date] || {};
-            const passedCount = Object.values(dayData).filter(c => c?.passed).length;
-            const isDone = passedCount >= 14;
-            const isFuture = date > todayKST;
-            
-            let mark = passedCount > 0 ? passedCount : '—';
-            let color = 'var(--text-ghost)';
-            let border = 'var(--border-subtle)';
+      const dayData = album2xStatus.dailyGrid?.[date] || {};
+      const passedCount = Object.values(dayData).filter(c => c?.passed).length;
+      const isDone = passedCount >= 14;
+      const isFuture = date > todayKST;
 
-            if (isDone) {
-              mark = '2X';
-              color = 'var(--red-core)';
-              border = 'var(--red-border)';
-            } else if (passedCount > 0) {
-              mark = '✓';
-              color = 'var(--green)';
-              border = 'var(--green-border)';
-            }
+      // ✅ FIXED: Green = fully done, Red = started but incomplete, Ghost = empty
+      let mark = '—';
+      let color = 'var(--text-ghost)';
+      let border = 'var(--border-subtle)';
+      let bg = 'rgba(255,255,255,0.02)';
 
-            return `
-              <div style="text-align:center; padding:8px 0; background:rgba(255,255,255,0.02); border:1px solid ${isFuture ? 'transparent' : border}; border-radius:6px; opacity:${isFuture ? 0.3 : 1};">
+      if (isDone) {
+        mark = '2X';
+        color = 'var(--green)';
+        border = 'var(--green-border)';
+        bg = 'var(--green-soft)';
+      } else if (passedCount > 0 && !isFuture) {
+        mark = passedCount;
+        color = 'var(--red-core)';
+        border = 'var(--red-border)';
+        bg = 'var(--red-whisper)';
+      }
+
+      return `
+              <div style="text-align:center; padding:8px 0; background:${bg}; border:1px solid ${isFuture ? 'transparent' : border}; border-radius:6px; opacity:${isFuture ? 0.3 : 1};">
                 <div style="font-size:7px; color:var(--text-muted); font-weight:800;">${dayLabels[i]}</div>
                 <div style="font-family:var(--font-mono); font-size:11px; font-weight:900; color:${color}; margin-top:2px;">${mark}</div>
               </div>
             `;
-          }).join('')}
+    }).join('')}
         </div>
       </div>
     `;
@@ -2687,26 +2701,26 @@ function renderProfile() {
           <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Top Tracks</div>
           <div style="max-height:150px; overflow-y:auto; padding-right:4px;">
             ${Object.entries(trackContributions).length > 0
-              ? Object.entries(trackContributions).sort((x, y) => y[1] - x[1]).map(([n, c]) => `
+        ? Object.entries(trackContributions).sort((x, y) => y[1] - x[1]).map(([n, c]) => `
                   <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-subtle); font-size:11px;">
                     <span style="color:#fff;">${sanitize(n)}</span>
                     <span style="font-family:'Share Tech Mono', monospace; color:var(--wave-foam);">${fmt(c)}</span>
                   </div>`).join('')
-              : '<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No track data yet</div>'
-            }
+        : '<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No track data yet</div>'
+      }
           </div>
         </div>
         <div class="glass-card" style="padding:16px;">
           <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:12px;">Top Albums</div>
           <div style="max-height:150px; overflow-y:auto; padding-right:4px;">
             ${Object.entries(albumContributions).length > 0
-              ? Object.entries(albumContributions).sort((x, y) => y[1] - x[1]).map(([n, c]) => `
+        ? Object.entries(albumContributions).sort((x, y) => y[1] - x[1]).map(([n, c]) => `
                   <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-subtle); font-size:11px;">
                     <span style="color:#fff;">${sanitize(n)}</span>
                     <span style="font-family:'Share Tech Mono', monospace; color:var(--wave-foam);">${fmt(c)}</span>
                   </div>`).join('')
-              : '<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No album data yet</div>'
-            }
+        : '<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No album data yet</div>'
+      }
           </div>
         </div>
       </div>
@@ -2734,7 +2748,7 @@ function renderProfile() {
                   </div>
                 </div>
                 <div style="display:flex; gap:6px; flex-shrink:0; margin-left:12px;">
-                  <a href="https://www.last.fm/user/${encodeURIComponent(u)}" 
+                  <a href="https://www.last.fm/user/${encodeURIComponent(u)}"
                      target="_blank" rel="noopener"
                      style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; background:var(--red-whisper); border:1px solid var(--red-border); border-radius:7px; color:var(--red-core); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; text-decoration:none; transition:all 0.2s; white-space:nowrap;"
                      onmouseover="this.style.background='rgba(255,20,95,0.15)'; this.style.borderColor='var(--red-core)'"
@@ -2742,7 +2756,7 @@ function renderProfile() {
                     🔗 Profile
                   </a>
                   ${weekDatesObj.start ? `
-                  <a href="https://www.last.fm/user/${encodeURIComponent(u)}/library?from=${weekDatesObj.start}&to=${weekDatesObj.end}" 
+                  <a href="https://www.last.fm/user/${encodeURIComponent(u)}/library?from=${weekDatesObj.start}&to=${weekDatesObj.end}"
                      target="_blank" rel="noopener"
                      style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; background:rgba(74,144,164,0.08); border:1px solid rgba(74,144,164,0.25); border-radius:7px; color:var(--wave-foam); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; text-decoration:none; transition:all 0.2s; white-space:nowrap;"
                      onmouseover="this.style.background='rgba(74,144,164,0.15)'"
@@ -2854,8 +2868,8 @@ function renderProfile() {
             </div>
             <div style="font-size:10px; color:var(--text-secondary); margin-top:6px; line-height:1.5;">
               ${isExempt
-                ? 'You are exempt from missions this week. No XP awarded. Rest well, Agent.'
-                : "Can't stream this week? Apply for leave to protect your team stats. (0 XP earned)"}
+        ? 'You are exempt from missions this week. No XP awarded. Rest well, Agent.'
+        : "Can't stream this week? Apply for leave to protect your team stats. (0 XP earned)"}
             </div>
           </div>
           <div>
@@ -4921,7 +4935,6 @@ async function checkNotifications() {
     }
     if (kstDay === 0 && (kstHour < 18 || (kstHour === 18 && kstMin < 30))) {
       isWindowOpen = true; // Sun before 6:30 PM
-      // Sunday belongs to the new week, but attendance is for the previous week
       const weekMatch = STATE.week.match(/Week (\d+)/i);
       if (weekMatch) targetAttnWeek = 'Week ' + (parseInt(weekMatch[1]) - 1);
     }
@@ -4986,13 +4999,48 @@ async function checkNotifications() {
       } catch { /* silent */ }
     }
 
-    // ── 7. ARIRANG 2X END OF DAY REMINDER ──
+    // ── 7. APPROVED MISSION CHECK ──
+    if (myTeam) {
+      try {
+        const approvedData = await Api.call(
+          'getTeamMissions',
+          { status: 'completed', week: STATE.week },
+          { cache: true, ttl: 60000, silent: true }
+        );
+
+        if (approvedData.missions && approvedData.missions.length > 0) {
+          // Check each completed mission — not just the first one
+          for (const mission of approvedData.missions) {
+            const isForMyTeam = mission.completed_teams?.includes(myTeam);
+            const alreadySeen = (STATE.lastChecked.seenApprovedIds || []).includes(mission.id);
+
+            if (isForMyTeam && !alreadySeen) {
+              notifications.push({
+                id: 'approve_' + mission.id,
+                type: 'secret_mission', icon: '🎊',
+                title: 'Mission Approved!',
+                message: `${mission.title} cleared. +5 XP added!`,
+                priority: 'high',
+                isOneTime: true
+              });
+
+              // Mark this mission as seen so it never fires again
+              STATE.lastChecked.seenApprovedIds = [
+                ...(STATE.lastChecked.seenApprovedIds || []),
+                mission.id
+              ];
+            }
+          }
+        }
+      } catch { /* silent */ }
+    }
+
+    // ── 8. ARIRANG 2X END OF DAY REMINDER ──
     if (kstHour >= 21 && !cleared.includes('a2x_' + todayKST)) {
       const a2xPassed = STATE.data?.agent?.album2xStatus?.weeklyPassed;
       if (!a2xPassed) {
         const dailyGrid = STATE.data?.agent?.album2xStatus?.dailyGrid?.[todayKST] || {};
         let isTodayDone = true;
-        // Fallback array if ARIRANG_TRACKS isn't available
         const tracks = CONFIG.ARIRANG_TRACKS || [
           "Intro : Persona", "Boy With Luv", "Make It Right", "Jamais Vu", "Dionysus",
           "Interlude : Shadow", "Black Swan", "Filter", "My Time", "Louder than bombs",
@@ -5019,7 +5067,7 @@ async function checkNotifications() {
       }
     }
 
-    // ── 8. STREAK END OF DAY WARNING ──
+    // ── 9. STREAK END OF DAY WARNING ──
     if (kstHour >= 21 && !cleared.includes('streak_' + todayKST)) {
       try {
         const strk = await Api.call('getStreakData', { agentNo: STATE.agentNo }, { cache: true, ttl: 300_000, silent: true });
@@ -5042,18 +5090,17 @@ async function checkNotifications() {
 
     // Show popup toast for first notification (once per session)
     if (notifications.length > 0 && !STATE.hasShownPopupThisSession) {
-      // Prioritize high-priority alerts like Attendance
       const topNotif = notifications.find(n => n.priority === 'high') || notifications[0];
       showToast(`${topNotif.icon || '🔔'} ${topNotif.title}`, topNotif.type === 'attendance' ? 'error' : 'info');
       STATE.hasShownPopupThisSession = true;
     }
+
   } catch (e) {
     console.error('Notification check error:', e);
   } finally {
     STATE.isCheckingNotifications = false;
   }
 }
-
 function updateNotificationUI() {
   const count = (STATE.notifications || []).length;
 
@@ -5328,67 +5375,146 @@ async function renderSongOfDay() {
   showPageLoading(container);
 
   try {
-    const d = await Api.call('getSongOfDay', {}, { cache: true, ttl: 300_000 });
-    const song = d.song;
     const todayKST = getKSTDateString();
+
+    // Fetch today's song and history simultaneously
+    const [d, historyRes] = await Promise.all([
+      Api.call('getSongOfDay', { date: todayKST }, { cache: true, ttl: 300_000 }),
+      Api.call('getSOTDHistory', { limit: 5 }, { cache: true, ttl: 300_000 })
+    ]);
+
+    const song = d.song;
     const answered = localStorage.getItem(`sotd_answered_${STATE.agentNo}_${todayKST}`);
 
+    // ── HEADER ──
     let html = `
-              <div class="archive-card" style="text-align:center; padding:30px 20px; border-top:3px solid var(--wave-foam); background:linear-gradient(135deg, rgba(74, 144, 164, 0.05), var(--bg-panel)); margin-bottom:24px;">
-                  <div style="font-size:48px; margin-bottom:16px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));">🎬</div>
-                  <div style="font-size:14px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; font-family:'Orbitron', sans-serif; margin-bottom:8px;">Audio Intelligence Unit</div>
-                  <div style="font-size:11px; color:var(--wave-foam); letter-spacing:2px; font-family:'Share Tech Mono', monospace;">KST: ${todayKST}</div>
-              </div>
-          `;
+      <div class="archive-card" style="text-align:center; padding:30px 20px; border-top:3px solid var(--wave-foam); background:linear-gradient(135deg, rgba(74,144,164,0.05), var(--bg-panel)); margin-bottom:24px;">
+        <div style="font-size:48px; margin-bottom:16px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));">🎬</div>
+        <div style="font-size:14px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; font-family:'Orbitron', sans-serif; margin-bottom:8px;">Audio Intelligence Unit</div>
+        <div style="font-size:11px; color:var(--wave-foam); letter-spacing:2px; font-family:'Share Tech Mono', monospace;">KST: ${todayKST}</div>
+      </div>
+    `;
 
+    // ── NO SONG TODAY ──
     if (!d.success || !song) {
-      html += `<div class="glass-card" style="text-align:center; padding:40px; color:var(--text-muted); font-size:12px;">No audio intercepted today. Stand by.</div>`;
+      html += `
+        <div class="glass-card" style="text-align:center; padding:40px; color:var(--text-muted); font-size:12px;">
+          No audio intercepted today. Stand by.
+        </div>
+      `;
       container.innerHTML = html;
       return;
     }
 
+    // ── HINT ──
     if (song.hint) {
       html += `
-                  <div class="glass-card" style="padding:20px; text-align:center; margin-bottom:24px; border-color:var(--vinyl-gold); box-shadow:inset 0 0 30px rgba(212,175,55,0.05);">
-                      <div style="font-size:10px; color:var(--vinyl-gold); font-weight:900; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px;">Intercepted Clue</div>
-                      <div style="font-size:14px; color:#fff; font-style:italic; line-height:1.6; text-shadow:0 2px 4px rgba(0,0,0,0.8);">"${sanitize(song.hint)}"</div>
-                      <div style="margin-top:16px; display:inline-block; padding:4px 12px; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); border-radius:12px; color:var(--vinyl-gold); font-size:10px; font-weight:800;">
-                          REWARD: +${song.xpReward || 1} XP
-                      </div>
-                  </div>
-              `;
+        <div class="glass-card" style="padding:20px; text-align:center; margin-bottom:24px; border-color:var(--vinyl-gold); box-shadow:inset 0 0 30px rgba(212,175,55,0.05);">
+          <div style="font-size:10px; color:var(--vinyl-gold); font-weight:900; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px;">Intercepted Clue</div>
+          <div style="font-size:14px; color:#fff; font-style:italic; line-height:1.6; text-shadow:0 2px 4px rgba(0,0,0,0.8);">"${sanitize(song.hint)}"</div>
+          <div style="margin-top:16px; display:inline-block; padding:4px 12px; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); border-radius:12px; color:var(--vinyl-gold); font-size:10px; font-weight:800;">
+            REWARD: +${song.xpReward || 1} XP
+          </div>
+        </div>
+      `;
     }
 
+    // ── ANSWER / ALREADY ANSWERED ──
     if (answered) {
       html += `
-                  <div class="glass-card" style="padding:30px 20px; text-align:center; border-left:4px solid var(--green);">
-                      <div style="font-size:40px; margin-bottom:12px;">✅</div>
-                      <div style="font-size:14px; font-weight:900; color:var(--green); letter-spacing:1px; text-transform:uppercase; margin-bottom:8px;">Decryption Successful</div>
-                      <div style="font-size:12px; color:var(--text-secondary);">You have successfully identified the track today.</div>
-                  </div>
-              `;
+        <div class="glass-card" style="padding:30px 20px; text-align:center; border-left:4px solid var(--green); margin-bottom:24px;">
+          <div style="font-size:40px; margin-bottom:12px;">✅</div>
+          <div style="font-size:14px; font-weight:900; color:var(--green); letter-spacing:1px; text-transform:uppercase; margin-bottom:8px;">Decryption Successful</div>
+          <div style="font-size:12px; color:var(--text-secondary);">You have successfully identified the track today.</div>
+        </div>
+      `;
     } else {
       html += `
-                  <div class="glass-card" style="padding:24px;">
-                      <label class="label-tag" style="display:block; margin-bottom:12px;">Submit YouTube URL</label>
-                      <input type="text" id="sotdAnswer" class="input-field" placeholder="https://youtube.com/watch?v=..." style="margin-bottom:16px;">
-                      
-                      <button class="btn-red" onclick="submitSongAnswer()" style="padding:16px; background:linear-gradient(135deg, var(--wave-foam), #1a4d60);">
-                          VERIFY DECRYPTION
-                      </button>
-                      
-                      <div id="sotdResult" style="margin-top:16px; text-align:center; font-size:12px; font-weight:700; min-height:20px;"></div>
-                      
-                      <div style="margin-top:20px; font-size:10px; color:var(--text-muted); text-align:center;">
-                          Max 2 attempts allowed. Enter the official MV or Audio link.
-                      </div>
-                  </div>
-              `;
+        <div class="glass-card" style="padding:24px; margin-bottom:24px;">
+          <label class="label-tag" style="display:block; margin-bottom:12px;">Submit YouTube URL</label>
+          <input type="text" id="sotdAnswer" class="input-field" placeholder="https://youtube.com/watch?v=..." style="margin-bottom:16px;">
+          <button class="btn-red" onclick="submitSongAnswer()" style="padding:16px; background:linear-gradient(135deg, var(--wave-foam), #1a4d60);">
+            VERIFY DECRYPTION
+          </button>
+          <div id="sotdResult" style="margin-top:16px; text-align:center; font-size:12px; font-weight:700; min-height:20px;"></div>
+          <div style="margin-top:20px; font-size:10px; color:var(--text-muted); text-align:center;">
+            Max 2 attempts allowed. Enter the official MV or Audio link.
+          </div>
+        </div>
+      `;
+    }
+
+    // ── HISTORY LEADERBOARD ──
+    if (historyRes.success && historyRes.history?.length > 0) {
+      html += `
+        <div style="display:flex; align-items:center; gap:12px; margin:0 0 16px 0;">
+          <div style="font-size:16px;">📜</div>
+          <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Intelligence History</div>
+          <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(74,144,164,0.3), transparent);"></div>
+        </div>
+      `;
+
+      historyRes.history.forEach(item => {
+        const winner = item.results?.winner || 'TBD';
+        const winColor = winner !== 'TBD' ? teamColor(winner) : 'var(--text-ghost)';
+        const teamData = item.results?.teams || {};
+
+        // Sort teams by correct count descending
+        const sortedTeams = Object.entries(teamData).sort((a, b) => b[1].correct - a[1].correct);
+
+        html += `
+          <div class="archive-card" style="margin-bottom:16px; padding:16px;">
+
+            <!-- Song title + winner row -->
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+              <div>
+                <div style="font-size:12px; font-weight:800; color:#fff;">${sanitize(item.song?.title || 'Unknown')}</div>
+                <div style="font-size:9px; color:var(--text-muted); font-family:monospace; margin-top:3px;">${item.date || ''}</div>
+              </div>
+              <div style="text-align:right; flex-shrink:0; margin-left:12px;">
+                <div style="font-size:10px; font-weight:900; color:${winColor}; text-transform:uppercase; letter-spacing:1px;">
+                  🏆 ${winner === 'TBD' ? 'TBD' : winner.replace('Team ', '') + ' WON'}
+                </div>
+                <div style="font-size:8px; color:var(--text-ghost); margin-top:3px;">
+                  ${item.results?.totalParticipants || 0} TOTAL VOTES
+                </div>
+              </div>
+            </div>
+
+            <!-- Team scoreboard grid -->
+            ${sortedTeams.length > 0 ? `
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                ${sortedTeams.map(([tName, tStats]) => {
+          const isWinner = tName === winner;
+          return `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 10px;
+                      background:${isWinner ? 'rgba(0,255,102,0.05)' : 'rgba(255,255,255,0.02)'};
+                      border-radius:6px;
+                      border:1px solid ${isWinner ? 'rgba(0,255,102,0.15)' : 'rgba(255,255,255,0.04)'};">
+                      <span style="font-size:10px; color:${teamColor(tName)}; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                        ${isWinner ? '🏆 ' : ''}${tName.replace('Team ', '')}
+                      </span>
+                      <span style="font-size:11px; font-family:monospace; color:${isWinner ? 'var(--green)' : '#fff'}; font-weight:900; flex-shrink:0; margin-left:8px;">
+                        ${tStats.correct || 0}
+                      </span>
+                    </div>
+                  `;
+        }).join('')}
+              </div>
+            ` : `
+              <div style="font-size:10px; color:var(--text-ghost); text-align:center; padding:8px;">
+                No team data recorded
+              </div>
+            `}
+
+          </div>
+        `;
+      });
     }
 
     container.innerHTML = html;
 
-    // Clear notif state
+    // Clear notification state
     if (STATE.lastChecked) {
       STATE.lastChecked.songOfDay = todayKST;
       saveNotificationState();
@@ -5534,12 +5660,12 @@ async function renderSecretMissions() {
 
       <div class="intel-hud-grid">
         ${Object.keys(CONFIG.TEAMS).map(tName => {
-          const isMe = tName === myTeam;
-          const tStats = statsData.teams?.[tName] || { secretXP: 0, completed: 0 };
-          const tColor = teamColor(tName);
-          const pfp = teamPfp(tName);
-          
-          return `
+      const isMe = tName === myTeam;
+      const tStats = statsData.teams?.[tName] || { secretXP: 0, completed: 0 };
+      const tColor = teamColor(tName);
+      const pfp = teamPfp(tName);
+
+      return `
             <div class="intel-hud-card ${isMe ? 'is-me' : ''}" style="--team-color: ${tColor};">
               <div class="hud-card-inner">
                 <div class="hud-pfp">
@@ -5554,7 +5680,7 @@ async function renderSecretMissions() {
               ${isMe ? '<div class="hud-tag">YOUR SQUAD</div>' : ''}
             </div>
           `;
-        }).join('')}
+    }).join('')}
       </div>
     `;
 
@@ -5635,14 +5761,14 @@ async function renderBadgesPage() {
 
   try {
     // 1. Fetch full career history
-    const careerData = await Api.call('getAgentCareerStats', { 
-      agentNo: STATE.agentNo 
+    const careerData = await Api.call('getAgentCareerStats', {
+      agentNo: STATE.agentNo
     }, { cache: true, ttl: 60000 });
 
     if (!careerData.success) throw new Error("Database connection lost");
 
     const weeksHistory = careerData.weeks || [];
-    
+
     // Arrays to hold our final badge collections
     let allHoloBadges = [];
     let allTacticalBadges = [];
@@ -5833,17 +5959,17 @@ async function renderSummary() {
 
     const dateStr = CONFIG.WEEK_DATES?.[selectedWeek]
       ? new Date(CONFIG.WEEK_DATES[selectedWeek]).toLocaleDateString('en-US', {
-          month: 'long', day: 'numeric', year: 'numeric'
-        })
+        month: 'long', day: 'numeric', year: 'numeric'
+      })
       : '';
 
     const qualificationLabels = sortedTeams.map(([t, info]) => {
       const checks = [
         { label: 'Tracks', passed: info.trackGoalPassed },
         { label: 'Albums', passed: info.albumGoalPassed },
-        { label: '2X',     passed: info.album2xPassed },
-        { label: 'Unit',   passed: info.arirangUnitPassed },
-        { label: 'Side',   passed: info.sideMissionPassed },
+        { label: '2X', passed: info.album2xPassed },
+        { label: 'Unit', passed: info.arirangUnitPassed },
+        { label: 'Side', passed: info.sideMissionPassed },
         { label: 'Attend', passed: info.attendanceConfirmed },
         { label: 'Police', passed: info.policeConfirmed }
       ];
@@ -5853,7 +5979,7 @@ async function renderSummary() {
         checks,
         passedCount: checks.filter(c => c.passed).length,
         failedNames: checks.filter(c => !c.passed).map(c => c.label),
-        allPassed:   checks.every(c => c.passed)
+        allPassed: checks.every(c => c.passed)
       };
     });
 
@@ -5879,9 +6005,9 @@ async function renderSummary() {
             <span style="color:var(--text-muted);">The trophy remains secured at HQ.</span>
           </div>
           <div style="display:flex; justify-content:center; gap:6px; flex-wrap:wrap; row-gap:6px;">
-            ${['Tracks','Albums','2X','Unit','Side','Attend','Police'].map(m =>
-              `<span style="font-size:8px; font-weight:700; padding:4px 8px; background:rgba(255,255,255,0.05); border:1px solid var(--border-light); border-radius:6px; color:var(--text-muted);">${m}</span>`
-            ).join('')}
+            ${['Tracks', 'Albums', '2X', 'Unit', 'Side', 'Attend', 'Police'].map(m =>
+      `<span style="font-size:8px; font-weight:700; padding:4px 8px; background:rgba(255,255,255,0.05); border:1px solid var(--border-light); border-radius:6px; color:var(--text-muted);">${m}</span>`
+    ).join('')}
           </div>
         </div>
       `}
@@ -6000,9 +6126,9 @@ async function renderSummary() {
 
       <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:35px;">
         ${qualificationLabels.map((q, i) => {
-          const isWinner = q.info.isWinner === true;
-          const tColor = teamColor(q.team);
-          return `
+      const isWinner = q.info.isWinner === true;
+      const tColor = teamColor(q.team);
+      return `
             <div class="glass-card" style="padding:16px; border-left:4px solid ${isWinner ? 'var(--vinyl-gold)' : (q.allPassed ? 'var(--green)' : 'var(--fail)')};">
               <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
                 <div style="width:28px; height:28px; border-radius:8px; background:${isWinner ? 'var(--vinyl-gold)' : 'var(--bg-deep)'}; color:${isWinner ? '#000' : 'var(--text-muted)'}; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:12px; flex-shrink:0;">${i + 1}</div>
@@ -6030,12 +6156,12 @@ async function renderSummary() {
 
               <div style="margin-top:12px; font-size:10px;">
                 ${q.allPassed
-                  ? '<span style="color:var(--green); font-weight:800;">✓ ALL 7 PROTOCOLS CLEARED</span>'
-                  : `<span style="color:var(--fail); font-weight:700;">✗ FAILED: ${q.failedNames.join(', ')}</span>`}
+          ? '<span style="color:var(--green); font-weight:800;">✓ ALL 7 PROTOCOLS CLEARED</span>'
+          : `<span style="color:var(--fail); font-weight:700;">✗ FAILED: ${q.failedNames.join(', ')}</span>`}
               </div>
             </div>
           `;
-        }).join('')}
+    }).join('')}
       </div>
 
       <!-- ELITE AGENTS -->
@@ -6648,7 +6774,7 @@ async function createTeamMission() {
   const targetTrack = $('target-track')?.value?.trim();
   const goalTarget = parseInt($('goal-target')?.value) || 100;
   const xpReward = parseInt($('xp-reward')?.value) || 5;
-  
+
   // ✅ FIX: Ensure consistent team name format
   const targetTeams = Array.from(
     document.querySelectorAll('input[name="target-teams"]:checked')
@@ -6662,15 +6788,15 @@ async function createTeamMission() {
   Loading.show();
   try {
     const res = await Api.call('createTeamMission', {
-      type, 
-      title, 
-      briefing, 
+      type,
+      title,
+      briefing,
       targetTeams: JSON.stringify(targetTeams), // ← Already array of strings
-      targetTrack, 
-      goalTarget, 
-      xpReward, 
+      targetTrack,
+      goalTarget,
+      xpReward,
       week: STATE.week,
-      agentNo: STATE.agentNo, 
+      agentNo: STATE.agentNo,
       sessionToken: STATE.adminSession
     }, { dedupe: false, cache: false });
 
@@ -6681,7 +6807,7 @@ async function createTeamMission() {
       // ✅ Uncheck all team checkboxes
       document.querySelectorAll('input[name="target-teams"]:checked')
         .forEach(cb => cb.checked = false);
-      
+
       setTimeout(() => {
         switchAdminTab('active', document.querySelector('.admin-tab[data-tab="active"]'));
       }, 1500);
@@ -7040,9 +7166,9 @@ async function smartUpdateStatus(team, key, value) {
   Loading.show();
   try {
     const res = await Api.call('updateTeamStatus', {
-      team, 
+      team,
       field: key,  // ← ONLY CHANGE: was just `key`
-      value, 
+      value,
       sessionToken: STATE.adminSession
     }, { dedupe: false, cache: false });
 
@@ -7338,16 +7464,16 @@ function renderAdminDiagnosticsTab(container) {
  * Executes the deep-scan on a specific agent
  */
 async function runAgentDiagnosis() {
-    const agentInput = document.getElementById('debug-agent-id');
-    const resultsDiv = document.getElementById('debug-results');
-    const agentNoInput = agentInput?.value.trim().toUpperCase();
+  const agentInput = document.getElementById('debug-agent-id');
+  const resultsDiv = document.getElementById('debug-results');
+  const agentNoInput = agentInput?.value.trim().toUpperCase();
 
-    if (!agentNoInput) {
-        showToast("Enter an Agent ID", "error");
-        return;
-    }
+  if (!agentNoInput) {
+    showToast("Enter an Agent ID", "error");
+    return;
+  }
 
-    resultsDiv.innerHTML = `
+  resultsDiv.innerHTML = `
         <div style="text-align:center; padding:40px;">
             <div class="spinner" style="margin:0 auto 15px;"></div>
             <div style="color:var(--wave-foam); font-family:var(--font-mono); font-size:10px; letter-spacing:2px; animation:pulse 1s infinite;">
@@ -7356,88 +7482,88 @@ async function runAgentDiagnosis() {
         </div>
     `;
 
-    try {
-        // 1. Fetch Agent Details first to check DB existence using the new Api client
-        const agentCheck = await Api.call('getDashboardData', { agentNo: agentNoInput }, { dedupe: false, cache: false });
-        
-        if (!agentCheck.success) {
-            resultsDiv.innerHTML = `
+  try {
+    // 1. Fetch Agent Details first to check DB existence using the new Api client
+    const agentCheck = await Api.call('getDashboardData', { agentNo: agentNoInput }, { dedupe: false, cache: false });
+
+    if (!agentCheck.success) {
+      resultsDiv.innerHTML = `
                 <div class="glass-card" style="border-left:4px solid var(--fail); padding:20px;">
                     <div style="color:var(--fail); font-weight:900; font-size:13px; margin-bottom:8px;">❌ DIAGNOSIS FAILED</div>
                     <div style="color:var(--text-secondary); font-size:11px; font-family:var(--font-mono);">${agentCheck.error || 'Agent not found in database.'}</div>
                 </div>`;
-            return;
-        }
+      return;
+    }
 
-        // 2. Force Sync with Last.fm
-        const res = await Api.call('refreshAgentStats', { 
-            agentNo: agentNoInput,
-            debug: true 
-        }, { dedupe: false, cache: false });
+    // 2. Force Sync with Last.fm
+    const res = await Api.call('refreshAgentStats', {
+      agentNo: agentNoInput,
+      debug: true
+    }, { dedupe: false, cache: false });
 
-        if (!res.success) {
-            resultsDiv.innerHTML = `
+    if (!res.success) {
+      resultsDiv.innerHTML = `
                 <div class="glass-card" style="border-left:4px solid var(--fail); padding:20px;">
                     <div style="color:var(--fail); font-weight:900; font-size:13px; margin-bottom:8px;">❌ DIAGNOSIS FAILED</div>
                     <div style="color:var(--text-secondary); font-size:11px; font-family:var(--font-mono);">${res.error || 'Sync failed.'}</div>
                 </div>`;
-            return;
-        }
+      return;
+    }
 
-        // 3. Build Report
-        const debug = res.debug || {};
-        const stats = res.stats || {};
-        const userProfile = agentCheck.agent?.profile || {};
-        const tColor = teamColor(res.team || userProfile.team || 'Unknown');
-        
-        // Properly extract from debug first, fallback to userProfile
-        const rawLastfm = debug.usernames || debug.lastfm_username || userProfile.lastfms || userProfile.lastfm;
-        const lastfmUsernames = Array.isArray(rawLastfm)
-            ? rawLastfm
-            : (rawLastfm ? [rawLastfm] : []);
-        
-        const hasLastfm = lastfmUsernames.length > 0;
-        const displayLfm = hasLastfm ? lastfmUsernames.join(', ') : '—';
+    // 3. Build Report
+    const debug = res.debug || {};
+    const stats = res.stats || {};
+    const userProfile = agentCheck.agent?.profile || {};
+    const tColor = teamColor(res.team || userProfile.team || 'Unknown');
 
-        let statusTag = { text: 'HEALTHY', color: 'var(--green)' };
-        let findings = [];
+    // Properly extract from debug first, fallback to userProfile
+    const rawLastfm = debug.usernames || debug.lastfm_username || userProfile.lastfms || userProfile.lastfm;
+    const lastfmUsernames = Array.isArray(rawLastfm)
+      ? rawLastfm
+      : (rawLastfm ? [rawLastfm] : []);
 
-        // ── LOGIC CHECKS ──
-        if (res.alreadySynced && !hasLastfm) {
-            statusTag = { text: 'COOLDOWN', color: 'var(--courage-amber)' };
-            findings.push("⏱️ System in cooldown. Data below is from the previous sync.");
-        } else if (!hasLastfm) {
-            statusTag = { text: 'CRITICAL', color: 'var(--fail)' };
-            findings.push("❌ No Last.fm account linked to this Agent ID.");
-        } else if (debug.last_api_error) {
-            statusTag = { text: 'SYNC ERROR', color: 'var(--fail)' };
-            findings.push(`❌ Last.fm API Error: ${debug.last_api_error}`);
-        } else if (debug.raw_scrobble_count === 0) {
-            statusTag = { text: 'INACTIVE', color: 'var(--courage-amber)' };
-            findings.push("⚠️ Last.fm returned 0 tracks. The user is not scrobbling.");
-        } else if (debug.filtered_scrobble_count === 0 && debug.raw_scrobble_count > 0) {
-            statusTag = { text: 'FILTER BLOCK', color: 'var(--red-core)' };
-            findings.push("🚨 Agent is scrobbling, but 0 tracks matched Arirang/BTS criteria.");
-        }
+    const hasLastfm = lastfmUsernames.length > 0;
+    const displayLfm = hasLastfm ? lastfmUsernames.join(', ') : '—';
 
-        if (res.onLeave) {
-            findings.push("💤 Note: Agent is currently on Leave (Ghost Protocol).");
-        }
+    let statusTag = { text: 'HEALTHY', color: 'var(--green)' };
+    let findings = [];
 
-        // Additional diagnostic details
-        if (debug.pages_fetched) {
-            findings.push(`📄 Last.fm Pages Fetched: ${debug.pages_fetched}`);
-        }
-        
-        if (debug.most_recent_track && debug.most_recent_track !== 'None Found') {
-            findings.push(`🎵 Most Recent Track: ${debug.most_recent_track}`);
-        }
+    // ── LOGIC CHECKS ──
+    if (res.alreadySynced && !hasLastfm) {
+      statusTag = { text: 'COOLDOWN', color: 'var(--courage-amber)' };
+      findings.push("⏱️ System in cooldown. Data below is from the previous sync.");
+    } else if (!hasLastfm) {
+      statusTag = { text: 'CRITICAL', color: 'var(--fail)' };
+      findings.push("❌ No Last.fm account linked to this Agent ID.");
+    } else if (debug.last_api_error) {
+      statusTag = { text: 'SYNC ERROR', color: 'var(--fail)' };
+      findings.push(`❌ Last.fm API Error: ${debug.last_api_error}`);
+    } else if (debug.raw_scrobble_count === 0) {
+      statusTag = { text: 'INACTIVE', color: 'var(--courage-amber)' };
+      findings.push("⚠️ Last.fm returned 0 tracks. The user is not scrobbling.");
+    } else if (debug.filtered_scrobble_count === 0 && debug.raw_scrobble_count > 0) {
+      statusTag = { text: 'FILTER BLOCK', color: 'var(--red-core)' };
+      findings.push("🚨 Agent is scrobbling, but 0 tracks matched Arirang/BTS criteria.");
+    }
 
-        if (debug.fetchErrors && debug.fetchErrors.length > 0) {
-            findings.push(`⚠️ Fetch Errors Encountered: ${debug.fetchErrors.length}`);
-        }
+    if (res.onLeave) {
+      findings.push("💤 Note: Agent is currently on Leave (Ghost Protocol).");
+    }
 
-        resultsDiv.innerHTML = `
+    // Additional diagnostic details
+    if (debug.pages_fetched) {
+      findings.push(`📄 Last.fm Pages Fetched: ${debug.pages_fetched}`);
+    }
+
+    if (debug.most_recent_track && debug.most_recent_track !== 'None Found') {
+      findings.push(`🎵 Most Recent Track: ${debug.most_recent_track}`);
+    }
+
+    if (debug.fetchErrors && debug.fetchErrors.length > 0) {
+      findings.push(`⚠️ Fetch Errors Encountered: ${debug.fetchErrors.length}`);
+    }
+
+    resultsDiv.innerHTML = `
             <div class="glass-card" style="padding:20px; border-top:2px solid ${statusTag.color};">
                 
                 <!-- Header Stats -->
@@ -7484,10 +7610,10 @@ async function runAgentDiagnosis() {
                 <!-- Analysis List -->
                 <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:15px; border:1px solid var(--border-subtle);">
                     <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Intelligence Findings:</div>
-                    ${findings.length > 0 
-                        ? findings.map(f => `<div style="font-size:11px; color:#fff; margin-bottom:8px; line-height:1.4;">${f}</div>`).join('')
-                        : `<div style="font-size:11px; color:var(--green);">✓ No anomalies detected. System operating within normal parameters.</div>`
-                    }
+                    ${findings.length > 0
+        ? findings.map(f => `<div style="font-size:11px; color:#fff; margin-bottom:8px; line-height:1.4;">${f}</div>`).join('')
+        : `<div style="font-size:11px; color:var(--green);">✓ No anomalies detected. System operating within normal parameters.</div>`
+      }
                 </div>
 
                 <!-- Raw Metadata (Toggleable) -->
@@ -7502,12 +7628,12 @@ ${JSON.stringify(debug, null, 2)}
             </div>
         `;
 
-        showToast(`Diagnosis for ${agentNoInput} complete`, 'info');
+    showToast(`Diagnosis for ${agentNoInput} complete`, 'info');
 
-    } catch (e) {
-        console.error("Diagnosis Error:", e);
-        resultsDiv.innerHTML = `<div class="glass-card" style="padding:20px; color:var(--fail);">System Error: ${e.message}</div>`;
-    }
+  } catch (e) {
+    console.error("Diagnosis Error:", e);
+    resultsDiv.innerHTML = `<div class="glass-card" style="padding:20px; color:var(--fail);">System Error: ${e.message}</div>`;
+  }
 }
 
 // ==================== TAB: SYSTEM CONTROLS ====================
@@ -7815,15 +7941,19 @@ async function render148Protocol() {
     }
 
     // Static Daily Habits
-    html += `
-        <div style="margin-top:24px; padding-top:16px; border-top:1px dashed var(--border-light);">
-          <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px;">Habits</div>
-          ${render148Task('t148_2x', '💿 Complete Arirang 2X (28 streams)', is2xDailyAllPassed, Math.min(100, (today2xPassedCount / 14) * 100), `${today2xPassedCount}/14`, false)}
-          ${render148Task('t148_unit', '⚡ Arirang Unit (25 streams)', unitPassed, undefined, undefined, false)}
-          ${render148Task('t148_side', '🛡️ Side Missions (4 tracks)', !!sm?.todayAllPassed, undefined, undefined, false)}
-          ${render148Task('t148_proof', '📸 Post Recents Proof in GC', isProofDone, undefined, undefined, true)}
-        </div>
-      `;
+    // Army vote checkbox — self-reported, persists per day like proof
+    const isVotedToday = !!savedTodo['t148_army_vote'];
+
+    html += `
+        <div style="margin-top:24px; padding-top:16px; border-top:1px dashed var(--border-light);">
+          <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px;">Habits</div>
+          ${render148Task('t148_2x', '💿 Complete Arirang 2X (28 streams)', is2xDailyAllPassed, Math.min(100, (today2xPassedCount / 14) * 100), `${today2xPassedCount}/14`, false)}
+          ${render148Task('t148_unit', '⚡ Arirang Unit (25 streams)', unitPassed, undefined, undefined, false)}
+          ${render148Task('t148_side', '🛡️ Side Missions (4 tracks)', !!sm?.todayAllPassed, undefined, undefined, false)}
+          ${render148Task('t148_proof', '📸 Post Recents Proof in GC', isProofDone, undefined, undefined, true)}
+          ${CONFIG.VOTING_ACTIVE ? render148Task('t148_army_vote', '💜 Protocol 8: Cast Daily Votes (Web + IG)', isVotedToday, undefined, undefined, true) : ''}
+        </div>
+      `;
 
     container.innerHTML = html;
 
@@ -8004,6 +8134,238 @@ function show148Info() {
   document.body.appendChild(modal);
 }
 window.show148Info = show148Info;
+
+
+// =============================================
+// ██████  PROTOCOL 8: ARMY MISSION
+// ██████  AMA 2026 — Operation Golden
+// =============================================
+
+/**
+ * Renders the Army Division voting mission page.
+ * Spy-coded framing: "Cyber Ballots", "Transmission Ciphers", "8th Division".
+ */
+function renderArmyMission() {
+  const container = $('armyContent');
+  if (!container) return;
+
+  if (!CONFIG.VOTING_ACTIVE) {
+    container.innerHTML = `
+      <div class="glass-card" style="padding:24px; text-align:center; color:var(--text-muted);">
+        <div style="font-size:32px; margin-bottom:12px;">🔒</div>
+        <div style="font-size:12px; font-weight:800; letter-spacing:2px;">NO ACTIVE VOTING OPERATION</div>
+        <div style="font-size:11px; margin-top:8px;">Stand by for HQ transmission.</div>
+      </div>`;
+    return;
+  }
+
+  const todayKST = getKSTDateString();
+  const isTurbo = CONFIG.TURBO_DAYS.includes(todayKST);
+
+  // ── Countdown to midnight PT (= 16:00 KST) ──
+  function getResetCountdown() {
+    const now = new Date();
+    const kst = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+    const reset = new Date(kst);
+    reset.setHours(CONFIG.VOTING_RESET_HOUR_KST, 0, 0, 0);
+    if (reset <= kst) reset.setDate(reset.getDate() + 1);
+    const diff = reset - kst;
+    const h = Math.floor(diff / 3_600_000);
+    const m = Math.floor((diff % 3_600_000) / 60_000);
+    const s = Math.floor((diff % 60_000) / 1_000);
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+
+  // ── Closing countdown ──
+  function getClosingCountdown() {
+    const now = new Date();
+    const close = new Date(CONFIG.VOTING_CLOSE);
+    const diff = close - now;
+    if (diff <= 0) return 'VOTING CLOSED';
+    const d = Math.floor(diff / 86_400_000);
+    const h = Math.floor((diff % 86_400_000) / 3_600_000);
+    const m = Math.floor((diff % 3_600_000) / 60_000);
+    return `${d}d ${h}h ${m}m remaining`;
+  }
+
+  // ── Next turbo day ──
+  function nextTurboLabel() {
+    const todayMs = new Date(todayKST + 'T00:00:00Z').getTime();
+    const future = CONFIG.TURBO_DAYS.filter(d => new Date(d + 'T00:00:00Z').getTime() > todayMs);
+    if (!future.length) return null;
+    const d = new Date(future[0] + 'T00:00:00Z');
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+  }
+
+  const savedTodo = getSavedTodos();
+  const isVotedToday = !!savedTodo['t148_army_vote'];
+
+  const html = `
+        <div class="archive-card" style="border-top:4px solid var(--purple-core); margin-bottom:20px; background:linear-gradient(135deg, rgba(167,139,250,0.06), var(--bg-panel)); padding:20px;">
+      <div style="text-align:center;">
+        <div style="font-size:28px; margin-bottom:8px;">💜</div>
+        <div style="font-size:13px; font-weight:900; color:#fff; font-family:'Orbitron', sans-serif; letter-spacing:2px;">PROTOCOL 8: ARMY VOTING MISSION</div>
+        <div style="font-size:10px; color:var(--purple-mid); font-weight:800; margin-top:4px; text-transform:uppercase; letter-spacing:2px;">${CONFIG.VOTING_MISSION_NAME}</div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">${getClosingCountdown()}</div>
+      </div>
+    </div>
+
+    ${isTurbo ? `
+        <div class="glass-card" style="padding:12px 16px; margin-bottom:16px; border:1px solid var(--gold-core); background:rgba(229,165,40,0.06); display:flex; align-items:center; gap:10px;">
+      <span style="font-size:16px;">⚡</span>
+      <div>
+        <div style="font-size:10px; font-weight:900; color:var(--gold-core); text-transform:uppercase; letter-spacing:1px;">Turbo Protocol Active</div>
+        <div style="font-size:10px; color:var(--text-secondary);">Web votes: <strong>60×</strong> today. IG comments count <strong>double</strong>.</div>
+      </div>
+    </div>` : ''}
+
+        <div class="glass-card" style="padding:14px 16px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px;">Votes Reset In</div>
+        <div id="armyResetTimer" style="font-family:'Share Tech Mono', monospace; font-size:18px; font-weight:900; color:var(--purple-mid);">${getResetCountdown()}</div>
+      </div>
+      ${nextTurboLabel() ? `
+      <div style="text-align:right;">
+        <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:1px;">Next Turbo</div>
+        <div style="font-size:11px; font-weight:800; color:var(--gold-core);">⚡ ${nextTurboLabel()}</div>
+      </div>` : ''}
+    </div>
+
+        <div class="glass-card" style="padding:14px; margin-bottom:16px;">
+      <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px;">7-Day Voting Log</div>
+      <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:5px;">
+        ${['S','M','T','W','T','F','S'].map((day, i) => {
+          const weekDates = getWeekDates(STATE.week);
+          const date = weekDates[i] || '';
+          const isPast = date < todayKST;
+          const isToday = date === todayKST;
+          const isDone = isToday ? isVotedToday : isPast; 
+          return `
+          <div style="text-align:center; padding:10px 4px; border-radius:8px;
+            background:${isDone ? 'var(--purple-core)' : isToday ? 'rgba(167,139,250,0.08)' : 'rgba(255,255,255,0.02)'};
+            border:1px solid ${isDone ? 'var(--purple-core)' : isToday ? 'var(--purple-border)' : 'var(--border-subtle)'};">
+            <div style="font-size:8px; font-weight:900; color:${isDone ? '#000' : isToday ? 'var(--purple-mid)' : 'var(--text-ghost)'};">${day}</div>
+            <div style="font-size:13px; margin-top:3px;">${isDone ? '💜' : isToday ? '◎' : '○'}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+        <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin:20px 0 10px 0; padding-left:4px;">📡 Web Voting Targets</div>
+    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:20px;">
+      ${CONFIG.VOTING_CATEGORIES.map(cat => `
+      <div class="glass-card" style="padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
+        <div style="min-width:0; flex:1;">
+          <div style="font-size:11px; font-weight:800; color:#fff; margin-bottom:3px;">${cat.label}</div>
+          <div style="font-family:'Share Tech Mono', monospace; font-size:10px; color:var(--purple-mid);">${cat.tag}</div>
+        </div>
+        <a href="${cat.url}" target="_blank" style="flex-shrink:0; background:var(--purple-core); color:#000; padding:6px 14px; border-radius:6px; font-size:9px; font-weight:900; text-decoration:none; text-transform:uppercase;">VOTE WEB</a>
+        <button id="copy-${cat.id}" onclick="copyVotingTag('${cat.tag}', '${cat.id}')"
+          style="flex-shrink:0; background:rgba(167,139,250,0.1); border:1px solid var(--purple-core); color:var(--purple-mid);
+          padding:6px 14px; border-radius:6px; font-size:9px; font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:1px;
+          transition:all 0.2s; white-space:nowrap;">COPY TAG</button>
+      </div>`).join('')}
+    </div>
+
+    <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin:20px 0 10px 0; padding-left:4px;">📸 Official IG Posts to Comment On</div>
+    <div style="display:flex; gap:8px; margin-bottom:20px;">
+        <a href="https://www.instagram.com/p/DXHH2kplOBV/?img_index=1&igsh=MWJzMDE4OG93eDg4Ng==" target="_blank" class="btn-outline" style="flex:1; border-color:var(--purple-mid); color:var(--purple-mid); text-decoration:none; font-size:10px; text-align:center;">Open Post 1</a>
+        <a href="https://www.instagram.com/p/DXHHxhclMKs/?igsh=MTZuZTg0eHhpbm5lZA==" target="_blank" class="btn-outline" style="flex:1; border-color:var(--purple-mid); color:var(--purple-mid); text-decoration:none; font-size:10px; text-align:center;">Open Post 2</a>
+    </div>
+
+        <div class="glass-card" style="padding:14px 16px; margin-bottom:16px; border-left:3px solid var(--purple-core);">
+      <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;">📋 Mission Rules</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.7;">
+        1. Vote <strong style="color:#fff;">${isTurbo ? '60×' : '30×'}</strong> using the "VOTE WEB" links above.<br>
+        2. Post <strong style="color:#fff;">${isTurbo ? '60×' : '30×'}</strong> IG comments on the official posts.<br>
+        3. Use <strong style="color:#fff;">one hashtag per comment</strong> (do not put multiple in one comment).<br>
+        4. Your IG profile must be <strong style="color:#fff;">public</strong> or your votes won't register.<br>
+        5. Drop your screenshot in the <strong style="color:#fff;">Team GC</strong> as proof you completed the mission.
+      </div>
+    </div>
+
+        <div class="archive-card" style="padding:20px; text-align:center; border-left:4px solid ${isTurbo ? 'var(--gold-core)' : 'var(--purple-core)'}; margin-bottom:8px;">
+      <div style="font-size:11px; color:var(--text-muted); margin-bottom:16px; line-height:1.6;">
+        Team participation is required for the 30 XP reward.<br>
+        <span style="color:var(--text-ghost); font-size:10px;">If even one team member misses — the bonus is lost.</span>
+      </div>
+      <button id="armyConfirmBtn" onclick="completeArmyMission()"
+        style="width:100%; padding:14px; border-radius:8px; font-family:'Orbitron', sans-serif;
+        font-size:11px; font-weight:900; letter-spacing:2px; cursor:pointer; border:none;
+        background:${isVotedToday ? 'rgba(0,255,102,0.15)' : 'var(--purple-core)'};
+        color:${isVotedToday ? 'var(--green)' : '#000'};
+        border:1px solid ${isVotedToday ? 'var(--green)' : 'transparent'};
+        transition:all 0.3s;">
+        ${isVotedToday ? '✓ MISSION COMPLETE — VOTES CAST' : '💜 I HAVE VOTED & POSTED SCREENSHOT'}
+      </button>
+      ${isVotedToday ? `<div style="font-size:10px; color:var(--green); margin-top:8px; font-weight:700;">Status: COMPLIANT 💜 Resets at 4 PM KST</div>` : ''}
+    </div>
+  `;
+
+  container.innerHTML = html;
+
+  // Live reset countdown ticker
+  Timers.clearInterval('army-reset-timer');
+  Timers.setInterval('army-reset-timer', () => {
+    const el = $('armyResetTimer');
+    if (!el || STATE.page !== 'army') {
+      Timers.clearInterval('army-reset-timer');
+      return;
+    }
+    el.textContent = getResetCountdown();
+  }, 1000);
+}
+
+/**
+ * Copies a voting hashtag to clipboard and flashes the button.
+ * @param {string} tag - The hashtag to copy
+ * @param {string} catId - Category ID for button feedback
+ */
+window.copyVotingTag = function copyVotingTag(tag, catId) {
+  const text = `I'm voting for ${tag} @amas`;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast(`💜 Hashtag copied: ${tag}`, 'success');
+    const btn = $(`copy-${catId}`);
+    if (btn) {
+      btn.textContent = '✓ COPIED';
+      btn.style.background = 'rgba(0,255,102,0.15)';
+      btn.style.color = 'var(--green)';
+      btn.style.borderColor = 'var(--green)';
+      setTimeout(() => {
+        btn.textContent = 'COPY TAG';
+        btn.style.background = 'rgba(167,139,250,0.1)';
+        btn.style.color = 'var(--purple-mid)';
+        btn.style.borderColor = 'var(--purple-core)';
+      }, 2000);
+    }
+  }).catch(() => {
+    showToast('Copy failed — tap to retry', 'error');
+  });
+};
+
+/**
+ * Marks today's army vote casting as complete (self-report).
+ */
+window.completeArmyMission = function completeArmyMission() {
+  const saved = getSavedTodos();
+  const wasVoted = !!saved['t148_army_vote'];
+
+  if (wasVoted) {
+    // Toggle off
+    delete saved['t148_army_vote'];
+    localStorage.setItem(getTodoKey(), JSON.stringify(saved));
+    showToast('Voting record cleared.', 'info');
+  } else {
+    // Toggle on
+    saved['t148_army_vote'] = true;
+    localStorage.setItem(getTodoKey(), JSON.stringify(saved));
+    showToast('💜 Votes confirmed! Agents, post your screenshot in the GC.', 'success');
+    if (typeof navigator.vibrate === 'function') navigator.vibrate([50, 30, 50]);
+  }
+
+  // Re-render to update button state
+  renderArmyMission();
+};
 
 
 // =============================================
@@ -8468,7 +8830,7 @@ function renderUnit() {
 
   // 1. THIS IS THE ONLY PART YOU NEED
   let html = renderGuide('unit') || '';
-  html += renderNarrativeCard('arirangUnit'); 
+  html += renderNarrativeCard('arirangUnit');
 
   if (!unit) {
     html += `
@@ -8732,8 +9094,8 @@ async function loadCareerHistory() {
   showPageLoading(container);
 
   try {
-    const d = await Api.call('getAgentCareerStats', { 
-      agentNo: STATE.agentNo 
+    const d = await Api.call('getAgentCareerStats', {
+      agentNo: STATE.agentNo
     }, { cache: true, ttl: 120_000 });
 
     if (!d.success || !d.weeks?.length) {
@@ -8773,20 +9135,19 @@ async function loadCareerHistory() {
       <!-- Week-by-week breakdown -->
       <div style="max-height:300px;overflow-y:auto;">
         ${d.weeks.map(w => {
-          const missions = [
-            w.tracksPassed, 
-            w.albumsPassed, 
-            w.album2xPassed, 
-            w.unitPassed, 
-            w.sidePassed
-          ].filter(Boolean).length;
-          
-          return `
-            <div class="m-row" style="border-left:3px solid ${
-              missions >= 5 ? 'var(--green)' : 
-              missions >= 3 ? 'var(--gold-core)' : 
-              'var(--fail)'
-            };">
+      const missions = [
+        w.tracksPassed,
+        w.albumsPassed,
+        w.album2xPassed,
+        w.unitPassed,
+        w.sidePassed
+      ].filter(Boolean).length;
+
+      return `
+            <div class="m-row" style="border-left:3px solid ${missions >= 5 ? 'var(--green)' :
+          missions >= 3 ? 'var(--gold-core)' :
+            'var(--fail)'
+        };">
               <div style="flex:1;">
                 <div style="font-size:0.75rem;font-weight:700;">${w.week}</div>
                 <div style="font-size:0.5625rem;color:var(--text-muted);">
@@ -8803,7 +9164,7 @@ async function loadCareerHistory() {
               </div>
             </div>
           `;
-        }).join('')}
+    }).join('')}
       </div>
     `;
   } catch (err) {
@@ -9468,15 +9829,15 @@ function renderAttendancePage() {
   let attendanceTargetWeek = "";
 
   if (istDay === 6 && istHour >= 15) {
-      // SATURDAY 3 PM+ → Collect for the week that is ENDING
-      // (The week that started last Sunday)
-      isWindowOpen = true;
-      attendanceTargetWeek = `Week ${currentWeekNum}`;
-  } 
+    // SATURDAY 3 PM+ → Collect for the week that is ENDING
+    // (The week that started last Sunday)
+    isWindowOpen = true;
+    attendanceTargetWeek = `Week ${currentWeekNum}`;
+  }
   else if (istDay === 0 && istHour < 15) {
-      // SUNDAY BEFORE 3 PM → Still collect for the week that just ended
-      isWindowOpen = true;
-      attendanceTargetWeek = `Week ${currentWeekNum - 1}`;
+    // SUNDAY BEFORE 3 PM → Still collect for the week that just ended
+    isWindowOpen = true;
+    attendanceTargetWeek = `Week ${currentWeekNum - 1}`;
   }
 
   const att = a.attendance || {};
@@ -9489,14 +9850,14 @@ function renderAttendancePage() {
 
   // 5. DISPLAY LOGIC
   if (isWindowOpen && selectedWeek === attendanceTargetWeek) {
-      if (att.submitted) {
-          html += `
+    if (att.submitted) {
+      html += `
             <div style="font-size:40px; margin-bottom:12px;">✅</div>
             <div style="font-size:16px; font-weight:800; color:var(--green); letter-spacing:1px; margin-bottom:8px;">Attendance Submitted</div>
             <div style="font-size:12px; color:var(--text-muted);">Your report for ${selectedWeek} is secured.</div>
           `;
-      } else {
-          html += `
+    } else {
+      html += `
             <div style="font-size:40px; margin-bottom:12px;">📸</div>
             <div style="font-size:16px; font-weight:800; color:var(--gold-core); letter-spacing:1px; margin-bottom:12px;">${selectedWeek} Check-In</div>
             <div style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-bottom:24px;">
@@ -9507,26 +9868,26 @@ function renderAttendancePage() {
               ✓ Mark Attendance
             </button>
           `;
-      }
+    }
   } else {
-      let lockTitle = "Portal Closed";
-      let lockSub = "The portal opens Saturdays at 3:00 PM IST.";
+    let lockTitle = "Portal Closed";
+    let lockSub = "The portal opens Saturdays at 3:00 PM IST.";
 
-      if (isWindowOpen && selectedWeek !== attendanceTargetWeek) {
-          lockTitle = "Wrong Week Selected";
-          lockSub = `The portal is currently open for <strong>${attendanceTargetWeek}</strong>. Switch to that week from the sidebar to submit.`;
-      } else if (selectedWeekNum === currentWeekNum) {
-          lockTitle = "Week In Progress";
-          lockSub = `Attendance for ${selectedWeek} will open next Saturday at 3:00 PM IST.`;
-      } else if (selectedWeekNum > currentWeekNum) {
-          lockTitle = "Mission Future";
-          lockSub = "You cannot submit attendance for a week that hasn't started.";
-      } else if (istDay === 0 && istHour >= 15) {
-          lockTitle = "Deadline Passed";
-          lockSub = `The attendance window for ${selectedWeek} closed today at 3:00 PM IST.`;
-      }
+    if (isWindowOpen && selectedWeek !== attendanceTargetWeek) {
+      lockTitle = "Wrong Week Selected";
+      lockSub = `The portal is currently open for <strong>${attendanceTargetWeek}</strong>. Switch to that week from the sidebar to submit.`;
+    } else if (selectedWeekNum === currentWeekNum) {
+      lockTitle = "Week In Progress";
+      lockSub = `Attendance for ${selectedWeek} will open next Saturday at 3:00 PM IST.`;
+    } else if (selectedWeekNum > currentWeekNum) {
+      lockTitle = "Mission Future";
+      lockSub = "You cannot submit attendance for a week that hasn't started.";
+    } else if (istDay === 0 && istHour >= 15) {
+      lockTitle = "Deadline Passed";
+      lockSub = `The attendance window for ${selectedWeek} closed today at 3:00 PM IST.`;
+    }
 
-      html += `
+    html += `
         <div style="font-size:40px; margin-bottom:12px; opacity:0.5;">🔒</div>
         <div style="font-size:14px; font-weight:800; color:var(--text-muted); letter-spacing:1px; margin-bottom:8px;">${lockTitle}</div>
         <div style="font-size:11px; color:var(--text-ghost);">${lockSub}</div>
@@ -9537,7 +9898,7 @@ function renderAttendancePage() {
 
   // 6. Team Progress
   if (att.teamStats) {
-      html += `
+    html += `
       <div class="archive-card" style="border-top:3px solid var(--gold-core);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <span style="font-size:12px; font-weight:800; color:#fff; text-transform:uppercase; letter-spacing:1px;">👥 Team Progress (${selectedWeek})</span>
@@ -12338,20 +12699,20 @@ async function adminReleaseResults() {
   try {
     // 1. Fetch fresh status for the SPECIFIC week selected
     const summary = await Api.call('getWeeklySummary', { week: STATE.week }, { cache: false });
-    
+
     // 2. Fix: Check both boolean and string types (Supabase sometimes returns strings)
     const currentlyReleased = (summary.resultsReleased === true || summary.resultsReleased === 'true');
-    
+
     // 3. We want to toggle to the opposite state
     const newState = !currentlyReleased;
-    
-    const confirmMsg = newState 
-      ? `🚀 PUBLISH results for ${STATE.week}?\n\nThis will reveal winners, calculate level-ups, and broadcast to the Activity Feed.` 
+
+    const confirmMsg = newState
+      ? `🚀 PUBLISH results for ${STATE.week}?\n\nThis will reveal winners, calculate level-ups, and broadcast to the Activity Feed.`
       : `🔒 HIDE results for ${STATE.week}?`;
 
     if (!confirm(confirmMsg)) {
-        Loading.hide();
-        return;
+      Loading.hide();
+      return;
     }
 
     // 4. Execute the toggle
@@ -12364,7 +12725,7 @@ async function adminReleaseResults() {
 
     if (d.success) {
       showToast(newState ? '📢 Results Published!' : '🔒 Results Hidden', 'success');
-      
+
       // 5. Invalidate cache and refresh the Admin UI to show the new state
       Api.invalidate('getWeeklySummary');
       if (typeof renderWeekConfirmation === 'function') {
@@ -12463,6 +12824,7 @@ const ROUTER_MAP = {
   'summary': renderSummary,
   'feed': loadFeed,
   'gclinks': renderGCLinks,
+  'army': renderArmyMission,
 };
 Object.assign(PAGE_RENDERERS, ROUTER_MAP);
 
@@ -12566,6 +12928,9 @@ const EXPORTS = {
   renderPlaylists,
   renderMagicShip,
   renderRingProgress,
+  renderArmyMission,
+  copyVotingTag,
+  completeArmyMission,
 
   // ── Rankings ──
   loadRankings,
