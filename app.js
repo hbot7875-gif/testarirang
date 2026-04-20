@@ -5084,6 +5084,27 @@ async function checkNotifications() {
       } catch { /* silent */ }
     }
 
+    // ── 10. PROTOCOL 8: DAILY VOTING RESET NOTIFICATION ──
+    if (CONFIG.VOTING_ACTIVE) {
+      // Calculate the current "Voting Day" by shifting KST time back by the reset hour (16 = 4 PM)
+      const resetHour = CONFIG.VOTING_RESET_HOUR_KST || 16;
+      const kstNowNotif = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+      const votingDateObj = new Date(kstNowNotif.getTime() - (resetHour * 3600000));
+      const votingDayId = votingDateObj.toISOString().split('T')[0]; // Yields e.g., "2026-04-20"
+
+      if (STATE.lastChecked.votingResetId !== votingDayId) {
+        notifications.push({
+          id: 'vote_reset_' + votingDayId,
+          type: 'army_vote', icon: '💜',
+          title: 'Voting Mission Reset!',
+          message: 'The 8th Mission has reset. Cast your daily votes now!',
+          priority: 'high',
+          route: 'army'
+        });
+        STATE.lastChecked.votingResetId = votingDayId;
+      }
+    }
+
     STATE.notifications = notifications;
     updateNotificationUI();
     saveNotificationState();
@@ -6441,6 +6462,7 @@ function showAdminPanel() {
     { key: 'create', icon: '➕', label: 'Deploy' },
     { key: 'active', icon: '⚡', label: 'Active' },
     { key: 'confirm', icon: '📋', label: 'Verify' },
+    { key: 'army', icon: '💜', label: 'Voting' },
     { key: 'sotd', icon: '🎵', label: 'SOTD' },
     { key: 'leaves', icon: '💤', label: 'Leave' },
     { key: 'history', icon: '📜', label: 'History' },
@@ -6500,6 +6522,7 @@ const TAB_RENDERERS = {
   create: renderCreateMissionForm,
   active: loadActiveTeamMissions,
   confirm: renderWeekConfirmation,
+  army: renderAdminArmyTab,
   sotd: renderAdminSOTD,
   leaves: loadLeavesAdmin,
   history: loadMissionHistory,
@@ -7200,6 +7223,67 @@ async function toggleResultsRelease() {
   finally { Loading.hide(); }
 }
 window.toggleResultsRelease = toggleResultsRelease;
+// ==================== TAB: ARMY VOTING VERIFICATION ====================
+
+function renderAdminArmyTab(container) {
+  if (!container) container = $('admin-panel-body');
+  if (!container) return;
+
+  const todayKST = getKSTDateString();
+
+  let html = `
+    <div class="archive-card" style="border-top:3px solid var(--purple-core); margin-bottom:24px;">
+      <div style="font-size:14px; font-weight:900; color:var(--purple-mid); font-family:'Orbitron',sans-serif; letter-spacing:1px; margin-bottom:12px;">
+        💜 THE 8TH MISSION: VOTING
+      </div>
+      <p style="font-size:11px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">
+        1-Click Approval: Tap below to instantly award <strong>30 XP</strong> to a team for completing today's voting mission. Only do this once per team, per day, after verifying their proofs in the GC.
+      </p>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+  `;
+
+  Object.keys(CONFIG.TEAMS).forEach(teamName => {
+    const tColor = teamColor(teamName);
+    html += `
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:8px; border-left:3px solid ${tColor};">
+        <div style="font-size:12px; font-weight:800; color:#fff;">${teamName.replace('Team ', '')}</div>
+        <button onclick="window.adminApproveDailyVote('${teamName}')" class="btn-outline" style="border-color:var(--purple-core); color:var(--purple-mid); padding:8px 16px; font-size:10px;">
+          ✅ APPROVE (+30 XP)
+        </button>
+      </div>
+    `;
+  });
+
+  html += `</div></div>`;
+  container.innerHTML = html;
+}
+window.renderAdminArmyTab = renderAdminArmyTab;
+
+window.adminApproveDailyVote = async function(teamName) {
+  if (!confirm(`Award 30 XP to ${teamName} for today's voting mission?`)) return;
+  
+  Loading.show();
+  try {
+    // We use your existing updateTeamStatus endpoint to ping the XP directly
+    const res = await Api.call('updateTeamStatus', {
+      team: teamName,
+      field: 'addManualXP', // We use a trigger field
+      value: 30,
+      sessionToken: STATE.adminSession
+    }, { dedupe: false, cache: false });
+
+    if (res.success) {
+      showToast(`✅ 30 XP awarded to ${teamName}!`, 'success');
+      Api.invalidate('getWeeklySummary'); // Clears cache so dash updates immediately
+    } else {
+      showToast(`❌ Failed: ${res.error || 'Backend missing manual XP handler'}`, 'error');
+    }
+  } catch (e) {
+    showToast('❌ System Error: ' + e.message, 'error');
+  } finally {
+    Loading.hide();
+  }
+};
 
 // ==================== TAB: SOTD ====================
 
