@@ -8201,106 +8201,122 @@ function renderArmyMission() {
   const isVotedToday = !!savedTodo['t148_army_vote'];
 
   const html = `
-        <div class="archive-card" style="border-top:4px solid var(--purple-core); margin-bottom:20px; background:linear-gradient(135deg, rgba(167,139,250,0.06), var(--bg-panel)); padding:20px;">
-      <div style="text-align:center;">
-        <div style="font-size:28px; margin-bottom:8px;">💜</div>
-        <div style="font-size:13px; font-weight:900; color:#fff; font-family:'Orbitron', sans-serif; letter-spacing:2px;">THE 8TH MISSION</div>
-        <div style="font-size:10px; color:var(--purple-mid); font-weight:800; margin-top:4px; text-transform:uppercase; letter-spacing:2px;">${CONFIG.VOTING_MISSION_NAME}</div>
-        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">${getClosingCountdown()}</div>
-      </div>
-    </div>
+    <div class="archive-card" style="border-top:4px solid var(--purple-core); margin-bottom:20px; background:linear-gradient(135deg, rgba(167,139,250,0.06), var(--bg-panel)); padding:20px;">
+      <div style="text-align:center;">
+        <div style="font-size:28px; margin-bottom:8px;">💜</div>
+        <div style="font-size:13px; font-weight:900; color:#fff; font-family:'Orbitron', sans-serif; letter-spacing:2px;">THE 8TH MISSION</div>
+        <div style="font-size:10px; color:var(--purple-mid); font-weight:800; margin-top:4px; text-transform:uppercase; letter-spacing:2px;">${CONFIG.VOTING_MISSION_NAME}</div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">${getClosingCountdown()}</div>
+      </div>
+    </div>
 
-    ${isTurbo ? `
-        <div class="glass-card" style="padding:12px 16px; margin-bottom:16px; border:1px solid var(--gold-core); background:rgba(229,165,40,0.06); display:flex; align-items:center; gap:10px;">
-      <span style="font-size:16px;">⚡</span>
-      <div>
-        <div style="font-size:10px; font-weight:900; color:var(--gold-core); text-transform:uppercase; letter-spacing:1px;">Turbo Protocol Active</div>
-        <div style="font-size:10px; color:var(--text-secondary);">Web votes: <strong>60×</strong> today. IG comments count <strong>double</strong>.</div>
-      </div>
-    </div>` : ''}
+    ${isTurbo ? `
+    <div class="glass-card" style="padding:12px 16px; margin-bottom:16px; border:1px solid var(--gold-core); background:rgba(229,165,40,0.06); display:flex; align-items:center; gap:10px;">
+      <span style="font-size:16px;">⚡</span>
+      <div>
+        <div style="font-size:10px; font-weight:900; color:var(--gold-core); text-transform:uppercase; letter-spacing:1px;">Turbo Protocol Active</div>
+        <div style="font-size:10px; color:var(--text-secondary);">Web votes: <strong>60×</strong> today. IG comments count <strong>double</strong>.</div>
+      </div>
+    </div>` : ''}
 
-        <div class="glass-card" style="padding:14px 16px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
-      <div>
-        <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px;">Votes Reset In</div>
-        <div id="armyResetTimer" style="font-family:'Share Tech Mono', monospace; font-size:18px; font-weight:900; color:var(--purple-mid);">${getResetCountdown()}</div>
-      </div>
-      ${nextTurboLabel() ? `
-      <div style="text-align:right;">
-        <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:1px;">Next Turbo</div>
-        <div style="font-size:11px; font-weight:800; color:var(--gold-core);">⚡ ${nextTurboLabel()}</div>
-      </div>` : ''}
-    </div>
+    <div class="glass-card" style="padding:14px 16px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px;">Votes Reset In</div>
+        <div id="armyResetTimer" style="font-family:'Share Tech Mono', monospace; font-size:18px; font-weight:900; color:var(--purple-mid);">${getResetCountdown()}</div>
+      </div>
+      ${nextTurboLabel() ? `
+      <div style="text-align:right;">
+        <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:1px;">Next Turbo</div>
+        <div style="font-size:11px; font-weight:800; color:var(--gold-core);">⚡ ${nextTurboLabel()}</div>
+      </div>` : ''}
+    </div>
 
-        <div class="glass-card" style="padding:14px; margin-bottom:16px;">
-      <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px;">7-Day Voting Log</div>
-      <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:5px;">
-        ${['S','M','T','W','T','F','S'].map((day, i) => {
-          const weekDates = getWeekDates(STATE.week);
-          const date = weekDates[i] || '';
-          const isPast = date < todayKST;
-          const isToday = date === todayKST;
-          const isDone = isToday ? isVotedToday : isPast; 
-          return `
-          <div style="text-align:center; padding:10px 4px; border-radius:8px;
-            background:${isDone ? 'var(--purple-core)' : isToday ? 'rgba(167,139,250,0.08)' : 'rgba(255,255,255,0.02)'};
-            border:1px solid ${isDone ? 'var(--purple-core)' : isToday ? 'var(--purple-border)' : 'var(--border-subtle)'};">
-            <div style="font-size:8px; font-weight:900; color:${isDone ? '#000' : isToday ? 'var(--purple-mid)' : 'var(--text-ghost)'};">${day}</div>
-            <div style="font-size:13px; margin-top:3px;">${isDone ? '💜' : isToday ? '◎' : '○'}</div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>
+    <div class="glass-card" style="padding:14px; margin-bottom:16px;">
+      <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px;">7-Day Voting Log</div>
+      <div class="sm-grid">
+        ${['S','M','T','W','T','F','S'].map((day, i) => {
+          const weekDates = getWeekDates(STATE.week);
+          const date = weekDates[i] || '';
+          const isPast = date < todayKST;
+          const isToday = date === todayKST;
+          const isDone = isToday ? isVotedToday : isPast; 
+          
+          let bg = 'var(--bg-panel)';
+          let border = 'var(--border-subtle)';
+          let textColor = 'var(--text-ghost)';
+          let icon = '○';
+          
+          if (isDone) {
+            bg = 'rgba(167,139,250,0.15)'; 
+            border = 'var(--purple-core)'; 
+            textColor = 'var(--purple-mid)';
+            icon = '💜';
+          } else if (isToday) {
+            bg = 'rgba(255,255,255,0.05)';
+            border = 'var(--purple-border)';
+            textColor = '#fff';
+            icon = '◎';
+          }
+          
+          return `
+          <div class="sm-cell" style="background:${bg}; border-color:${border};">
+            <div class="sc-day" style="color:${textColor};">${day}</div>
+            <div class="sc-val" style="font-size:14px; margin-top:4px;">${icon}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
 
-        <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin:20px 0 10px 0; padding-left:4px;">📡 Web Voting Targets</div>
-    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:20px;">
-      ${CONFIG.VOTING_CATEGORIES.map(cat => `
-      <div class="glass-card" style="padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
-        <div style="min-width:0; flex:1;">
-          <div style="font-size:11px; font-weight:800; color:#fff; margin-bottom:3px;">${cat.label}</div>
-          <div style="font-family:'Share Tech Mono', monospace; font-size:10px; color:var(--purple-mid);">${cat.tag}</div>
-        </div>
+    <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin:20px 0 10px 0; padding-left:4px;">📡 Web Voting Targets</div>
+    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:20px;">
+      ${CONFIG.VOTING_CATEGORIES.map(cat => `
+      <div class="glass-card" style="padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
+        <div style="min-width:0; flex:1;">
+          <div style="font-size:11px; font-weight:800; color:#fff; margin-bottom:3px;">${cat.label}</div>
+          <div style="font-family:'Share Tech Mono', monospace; font-size:10px; color:var(--purple-mid);">${cat.tag}</div>
+        </div>
         <a href="${cat.url}" target="_blank" style="flex-shrink:0; background:var(--purple-core); color:#000; padding:6px 14px; border-radius:6px; font-size:9px; font-weight:900; text-decoration:none; text-transform:uppercase;">VOTE WEB</a>
-        <button id="copy-${cat.id}" onclick="copyVotingTag('${cat.tag}', '${cat.id}')"
-          style="flex-shrink:0; background:rgba(167,139,250,0.1); border:1px solid var(--purple-core); color:var(--purple-mid);
-          padding:6px 14px; border-radius:6px; font-size:9px; font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:1px;
-          transition:all 0.2s; white-space:nowrap;">COPY TAG</button>
-      </div>`).join('')}
-    </div>
+        <button id="copy-${cat.id}" onclick="copyVotingTag('${cat.tag}', '${cat.id}')"
+          style="flex-shrink:0; background:rgba(167,139,250,0.1); border:1px solid var(--purple-core); color:var(--purple-mid);
+          padding:6px 14px; border-radius:6px; font-size:9px; font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:1px;
+          transition:all 0.2s; white-space:nowrap;">COPY TAG</button>
+      </div>`).join('')}
+    </div>
 
     <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin:20px 0 10px 0; padding-left:4px;">📸 Official IG Posts to Comment On</div>
     <div style="display:flex; gap:8px; margin-bottom:20px;">
-        <a href="https://www.instagram.com/p/DXHH2kplOBV/?img_index=1&igsh=MWJzMDE4OG93eDg4Ng==" target="_blank" class="btn-outline" style="flex:1; border-color:var(--purple-mid); color:var(--purple-mid); text-decoration:none; font-size:10px; text-align:center;">Open Post 1</a>
-        <a href="https://www.instagram.com/p/DXHHxhclMKs/?igsh=MTZuZTg0eHhpbm5lZA==" target="_blank" class="btn-outline" style="flex:1; border-color:var(--purple-mid); color:var(--purple-mid); text-decoration:none; font-size:10px; text-align:center;">Open Post 2</a>
+      <a href="https://www.instagram.com/p/DXHH2kplOBV/?img_index=1&igsh=MWJzMDE4OG93eDg4Ng==" target="_blank" class="btn-outline" style="flex:1; border-color:var(--purple-mid); color:var(--purple-mid); text-decoration:none; font-size:10px; text-align:center;">Open Post 1</a>
+      <a href="https://www.instagram.com/p/DXHHxhclMKs/?igsh=MTZuZTg0eHhpbm5lZA==" target="_blank" class="btn-outline" style="flex:1; border-color:var(--purple-mid); color:var(--purple-mid); text-decoration:none; font-size:10px; text-align:center;">Open Post 2</a>
     </div>
 
-        <div class="glass-card" style="padding:14px 16px; margin-bottom:16px; border-left:3px solid var(--purple-core);">
-      <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;">📋 Mission Rules</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.7;">
-        1. Vote <strong style="color:#fff;">${isTurbo ? '60×' : '30×'}</strong> using the "VOTE WEB" links above.<br>
-        2. Post <strong style="color:#fff;">${isTurbo ? '60×' : '30×'}</strong> IG comments on the official posts.<br>
-        3. Use <strong style="color:#fff;">one hashtag per comment</strong> (do not put multiple in one comment).<br>
-        4. Your IG profile must be <strong style="color:#fff;">public</strong> or your votes won't register.<br>
-        5. Drop your screenshot in the <strong style="color:#fff;">Team GC</strong> as proof you completed the mission.
-      </div>
-    </div>
+    <div class="glass-card" style="padding:14px 16px; margin-bottom:16px; border-left:3px solid var(--purple-core);">
+      <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;">📋 Mission Rules</div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.7;">
+        1. Vote <strong style="color:#fff;">${isTurbo ? '60×' : '30×'}</strong> using the "VOTE WEB" links above.<br>
+        2. Post <strong style="color:#fff;">${isTurbo ? '60×' : '30×'}</strong> IG comments on the official posts.<br>
+        3. Use <strong style="color:#fff;">one hashtag per comment</strong> (do not put multiple in one comment).<br>
+        4. Your IG profile must be <strong style="color:#fff;">public</strong> or your votes won't register.<br>
+        5. Drop your screenshot in the <strong style="color:#fff;">Team GC</strong> as proof you completed the mission.
+      </div>
+    </div>
 
-        <div class="archive-card" style="padding:20px; text-align:center; border-left:4px solid ${isTurbo ? 'var(--gold-core)' : 'var(--purple-core)'}; margin-bottom:8px;">
-      <div style="font-size:11px; color:var(--text-muted); margin-bottom:16px; line-height:1.6;">
-        Team participation is required for the 30 XP reward.<br>
-        <span style="color:var(--text-ghost); font-size:10px;">If even one team member misses — the bonus is lost.</span>
-      </div>
-      <button id="armyConfirmBtn" onclick="completeArmyMission()"
-        style="width:100%; padding:14px; border-radius:8px; font-family:'Orbitron', sans-serif;
-        font-size:11px; font-weight:900; letter-spacing:2px; cursor:pointer; border:none;
-        background:${isVotedToday ? 'rgba(0,255,102,0.15)' : 'var(--purple-core)'};
-        color:${isVotedToday ? 'var(--green)' : '#000'};
-        border:1px solid ${isVotedToday ? 'var(--green)' : 'transparent'};
-        transition:all 0.3s;">
-        ${isVotedToday ? '✓ MISSION COMPLETE — VOTES CAST' : '💜 I HAVE VOTED & POSTED SCREENSHOT'}
-      </button>
-      ${isVotedToday ? `<div style="font-size:10px; color:var(--green); margin-top:8px; font-weight:700;">Status: COMPLIANT 💜 Resets at 4 PM KST</div>` : ''}
-    </div>
-  `;
+    <div class="archive-card" style="padding:20px; text-align:center; border-left:4px solid ${isTurbo ? 'var(--gold-core)' : 'var(--purple-core)'}; margin-bottom:8px;">
+      <div style="font-size:11px; color:var(--text-muted); margin-bottom:16px; line-height:1.6;">
+        Team participation is required for the 30 XP reward.<br>
+        <span style="color:var(--text-ghost); font-size:10px;">If even one team member misses — the bonus is lost.</span>
+      </div>
+      <button id="armyConfirmBtn" onclick="completeArmyMission()"
+        style="width:100%; padding:14px; border-radius:8px; font-family:'Orbitron', sans-serif;
+        font-size:11px; font-weight:900; letter-spacing:2px; cursor:pointer; border:none;
+        background:${isVotedToday ? 'rgba(0,255,102,0.15)' : 'var(--purple-core)'};
+        color:${isVotedToday ? 'var(--green)' : '#000'};
+        border:1px solid ${isVotedToday ? 'var(--green)' : 'transparent'};
+        transition:all 0.3s;">
+        ${isVotedToday ? '✓ MISSION COMPLETE — VOTES CAST' : '💜 I HAVE VOTED & POSTED SCREENSHOT'}
+      </button>
+      ${isVotedToday ? `<div style="font-size:10px; color:var(--green); margin-top:8px; font-weight:700;">Status: COMPLIANT 💜 Resets at 4 PM KST</div>` : ''}
+    </div>
+  `;
 
   container.innerHTML = html;
 
