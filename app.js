@@ -8246,12 +8246,12 @@ function renderArmyMission() {
   const todayKST = getKSTDateString();
   const isTurbo = CONFIG.TURBO_DAYS.includes(todayKST);
 
-  // ── Countdown to midnight PT (= 16:00 KST) ──
+  // ── Countdown to 4 PM KST (= midnight PT) ──
   function getResetCountdown() {
     const now = new Date();
     const kst = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
     const reset = new Date(kst);
-    reset.setHours(CONFIG.VOTING_RESET_HOUR_KST, 0, 0, 0);
+    reset.setHours(16, 0, 0, 0); // 4 PM KST = 16:00
     if (reset <= kst) reset.setDate(reset.getDate() + 1);
     const diff = reset - kst;
     const h = Math.floor(diff / 3_600_000);
@@ -8357,13 +8357,25 @@ function renderArmyMission() {
         letter-spacing:2px; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
         <span style="font-size:14px;">📊</span> 7-Day Voting Streak
       </div>
-      <div class="sm-grid">
+      <div style="display:flex; justify-content:space-between; gap:8px;">
         ${['S','M','T','W','T','F','S'].map((day, i) => {
           const weekDates = getWeekDates(STATE.week);
           const date = weekDates[i] || '';
-          const isPast = date < todayKST;
           const isToday = date === todayKST;
-          const isDone = isToday ? isVotedToday : isPast; 
+          
+          // Check actual voting history for this specific day
+          let dayVoted = false;
+          if (date) {
+            const parts = date.split('-');
+            const localD = new Date(parts[0], parseInt(parts[1])-1, parseInt(parts[2]));
+            const histKey = `p148_${STATE.agentNo}_${localD.toDateString()}`;
+            try {
+              const histData = JSON.parse(localStorage.getItem(histKey) || '{}');
+              dayVoted = !!histData['t148_army_vote'];
+            } catch(e) {}
+          }
+          
+          const isDone = dayVoted; 
           
           let bg = 'rgba(255,255,255,0.02)';
           let border = 'var(--border-subtle)';
@@ -8376,36 +8388,37 @@ function renderArmyMission() {
             border = 'var(--green)'; 
             textColor = 'var(--green)';
             icon = '✓';
-            glow = 'box-shadow: 0 0 20px rgba(0,255,102,0.4), inset 0 0 20px rgba(0,255,102,0.1);';
+            glow = 'box-shadow: 0 0 15px rgba(0,255,102,0.3);';
           } else if (isToday) {
             bg = 'linear-gradient(135deg, rgba(167,139,250,0.15), rgba(167,139,250,0.05))';
             border = 'var(--purple-core)';
             textColor = '#fff';
             icon = '◎';
-            glow = 'box-shadow: 0 0 15px rgba(167,139,250,0.3);';
+            glow = 'box-shadow: 0 0 12px rgba(167,139,250,0.25);';
           }
           
           return `
-          <div class="sm-cell" style="background:${bg}; border-color:${border}; ${glow} 
+          <div style="flex:1; text-align:center; padding:12px 6px; border-radius:8px; 
+            background:${bg}; border:1px solid ${border}; ${glow}
             transition:all 0.3s ease; position:relative; overflow:hidden;">
             ${isDone ? `<div style="position:absolute; top:0; left:0; width:100%; height:100%; 
-              background:radial-gradient(circle at center, rgba(0,255,102,0.2), transparent); 
+              background:radial-gradient(circle at center, rgba(0,255,102,0.15), transparent); 
               pointer-events:none;"></div>` : ''}
-            <div class="sc-day" style="color:${textColor}; position:relative; z-index:1; 
-              font-weight:${isDone ? '900' : '700'};">${day}</div>
-            <div class="sc-val" style="font-size:${isDone ? '20px' : '16px'}; margin-top:4px; 
-              position:relative; z-index:1; font-weight:900; 
-              ${isDone ? 'text-shadow: 0 0 10px rgba(0,255,102,0.6);' : ''}">${icon}</div>
+            <div style="font-size:8px; font-weight:${isDone || isToday ? '900' : '700'}; 
+              color:${textColor}; position:relative; z-index:1;">${day}</div>
+            <div style="font-size:${isDone ? '18px' : '14px'}; margin-top:6px; position:relative; z-index:1; 
+              ${isDone ? 'text-shadow: 0 0 8px rgba(0,255,102,0.5);' : ''}">${icon}</div>
           </div>`;
         }).join('')}
       </div>
       ${isVotedToday ? `
-        <div style="margin-top:12px; padding:10px; background:rgba(0,255,102,0.1); 
-          border:1px solid var(--green); border-radius:8px; text-align:center;">
-          <span style="font-size:12px; color:var(--green); font-weight:900;">
-            ✓ TODAY'S MISSION COMPLETE
-          </span>
-        </div>` : ''}
+      <div style="margin-top:14px; padding:12px; background:rgba(0,255,102,0.1); 
+        border:1px solid var(--green); border-radius:8px; text-align:center;">
+        <span style="font-size:11px; color:var(--green); font-weight:900; 
+          text-shadow:0 0 8px rgba(0,255,102,0.4);">
+          ✓ TODAY'S MISSION COMPLETE
+        </span>
+      </div>` : ''}
     </div>
 
     <!-- ── LIVE SQUAD STANDINGS ── -->
@@ -8472,13 +8485,6 @@ function renderArmyMission() {
           box-shadow:0 4px 15px rgba(167,139,250,0.4); transition:all 0.3s;">
           VOTE WEB
         </a>
-        <button id="copy-${cat.id}" onclick="copyVotingTag('${cat.tag}', '${cat.id}')"
-          style="flex-shrink:0; background:rgba(167,139,250,0.15); border:1px solid var(--purple-core); 
-          color:var(--purple-mid); padding:8px 16px; border-radius:8px; font-size:10px; 
-          font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:1px;
-          transition:all 0.3s; white-space:nowrap;">
-          COPY TAG
-        </button>
       </div>`).join('')}
     </div>
 
@@ -8487,21 +8493,70 @@ function renderArmyMission() {
       display:flex; align-items:center; gap:8px;">
       <span style="font-size:16px;">📸</span> Official IG Posts to Comment On
     </div>
-    <div style="display:flex; gap:10px; margin-bottom:24px;">
-      <a href="https://www.instagram.com/p/DXHH2kplOBV/?img_index=1&igsh=MWJzMDE4OG93eDg4Ng==" 
-        target="_blank" class="btn-outline" 
-        style="flex:1; border-color:var(--purple-core); color:var(--purple-mid); 
-        text-decoration:none; font-size:11px; text-align:center; font-weight:800;
-        padding:12px; background:rgba(167,139,250,0.05); transition:all 0.3s;">
-        📱 Open Post 1
-      </a>
-      <a href="https://www.instagram.com/p/DXHHxhclMKs/?igsh=MTZuZTg0eHhpbm5lZA==" 
-        target="_blank" class="btn-outline" 
-        style="flex:1; border-color:var(--purple-core); color:var(--purple-mid); 
-        text-decoration:none; font-size:11px; text-align:center; font-weight:800;
-        padding:12px; background:rgba(167,139,250,0.05); transition:all 0.3s;">
-        📱 Open Post 2
-      </a>
+    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:24px;">
+      <div class="glass-card" style="padding:14px 16px; border:1px solid var(--border-subtle);
+        background:linear-gradient(135deg, rgba(167,139,250,0.05), var(--bg-panel));">
+        <div style="font-size:11px; font-weight:900; color:#fff; margin-bottom:8px;">Artist of the Year</div>
+        <div style="font-size:10px; color:var(--text-secondary); margin-bottom:12px;">
+          Category: <strong style="color:var(--purple-mid);">Artist of the Year</strong>
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
+          <a href="https://www.instagram.com/p/DXHH2kplOBV/?img_index=1&igsh=MWJzMDE4OG93eDg4Ng==" 
+            target="_blank" 
+            style="flex:1; border:1px solid var(--purple-core); color:var(--purple-mid); 
+            text-decoration:none; font-size:10px; text-align:center; font-weight:800;
+            padding:10px; background:rgba(167,139,250,0.05); border-radius:6px; transition:all 0.3s;">
+            📱 Open Post
+          </a>
+          <button onclick="copyVotingTag('I\\'m voting for #aotybts', 'ig_aoty')" 
+            style="flex:1; background:rgba(167,139,250,0.15); border:1px solid var(--purple-core); 
+            color:var(--purple-mid); padding:10px; border-radius:6px; font-size:10px; 
+            font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:1px;
+            transition:all 0.3s;">
+            📋 Copy Comment
+          </button>
+        </div>
+        <div style="font-size:9px; color:var(--text-ghost); background:rgba(0,0,0,0.2); 
+          padding:8px; border-radius:4px;">
+          <strong>Comment:</strong> I'm voting for #aotybts
+        </div>
+      </div>
+
+      <div class="glass-card" style="padding:14px 16px; border:1px solid var(--border-subtle);
+        background:linear-gradient(135deg, rgba(167,139,250,0.05), var(--bg-panel));">
+        <div style="font-size:11px; font-weight:900; color:#fff; margin-bottom:8px;">Song & K-Pop Artist</div>
+        <div style="font-size:10px; color:var(--text-secondary); margin-bottom:12px;">
+          <strong style="color:var(--purple-mid);">Two separate categories</strong> — post as two comments
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
+          <a href="https://www.instagram.com/p/DXHHxhclMKs/?igsh=MTZuZTg0eHhpbm5lZA==" 
+            target="_blank" 
+            style="flex:1; border:1px solid var(--purple-core); color:var(--purple-mid); 
+            text-decoration:none; font-size:10px; text-align:center; font-weight:800;
+            padding:10px; background:rgba(167,139,250,0.05); border-radius:6px; transition:all 0.3s;">
+            📱 Open Post
+          </a>
+          <button onclick="copyVotingTag('I\\'m voting for #malekpopbts', 'ig_kpop')" 
+            style="flex:0.5; background:rgba(167,139,250,0.15); border:1px solid var(--purple-core); 
+            color:var(--purple-mid); padding:10px; border-radius:6px; font-size:9px; 
+            font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:1px;
+            transition:all 0.3s;">
+            📋 K-Pop
+          </button>
+          <button onclick="copyVotingTag('I\\'m voting for #summersongswim', 'ig_song')" 
+            style="flex:0.5; background:rgba(167,139,250,0.15); border:1px solid var(--purple-core); 
+            color:var(--purple-mid); padding:10px; border-radius:6px; font-size:9px; 
+            font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:1px;
+            transition:all 0.3s;">
+            📋 Song
+          </button>
+        </div>
+        <div style="font-size:9px; color:var(--text-ghost); background:rgba(0,0,0,0.2); 
+          padding:8px; border-radius:4px; line-height:1.6;">
+          <strong>Comment 1:</strong> I'm voting for #malekpopbts<br>
+          <strong>Comment 2:</strong> I'm voting for #summersongswim
+        </div>
+      </div>
     </div>
 
     <div class="glass-card" style="padding:18px; margin-bottom:20px; border-left:4px solid var(--purple-core);
@@ -8513,20 +8568,23 @@ function renderArmyMission() {
       <div style="font-size:11px; color:var(--text-secondary); line-height:1.8;">
         <div style="padding:8px 0; border-bottom:1px solid var(--border-subtle);">
           1️⃣ Vote <strong style="color:var(--purple-core); font-size:13px;">${isTurbo ? '60×' : '30×'}</strong> 
-          using the "VOTE WEB" links above
+          using the "VOTE WEB" links above (per category)
         </div>
         <div style="padding:8px 0; border-bottom:1px solid var(--border-subtle);">
           2️⃣ Post <strong style="color:var(--purple-core); font-size:13px;">${isTurbo ? '60×' : '30×'}</strong> 
-          IG comments on the official posts
+          IG comments using the "COPY COMMENT" buttons (per category)
         </div>
         <div style="padding:8px 0; border-bottom:1px solid var(--border-subtle);">
-          3️⃣ Use <strong style="color:#fff;">one hashtag per comment</strong> (no multiple tags in one comment)
+          3️⃣ Use <strong style="color:#fff;">one hashtag per comment</strong> (copy buttons ensure this)
         </div>
         <div style="padding:8px 0; border-bottom:1px solid var(--border-subtle);">
           4️⃣ Your IG profile must be <strong style="color:#fff;">PUBLIC</strong> or votes won't register
         </div>
-        <div style="padding:8px 0;">
+        <div style="padding:8px 0; border-bottom:1px solid var(--border-subtle);">
           5️⃣ Drop your screenshot in the <strong style="color:var(--purple-core);">Team GC</strong> as proof
+        </div>
+        <div style="padding:8px 0;">
+          6️⃣ Votes reset daily at <strong style="color:var(--purple-core);">4 PM KST (midnight PT)</strong>
         </div>
       </div>
     </div>
@@ -8579,7 +8637,36 @@ function renderArmyMission() {
   }, 1000);
 }
 /**
+ * Copies Instagram voting comment to clipboard
+ */
+window.copyVotingTag = function copyVotingTag(tagText, tagId) {
+  const btn = $(`copy-${tagId}`);
+  
+  // Copy to clipboard
+  navigator.clipboard.writeText(tagText).then(() => {
+    // Visual feedback
+    const originalText = btn.textContent;
+    btn.textContent = '✓ COPIED!';
+    btn.style.background = 'rgba(0,255,102,0.2)';
+    btn.style.borderColor = 'var(--green)';
+    btn.style.color = 'var(--green)';
+    
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.background = 'rgba(167,139,250,0.15)';
+      btn.style.borderColor = 'var(--purple-core)';
+      btn.style.color = 'var(--purple-mid)';
+    }, 2000);
+    
+    showToast('📋 Comment copied to clipboard!', 'success');
+  }).catch(err => {
+    console.error('Copy failed:', err);
+    showToast('Failed to copy', 'error');
+  });
+};
+/**
  * Submits the vote to the database and updates local state.
+ * Also stores voting history for the 7-day streak tracker.
  */
 window.completeArmyMission = async function completeArmyMission() {
   const saved = getSavedTodos();
@@ -8607,25 +8694,33 @@ window.completeArmyMission = async function completeArmyMission() {
       // 2. Update local checklist
       saved['t148_army_vote'] = true;
       localStorage.setItem(getTodoKey(), JSON.stringify(saved));
+      
+      // 3. Store in voting history for 7-day streak tracker
+      const today = new Date();
+      const histKey = `p148_${STATE.agentNo}_${today.toDateString()}`;
+      localStorage.setItem(histKey, JSON.stringify({ 't148_army_vote': true }));
+      
       showToast('💜 Votes confirmed and synced to HQ!', 'success');
       
       if (typeof navigator.vibrate === 'function') navigator.vibrate([50, 30, 50]);
       
-      // 3. Force a dashboard refresh so the Live Leaderboard instantly updates
+      // 4. Force a dashboard refresh so the Live Leaderboard instantly updates
       Api.invalidate('getDashboardData'); 
       await loadDashboard(); 
       
-      // 4. Re-render the army mission page
+      // 5. Re-render the army mission page
       renderArmyMission();
     } else {
       showToast(res.error || 'Failed to sync vote to HQ', 'error');
     }
   } catch (e) {
+    console.error('completeArmyMission error:', e);
     showToast('Network Error — Try again', 'error');
   } finally {
     Loading.hide();
   }
 };
+
 // =============================================
 // ██████  GUIDE PAGE
 // =============================================
