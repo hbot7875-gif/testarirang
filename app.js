@@ -8284,6 +8284,17 @@ function renderArmyMission() {
   const savedTodo = getSavedTodos();
   const isVotedToday = !!savedTodo['t148_army_vote'];
 
+  // ── LIVE SQUAD STANDINGS (Dynamic Data) ──
+  const teamVotes = STATE.data?.armyVotingStats || [];
+
+  // Sort teams by completion percentage, then by raw votes
+  teamVotes.sort((a, b) => {
+    const pctA = a.total > 0 ? (a.voted / a.total) : 0;
+    const pctB = b.total > 0 ? (b.voted / b.total) : 0;
+    if (pctB !== pctA) return pctB - pctA;
+    return b.voted - a.voted;
+  });
+
   const html = `
     <div class="archive-card" style="border-top:4px solid var(--purple-core); margin-bottom:20px; 
       background:linear-gradient(135deg, rgba(167,139,250,0.12), rgba(139,92,246,0.06), var(--bg-panel)); 
@@ -8395,6 +8406,47 @@ function renderArmyMission() {
             ✓ TODAY'S MISSION COMPLETE
           </span>
         </div>` : ''}
+    </div>
+
+    <!-- ── LIVE SQUAD STANDINGS ── -->
+    <div style="font-size:11px; color:var(--purple-mid); text-transform:uppercase; 
+      letter-spacing:2px; margin:24px 0 12px 0; padding-left:4px; font-weight:900; 
+      display:flex; align-items:center; gap:8px;">
+      <span style="font-size:16px;">🏆</span> Live Squad Standings
+    </div>
+    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:24px;">
+      ${teamVotes.length === 0 ? `
+        <div class="glass-card" style="padding:16px; text-align:center; color:var(--text-ghost);">
+          <div style="font-size:12px;">Loading squad data...</div>
+        </div>` : teamVotes.map((team, idx) => {
+          const pct = team.total > 0 ? Math.round((team.voted / team.total) * 100) : 0;
+          const isMyTeam = team.team === STATE.data?.agent?.profile?.team;
+          const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : (idx + 1);
+          
+          return `
+          <div class="glass-card" style="padding:12px 14px; 
+            ${isMyTeam ? 'border:2px solid var(--purple-core); background:rgba(167,139,250,0.15);' : 'border:1px solid var(--border-subtle);'}
+            display:flex; align-items:center; gap:12px; transition:all 0.3s;">
+            <div style="font-size:20px; min-width:32px; text-align:center;">${medal}</div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:11px; font-weight:900; color:#fff; margin-bottom:4px;">
+                ${team.team} ${isMyTeam ? '<span style="color:var(--purple-core); text-shadow:0 0 10px rgba(167,139,250,0.6);">★ YOUR TEAM</span>' : ''}
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="flex:1; height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden;">
+                  <div style="width:${pct}%; height:100%; background:linear-gradient(90deg, var(--purple-core), var(--green)); transition:width 0.3s;"></div>
+                </div>
+                <div style="font-size:10px; font-weight:900; color:var(--purple-mid); min-width:45px; text-align:right;">
+                  ${pct}%
+                </div>
+              </div>
+            </div>
+            <div style="text-align:right; font-size:10px;">
+              <div style="color:#fff; font-weight:900;">${team.voted}/${team.total}</div>
+              <div style="color:var(--text-ghost); font-size:9px;">votes</div>
+            </div>
+          </div>`;
+        }).join('')}
     </div>
 
     <div style="font-size:11px; color:var(--purple-mid); text-transform:uppercase; 
@@ -8526,7 +8578,54 @@ function renderArmyMission() {
     el.textContent = getResetCountdown();
   }, 1000);
 }
+/**
+ * Submits the vote to the database and updates local state.
+ */
+window.completeArmyMission = async function completeArmyMission() {
+  const saved = getSavedTodos();
+  const wasVoted = !!saved['t148_army_vote'];
 
+  if (wasVoted) {
+    // Optional: We usually don't let them un-vote in the database, 
+    // but we can clear their local checklist if they made a mistake.
+    delete saved['t148_army_vote'];
+    localStorage.setItem(getTodoKey(), JSON.stringify(saved));
+    showToast('Voting record cleared locally.', 'info');
+    renderArmyMission();
+    return;
+  }
+
+  Loading.show();
+  try {
+    // 1. Send signal to HQ (Database)
+    const res = await Api.call('submitArmyVote', { 
+      agentNo: STATE.agentNo, 
+      week: STATE.week 
+    }, { dedupe: false, cache: false });
+
+    if (res.success) {
+      // 2. Update local checklist
+      saved['t148_army_vote'] = true;
+      localStorage.setItem(getTodoKey(), JSON.stringify(saved));
+      showToast('💜 Votes confirmed and synced to HQ!', 'success');
+      
+      if (typeof navigator.vibrate === 'function') navigator.vibrate([50, 30, 50]);
+      
+      // 3. Force a dashboard refresh so the Live Leaderboard instantly updates
+      Api.invalidate('getDashboardData'); 
+      await loadDashboard(); 
+      
+      // 4. Re-render the army mission page
+      renderArmyMission();
+    } else {
+      showToast(res.error || 'Failed to sync vote to HQ', 'error');
+    }
+  } catch (e) {
+    showToast('Network Error — Try again', 'error');
+  } finally {
+    Loading.hide();
+  }
+};
 // =============================================
 // ██████  GUIDE PAGE
 // =============================================
