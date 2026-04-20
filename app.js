@@ -501,6 +501,25 @@ function getWeekDates(weekLabel) {
   }
   return dates;
 }
+/**
+ * Gets week dates in PT timezone (for Army voting grid)
+ * Returns array of 7 dates starting from the week's Sunday in PT
+ */
+function getWeekDatesPT(weekLabel) {
+  const weekStart = CONFIG.WEEK_DATES[weekLabel];
+  if (!weekStart) return [];
+  
+  const dates = [];
+  const startDate = new Date(weekStart + 'T00:00:00Z');
+  
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(startDate);
+    d.setUTCDate(d.getUTCDate() + i);
+    dates.push(d.toISOString().split('T')[0]);
+  }
+  
+  return dates;
+}
 
 // =============================================
 // ██████  NEW IN v2.0: TIMER MANAGER
