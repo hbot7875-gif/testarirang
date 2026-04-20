@@ -8201,38 +8201,67 @@ function renderArmyMission() {
   const isVotedToday = !!savedTodo['t148_army_vote'];
 
   const html = `
-    <div class="archive-card" style="border-top:4px solid var(--purple-core); margin-bottom:20px; background:linear-gradient(135deg, rgba(167,139,250,0.06), var(--bg-panel)); padding:20px;">
-      <div style="text-align:center;">
-        <div style="font-size:28px; margin-bottom:8px;">💜</div>
-        <div style="font-size:13px; font-weight:900; color:#fff; font-family:'Orbitron', sans-serif; letter-spacing:2px;">THE 8TH MISSION</div>
-        <div style="font-size:10px; color:var(--purple-mid); font-weight:800; margin-top:4px; text-transform:uppercase; letter-spacing:2px;">${CONFIG.VOTING_MISSION_NAME}</div>
-        <div style="font-size:10px; color:var(--text-muted); margin-top:8px;">${getClosingCountdown()}</div>
+    <div class="archive-card" style="border-top:4px solid var(--purple-core); margin-bottom:20px; 
+      background:linear-gradient(135deg, rgba(167,139,250,0.12), rgba(139,92,246,0.06), var(--bg-panel)); 
+      padding:24px; position:relative; overflow:hidden;">
+      <div style="position:absolute; top:-50px; right:-50px; width:200px; height:200px; 
+        background:radial-gradient(circle, rgba(167,139,250,0.15), transparent); 
+        border-radius:50%; pointer-events:none;"></div>
+      <div style="text-align:center; position:relative; z-index:1;">
+        <div style="font-size:48px; margin-bottom:12px; filter:drop-shadow(0 0 20px rgba(167,139,250,0.6));">💜</div>
+        <div style="font-size:15px; font-weight:900; color:#fff; font-family:'Orbitron', sans-serif; 
+          letter-spacing:3px; text-shadow:0 0 10px rgba(167,139,250,0.5);">THE 8TH MISSION</div>
+        <div style="font-size:11px; color:var(--purple-mid); font-weight:800; margin-top:6px; 
+          text-transform:uppercase; letter-spacing:2px;">${CONFIG.VOTING_MISSION_NAME}</div>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:12px; padding:8px 16px; 
+          background:rgba(0,0,0,0.3); border-radius:20px; display:inline-block;">
+          ⏰ ${getClosingCountdown()}
+        </div>
       </div>
     </div>
 
     ${isTurbo ? `
-    <div class="glass-card" style="padding:12px 16px; margin-bottom:16px; border:1px solid var(--gold-core); background:rgba(229,165,40,0.06); display:flex; align-items:center; gap:10px;">
-      <span style="font-size:16px;">⚡</span>
-      <div>
-        <div style="font-size:10px; font-weight:900; color:var(--gold-core); text-transform:uppercase; letter-spacing:1px;">Turbo Protocol Active</div>
-        <div style="font-size:10px; color:var(--text-secondary);">Web votes: <strong>60×</strong> today. IG comments count <strong>double</strong>.</div>
+    <div class="glass-card" style="padding:16px; margin-bottom:20px; border:2px solid var(--gold-core); 
+      background:linear-gradient(135deg, rgba(229,165,40,0.15), rgba(229,165,40,0.05)); 
+      display:flex; align-items:center; gap:12px; position:relative; overflow:hidden;">
+      <div style="position:absolute; top:0; left:0; width:100%; height:100%; 
+        background:repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(229,165,40,0.03) 10px, rgba(229,165,40,0.03) 20px);
+        pointer-events:none;"></div>
+      <span style="font-size:32px; filter:drop-shadow(0 0 10px rgba(229,165,40,0.8)); position:relative; z-index:1;">⚡</span>
+      <div style="position:relative; z-index:1;">
+        <div style="font-size:12px; font-weight:900; color:var(--gold-core); text-transform:uppercase; 
+          letter-spacing:2px; text-shadow:0 0 8px rgba(229,165,40,0.5);">⚡ TURBO PROTOCOL ACTIVE ⚡</div>
+        <div style="font-size:11px; color:var(--text-secondary); margin-top:4px;">
+          Web votes: <strong style="color:var(--gold-core);">60×</strong> today • 
+          IG comments count <strong style="color:var(--gold-core);">DOUBLE</strong>
+        </div>
       </div>
     </div>` : ''}
 
-    <div class="glass-card" style="padding:14px 16px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
+    <div class="glass-card" style="padding:16px; margin-bottom:20px; display:flex; justify-content:space-between; 
+      align-items:center; background:linear-gradient(135deg, rgba(167,139,250,0.08), var(--bg-panel));">
       <div>
-        <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px;">Votes Reset In</div>
-        <div id="armyResetTimer" style="font-family:'Share Tech Mono', monospace; font-size:18px; font-weight:900; color:var(--purple-mid);">${getResetCountdown()}</div>
+        <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px;">⏳ Votes Reset In</div>
+        <div id="armyResetTimer" style="font-family:'Share Tech Mono', monospace; font-size:24px; 
+          font-weight:900; color:var(--purple-core); text-shadow:0 0 10px rgba(167,139,250,0.4);">
+          ${getResetCountdown()}
+        </div>
       </div>
       ${nextTurboLabel() ? `
-      <div style="text-align:right;">
-        <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:1px;">Next Turbo</div>
-        <div style="font-size:11px; font-weight:800; color:var(--gold-core);">⚡ ${nextTurboLabel()}</div>
+      <div style="text-align:right; padding:12px 16px; background:rgba(229,165,40,0.1); 
+        border:1px solid var(--gold-core); border-radius:8px;">
+        <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:1px;">⚡ Next Turbo</div>
+        <div style="font-size:13px; font-weight:900; color:var(--gold-core); 
+          text-shadow:0 0 8px rgba(229,165,40,0.5);">${nextTurboLabel()}</div>
       </div>` : ''}
     </div>
 
-    <div class="glass-card" style="padding:14px; margin-bottom:16px;">
-      <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px;">7-Day Voting Log</div>
+    <div class="glass-card" style="padding:18px; margin-bottom:20px; 
+      background:linear-gradient(135deg, rgba(0,255,102,0.03), var(--bg-panel));">
+      <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; 
+        letter-spacing:2px; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+        <span style="font-size:14px;">📊</span> 7-Day Voting Streak
+      </div>
       <div class="sm-grid">
         ${['S','M','T','W','T','F','S'].map((day, i) => {
           const weekDates = getWeekDates(STATE.week);
@@ -8241,80 +8270,162 @@ function renderArmyMission() {
           const isToday = date === todayKST;
           const isDone = isToday ? isVotedToday : isPast; 
           
-          let bg = 'var(--bg-panel)';
+          let bg = 'rgba(255,255,255,0.02)';
           let border = 'var(--border-subtle)';
           let textColor = 'var(--text-ghost)';
           let icon = '○';
+          let glow = '';
           
           if (isDone) {
-            bg = 'rgba(167,139,250,0.15)'; 
-            border = 'var(--purple-core)'; 
-            textColor = 'var(--purple-mid)';
-            icon = '💜';
+            bg = 'linear-gradient(135deg, rgba(0,255,102,0.2), rgba(0,255,102,0.1))'; 
+            border = 'var(--green)'; 
+            textColor = 'var(--green)';
+            icon = '✓';
+            glow = 'box-shadow: 0 0 20px rgba(0,255,102,0.4), inset 0 0 20px rgba(0,255,102,0.1);';
           } else if (isToday) {
-            bg = 'rgba(255,255,255,0.05)';
-            border = 'var(--purple-border)';
+            bg = 'linear-gradient(135deg, rgba(167,139,250,0.15), rgba(167,139,250,0.05))';
+            border = 'var(--purple-core)';
             textColor = '#fff';
             icon = '◎';
+            glow = 'box-shadow: 0 0 15px rgba(167,139,250,0.3);';
           }
           
           return `
-          <div class="sm-cell" style="background:${bg}; border-color:${border};">
-            <div class="sc-day" style="color:${textColor};">${day}</div>
-            <div class="sc-val" style="font-size:14px; margin-top:4px;">${icon}</div>
+          <div class="sm-cell" style="background:${bg}; border-color:${border}; ${glow} 
+            transition:all 0.3s ease; position:relative; overflow:hidden;">
+            ${isDone ? `<div style="position:absolute; top:0; left:0; width:100%; height:100%; 
+              background:radial-gradient(circle at center, rgba(0,255,102,0.2), transparent); 
+              pointer-events:none;"></div>` : ''}
+            <div class="sc-day" style="color:${textColor}; position:relative; z-index:1; 
+              font-weight:${isDone ? '900' : '700'};">${day}</div>
+            <div class="sc-val" style="font-size:${isDone ? '20px' : '16px'}; margin-top:4px; 
+              position:relative; z-index:1; font-weight:900; 
+              ${isDone ? 'text-shadow: 0 0 10px rgba(0,255,102,0.6);' : ''}">${icon}</div>
           </div>`;
         }).join('')}
       </div>
+      ${isVotedToday ? `
+        <div style="margin-top:12px; padding:10px; background:rgba(0,255,102,0.1); 
+          border:1px solid var(--green); border-radius:8px; text-align:center;">
+          <span style="font-size:12px; color:var(--green); font-weight:900;">
+            ✓ TODAY'S MISSION COMPLETE
+          </span>
+        </div>` : ''}
     </div>
 
-    <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin:20px 0 10px 0; padding-left:4px;">📡 Web Voting Targets</div>
-    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:20px;">
+    <div style="font-size:11px; color:var(--purple-mid); text-transform:uppercase; 
+      letter-spacing:2px; margin:24px 0 12px 0; padding-left:4px; font-weight:900; 
+      display:flex; align-items:center; gap:8px;">
+      <span style="font-size:16px;">🎯</span> Web Voting Targets
+    </div>
+    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:24px;">
       ${CONFIG.VOTING_CATEGORIES.map(cat => `
-      <div class="glass-card" style="padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
+      <div class="glass-card" style="padding:14px 16px; display:flex; justify-content:space-between; 
+        align-items:center; gap:12px; transition:all 0.3s; border:1px solid var(--border-subtle);
+        background:linear-gradient(135deg, rgba(167,139,250,0.05), var(--bg-panel));">
         <div style="min-width:0; flex:1;">
-          <div style="font-size:11px; font-weight:800; color:#fff; margin-bottom:3px;">${cat.label}</div>
-          <div style="font-family:'Share Tech Mono', monospace; font-size:10px; color:var(--purple-mid);">${cat.tag}</div>
+          <div style="font-size:12px; font-weight:800; color:#fff; margin-bottom:4px;">${cat.label}</div>
+          <div style="font-family:'Share Tech Mono', monospace; font-size:10px; 
+            color:var(--purple-mid); background:rgba(167,139,250,0.1); padding:4px 8px; 
+            border-radius:4px; display:inline-block;">${cat.tag}</div>
         </div>
-        <a href="${cat.url}" target="_blank" style="flex-shrink:0; background:var(--purple-core); color:#000; padding:6px 14px; border-radius:6px; font-size:9px; font-weight:900; text-decoration:none; text-transform:uppercase;">VOTE WEB</a>
+        <a href="${cat.url}" target="_blank" 
+          style="flex-shrink:0; background:linear-gradient(135deg, var(--purple-core), #9333ea); 
+          color:#000; padding:8px 16px; border-radius:8px; font-size:10px; font-weight:900; 
+          text-decoration:none; text-transform:uppercase; letter-spacing:1px;
+          box-shadow:0 4px 15px rgba(167,139,250,0.4); transition:all 0.3s;">
+          VOTE WEB
+        </a>
         <button id="copy-${cat.id}" onclick="copyVotingTag('${cat.tag}', '${cat.id}')"
-          style="flex-shrink:0; background:rgba(167,139,250,0.1); border:1px solid var(--purple-core); color:var(--purple-mid);
-          padding:6px 14px; border-radius:6px; font-size:9px; font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:1px;
-          transition:all 0.2s; white-space:nowrap;">COPY TAG</button>
+          style="flex-shrink:0; background:rgba(167,139,250,0.15); border:1px solid var(--purple-core); 
+          color:var(--purple-mid); padding:8px 16px; border-radius:8px; font-size:10px; 
+          font-weight:900; cursor:pointer; text-transform:uppercase; letter-spacing:1px;
+          transition:all 0.3s; white-space:nowrap;">
+          COPY TAG
+        </button>
       </div>`).join('')}
     </div>
 
-    <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin:20px 0 10px 0; padding-left:4px;">📸 Official IG Posts to Comment On</div>
-    <div style="display:flex; gap:8px; margin-bottom:20px;">
-      <a href="https://www.instagram.com/p/DXHH2kplOBV/?img_index=1&igsh=MWJzMDE4OG93eDg4Ng==" target="_blank" class="btn-outline" style="flex:1; border-color:var(--purple-mid); color:var(--purple-mid); text-decoration:none; font-size:10px; text-align:center;">Open Post 1</a>
-      <a href="https://www.instagram.com/p/DXHHxhclMKs/?igsh=MTZuZTg0eHhpbm5lZA==" target="_blank" class="btn-outline" style="flex:1; border-color:var(--purple-mid); color:var(--purple-mid); text-decoration:none; font-size:10px; text-align:center;">Open Post 2</a>
+    <div style="font-size:11px; color:var(--purple-mid); text-transform:uppercase; 
+      letter-spacing:2px; margin:24px 0 12px 0; padding-left:4px; font-weight:900; 
+      display:flex; align-items:center; gap:8px;">
+      <span style="font-size:16px;">📸</span> Official IG Posts to Comment On
+    </div>
+    <div style="display:flex; gap:10px; margin-bottom:24px;">
+      <a href="https://www.instagram.com/p/DXHH2kplOBV/?img_index=1&igsh=MWJzMDE4OG93eDg4Ng==" 
+        target="_blank" class="btn-outline" 
+        style="flex:1; border-color:var(--purple-core); color:var(--purple-mid); 
+        text-decoration:none; font-size:11px; text-align:center; font-weight:800;
+        padding:12px; background:rgba(167,139,250,0.05); transition:all 0.3s;">
+        📱 Open Post 1
+      </a>
+      <a href="https://www.instagram.com/p/DXHHxhclMKs/?igsh=MTZuZTg0eHhpbm5lZA==" 
+        target="_blank" class="btn-outline" 
+        style="flex:1; border-color:var(--purple-core); color:var(--purple-mid); 
+        text-decoration:none; font-size:11px; text-align:center; font-weight:800;
+        padding:12px; background:rgba(167,139,250,0.05); transition:all 0.3s;">
+        📱 Open Post 2
+      </a>
     </div>
 
-    <div class="glass-card" style="padding:14px 16px; margin-bottom:16px; border-left:3px solid var(--purple-core);">
-      <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;">📋 Mission Rules</div>
-      <div style="font-size:11px; color:var(--text-secondary); line-height:1.7;">
-        1. Vote <strong style="color:#fff;">${isTurbo ? '60×' : '30×'}</strong> using the "VOTE WEB" links above.<br>
-        2. Post <strong style="color:#fff;">${isTurbo ? '60×' : '30×'}</strong> IG comments on the official posts.<br>
-        3. Use <strong style="color:#fff;">one hashtag per comment</strong> (do not put multiple in one comment).<br>
-        4. Your IG profile must be <strong style="color:#fff;">public</strong> or your votes won't register.<br>
-        5. Drop your screenshot in the <strong style="color:#fff;">Team GC</strong> as proof you completed the mission.
+    <div class="glass-card" style="padding:18px; margin-bottom:20px; border-left:4px solid var(--purple-core);
+      background:linear-gradient(135deg, rgba(167,139,250,0.08), var(--bg-panel));">
+      <div style="font-size:10px; color:var(--purple-mid); text-transform:uppercase; 
+        letter-spacing:2px; margin-bottom:12px; font-weight:900; display:flex; align-items:center; gap:8px;">
+        <span style="font-size:14px;">📋</span> Mission Protocol
+      </div>
+      <div style="font-size:11px; color:var(--text-secondary); line-height:1.8;">
+        <div style="padding:8px 0; border-bottom:1px solid var(--border-subtle);">
+          1️⃣ Vote <strong style="color:var(--purple-core); font-size:13px;">${isTurbo ? '60×' : '30×'}</strong> 
+          using the "VOTE WEB" links above
+        </div>
+        <div style="padding:8px 0; border-bottom:1px solid var(--border-subtle);">
+          2️⃣ Post <strong style="color:var(--purple-core); font-size:13px;">${isTurbo ? '60×' : '30×'}</strong> 
+          IG comments on the official posts
+        </div>
+        <div style="padding:8px 0; border-bottom:1px solid var(--border-subtle);">
+          3️⃣ Use <strong style="color:#fff;">one hashtag per comment</strong> (no multiple tags in one comment)
+        </div>
+        <div style="padding:8px 0; border-bottom:1px solid var(--border-subtle);">
+          4️⃣ Your IG profile must be <strong style="color:#fff;">PUBLIC</strong> or votes won't register
+        </div>
+        <div style="padding:8px 0;">
+          5️⃣ Drop your screenshot in the <strong style="color:var(--purple-core);">Team GC</strong> as proof
+        </div>
       </div>
     </div>
 
-    <div class="archive-card" style="padding:20px; text-align:center; border-left:4px solid ${isTurbo ? 'var(--gold-core)' : 'var(--purple-core)'}; margin-bottom:8px;">
-      <div style="font-size:11px; color:var(--text-muted); margin-bottom:16px; line-height:1.6;">
-        Team participation is required for the 30 XP reward.<br>
-        <span style="color:var(--text-ghost); font-size:10px;">If even one team member misses — the bonus is lost.</span>
+    <div class="archive-card" style="padding:24px; text-align:center; 
+      border-left:4px solid ${isTurbo ? 'var(--gold-core)' : 'var(--purple-core)'}; 
+      margin-bottom:8px; position:relative; overflow:hidden;
+      background:linear-gradient(135deg, ${isTurbo ? 'rgba(229,165,40,0.1)' : 'rgba(167,139,250,0.08)'}, var(--bg-panel));">
+      <div style="position:absolute; top:-30px; right:-30px; width:150px; height:150px; 
+        background:radial-gradient(circle, ${isTurbo ? 'rgba(229,165,40,0.15)' : 'rgba(167,139,250,0.15)'}, transparent); 
+        border-radius:50%; pointer-events:none;"></div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:18px; line-height:1.7; position:relative; z-index:1;">
+        <strong style="color:var(--purple-core); font-size:14px;">⚠️ Team Participation Required</strong><br>
+        <span style="color:var(--text-secondary); font-size:11px;">
+          All team members must complete to unlock the <strong style="color:var(--green);">30 XP</strong> reward
+        </span><br>
+        <span style="color:var(--text-ghost); font-size:10px;">
+          If even one member misses — the bonus is lost for everyone
+        </span>
       </div>
       <button id="armyConfirmBtn" onclick="completeArmyMission()"
-        style="width:100%; padding:14px; border-radius:8px; font-family:'Orbitron', sans-serif;
-        font-size:11px; font-weight:900; letter-spacing:2px; cursor:pointer; border:none;
-        background:${isVotedToday ? 'rgba(0,255,102,0.15)' : 'var(--purple-core)'};
+        style="width:100%; padding:16px; border-radius:10px; font-family:'Orbitron', sans-serif;
+        font-size:12px; font-weight:900; letter-spacing:2px; cursor:pointer; border:none; position:relative; z-index:1;
+        background:${isVotedToday ? 'linear-gradient(135deg, rgba(0,255,102,0.2), rgba(0,255,102,0.1))' : 'linear-gradient(135deg, var(--purple-core), #9333ea)'};
         color:${isVotedToday ? 'var(--green)' : '#000'};
-        border:1px solid ${isVotedToday ? 'var(--green)' : 'transparent'};
-        transition:all 0.3s;">
+        border:2px solid ${isVotedToday ? 'var(--green)' : 'transparent'};
+        box-shadow:${isVotedToday ? '0 0 20px rgba(0,255,102,0.4)' : '0 4px 20px rgba(167,139,250,0.5)'};
+        transition:all 0.3s; text-shadow:${isVotedToday ? '0 0 10px rgba(0,255,102,0.6)' : 'none'};">
         ${isVotedToday ? '✓ MISSION COMPLETE — VOTES CAST' : '💜 I HAVE VOTED & POSTED SCREENSHOT'}
       </button>
-      ${isVotedToday ? `<div style="font-size:10px; color:var(--green); margin-top:8px; font-weight:700;">Status: COMPLIANT 💜 Resets at 4 PM KST</div>` : ''}
+      ${isVotedToday ? `
+        <div style="font-size:11px; color:var(--green); margin-top:10px; font-weight:900; 
+          text-shadow:0 0 10px rgba(0,255,102,0.5);">
+          ✓ Status: COMPLIANT 💜 Resets at 4 PM KST
+        </div>` : ''}
     </div>
   `;
 
@@ -8331,58 +8442,6 @@ function renderArmyMission() {
     el.textContent = getResetCountdown();
   }, 1000);
 }
-
-/**
- * Copies a voting hashtag to clipboard and flashes the button.
- * @param {string} tag - The hashtag to copy
- * @param {string} catId - Category ID for button feedback
- */
-window.copyVotingTag = function copyVotingTag(tag, catId) {
-  const text = `I'm voting for ${tag} @amas`;
-  navigator.clipboard.writeText(text).then(() => {
-    showToast(`💜 Hashtag copied: ${tag}`, 'success');
-    const btn = $(`copy-${catId}`);
-    if (btn) {
-      btn.textContent = '✓ COPIED';
-      btn.style.background = 'rgba(0,255,102,0.15)';
-      btn.style.color = 'var(--green)';
-      btn.style.borderColor = 'var(--green)';
-      setTimeout(() => {
-        btn.textContent = 'COPY TAG';
-        btn.style.background = 'rgba(167,139,250,0.1)';
-        btn.style.color = 'var(--purple-mid)';
-        btn.style.borderColor = 'var(--purple-core)';
-      }, 2000);
-    }
-  }).catch(() => {
-    showToast('Copy failed — tap to retry', 'error');
-  });
-};
-
-/**
- * Marks today's army vote casting as complete (self-report).
- */
-window.completeArmyMission = function completeArmyMission() {
-  const saved = getSavedTodos();
-  const wasVoted = !!saved['t148_army_vote'];
-
-  if (wasVoted) {
-    // Toggle off
-    delete saved['t148_army_vote'];
-    localStorage.setItem(getTodoKey(), JSON.stringify(saved));
-    showToast('Voting record cleared.', 'info');
-  } else {
-    // Toggle on
-    saved['t148_army_vote'] = true;
-    localStorage.setItem(getTodoKey(), JSON.stringify(saved));
-    showToast('💜 Votes confirmed! Agents, post your screenshot in the GC.', 'success');
-    if (typeof navigator.vibrate === 'function') navigator.vibrate([50, 30, 50]);
-  }
-
-  // Re-render to update button state
-  renderArmyMission();
-};
-
 
 // =============================================
 // ██████  GUIDE PAGE
