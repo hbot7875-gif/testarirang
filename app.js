@@ -282,7 +282,7 @@ const CONFIG = {
     icon: '🎖️', 
     color: '#ffd700', 
     template: d => `<strong>${d.name}</strong> earned a new honor badge! 🎖️` 
-  }
+  },
 }
 
   GUIDES: {
