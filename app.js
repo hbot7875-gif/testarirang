@@ -199,26 +199,91 @@ const CONFIG = {
   },
 
   ACTIVITY_TYPES: {
-    'streak_update': { icon: '🔥', color: '#ff6b35', template: d => `<strong>${d.name}</strong> hit a <strong class="hl">${d.streak}-day</strong> streak!` },
-    'team_surge': { icon: '⚡', color: '#ff0000', template: d => `<strong style="color:${teamColor(d.team)}">${d.team}</strong> surged with <strong class="hl">${d.streams}</strong> streams!` },
-    'results_release': { icon: '🏆', color: '#ffd700', template: d => d.message || 'Results released!' },
-    'team_dissolved': { icon: '💀', color: '#ff0000', template: d => `<strong>${d.team}</strong> has been dissolved!` },
-    'leader_update': { icon: '📈', color: '#00ff66', template: d => d.message || `${d.team} leveled up!` },
-    'new_agent': { icon: '🆕', color: '#60a5fa', template: d => d.message || 'New agent enlisted!' },
-    'secret_mission': {
-      icon: '🕵️', color: '#a855f7', template: d => {
-        const title = d.title || 'Secret Mission';
-        const isFail = title.includes('(Failed)');
-        return `<strong style="color:${teamColor(d.team)}">${d.team}</strong> ${isFail ? 'failed' : 'completed'}: <strong style="color:${isFail ? '#ff0000' : '#00ff66'}">${title}</strong> (+${d.xp || 0} XP)`;
-      }
-    },
-    'side_mission_alert': { icon: '⚠️', color: '#ff0000', template: d => d.message || 'Side mission alert!' },
-    'unit_completed': { icon: '✨', color: '#00ff66', template: d => d.message || 'Unit completed!' },
-    'agent_retired': { icon: '👋', color: '#888', template: d => d.message || 'An agent has retired.' },
-    'sotd_winner': { icon: '🎵', color: '#ffd700', template: d => `${d.team} won Song of the Day!` },
-    'album2x_completed': { icon: '💿', color: '#c56cf0', template: d => `<strong>${d.name}</strong> completed Album 2X!` },
-    'goal_completed': { icon: '🎯', color: '#00ff66', template: d => `<strong style="color:${teamColor(d.team)}">${d.team}</strong> completed <strong class="hl">${d.goal}</strong>!` },
+  'streak_update': { 
+    icon: '🔥', 
+    color: '#ff6b35', 
+    template: d => `<strong>${d.name}</strong> hit a <strong class="hl">${d.streak}-day</strong> streak!` 
   },
+  'team_surge': { 
+    icon: '⚡', 
+    color: '#ff0000', 
+    template: d => `<strong style="color:${teamColor(d.team)}">${d.team}</strong> surged with <strong class="hl">${d.streams}</strong> streams!` 
+  },
+  'results_release': { 
+    icon: '🏆', 
+    color: '#ffd700', 
+    template: d => d.message || 'Results released!' 
+  },
+  'team_dissolved': { 
+    icon: '💀', 
+    color: '#ff0000', 
+    template: d => `<strong>${d.team}</strong> has been dissolved!` 
+  },
+  'leader_update': { 
+    icon: '📈', 
+    color: '#00ff66', 
+    template: d => d.message || `${d.team} leveled up!` 
+  },
+  'new_agent': { 
+    icon: '🆕', 
+    color: '#60a5fa', 
+    template: d => d.message || 'New agent enlisted!' 
+  },
+  'secret_mission': {
+    icon: '🕵️', 
+    color: '#a855f7', 
+    template: d => {
+      const title = d.title || 'Secret Mission';
+      const isFail = title.includes('(Failed)');
+      return `<strong style="color:${teamColor(d.team)}">${d.team}</strong> ${isFail ? 'failed' : 'completed'}: <strong style="color:${isFail ? '#ff0000' : '#00ff66'}">${title}</strong> (+${d.xp || 0} XP)`;
+    }
+  },
+  'side_mission_alert': { 
+    icon: '⚠️', 
+    color: '#ff0000', 
+    template: d => d.message || 'Side mission alert!' 
+  },
+  'unit_completed': {
+    icon: '⚡', 
+    color: '#00ff66',
+    template: (d) => `Agent <strong>${d.agent}</strong> completed <strong style="color:var(--wave-foam)">Arirang Unit</strong> for <strong style="color:${teamColor(d.team)}">${d.team.replace('Team ', '')}</strong>! ✨`
+  },
+  'agent_retired': { 
+    icon: '👋', 
+    color: '#888', 
+    template: d => d.message || 'An agent has retired.' 
+  },
+  'sotd_winner': { 
+    icon: '🎵', 
+    color: '#ffd700', 
+    template: d => `${d.team} won Song of the Day!` 
+  },
+  'album2x_completed': { 
+    icon: '🏆', 
+    color: 'var(--gold-core)', 
+    template: d => `Agent <strong>${d.agent}</strong> unlocked Album 2X Bonus! 🏆` 
+  },
+  'goal_completed': { 
+    icon: '🎯', 
+    color: '#00ff66', 
+    template: d => `<strong style="color:${teamColor(d.team)}">${d.team}</strong> completed <strong class="hl">${d.goal}</strong>!` 
+  },
+  'team_recovered': { 
+    icon: '💖', 
+    color: '#00ff66', 
+    template: d => `<strong style="color:${teamColor(d.team)}">${d.team}</strong> has recovered and cleared their warning! 💖` 
+  },
+  'stream_milestone': { 
+    icon: '📈', 
+    color: '#60a5fa', 
+    template: d => `Global Mission hit <strong class="hl">${d.count.toLocaleString()}</strong> streams! 📈` 
+  },
+  'badge_earned': { 
+    icon: '🎖️', 
+    color: '#ffd700', 
+    template: d => `<strong>${d.name}</strong> earned a new honor badge! 🎖️` 
+  }
+}
 
   GUIDES: {
     'home': { icon: '🏠', title: 'Mission HQ', text: '7 teams. 17 weeks. Stream BTS ARIRANG daily. Complete all missions to win!' },
@@ -423,13 +488,12 @@ function getKSTDateString() {
  * A voting day starts at 12:00 AM PT = 4:00 PM KST
  */
 function getVotingDayID() {
-  const ptFormatter = new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('en-CA', {
     timeZone: 'America/Los_Angeles',
-    year: 'numeric', month: '2-digit', day: '2-digit'
-  });
-  
-  const [month, day, year] = ptFormatter.format(new Date()).split('/');
-  return `${year}-${month}-${day}`;
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(new Date());
 }
   
 /**
@@ -2023,66 +2087,76 @@ async function renderHome() {
       </div>
     `;
 
-    // ═══════════════════════════════════════
-    // 9. LIVE BATTLEFIELD
-    // ═══════════════════════════════════════
-    const tc = D.teamComparison || [];
 
-    if (tc.length) {
-      html += renderHeader('⚔️', 'Live Battlefield', '#fff');
-      html += `<div class="battlefield-list">`;
+  // ═══════════════════════════════════════
+// 9. LIVE BATTLEFIELD
+// ═══════════════════════════════════════
+const tc = D.teamComparison || [];
 
-      tc.forEach((tm, i) => {
-        const isMe = tm.team === team;
-        const tmColor = teamColor(tm.team);
-        const pfpUrl = teamPfp(tm.team);
+if (tc.length) {
+  html += renderHeader('⚔️', 'Live Battlefield', '#fff');
+  html += `<div class="battlefield-list">`;
 
-        const missions = [
-          { icon: '🎵', key: 'trackGoalPassed' },
-          { icon: '📀', key: 'albumGoalPassed' },
-          { icon: '🔁', key: 'album2xPassed' },
-          { icon: '⚡', key: 'arirangUnitPassed' },
-          { icon: '🛡️', key: 'sideMissionPassed' }
-        ];
+  tc.forEach((tm, i) => {
+    const isMe = tm.team === team;
+    const tmColor = teamColor(tm.team);
+    const pfpUrl = teamPfp(tm.team);
+    const isWeekOver = isWeekCompleted(STATE.week); // Check if week is complete
 
-        const missionHtml = missions.map(m => {
-          const passed = tm[m.key];
-          return `
-            <div class="ms-pill">
-              <span class="ms-icon">${m.icon}</span>
-              <span class="ms-check ${passed ? 'pass' : 'fail'}">${passed ? '✓' : '✕'}</span>
+    const missions = [
+      { icon: '🎵', key: 'trackGoalPassed' },
+      { icon: '📀', key: 'albumGoalPassed' },
+      { icon: '🔁', key: 'album2xPassed' },
+      { icon: '⚡', key: 'arirangUnitPassed' },
+      { icon: '🛡️', key: 'sideMissionPassed' }
+    ];
+
+    const missionHtml = missions.map(m => {
+      const passed = tm[m.key];
+      
+      // Logic: 
+      // - If mission is passed AND week is over: Green Tick (✓)
+      // - If mission is passed BUT week is NOT over: Yellow Dot (●) meaning "On Track"
+      // - If mission is not passed: Red X (✕)
+      
+      let statusIcon = passed ? (isWeekOver ? '✓' : '●') : '✕';
+      let statusClass = passed ? (isWeekOver ? 'pass' : 'on-track') : 'fail';
+
+      return `
+        <div class="ms-pill">
+          <span class="ms-icon">${m.icon}</span>
+          <span class="ms-check ${statusClass}">${statusIcon}</span>
+        </div>
+      `;
+    }).join('');
+
+    html += `
+      <div class="battle-card" style="--team-color:${tmColor}; ${isMe ? 'background:rgba(255,255,255,0.06);' : ''}">
+        <div class="battle-rank-big">${i + 1}</div>
+        <div class="battle-pfp-mid" style="border-color:${tmColor}">
+          <img src="${pfpUrl}" alt="${sanitize(tm.team)}">
+        </div>
+        <div class="battle-main-info">
+          <div class="team-title-row">
+            <div class="team-name-text" style="color:${tmColor}">
+              ${sanitize(tm.team.replace('Team ', ''))}
+              ${isMe ? '<span style="font-size:7px; color:#fff; background:var(--red-core); padding:1px 4px; border-radius:3px; margin-left:4px; vertical-align:middle;">YOU</span>' : ''}
             </div>
-          `;
-        }).join('');
-
-        html += `
-          <div class="battle-card" style="--team-color:${tmColor}; ${isMe ? 'background:rgba(255,255,255,0.06);' : ''}">
-            <div class="battle-rank-big">${i + 1}</div>
-            <div class="battle-pfp-mid" style="border-color:${tmColor}">
-              <img src="${pfpUrl}" alt="${sanitize(tm.team)}">
-            </div>
-            <div class="battle-main-info">
-              <div class="team-title-row">
-                <div class="team-name-text" style="color:${tmColor}">
-                  ${sanitize(tm.team.replace('Team ', ''))}
-                  ${isMe ? '<span style="font-size:7px; color:#fff; background:var(--red-core); padding:1px 4px; border-radius:3px; margin-left:4px; vertical-align:middle;">YOU</span>' : ''}
-                </div>
-                <div class="agent-count">👥 ${tm.agentCount ?? 0} agents</div>
-              </div>
-              <div class="mission-status-strip">${missionHtml}</div>
-            </div>
-            <div class="xp-display">
-              <div class="xp-val">${fmt(tm.teamXP || 0)}</div>
-              <div class="xp-lbl">XP</div>
-            </div>
+            <div class="agent-count">👥 ${tm.agentCount ?? 0} agents</div>
           </div>
-        `;
-      });
+          <div class="mission-status-strip">${missionHtml}</div>
+        </div>
+        <div class="xp-display">
+          <div class="xp-val">${fmt(tm.teamXP || 0)}</div>
+          <div class="xp-lbl">XP</div>
+        </div>
+      </div>
+    `;
+  });
 
-      html += `</div>`;
-      html += `<button onclick="goTo('teams')" class="btn-outline" style="width:100%; margin-top:16px;">Detailed Standings →</button>`;
-    }
-
+  html += `</div>`;
+  html += `<button onclick="goTo('teams')" class="btn-outline" style="width:100%; margin-top:16px;">Detailed Standings →</button>`;
+}
     // ═══════════════════════════════════════
     // 10. TOP AGENTS LEADERBOARD
     // ═══════════════════════════════════════
@@ -2252,17 +2326,29 @@ async function loadHomeActivityWidget() {
   try {
     const d = await Api.call('getActivityFeed', { limit: 5 }, { cache: true, ttl: 60000 });
     if (d.success && d.activities?.length) {
-      el.innerHTML = d.activities.slice(0, 4).map(act => {
-        const msg = act.data?.message || act.type.replace(/_/g, ' ');
+      el.innerHTML = d.activities.slice(0, 5).map(act => {
+        // Use the template from CONFIG.ACTIVITY_TYPES if it exists
+        const typeConfig = CONFIG.ACTIVITY_TYPES[act.type];
+        let msg = '';
+        
+        if (typeConfig && typeof typeConfig.template === 'function') {
+          msg = typeConfig.template(act.data);
+        } else {
+          msg = act.data?.message || act.type.replace(/_/g, ' ');
+        }
+
         return `
-          <div style="display:flex; align-items:flex-start; gap:6px; padding:4px 0; border-bottom:1px solid var(--glass-border);">
-            <span style="font-size:8px; color:var(--text-ghost); min-width:24px; flex-shrink:0;">${timeAgo(act.timestamp)}</span>
-            <span style="font-size:9px; color:var(--text-muted); line-height:1.3;">${sanitize(msg)}</span>
+          <div style="display:flex; align-items:flex-start; gap:6px; padding:6px 0; border-bottom:1px solid var(--glass-border);">
+            <span style="font-size:10px; margin-top:1px;">${typeConfig?.icon || '📡'}</span>
+            <div style="flex:1;">
+              <div style="font-size:9px; color:var(--text-muted); line-height:1.4;">${msg}</div>
+              <div style="font-size:7px; color:var(--text-ghost);">${timeAgo(act.timestamp)}</div>
+            </div>
           </div>
         `;
       }).join('');
     } else {
-      el.innerHTML = '<div style="font-size:9px; color:var(--text-ghost);">No activity yet</div>';
+      el.innerHTML = '<div style="font-size:9px; color:var(--text-ghost); text-align:center; padding:10px;">No activity yet</div>';
     }
   } catch (e) {
     el.innerHTML = '<div style="font-size:9px; color:var(--text-ghost);">Feed unavailable</div>';
@@ -2272,17 +2358,44 @@ async function loadHomeActivityWidget() {
 async function updateTickerWithActivity() {
   const ticker = $('liveTicker');
   if (!ticker) return;
+  
   try {
+    // Fetch last 10 activities
     const d = await Api.call('getActivityFeed', { limit: 10 }, { cache: true, ttl: 60000 });
+    
     if (d.success && d.activities?.length) {
       ticker.innerHTML = d.activities.map(act => {
-        const text = act.data?.message || act.type.replace(/_/g, ' ');
-        return `<span class="ticker-item">● ${sanitize(text)}</span>`;
+        const typeConfig = CONFIG.ACTIVITY_TYPES[act.type];
+        const data = act.data || {};
+        let text = '';
+
+        try {
+          // 1. Try the dynamic template from CONFIG
+          if (typeConfig && typeof typeConfig.template === 'function') {
+            text = typeConfig.template(data);
+          } 
+          // 2. Fallback to a message sent by the backend
+          else if (data.message) {
+            text = data.message;
+          } 
+          // 3. Last resort: Clean type name
+          else {
+            text = act.type.replace(/_/g, ' ');
+          }
+        } catch (e) {
+          text = data.message || act.type.replace(/_/g, ' ');
+        }
+
+        // Strip HTML tags for smooth scrolling (optional - test first!)
+        const cleanText = text.replace(/<[^>]*>?/gm, '');
+        
+        return `<span class="ticker-item">● ${cleanText}</span>`;
       }).join('');
     }
-  } catch (e) { }
+  } catch (e) {
+    console.error("Ticker update error:", e);
+  }
 }
-
 /* ═══════════════════════════════════════════
    HELPER — Mission row for home page
    ═══════════════════════════════════════════ */
@@ -4620,14 +4733,21 @@ async function loadFeed() {
     container.innerHTML = activities.length === 0
       ? '<div style="color:var(--text-muted);font-size:12px;text-align:center;padding:30px;">No activity yet</div>'
       : activities.map(a => {
-        const type = CONFIG.ACTIVITY_TYPES[a.type];
+        const typeConfig = CONFIG.ACTIVITY_TYPES[a.type];
         const data = a.data || {};
         let msg = '';
-        try { msg = type?.template(data) || data.message || JSON.stringify(data); }
-        catch { msg = data.message || a.type; }
+        
+        try { 
+          // Try template first, then data.message, then raw type
+          msg = typeConfig?.template(data) || data.message || a.type.replace(/_/g, ' '); 
+        } catch (e) { 
+          msg = data.message || a.type; 
+        }
 
-        return `<div class="feed-item">
-              <div class="feed-type" style="color:${type?.color || 'var(--red-main)'}">${type?.icon || '📡'} ${a.type.replace(/_/g, ' ')}</div>
+        return `<div class="feed-item" style="border-left: 3px solid ${typeConfig?.color || 'var(--red-main)'}">
+              <div class="feed-type" style="color:${typeConfig?.color || 'var(--red-main)'}">
+                ${typeConfig?.icon || '📡'} ${a.type.replace(/_/g, ' ').toUpperCase()}
+              </div>
               <div class="feed-msg">${msg}</div>
               <div class="feed-time">${new Date(a.timestamp).toLocaleString()}</div>
             </div>`;
@@ -8287,23 +8407,23 @@ function renderArmyMission() {
     return;
   }
 
-  // --- OFFICIAL TIMEZONE CALCULATIONS ---
-  const now = new Date();
-  const kstNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
-  
-  // Create a "Voting Day ID" based on PT (Pacific Time)
-  // We subtract 16 hours from KST because PT is 16 hours behind KST
-  const ptShifted = new Date(kstNow.getTime() - (16 * 60 * 60 * 1000));
-  const votingDayID = ptShifted.toISOString().split('T')[0]; // This is the actual day in PT
+  // --- 1. RELIABLE DATE CALCULATION ---
+  // Use the helper function you already have at the top of your script
+  const votingDayID = getVotingDayID(); 
 
-  // Check if it is currently Turbo based on PT Date
+  // Check if today is a Turbo Day
   const isTurbo = CONFIG.TURBO_DAYS.includes(votingDayID);
 
-  // ── Countdown to 4 PM KST (= Midnight PT) ──
+  // ── Countdown to Reset (4 PM KST / Midnight PT) ──
   function getResetCountdown() {
+    const now = new Date();
+    // Get current time in KST
+    const kstNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+    
     const reset = new Date(kstNow);
     reset.setHours(16, 0, 0, 0); 
     if (reset <= kstNow) reset.setDate(reset.getDate() + 1);
+    
     const diff = reset - kstNow;
     const h = Math.floor(diff / 3600000);
     const m = Math.floor((diff % 3600000) / 60000);
@@ -8314,7 +8434,7 @@ function renderArmyMission() {
   // ── Closing countdown ──
   function getClosingCountdown() {
     const close = new Date(CONFIG.VOTING_CLOSE);
-    const diff = close - now;
+    const diff = close - new Date(); // Use new Date() for live ticking
     if (diff <= 0) return 'VOTING CLOSED';
     const d = Math.floor(diff / 86_400_000);
     const h = Math.floor((diff % 86_400_000) / 3_600_000);
@@ -8346,6 +8466,11 @@ function renderArmyMission() {
     return b.voted - a.voted;
   });
 
+  // Calculate PT time for display
+  const now = new Date();
+  const kstNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  const ptShifted = new Date(kstNow.getTime() - (16 * 60 * 60 * 1000));
+
   const html = `
     <div class="archive-card" style="border-top:4px solid var(--purple-core); margin-bottom:20px; 
       background:linear-gradient(135deg, rgba(167,139,250,0.12), rgba(139,92,246,0.06), var(--bg-panel)); 
@@ -8359,7 +8484,7 @@ function renderArmyMission() {
           letter-spacing:3px; text-shadow:0 0 10px rgba(167,139,250,0.5);">THE 8TH MISSION</div>
         <div style="font-size:11px; color:var(--purple-mid); font-weight:800; margin-top:6px; 
           text-transform:uppercase; letter-spacing:2px;">${CONFIG.VOTING_MISSION_NAME}</div>
-        <div style="font-size:10px; color:var(--text-muted); margin-top:12px; padding:6px 12px; 
+        <div style="font-size:10px; color:rgba(255,255,255,0.7); margin-top:12px; padding:6px 12px; 
           background:rgba(0,0,0,0.3); border-radius:20px; display:inline-block;">
           PT Voting Day: ${votingDayID} • ${getClosingCountdown()}
         </div>
@@ -8387,7 +8512,7 @@ function renderArmyMission() {
     <div class="glass-card" style="padding:16px; margin-bottom:20px; display:flex; justify-content:space-between; 
       align-items:center; background:linear-gradient(135deg, rgba(167,139,250,0.08), var(--bg-panel));">
       <div>
-        <div style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px;">⏳ Next PT Reset</div>
+        <div style="font-size:10px; color: var(--text-secondary); text-transform:uppercase; letter-spacing:2px;">⏳ Next PT Reset</div>
         <div id="armyResetTimer" style="font-family:'Share Tech Mono', monospace; font-size:24px; 
           font-weight:900; color:var(--purple-core); text-shadow:0 0 10px rgba(167,139,250,0.4);">
           ${getResetCountdown()}
@@ -8421,8 +8546,7 @@ function renderArmyMission() {
           const date = weekDatesPT[i] || '';
           
           // Use the global voting day ID to determine "Today"
-          const votingToday = getVotingDayID();
-          const isToday = date === votingToday;
+          const isToday = date === votingDayID;
           
           // Check if this PT date has a vote saved
           let dayVoted = false;
@@ -8560,7 +8684,7 @@ function renderArmyMission() {
           Category: <strong style="color:var(--purple-mid);">Artist of the Year</strong>
         </div>
         <div style="display:flex; gap:8px; margin-bottom:12px;">
-          <a href="https://www.instagram.com/p/DXHH2kplOBV/?img_index=1&igsh=MWJzMDE4OG93eDg4Ng==" 
+          <a href="https://www.instagram.com/p/DXHHxhclMKs/?igsh=MTZuZTg0eHhpbm5lZA==" 
             target="_blank" 
             style="flex:1; border:1px solid var(--purple-core); color:var(--purple-mid); 
             text-decoration:none; font-size:10px; text-align:center; font-weight:800;
@@ -8575,7 +8699,7 @@ function renderArmyMission() {
             📋 Copy Comment
           </button>
         </div>
-        <div style="font-size:9px; color:var(--text-ghost); background:rgba(0,0,0,0.2); 
+        <div style="font-size:9px; color: #fff; background:rgba(0,0,0,0.2); 
           padding:8px; border-radius:4px;">
           <strong>Comment:</strong> I'm voting for #aotybts
         </div>
@@ -8588,7 +8712,7 @@ function renderArmyMission() {
           <strong style="color:var(--purple-mid);">Two separate categories</strong> — post as two comments
         </div>
         <div style="display:flex; gap:8px; margin-bottom:12px;">
-          <a href="https://www.instagram.com/p/DXHHxhclMKs/?igsh=MTZuZTg0eHhpbm5lZA==" 
+          <a href="https://www.instagram.com/p/DXHH2kplOBV/?img_index=1&igsh=MWJzMDE4OG93eDg4Ng==" 
             target="_blank" 
             style="flex:1; border:1px solid var(--purple-core); color:var(--purple-mid); 
             text-decoration:none; font-size:10px; text-align:center; font-weight:800;
@@ -8660,9 +8784,7 @@ function renderArmyMission() {
         <span style="color:var(--text-secondary); font-size:11px;">
           All team members must complete to unlock the <strong style="color:var(--green);">30 XP</strong> reward
         </span><br>
-        <span style="color:var(--text-ghost); font-size:10px;">
-          If even one member misses — the bonus is lost for everyone
-        </span>
+        <span style="color:var(--fail); font-size:12px; font-weight:900; letter-spacing:0.5px; background:rgba(255,59,92,0.15); padding:3px 8px; border-radius:4px;">If even one member misses — the bonus is lost for everyone</span>
       </div>
       <button id="armyConfirmBtn" onclick="completeArmyMission()"
         style="width:100%; padding:16px; border-radius:10px; font-family:'Orbitron', sans-serif;
@@ -8684,7 +8806,7 @@ function renderArmyMission() {
 
   container.innerHTML = html;
 
-  // Live reset countdown ticker
+ // Live reset countdown ticker with cache invalidation
   Timers.clearInterval('army-reset-timer');
   Timers.setInterval('army-reset-timer', () => {
     const el = $('armyResetTimer');
@@ -8692,7 +8814,28 @@ function renderArmyMission() {
       Timers.clearInterval('army-reset-timer');
       return;
     }
-    el.textContent = getResetCountdown();
+
+    const now = new Date();
+    const kstNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+    const reset = new Date(kstNow);
+    reset.setHours(16, 0, 0, 0); 
+    if (reset <= kstNow) reset.setDate(reset.getDate() + 1);
+    
+    const diff = reset - kstNow;
+
+    if (diff <= 1000) { 
+      console.log('🔄 ARMY MISSION RESET TRIGGERED');
+      Timers.clearInterval('army-reset-timer');
+      if (Api?.invalidate) Api.invalidate('getDashboardData');
+      loadDashboard();
+      setTimeout(() => { if (STATE.page === 'army') renderArmyMission(); }, 500);
+      return;
+    }
+
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    el.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   }, 1000);
 }
 /**
