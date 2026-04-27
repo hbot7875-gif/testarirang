@@ -282,8 +282,8 @@ const CONFIG = {
     icon: '🎖️', 
     color: '#ffd700', 
     template: d => `<strong>${d.name}</strong> earned a new honor badge! 🎖️` 
-  },
-}
+  }
+},
 
   GUIDES: {
     'home': { icon: '🏠', title: 'Mission HQ', text: '7 teams. 17 weeks. Stream BTS ARIRANG daily. Complete all missions to win!' },
