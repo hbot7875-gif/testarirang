@@ -5564,6 +5564,20 @@ async function sendChat() {
 async function renderWrappedPage() {
   const container = $('wrappedContent');
   if (!container) return;
+  showPageLoading(container);
+
+  let trackGoals = {};
+  let albumGoals = {};
+
+  try {
+    const goalsData = await Api.call('getGoalsProgress', { week: STATE.week }, { cache: true, ttl: 60000 });
+    if (goalsData.success) {
+      trackGoals = goalsData.trackGoals || {};
+      albumGoals = goalsData.albumGoals || {};
+    }
+  } catch (e) {
+    console.warn("Wrapped: Goals fetch failed", e);
+  }
 
   const teamsData = (STATE.data && STATE.data.teamComparison) ? STATE.data.teamComparison : [];
   const myTeamName = STATE.data?.agent?.profile?.team || '';
@@ -5587,11 +5601,26 @@ async function renderWrappedPage() {
     // Base Team Stats (Cumulative Scale for 8+ Weeks)
     const xp = realData.teamXP || (85000 + idx * 12500); 
     const activeCount = realData.agentCount || (20 + idx * 5);
-    const seasonTotalStreams = xp * (14 + (idx%3));
     
-    // Split into Album vs Tracks for the season
-    const seasonAlbumStreams = Math.floor(seasonTotalStreams * 0.62);
-    const seasonTrackStreams = seasonTotalStreams - seasonAlbumStreams;
+    // Extract real mission data for this team
+    const teamAlbumMissions = Object.entries(albumGoals).map(([name, data]) => ({
+      name,
+      current: (data.teams?.[profile.team]?.current || 0)
+    })).sort((a, b) => b.current - a.current);
+
+    const teamTrackMissions = Object.entries(trackGoals).map(([name, data]) => ({
+      name,
+      current: (data.teams?.[profile.team]?.current || 0)
+    })).sort((a, b) => b.current - a.current);
+
+    // Calculate Season Totals (Multiply weekly mission progress by ~8 weeks)
+    const weeklyAlbumTotal = teamAlbumMissions.reduce((sum, a) => sum + a.current, 0);
+    const weeklyTrackTotal = teamTrackMissions.reduce((sum, t) => sum + t.current, 0);
+    
+    // Fallback to XP-based estimation if mission data is empty
+    const seasonAlbumStreams = weeklyAlbumTotal > 0 ? weeklyAlbumTotal * 8.2 : Math.floor(xp * 8.5);
+    const seasonTrackStreams = weeklyTrackTotal > 0 ? weeklyTrackTotal * 8.2 : Math.floor(xp * 5.5);
+    const seasonTotalStreams = seasonAlbumStreams + seasonTrackStreams;
     
     // Personal Stats (Cumulative Season Impact)
     const myXP = myStats.totalXP || 0;
@@ -5605,13 +5634,14 @@ async function renderWrappedPage() {
     else if (activeCount > 40) strengthLabel = "MASSIVE MOBILIZATION";
     else strengthLabel = "STRATEGIC STRIKE FORCE";
 
-    // Track Stats
+    // Track Stats (Top 5)
     let trackStats = [];
-    if (isMyTeam && Object.keys(myTracks).length > 0) {
-      trackStats = Object.entries(myTracks)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5)
-        .map(([name, count], i) => ({ name, count, variation: Math.max(10, 100 - (i * 15)) }));
+    if (teamTrackMissions.length > 0) {
+      trackStats = teamTrackMissions.slice(0, 5).map((t, i) => ({
+        name: t.name,
+        count: Math.floor(t.current * 8.2),
+        variation: Math.max(10, 100 - (i * 15))
+      }));
     } else {
       trackStats = CONFIG.ARIRANG_TRACKS.map((track, tIdx) => {
         const base = seasonTrackStreams / 14;
@@ -5620,16 +5650,25 @@ async function renderWrappedPage() {
       }).sort((a, b) => b.count - a.count).slice(0, 5);
     }
 
-    // Album Stats (Simulated based on team projects)
-    const allAlbums = Object.values(CONFIG.TEAMS).map(t => t.ref);
-    const squadTopAlbums = [
-      profile.ref, 
-      ...allAlbums.filter(a => a !== profile.ref).sort(() => Math.random() - 0.5)
-    ].slice(0, 5).map((name, i) => ({
-      name,
-      count: Math.floor(seasonAlbumStreams * (0.4 - (i * 0.08))),
-      percent: Math.max(10, 90 - (i * 18))
-    }));
+    // Album Stats (Top 5)
+    let squadTopAlbums = [];
+    if (teamAlbumMissions.length > 0) {
+      squadTopAlbums = teamAlbumMissions.slice(0, 5).map((a, i) => ({
+        name: a.name,
+        count: Math.floor(a.current * 8.2),
+        percent: Math.max(10, 100 - (i * 18))
+      }));
+    } else {
+      const allAlbums = Object.values(CONFIG.TEAMS).map(t => t.ref);
+      squadTopAlbums = [
+        profile.ref, 
+        ...allAlbums.filter(a => a !== profile.ref).sort(() => Math.random() - 0.5)
+      ].slice(0, 5).map((name, i) => ({
+        name,
+        count: Math.floor(seasonAlbumStreams * (0.4 - (i * 0.08))),
+        percent: Math.max(10, 90 - (i * 18))
+      }));
+    }
 
     const contributionBadge = isMyTeam ? `<div class="contribution-badge">SEASON IMPACT: ${contributionPercent}%</div>` : '';
 
