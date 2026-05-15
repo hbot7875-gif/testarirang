@@ -5668,8 +5668,40 @@ async function renderWrappedPage() {
     const formattedXp = xp.toLocaleString();
     const survivalClears = 15 + (idx % 4) * 3;
     const nightOps = (active * 153 + (idx * 21)).toLocaleString();
-    const completion = 85 + (idx % 15);
     const streak = 10 + (idx * 3) % 20;
+
+    const missionsList = [
+      { key: 'trackGoalPassed', label: 'Track Goals', icon: '🎵' },
+      { key: 'albumGoalPassed', label: 'Album Goals', icon: '📀' },
+      { key: 'album2xPassed', label: 'Album 2X', icon: '💿' },
+      { key: 'arirangUnitPassed', label: 'Arirang Unit', icon: '⚡' },
+      { key: 'sideMissionPassed', label: 'Side Missions', icon: '🛡️' },
+      { key: 'attendanceConfirmed', label: 'Attendance', icon: '📋' },
+      { key: 'policeConfirmed', label: 'Police Reports', icon: '👮' }
+    ];
+
+    let missionLogHtml = '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; margin-bottom: 8px;">';
+    let passedCount = 0;
+    missionsList.forEach(m => {
+      // Use real data if available, fallback to high completion rate mock
+      const passed = realData[m.key] !== undefined ? realData[m.key] : (Math.random() > 0.15);
+      if (passed) passedCount++;
+      const op = passed ? '1' : '0.4';
+      const color = passed ? '#fff' : '#666';
+      const shadow = passed ? 'drop-shadow(0 0 5px var(--team-color))' : 'none';
+      const check = passed ? `<span style="color:var(--team-color); font-weight:bold;">✓</span>` : `<span style="color:#444;">✗</span>`;
+      
+      missionLogHtml += `
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 6px 8px; display: flex; align-items: center; gap: 6px; opacity: ${op};">
+          <span style="font-size:12px; filter:${shadow}">${m.icon}</span>
+          <span style="font-size:9px; font-family:var(--font-mono); color:${color}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.label.toUpperCase()}</span>
+          <span style="margin-left:auto; font-size:10px;">${check}</span>
+        </div>
+      `;
+    });
+    missionLogHtml += '</div>';
+
+    const completion = Math.round((passedCount / 7) * 100);
 
     cardsHtml += `
       <div class="wrapped-story-card" style="--team-color: ${profile.color}; animation-delay: ${idx * 0.15}s;">
@@ -5753,7 +5785,9 @@ async function renderWrappedPage() {
           </div>
           <div class="intel-bar-bg"><div class="intel-bar-fill" style="width: ${completion}%;"></div></div>
           
-          <div class="intel-row" style="margin-top:12px;">
+          ${missionLogHtml}
+          
+          <div class="intel-row" style="margin-top:16px;">
             <span>MOST DANGEROUS HOUR</span>
             <span class="intel-highlight">${profile.dangerousHour}</span>
           </div>
