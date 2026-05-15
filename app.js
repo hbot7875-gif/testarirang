@@ -5574,102 +5574,31 @@ async function renderWrappedPage() {
   const container = $('wrappedContent');
   if (!container) return;
 
-  // Try to use real data from STATE.data.teamComparison if available
   const teamsData = (STATE.data && STATE.data.teamComparison) ? STATE.data.teamComparison : [];
+  const myTeamName = STATE.data?.agent?.profile?.team || '';
+  const myStats = STATE.data?.agent?.stats || {};
+  const myTracks = STATE.data?.agent?.trackContributions || {};
 
-  const wrappedProfiles = [
-    {
-      team: 'Team Mono',
-      trait: 'stays up all night to stream',
-      statLine: '1,293 late nights',
-      vibe: 'Midnight thinkers',
-      color: '#b8c5d6',
-      icon: '🌙',
-      funnyBehavior: 'Streamed rain sounds for 400 hours while tracking goals.',
-      dangerousHour: '03:00 AM',
-      agentReport: 'Most active at night. Very focused on the main tracks.'
-    },
-    {
-      team: 'Team Happy',
-      trait: 'dominates with high energy',
-      statLine: '100% positivity',
-      vibe: 'Joyful streamers',
-      color: '#ff2d78',
-      icon: '😊',
-      funnyBehavior: 'Sent 10,000 "Fighting!" messages while clearing goals.',
-      dangerousHour: '12:00 PM',
-      agentReport: 'Very fast and organized. They never miss a deadline.'
-    },
-    {
-      team: 'Team D-Day',
-      trait: 'treats every goal like a top priority',
-      statLine: 'Zero goals missed',
-      vibe: 'Disciplined squad',
-      color: '#c62828',
-      icon: '🔥',
-      funnyBehavior: 'Does push-ups for every missed streaming goal.',
-      dangerousHour: '06:00 AM',
-      agentReport: 'Strong discipline. They love a good challenge.'
-    },
-    {
-      team: 'Team Hopeworld',
-      trait: 'keeps the team spirit high',
-      statLine: 'Infinite energy',
-      vibe: 'Hype commanders',
-      color: '#ff6d3a',
-      icon: '🌈',
-      funnyBehavior: 'Started a dance party in the chat during a server lag.',
-      dangerousHour: '10:00 PM',
-      agentReport: 'The life of the party. They make missions fun for everyone.'
-    },
-    {
-      team: 'Team Muse',
-      trait: 'streams with a creative touch',
-      statLine: 'Masterpiece daily',
-      vibe: 'Artistic souls',
-      color: '#d946a8',
-      icon: '🎭',
-      funnyBehavior: 'Wrote a 5-page essay on why the bassline is so good.',
-      dangerousHour: '02:00 AM',
-      agentReport: 'Highly creative. They focus a lot on the B-side tracks.'
-    },
-    {
-      team: 'Team Layover',
-      trait: 'climbs the ranks quietly',
-      statLine: 'Silent but effective',
-      vibe: 'Quiet achievers',
-      color: '#42a5f5',
-      icon: '🐾',
-      funnyBehavior: 'Cleared 5 secret missions without saying a word.',
-      dangerousHour: '04:00 PM',
-      agentReport: 'Works best in silence. They let their results talk.'
-    },
-    {
-      team: 'Team Golden',
-      trait: 'never takes a break from winning',
-      statLine: 'All trophies, no breaks',
-      vibe: 'Elite streamers',
-      color: '#e5a528',
-      icon: '✨',
-      funnyBehavior: 'Tried to optimize the whole site just to stream faster.',
-      dangerousHour: '08:00 PM',
-      agentReport: 'Always in first place. They accept nothing less.'
-    }
-  ];
+  // Dynamically build profiles from CONFIG
+  const wrappedProfiles = Object.keys(CONFIG.TEAMS).map(teamName => ({
+    team: teamName,
+    color: CONFIG.TEAMS[teamName].color,
+    pfp: CONFIG.TEAM_PFPS[teamName],
+    ref: CONFIG.TEAMS[teamName].ref
+  }));
 
   let cardsHtml = '';
+  
   wrappedProfiles.forEach((profile, idx) => {
-    // Determine real or derived stats based on index to keep them stable
+    const isMyTeam = profile.team === myTeamName;
     const realData = teamsData.find(t => t.team && t.team.toLowerCase() === profile.team.toLowerCase()) || {};
     
+    // Base Stats
     const xp = realData.teamXP || (10000 + idx * 2500);
     const active = realData.agentCount || (20 + idx * 5);
-    const totalStreams = (xp * (12 + (idx%3))).toLocaleString();
-    const formattedXp = xp.toLocaleString();
-    const survivalClears = 15 + (idx % 4) * 3;
-    const nightOps = (active * 153 + (idx * 21)).toLocaleString();
-    const streak = 10 + (idx * 3) % 20;
-
+    const rawTotalStreams = xp * (12 + (idx%3));
+    
+    // Mission Matrix
     const missionsList = [
       { key: 'trackGoalPassed', label: 'Track Goals', icon: '🎵' },
       { key: 'albumGoalPassed', label: 'Album Goals', icon: '📀' },
@@ -5680,147 +5609,120 @@ async function renderWrappedPage() {
       { key: 'policeConfirmed', label: 'Police Reports', icon: '👮' }
     ];
 
-    let missionLogHtml = '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; margin-bottom: 8px;">';
     let passedCount = 0;
-    missionsList.forEach(m => {
-      // Use real data if available, fallback to high completion rate mock
+    const missionLogHtml = missionsList.map(m => {
       const passed = realData[m.key] !== undefined ? realData[m.key] : (Math.random() > 0.15);
       if (passed) passedCount++;
-      const op = passed ? '1' : '0.4';
-      const color = passed ? '#fff' : '#666';
-      const shadow = passed ? 'drop-shadow(0 0 5px var(--team-color))' : 'none';
-      const check = passed ? `<span style="color:var(--team-color); font-weight:bold;">✓</span>` : `<span style="color:#444;">✗</span>`;
-      
-      missionLogHtml += `
-        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 6px 8px; display: flex; align-items: center; gap: 6px; opacity: ${op};">
-          <span style="font-size:12px; filter:${shadow}">${m.icon}</span>
-          <span style="font-size:9px; font-family:var(--font-mono); color:${color}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.label.toUpperCase()}</span>
-          <span style="margin-left:auto; font-size:10px;">${check}</span>
+      return `
+        <div class="bento-mission ${passed ? 'passed' : 'failed'}">
+          <span class="m-icon">${m.icon}</span>
+          <span class="m-label">${m.label}</span>
+          <span class="m-check">${passed ? '✓' : '✗'}</span>
         </div>
       `;
-    });
-    missionLogHtml += '</div>';
+    }).join('');
 
     const completion = Math.round((passedCount / 7) * 100);
+    let dynamicVibe, dynamicNote;
+    if (completion === 100) {
+      dynamicVibe = "FLAWLESS EXECUTION";
+      dynamicNote = "Zero targets missed. An absolute masterclass in streaming.";
+    } else if (completion >= 70) {
+      dynamicVibe = "RELENTLESS GRINDERS";
+      dynamicNote = "Pushing hard. Just a few gaps left to secure the ultimate win.";
+    } else if (completion >= 40) {
+      dynamicVibe = "THE RESISTANCE";
+      dynamicNote = "Holding the line. Need to mobilize inactive agents to break through.";
+    } else {
+      dynamicVibe = "SLEEPING GIANTS";
+      dynamicNote = "Currently running silent. Waiting for the right moment to strike.";
+    }
+
+    let trackStats = [];
+    if (isMyTeam && Object.keys(myTracks).length > 0) {
+      trackStats = Object.entries(myTracks)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([name, count], i) => ({ name, count, variation: Math.max(10, 100 - (i * 15)) }));
+    } else {
+      trackStats = CONFIG.ARIRANG_TRACKS.map((track, tIdx) => {
+        const base = rawTotalStreams / 14;
+        const variation = (Math.sin((idx * 7) + tIdx) * 0.4) + 1;
+        return { name: track, count: Math.floor(base * variation), variation: variation * 70 };
+      }).sort((a, b) => b.count - a.count).slice(0, 5);
+    }
+
+    const midBox1Label = isMyTeam ? 'YOUR TOTAL XP' : 'COMBAT XP';
+    const midBox1Value = isMyTeam ? myStats.totalXP?.toLocaleString() || '0' : xp.toLocaleString();
+    const midBox2Label = isMyTeam ? 'YOUR TRACK STREAMS' : 'ACTIVE AGENTS';
+    const midBox2Value = isMyTeam ? myStats.trackScrobbles?.toLocaleString() || '0' : active;
+
+    const myContributionTag = isMyTeam ? `<div class="personal-tag">YOUR INTEL</div>` : '';
 
     cardsHtml += `
-      <div class="wrapped-story-card" style="--team-color: ${profile.color}; animation-delay: ${idx * 0.15}s;">
-        <!-- Neon border glow effect -->
+      <div class="wrapped-story-card" id="wrapped-card-${profile.team.replace(/\s+/g, '')}" style="--team-color: ${profile.color};" data-team="${profile.team}">
         <div class="wrapped-glow"></div>
         
-        <!-- Header -->
         <div class="wrapped-header">
-          <div class="wrapped-intel-badge">CONFIDENTIAL INTEL</div>
-          <div class="wrapped-team-rank">SQUAD 0${idx + 1}</div>
+          <div class="wrapped-intel-badge">SQUAD 0${idx + 1}</div>
+          <div class="wrapped-team-rank">${profile.ref}</div>
         </div>
 
-        <!-- Identity -->
         <div class="wrapped-identity">
-          <div class="wrapped-icon">${profile.icon}</div>
+          ${myContributionTag}
+          <div class="wrapped-pfp-wrapper">
+            <img src="${profile.pfp}" class="wrapped-pfp-img" onerror="this.src='https://via.placeholder.com/100?text=${profile.team.charAt(0)}'">
+          </div>
           <h2 class="wrapped-team-name">${profile.team.replace('Team ', '').toUpperCase()}</h2>
-          <div class="wrapped-vibe">${profile.vibe}</div>
+          <div class="wrapped-vibe">${dynamicVibe}</div>
         </div>
 
-        <!-- Team Note -->
-        <div class="wrapped-behavior-report">
-          <span class="behavior-icon">📝</span>
-          <span class="behavior-text"><strong>NOTE:</strong> ${profile.agentReport}</span>
+        <div class="bento-grid">
+            <div class="bento-box hero-box">
+                <div class="bento-label">SQUAD TOTAL STREAMS</div>
+                <div class="bento-value highlight smart-counter" data-target="${rawTotalStreams}">0</div>
+            </div>
+            
+            <div class="bento-box ${isMyTeam ? 'personal-box' : ''}">
+                <div class="bento-label">${midBox1Label}</div>
+                <div class="bento-value">${midBox1Value}</div>
+            </div>
+            <div class="bento-box ${isMyTeam ? 'personal-box' : ''}">
+                <div class="bento-label">${midBox2Label}</div>
+                <div class="bento-value">${midBox2Value}</div>
+            </div>
         </div>
 
-        <!-- Funny Alert -->
-        <div class="wrapped-funny-behavior">
-          <span class="funny-icon">✨</span>
-          <span class="funny-text"><strong>TEAM VIBE:</strong> ${profile.funnyBehavior}</span>
-        </div>
-
-        <!-- Stats Grid -->
-        <div class="wrapped-stats-grid">
-          <div class="wrapped-stat-item">
-            <div class="stat-value">${totalStreams}</div>
-            <div class="stat-label">TOTAL STREAMS</div>
-          </div>
-          <div class="wrapped-stat-item">
-            <div class="stat-value">${formattedXp}</div>
-            <div class="stat-label">COMBAT XP</div>
-          </div>
-          <div class="wrapped-stat-item">
-            <div class="stat-value">${nightOps}</div>
-            <div class="stat-label">MIDNIGHT OPS</div>
-          </div>
-          <div class="wrapped-stat-item">
-            <div class="stat-value">${active}</div>
-            <div class="stat-label">ACTIVE AGENTS</div>
-          </div>
-        </div>
-
-        <!-- Animated Ranking Timeline Graph (Mock) -->
-        <div style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; margin-bottom: 24px; position: relative; z-index: 2; border: 1px solid rgba(255,255,255,0.02);">
-          <div style="font-size: 9px; color: #888; font-family: var(--font-mono); letter-spacing: 1px; margin-bottom: 8px;">RANKING TIMELINE</div>
-          <div style="display: flex; align-items: flex-end; gap: 4px; height: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;">
-            ${[...Array(12)].map((_, i) => `<div style="flex: 1; background: var(--team-color); opacity: ${0.3 + (i/20)}; height: ${30 + (idx*10 + i*15 + Math.random()*20)%70}%; border-radius: 2px 2px 0 0; animation: barGrow 1s ease forwards; animation-delay: ${(idx*0.1) + (i*0.05)}s; transform: scaleY(0); transform-origin: bottom;"></div>`).join('')}
-          </div>
-        </div>
-
-        <!-- Comeback Emergency Mode Banner -->
-        <div style="background: linear-gradient(90deg, rgba(255, 30, 30, 0.2), transparent); border-left: 3px solid #ff1e1e; padding: 10px; border-radius: 4px; margin-bottom: 24px; position: relative; z-index: 2; display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 16px; animation: blink 1s infinite;">🚨</span>
-          <div>
-            <div style="font-family: var(--font-mono); font-size: 10px; color: #ff5555; font-weight: bold; letter-spacing: 1px;">COMEBACK EMERGENCY MODE</div>
-            <div style="font-size: 11px; color: #ddd; font-family: 'Inter', sans-serif;">Activated on D-Day. 400% stream rate multiplier achieved.</div>
-          </div>
-        </div>
-
-        <!-- Track Streams Grid -->
-        <div style="margin-top:24px; border-top:1px solid rgba(255,255,255,0.08); padding-top:16px;">
-          <div style="font-size:10px; color:var(--team-color); font-family:var(--font-mono); letter-spacing:2px; margin-bottom:12px; text-transform:uppercase; font-weight:800;">
-            🛰️ TRACK STREAMS
-          </div>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-            ${CONFIG.ARIRANG_TRACKS.map((track, tIdx) => {
-              const rawTotal = parseInt(totalStreams.replace(/,/g, '')) || 0;
-              const base = rawTotal / 14;
-              const seed = (idx * 7) + tIdx;
-              const variation = (Math.sin(seed) * 0.4) + 1;
-              const count = Math.floor(base * variation);
-              
-              return `
-                <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                  <div style="font-size:9px; color:#aaa; font-family:'Inter',sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:85px;">${track}</div>
-                  <div style="font-size:10px; color:#fff; font-family:var(--font-mono); font-weight:900;">${count.toLocaleString()}</div>
+        <div class="bento-box full-width">
+            <div class="bento-label" style="margin-bottom: 12px; display: flex; justify-content: space-between;">
+                <span>🎵 ${isMyTeam ? 'YOUR' : 'SQUAD'} TOP 5</span>
+                <span style="color: var(--team-color);">${completion}% COMPLETION</span>
+            </div>
+            <div class="top-tracks-list">
+              ${trackStats.map((track, i) => `
+                <div class="track-row">
+                  <span class="track-rank">${i + 1}</span>
+                  <div class="track-info">
+                      <div class="track-name">${track.name}</div>
+                      <div class="track-bar-bg">
+                          <div class="track-bar-fill animated-bar" data-width="${track.variation}%" style="width: 0%;"></div>
+                      </div>
+                  </div>
+                  <span class="track-count">${track.count.toLocaleString()}</span>
                 </div>
-              `;
-            }).join('')}
-          </div>
+              `).join('')}
+            </div>
         </div>
 
-        <!-- Progress Bars & Stats -->
-        <div class="wrapped-mission-intel">
-          <div class="intel-row">
-            <span>COMPLETION</span>
-            <span class="intel-highlight">${completion}%</span>
-          </div>
-          <div class="intel-bar-bg"><div class="intel-bar-fill" style="width: ${completion}%;"></div></div>
-          
-          ${missionLogHtml}
-          
-          <div class="intel-row" style="margin-top:16px;">
-            <span>ACTIVE TIME</span>
-            <span class="intel-highlight">${profile.dangerousHour}</span>
-          </div>
-          <div class="intel-row" style="margin-top:6px;">
-            <span>MISSIONS CLEARED</span>
-            <span class="intel-highlight">${survivalClears}</span>
-          </div>
-          <div class="intel-row" style="margin-top:6px;">
-            <span>DAILY STREAK</span>
-            <span class="intel-highlight">${streak} DAYS</span>
-          </div>
+        <div class="bento-box full-width">
+            <div class="bento-label" style="margin-bottom: 8px;">📋 PROTOCOL MATRIX</div>
+            <div class="mission-matrix">
+                ${missionLogHtml}
+            </div>
         </div>
 
-        <!-- Emergency Mode Footer -->
-        <div class="wrapped-footer">
-          <div class="footer-barcode">||| |||| | ||||| || ||</div>
-          <div class="footer-text">ARIRANG SECURE NETWORK · DO NOT DISTRIBUTE</div>
+        <div class="lore-footer">
+            <div class="lore-note"><strong>ANALYSIS:</strong> ${dynamicNote}</div>
         </div>
       </div>
     `;
@@ -5828,330 +5730,166 @@ async function renderWrappedPage() {
 
   container.innerHTML = `
     <style>
-      .wrapped-container {
-        background-color: #030303;
-        color: #ffffff;
-        min-height: 100vh;
-        padding-bottom: 50px;
-        overflow-x: hidden;
-      }
-      .wrapped-hero {
-        text-align: center;
-        padding: 40px 20px;
-        position: relative;
-      }
-      .wrapped-hero::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 50%; transform: translateX(-50%);
-        width: 150vw; height: 300px;
-        background: radial-gradient(ellipse at top, rgba(167, 139, 250, 0.1) 0%, transparent 70%);
-        pointer-events: none;
-      }
-      .wrapped-title {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 42px;
-        font-weight: 900;
-        letter-spacing: 4px;
-        margin: 10px 0;
-        text-transform: uppercase;
-        text-shadow: 0 0 20px rgba(255,255,255,0.2);
-        line-height: 1.1;
-      }
-      .wrapped-subtitle {
-        font-family: var(--font-mono);
-        color: var(--purple-mid);
-        font-size: 12px;
-        letter-spacing: 3px;
-        margin-bottom: 20px;
-      }
-      .wrapped-quote {
-        font-size: 16px;
-        font-style: italic;
-        color: #aaaaaa;
-        max-width: 320px;
-        margin: 0 auto;
-        line-height: 1.4;
-        border-left: 2px solid var(--purple-core);
-        padding-left: 15px;
-        text-align: left;
-        font-family: 'Inter', sans-serif;
-      }
+      .wrapped-container { color: #ffffff; padding-bottom: 80px; overflow-x: hidden; position: relative; }
+      .wrapped-hero { text-align: center; padding: 20px 20px 30px; }
+      .wrapped-title { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900; letter-spacing: 2px; margin: 10px 0; text-transform: uppercase; }
+      .wrapped-subtitle { font-family: var(--font-mono); color: var(--purple-mid); font-size: 10px; letter-spacing: 3px; }
+      
       .wrapped-cards-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-        padding: 0 16px;
-        max-width: 450px;
-        margin: 0 auto;
+        display: flex; gap: 20px; padding: 0 20px 40px; overflow-x: auto;
+        scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
       }
-      
-      /* Story Card Styles */
+      .wrapped-cards-wrapper::-webkit-scrollbar { display: none; }
+      .wrapped-cards-wrapper { -ms-overflow-style: none; scrollbar-width: none; }
+
       .wrapped-story-card {
-        position: relative;
-        background: #08080a;
-        border-radius: 20px;
-        padding: 24px;
-        overflow: hidden;
-        border: 1px solid rgba(255,255,255,0.05);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-        opacity: 0;
-        transform: translateY(30px);
-        animation: cardEnter 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        flex: 0 0 calc(100vw - 40px); max-width: 400px; scroll-snap-align: center; position: relative;
+        background: #08080a; border-radius: 20px; padding: 24px;
+        border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        opacity: 0.5; transform: scale(0.92); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
-      @keyframes cardEnter {
-        to { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes barGrow {
-        to { transform: scaleY(1); }
-      }
-      @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.3; }
-      }
-      .wrapped-glow {
-        position: absolute;
-        top: -50px; right: -50px;
-        width: 150px; height: 150px;
-        background: var(--team-color);
-        filter: blur(80px);
-        opacity: 0.15;
-        border-radius: 50%;
-        animation: pulseGlow 4s infinite alternate;
-      }
-      @keyframes pulseGlow {
-        from { opacity: 0.1; transform: scale(1); }
-        to { opacity: 0.25; transform: scale(1.2); }
-      }
+      .wrapped-story-card.is-active { opacity: 1; transform: scale(1); border-color: var(--team-color); box-shadow: 0 0 40px color-mix(in srgb, var(--team-color) 15%, transparent); }
       
-      .wrapped-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 24px;
-        position: relative;
-        z-index: 2;
-      }
-      .wrapped-intel-badge {
-        font-family: var(--font-mono);
-        font-size: 9px;
-        background: rgba(255,255,255,0.1);
-        padding: 4px 8px;
-        border-radius: 4px;
-        letter-spacing: 1px;
-        color: #fff;
-        border-left: 2px solid var(--team-color);
-      }
-      .wrapped-team-rank {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 14px;
-        color: var(--team-color);
-        font-weight: 700;
-      }
+      .wrapped-glow { position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: var(--team-color); filter: blur(80px); opacity: 0.1; border-radius: 50%; pointer-events: none; }
 
-      .wrapped-identity {
-        text-align: center;
-        margin-bottom: 24px;
-        position: relative;
-        z-index: 2;
-      }
-      .wrapped-icon {
-        font-size: 48px;
-        margin-bottom: 8px;
-        filter: drop-shadow(0 0 10px var(--team-color));
-      }
-      .wrapped-team-name {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 36px;
-        font-weight: 900;
-        margin: 0;
-        letter-spacing: 2px;
-        text-shadow: 0 0 15px rgba(255,255,255,0.2);
-        background: linear-gradient(to bottom, #ffffff, #aaaaaa);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-      .wrapped-vibe {
-        font-size: 12px;
-        color: var(--team-color);
-        font-family: var(--font-mono);
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        margin-top: 4px;
-      }
+      .wrapped-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+      .wrapped-intel-badge { font-family: var(--font-mono); font-size: 9px; background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 4px; letter-spacing: 1px; border-left: 2px solid var(--team-color); }
+      .wrapped-team-rank { font-family: var(--font-mono); font-size: 8px; color: #666; font-weight: 400; text-transform: uppercase; }
 
-      .wrapped-trait-box {
-        background: rgba(255,255,255,0.02);
-        border-left: 3px solid var(--team-color);
-        padding: 16px;
-        border-radius: 0 12px 12px 0;
-        margin-bottom: 16px;
-        position: relative;
-        z-index: 2;
-      }
-      .trait-label {
-        font-size: 10px;
-        color: #888;
-        font-family: var(--font-mono);
-        margin-bottom: 6px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-      .trait-text {
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 1.3;
-        margin-bottom: 8px;
-        font-family: 'Inter', sans-serif;
-      }
-      .trait-stat {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 24px;
-        color: var(--team-color);
-        font-weight: 700;
-        text-shadow: 0 0 10px var(--team-color);
-      }
+      .wrapped-identity { text-align: center; margin-bottom: 24px; position: relative; }
+      .wrapped-pfp-wrapper { width: 80px; height: 80px; margin: 0 auto 12px; border-radius: 50%; padding: 4px; border: 2px solid var(--team-color); background: #000; box-shadow: 0 0 20px var(--team-color); }
+      .wrapped-pfp-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+      .personal-tag { position: absolute; top: -10px; right: 20%; background: var(--team-color); color: #fff; font-size: 8px; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-family: var(--font-mono); z-index: 10; animation: tagPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+      @keyframes tagPop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-      .wrapped-behavior-report, .wrapped-funny-behavior {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        font-size: 12px;
-        line-height: 1.5;
-        background: rgba(0,0,0,0.3);
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 12px;
-        position: relative;
-        z-index: 2;
-        font-family: 'Inter', sans-serif;
-      }
-      .behavior-icon, .funny-icon {
-        font-size: 16px;
-        margin-top: 2px;
-      }
-      .wrapped-funny-behavior {
-        border: 1px dashed rgba(255, 255, 255, 0.15);
-      }
-      .wrapped-funny-behavior strong, .wrapped-behavior-report strong {
-        color: var(--team-color);
-      }
+      .wrapped-team-name { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900; margin: 0; letter-spacing: 2px; color: #fff; }
+      .wrapped-vibe { font-size: 9px; color: var(--team-color); font-family: var(--font-mono); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; font-weight: 700; }
 
-      .wrapped-stats-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-bottom: 24px;
-        position: relative;
-        z-index: 2;
-      }
-      .wrapped-stat-item {
-        background: rgba(255,255,255,0.02);
-        border: 1px solid rgba(255,255,255,0.05);
-        border-radius: 12px;
-        padding: 16px 12px;
-        text-align: center;
-        backdrop-filter: blur(5px);
-        transition: transform 0.2s ease, background 0.2s ease;
-      }
-      .wrapped-stat-item:hover {
-        transform: translateY(-2px);
-        background: rgba(255,255,255,0.04);
-      }
-      .stat-value {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 20px;
-        font-weight: 800;
-        color: #fff;
-        margin-bottom: 4px;
-      }
-      .stat-label {
-        font-size: 9px;
-        color: #888;
-        font-family: var(--font-mono);
-        letter-spacing: 1px;
-      }
+      .bento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+      .bento-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; padding: 16px; }
+      .hero-box { grid-column: 1 / -1; text-align: center; background: linear-gradient(135deg, rgba(255,255,255,0.01), rgba(255,255,255,0.03)); border-bottom: 2px solid var(--team-color); }
+      .personal-box { background: color-mix(in srgb, var(--team-color) 8%, transparent); border-color: color-mix(in srgb, var(--team-color) 30%, transparent); }
+      .full-width { grid-column: 1 / -1; margin-bottom: 12px; }
+      
+      .bento-label { font-size: 8px; color: #666; font-family: var(--font-mono); letter-spacing: 1px; margin-bottom: 6px; }
+      .personal-box .bento-label { color: var(--team-color); opacity: 0.8; }
+      .bento-value { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 800; color: #fff; }
+      .bento-value.highlight { font-size: 28px; color: var(--team-color); text-shadow: 0 0 15px color-mix(in srgb, var(--team-color) 40%, transparent); }
 
-      .wrapped-mission-intel {
-        background: rgba(0,0,0,0.4);
-        border-radius: 12px;
-        padding: 16px;
-        margin-bottom: 24px;
-        position: relative;
-        z-index: 2;
-        border: 1px solid rgba(255,255,255,0.03);
-      }
-      .intel-row {
-        display: flex;
-        justify-content: space-between;
-        font-size: 11px;
-        font-family: var(--font-mono);
-        color: #aaa;
-      }
-      .intel-highlight {
-        color: var(--team-color);
-        font-weight: 700;
-        text-shadow: 0 0 5px rgba(255,255,255,0.2);
-      }
-      .intel-bar-bg {
-        width: 100%;
-        height: 6px;
-        background: #111;
-        border-radius: 3px;
-        margin-top: 8px;
-        overflow: hidden;
-      }
-      .intel-bar-fill {
-        height: 100%;
-        background: var(--team-color);
-        box-shadow: 0 0 10px var(--team-color);
-        border-radius: 3px;
-        transform-origin: left;
-        animation: fillWidth 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-      }
-      @keyframes fillWidth {
-        from { transform: scaleX(0); }
-        to { transform: scaleX(1); }
-      }
+      .top-tracks-list { display: flex; flex-direction: column; gap: 10px; }
+      .track-row { display: flex; align-items: center; gap: 10px; }
+      .track-rank { font-family: var(--font-mono); font-size: 10px; color: #444; font-weight: 900; width: 12px; }
+      .track-info { flex: 1; }
+      .track-name { font-size: 10px; font-weight: 700; margin-bottom: 3px; color: #eee; }
+      .track-bar-bg { height: 3px; background: rgba(255,255,255,0.03); border-radius: 2px; overflow: hidden; }
+      .track-bar-fill { height: 100%; background: var(--team-color); box-shadow: 0 0 5px var(--team-color); transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1); }
+      .track-count { font-family: var(--font-mono); font-size: 9px; color: var(--team-color); font-weight: 700; opacity: 0.9; }
 
-      .wrapped-footer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        opacity: 0.5;
-        position: relative;
-        z-index: 2;
-        margin-top: 16px;
+      .mission-matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+      .bento-mission { display: flex; align-items: center; gap: 6px; padding: 5px 8px; background: rgba(0,0,0,0.2); border-radius: 6px; font-size: 8px; border: 1px solid transparent; }
+      .bento-mission.passed { border-color: rgba(0,255,102,0.15); color: #fff; }
+      .bento-mission.failed { opacity: 0.4; color: #666; }
+      .m-label { flex: 1; font-family: var(--font-mono); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+      .lore-footer { margin-top: 16px; padding-top: 12px; border-top: 1px dashed rgba(255,255,255,0.08); }
+      .lore-note { font-size: 9px; color: #888; line-height: 1.4; font-family: 'Inter', sans-serif; }
+      .lore-note strong { color: var(--team-color); }
+      
+      .swipe-hint { text-align: center; font-size: 9px; color: #444; margin-bottom: 10px; letter-spacing: 2px; font-family: var(--font-mono); }
+
+      /* Squad Jump Nav */
+      .squad-nav {
+        position: sticky; bottom: 0; left: 0; right: 0; padding: 15px;
+        background: linear-gradient(to top, #000 70%, transparent);
+        display: flex; justify-content: center; gap: 10px; z-index: 100;
       }
-      .footer-barcode {
-        font-family: 'Libre Barcode 39 Text', 'Courier New', monospace;
-        font-size: 28px;
-        letter-spacing: 4px;
+      .squad-nav-dot {
+        width: 35px; height: 35px; border-radius: 50%; border: 2px solid transparent;
+        cursor: pointer; transition: all 0.3s ease; overflow: hidden;
+        filter: grayscale(1) opacity(0.5); background: #111;
       }
-      .footer-text {
-        font-size: 8px;
-        font-family: var(--font-mono);
-        letter-spacing: 1px;
-      }
+      .squad-nav-dot.active { filter: grayscale(0) opacity(1); border-color: var(--team-color); transform: scale(1.2); box-shadow: 0 0 15px var(--team-color); }
+      .squad-nav-dot img { width: 100%; height: 100%; object-fit: cover; }
     </style>
 
     <div class="wrapped-container">
       <div class="wrapped-hero">
-        <div class="wrapped-subtitle">CURRENT TEAM PROGRESS</div>
-        <div class="wrapped-title">
-          TEAM<br/><span style="color: var(--purple-core);">STATS</span>
-        </div>
-        <div class="wrapped-quote">
-          "The battle is live. See how the teams are doing below."
-        </div>
+        <div class="wrapped-subtitle">GLOBAL SQUAD INTEL</div>
+        <div class="wrapped-title">ARIRANG<br/><span style="color: var(--purple-core);">WRAPPED</span></div>
       </div>
       
-      <div class="wrapped-cards-wrapper">
+      <div class="swipe-hint">← SWIPE DOSSIERS →</div>
+      
+      <div class="wrapped-cards-wrapper" id="wrapped-scroll-container">
         ${cardsHtml}
+      </div>
+
+      <div class="squad-nav">
+        ${wrappedProfiles.map((p, i) => `
+          <div class="squad-nav-dot ${p.team === myTeamName ? 'active' : ''}" 
+               style="--team-color: ${p.color}" 
+               onclick="scrollToSquad('${p.team.replace(/\s+/g, '')}')"
+               title="${p.team}">
+            <img src="${p.pfp}" onerror="this.src='https://via.placeholder.com/35?text=${p.team.charAt(0)}'">
+          </div>
+        `).join('')}
       </div>
     </div>
   `;
+
+  window.scrollToSquad = (teamId) => {
+    const card = document.getElementById(`wrapped-card-${teamId}`);
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  };
+
+  requestAnimationFrame(() => {
+    if (myTeamName) {
+      scrollToSquad(myTeamName.replace(/\s+/g, ''));
+    }
+
+    const cards = document.querySelectorAll('.wrapped-story-card');
+    const navDots = document.querySelectorAll('.squad-nav-dot');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-active');
+          const teamName = entry.target.getAttribute('data-team');
+          
+          navDots.forEach(dot => {
+            if (dot.getAttribute('title') === teamName) dot.classList.add('active');
+            else dot.classList.remove('active');
+          });
+          
+          const counter = entry.target.querySelector('.smart-counter');
+          if (counter && !counter.dataset.animated) {
+            const target = parseInt(counter.getAttribute('data-target'), 10);
+            if (typeof animateValue === 'function') {
+                counter.id = 'counter-' + Math.random().toString(36).substr(2, 9);
+                animateValue(counter.id, 0, target, 1500);
+            } else { counter.innerText = target.toLocaleString(); }
+            counter.dataset.animated = "true";
+          }
+
+          const bars = entry.target.querySelectorAll('.animated-bar');
+          bars.forEach(bar => { bar.style.width = bar.getAttribute('data-width'); });
+        } else {
+          entry.target.classList.remove('is-active');
+          const bars = entry.target.querySelectorAll('.animated-bar');
+          bars.forEach(bar => { bar.style.width = '0%'; });
+          const counter = entry.target.querySelector('.smart-counter');
+          if(counter) counter.dataset.animated = "";
+        }
+      });
+    }, {
+      root: document.getElementById('wrapped-scroll-container'),
+      threshold: 0.6
+    });
+
+    cards.forEach(card => observer.observe(card));
+  });
 }
 
 // =============================================
