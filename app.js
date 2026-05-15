@@ -5700,7 +5700,7 @@ async function renderWrappedPage() {
             <img src="${profile.pfp}" class="wrapped-pfp-img" onerror="this.src='https://via.placeholder.com/100?text=${profile.team.charAt(0)}'">
           </div>
           <h2 class="wrapped-team-name">${profile.team.replace('Team ', '').toUpperCase()}</h2>
-          <div style="font-family: var(--font-mono); font-size: 8px; color: rgba(255,255,255,0.2); letter-spacing: 2px; font-weight: 700; margin-top: -10px; margin-bottom: 20px;">HOPE TRACKER</div>
+          <div style="font-family: var(--font-mono); font-size: 8px; color: rgba(255,255,255,0.3); letter-spacing: 2px; font-weight: 700; margin-top: 8px; margin-bottom: 24px;">HOPE TRACKER</div>
         </div>
 
         <div class="bento-grid">
@@ -5948,7 +5948,7 @@ async function renderHypePage() {
       <div style="font-family: 'Orbitron', sans-serif; font-size: 16px; color: #fff; margin-bottom: 8px; font-weight: 900; letter-spacing: 1px;">📢 TRANSMISSION INTERCEPTED — ONE ARMY</div>
       <div style="font-size: 12px; color: #ddd; line-height: 1.5; font-family: 'Inter', sans-serif;">
         <span style="font-style: italic; color: #aaa;">"We made team insta accounts! We need something to post for each team."</span><br/><br/>
-        <strong>HQ RESPONSE:</strong> Acknowledged. Check the <strong style="color: var(--red-core); cursor: pointer; text-decoration: underline;" onclick="goTo('chat')">Arirang Wrapped</strong> tab for your team's classified mission report. Screenshot it and deploy it to your new team accounts!
+        <strong>HQ RESPONSE:</strong> Acknowledged. Check the <strong style="color: var(--red-core); cursor: pointer; text-decoration: underline;" onclick="goTo('chat')">HT Wrapped</strong> tab for your team's classified mission report. Screenshot it and deploy it to your new team accounts!
       </div>
     </div>
 
