@@ -5622,13 +5622,27 @@ async function renderWrappedPage() {
     // Personal Stats
     const myStreams = myStats.trackScrobbles || 0;
     const contributionPercent = seasonTotalStreams > 0 ? ((myStreams / seasonTotalStreams) * 100).toFixed(2) : '0.00';
+    // Comparative Stat Logic
+    let squadAchievement = "";
+    const allAlbums = Object.entries(albumGoals);
+    if (allAlbums.length > 0) {
+      const leadingAlbums = allAlbums.filter(([name, data]) => {
+        const teamVal = data.teams?.[profile.team]?.current || 0;
+        const otherVals = Object.entries(data.teams || {})
+          .filter(([t]) => t !== profile.team)
+          .map(([, d]) => d.current || 0);
+        return teamVal > 0 && teamVal >= Math.max(...otherVals, 1);
+      });
 
-    // ── OPERATIVE PERSONA (Behavioral Storytelling) ──
-    let squadVibe = "ELITE OPERATIONS";
-    let squadDesc = "Your squad is a machine of pure streaming efficiency.";
-    if (xp > 150000) { squadVibe = "THE UNSTOPPABLES"; squadDesc = "Global dominance is your only protocol."; }
-    else if (activeCount > 40) { squadVibe = "THE PHALANX"; squadDesc = "Stronger together! Your squad moves as one massive, coordinated army."; }
-    else { squadVibe = "THE GHOST UNIT"; squadDesc = "Small but mighty! You're surgically precise, making every single stream count."; }
+      if (leadingAlbums.length > 0) {
+        squadAchievement = `SQUAD LEADER: You are currently crushing the mission for <strong>${leadingAlbums[0][0]}</strong> more than any other team!`;
+      } else {
+        const topAlbum = teamAlbumMissions[0];
+        squadAchievement = `MISSION SPECIALISTS: Your squad has contributed more streams to <strong>${topAlbum?.name || 'Golden'}</strong> than the agency average!`;
+      }
+    } else {
+       squadAchievement = `ELITE COORDINATION: Your squad's impact on <strong>${profile.ref}</strong> is officially classified as 'Unstoppable'.`;
+    }
 
     let personalArchetype = "";
     if (isMyTeam) {
@@ -5676,12 +5690,12 @@ async function renderWrappedPage() {
             <img src="${profile.pfp}" class="wrapped-pfp-img" onerror="this.src='https://via.placeholder.com/100?text=${profile.team.charAt(0)}'">
           </div>
           <h2 class="wrapped-team-name">${profile.team.replace('Team ', '').toUpperCase()}</h2>
-          <div class="wrapped-vibe">${squadVibe}</div>
+          <div style="font-family: var(--font-mono); font-size: 8px; color: rgba(255,255,255,0.2); letter-spacing: 2px; font-weight: 700; margin-top: -10px; margin-bottom: 20px;">HOPE TRACKER</div>
         </div>
 
         <div class="bento-grid">
             <div class="bento-box hero-box">
-                <div class="bento-label">TOTAL SEASON XP</div>
+                <div class="bento-label">ENTIRE SEASON TOTAL XP</div>
                 <div class="bento-value highlight smart-counter" data-target="${xp}">0</div>
             </div>
             
@@ -5695,10 +5709,17 @@ async function renderWrappedPage() {
             </div>
         </div>
 
+        <div class="bento-box full-width" style="border-left: 3px solid var(--team-color); background: rgba(255,255,255,0.01); margin-bottom: 12px;">
+            <div class="bento-label" style="color: var(--team-color); font-weight: 800;">SQUAD ACHIEVEMENT</div>
+            <div style="font-size: 11px; color: #eee; line-height: 1.5; margin-top: 4px;">
+                ${squadAchievement}
+            </div>
+        </div>
+
         ${personalArchetype}
 
         <div class="bento-box full-width">
-            <div class="bento-label" style="margin-bottom: 12px;">📀 TOP SQUAD PROJECTS</div>
+            <div class="bento-label" style="margin-bottom: 12px;">📀 MOST STREAMED ALBUMS</div>
             <div class="top-tracks-list">
               ${squadTopAlbums.map((album, i) => `
                 <div class="track-row">
@@ -5731,11 +5752,6 @@ async function renderWrappedPage() {
                 </div>
               `).join('')}
             </div>
-        </div>
-        
-        <div class="lore-footer" style="padding-top:12px; border-top:1px dashed rgba(255,255,255,0.1); margin-top:10px;">
-            <div style="font-size: 10px; color: var(--team-color); font-weight: 800; margin-bottom: 4px;">SQUAD MISSION LOG:</div>
-            <div style="font-size: 11px; color: #aaa; line-height: 1.4;">${squadDesc}</div>
         </div>
       </div>
     `;
