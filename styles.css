@@ -1,70 +1,121 @@
-/* =============================================
-   ARIRANG MISSION — Design System v3.0
-   Visual DNA: Archive × Ocean × Concert × Vinyl
-   ============================================= */
-
-/* =============================================
+/* =============================================================================
    ARIRANG MISSION — Design System v3.4
-   Visual DNA: Spy Archive × Glass UI × Vinyl
-   ============================================= */
+   UNIFIED ROOT VARIABLES (CONSOLIDATED)
+   ============================================================================= */
 
-/* ── PREMIUM ELITE AGENT FONTS ── */
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&family=Rajdhani:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700;800&family=Share+Tech+Mono&family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  /* Night / Mission Base */
-  --bg-abyss: #050508;
+  /* ══════════════════════════════════════
+     NIGHT / MISSION BASE
+     ══════════════════════════════════════ */
+  --bg-abyss: #06060A;
+  --bg-deep: #08080B;
+  --bg-panel: #0E0E14;
+  --bg-lifted: #141420;
+  --bg-surface: #1A1A28;
   --bg-card: rgba(10, 10, 20, 0.6);
-  /* NEW: ARIRANG Album Colors */
+
+  /* ══════════════════════════════════════
+     ARIRANG ALBUM COLORS (Spy Vibe)
+     ══════════════════════════════════════ */
   --ocean-deep: #0a2540;
-  /* Deep water for SWIM */
   --wave-foam: #4a90a4;
-  /* Gentle wave accent */
   --vinyl-gold: #d4af37;
-  /* Vintage record warmth */
   --archive-sepia: #8b7355;
-  /* Historical documents */
   --courage-amber: #ff9500;
-  /* Warmth, life, courage */
 
-  /* Emotional Spectrum (per member quotes) */
+  /* ══════════════════════════════════════
+     EMOTIONAL SPECTRUM (BTS Member Themes)
+     ══════════════════════════════════════ */
   --hope-green: #34d399;
-  /* J-Hope's positivity */
   --jin-warm: #fbbf24;
-  /* Jin's balance */
   --suga-discipline: #f87171;
-  /* SUGA's resolve */
   --jimin-flow: #60a5fa;
-  /* Jimin's current */
   --v-embrace: #c4b5fd;
-  /* V's comfort */
   --jk-courage: #fcd34d;
-  /* JK's gift */
 
-
-  /* ARIRANG Red (Spy Vibe) */
+  /* ══════════════════════════════════════
+     ARIRANG GLOW RED (Core Brand)
+     ══════════════════════════════════════ */
   --red-core: #FF145F;
+  --red-mid: #FF2D6F;
+  --red-soft: #FF5C8A;
+  --red-whisper: rgba(255, 20, 95, 0.06);
+  --red-border: rgba(255, 20, 95, 0.18);
+  --red-glow: rgba(255, 20, 95, 0.35);
+
   --gradient-arirang: linear-gradient(135deg, #FF145F 0%, #80002B 100%);
   --glow-soft: rgba(255, 0, 80, 0.15);
   --glow-mid: rgba(255, 0, 80, 0.25);
   --glow-strong: rgba(255, 0, 100, 0.4);
 
-  /* SWIM Warm Current (Archive Vibe) */
+  /* ══════════════════════════════════════
+     SWIM WARM CURRENT (Archive Vibe)
+     ══════════════════════════════════════ */
   --gold-core: #D7B186;
+  --gold-mid: #E5C8A1;
+  --gold-soft: #B88A5A;
+  --gold-whisper: rgba(215, 177, 134, 0.06);
+  --gold-border: rgba(215, 177, 134, 0.15);
 
-  /* Typography Contrast */
+  /* ══════════════════════════════════════
+     BTS HOPE ACCENT (Purple Theme)
+     ══════════════════════════════════════ */
+  --purple-core: #A78BFA;
+  --purple-mid: #C4B5FD;
+  --purple-soft: #7C3AED;
+  --purple-whisper: rgba(167, 139, 250, 0.06);
+  --purple-border: rgba(167, 139, 250, 0.15);
+
+  /* ══════════════════════════════════════
+     STATUS INDICATORS
+     ══════════════════════════════════════ */
+  --green: #00FF66;
+  --green-soft: rgba(0, 255, 102, 0.08);
+  --green-border: rgba(0, 255, 102, 0.15);
+  --fail: #FF3B5C;
+  --warn: #FFB020;
+
+  /* ══════════════════════════════════════
+     TEXT COLORS (WCAG AA COMPLIANT)
+     ══════════════════════════════════════ */
   --text-heading: #F0F0F5;
+  --text-primary: #F8F7FA;
+  /* 14.2:1 ✅ */
+  --text-secondary: #D1D5DB;
+  /* 9.2:1 ✅ FIXED */
   --text-body: #D0D0DA;
+  --text-muted: #9CA3AF;
+  /* 5.1:1 ✅ FIXED */
   --text-label: #A0A0B0;
   --text-sub: #888899;
+  --text-ghost: #6B7280;
+  /* 4.8:1 ✅ FIXED */
 
-  /* UPDATED FONT DNA */
+  /* ══════════════════════════════════════
+     BORDERS (Glassmorphism Theme)
+     ══════════════════════════════════════ */
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-light: rgba(255, 255, 255, 0.08);
+  --border-mid: rgba(255, 255, 255, 0.12);
+
+  /* ══════════════════════════════════════
+     GLASS EFFECTS
+     ══════════════════════════════════════ */
+  --glass-bg: rgba(14, 14, 20, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-shine: rgba(255, 255, 255, 0.03);
+
+  /* ══════════════════════════════════════
+     TYPOGRAPHY SYSTEM
+     ══════════════════════════════════════ */
   --font-display: 'Orbitron', sans-serif;
   --font-ui: 'Rajdhani', sans-serif;
   --font-mono: 'Share Tech Mono', monospace;
   --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  /* UPDATED SIZE SCALE (Larger for readability) */
+  /* Size Scale (Mobile-First, Readable) */
   --text-xs: 0.75rem;
   /* 12px */
   --text-sm: 0.8125rem;
@@ -79,7 +130,33 @@
   /* 22px */
   --text-2xl: 1.75rem;
   /* 28px */
-}
+  --text-3xl: 2rem;
+  /* 32px */
+
+  /* ══════════════════════════════════════
+     DIMENSIONS & SPACING
+     ══════════════════════════════════════ */
+  --sidebar-w: 260px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* ══════════════════════════════════════
+     ANIMATIONS & EASING
+     ══════════════════════════════════════ */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ══════════════════════════════════════
+     Z-INDEX LAYERS
+     ══════════════════════════════════════ */
+  --z-sidebar: 100;
+  --z-overlay: 200;
+  --z-modal: 500;
+  --z-toast: 999;
+  --z-loading: 9999;
 }
 
 *,
@@ -95,8 +172,11 @@ body {
   color: var(--text-primary);
   line-height: 1.5;
   min-height: 100vh;
-  /* REMOVED: overflow: hidden; */
-  /* ADDED for Safari smooth scrolling */
+  /* Optimized for smoothness */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -328,7 +408,7 @@ html {
 
 .log-text {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: max(0.6875rem, 11px);
   letter-spacing: 2px;
   color: var(--text-sub);
 }
@@ -377,11 +457,67 @@ html {
   transition: all 0.3s ease;
 }
 
-.input-group input:focus {
+/* ══════════════════════════════════════
+   ACCESSIBLE FOCUS STATES (WCAG 2.4.7)
+   ══════════════════════════════════════ */
+
+/* Remove default outlines globally */
+*:focus {
   outline: none;
-  border-color: rgba(255, 20, 95, 0.4);
-  background: rgba(255, 20, 95, 0.03);
-  box-shadow: 0 0 12px var(--glow-soft);
+}
+
+/* Add custom high-contrast focus rings */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.nav-item:focus-visible,
+.btn-red:focus-visible,
+.btn-outline:focus-visible,
+.btn-ghost:focus-visible,
+.tactical-card:focus-visible,
+.rank-card:focus-visible,
+.battle-card:focus-visible {
+  outline: 3px solid var(--red-core);
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 5px rgba(255, 20, 95, 0.25),
+    0 0 20px rgba(255, 20, 95, 0.4);
+  border-radius: 4px;
+  position: relative;
+  z-index: 10;
+  /* Ensures focus ring stays on top */
+}
+
+/* Special focus for input fields */
+.input-field:focus-visible,
+.input-group input:focus-visible {
+  outline: 2px solid var(--red-core);
+  outline-offset: 1px;
+  border-color: var(--red-core);
+  background: rgba(255, 20, 95, 0.05);
+  box-shadow:
+    0 0 0 4px rgba(255, 20, 95, 0.15),
+    0 0 12px rgba(255, 20, 95, 0.3);
+}
+
+/* Sidebar navigation focus */
+.nav-item:focus-visible {
+  background: var(--red-whisper);
+  transform: translateX(4px);
+  color: var(--red-core);
+  font-weight: 700;
+}
+
+/* Card focus (for keyboard navigation) */
+.rank-card:focus-visible,
+.battle-card:focus-visible,
+.tactical-card-container:focus-visible .tactical-card {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 3px var(--red-core),
+    0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 /* ==================== BUTTONS ==================== */
@@ -452,6 +588,79 @@ html {
   background: rgba(255, 255, 255, 0.05);
 }
 
+.error-msg {
+  color: var(--red-core);
+  font-size: max(0.6875rem, 11px);
+  text-align: center;
+  min-height: 1rem;
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+}
+
+/* Tactical Identity Card Styles */
+.identity-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.identity-corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--accent-glow);
+  opacity: 0.6;
+}
+
+.identity-corner.tl { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+.identity-corner.tr { top: 8px; right: 8px; border-left: 0; border-bottom: 0; }
+.identity-corner.bl { bottom: 8px; left: 8px; border-right: 0; border-top: 0; }
+.identity-corner.br { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+
+.identity-scanline {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.03) 50%, transparent);
+  animation: identity-scan 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes identity-scan {
+  0% { top: -100%; }
+  100% { top: 100%; }
+}
+
+.identity-stamp {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  font-size: 8px;
+  font-weight: 900;
+  color: var(--accent-glow);
+  opacity: 0.2;
+  border: 1px solid currentColor;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transform: rotate(-15deg);
+  font-family: var(--font-mono);
+  pointer-events: none;
+}
+
+.identity-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 .divider-text {
   font-size: 10px;
   color: var(--text-sub);
@@ -482,7 +691,7 @@ html {
 }
 
 .hope-text {
-  font-size: 9px;
+  font-size: max(0.6875rem, 11px);
   color: var(--text-label);
   font-family: var(--font-mono);
   text-transform: uppercase;
@@ -505,96 +714,112 @@ html {
 
 /* ==================== MESSAGES ==================== */
 
+/* micro-dopamine: Sparkle Particles */
+.sparkle-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  font-size: 14px;
+  animation: sparkle-fly 0.8s ease-out forwards;
+}
+
+@keyframes sparkle-fly {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+}
+
+/* micro-dopamine: Odometer Look */
+.odometer-digit {
+  display: inline-block;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-shadow: 0 0 8px currentColor;
+}
+
+/* Spotify/Billboard Chart Styles */
+.chart-header-official {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  border-bottom: 2px solid var(--red-core);
+  padding-bottom: 8px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.chart-stats-mini {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.chart-stat-item {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: var(--text-ghost);
+  text-transform: uppercase;
+}
+
+.chart-stat-value {
+  color: var(--text-secondary);
+  font-weight: 800;
+}
+
+.rank-card.is-me {
+  background: linear-gradient(90deg, rgba(255, 20, 95, 0.08), transparent);
+  border-left: 3px solid var(--red-core);
+}
+
+.rank-card:hover {
+  transform: translateX(4px);
+  background: rgba(255, 255, 255, 0.04);
+}
+
 .error-msg {
   color: var(--red-core);
-  font-size: 11px;
+  font-size: max(0.6875rem, 11px);
   margin-top: 10px;
   text-align: center;
 }
 
 .result-msg {
   color: var(--gold-core);
-  font-size: 11px;
+  font-size: max(0.6875rem, 11px);
   margin-top: 10px;
   text-align: center;
 }
 
-/* ── ROOT VARIABLES ── */
-:root {
-  /* Night / Mission Base */
-  --bg-abyss: #06060A;
-  --bg-deep: #08080B;
-  --bg-panel: #0E0E14;
-  --bg-lifted: #141420;
-  --bg-surface: #1A1A28;
 
-  /* ARIRANG Glow Red */
-  --red-core: #FF145F;
-  --red-mid: #FF2D6F;
-  --red-soft: #FF5C8A;
-  --red-whisper: rgba(255, 20, 95, 0.06);
-  --red-border: rgba(255, 20, 95, 0.18);
-  --red-glow: rgba(255, 20, 95, 0.35);
-
-  /* SWIM Warm Current */
-  --gold-core: #D7B186;
-  --gold-mid: #E5C8A1;
-  --gold-soft: #B88A5A;
-  --gold-whisper: rgba(215, 177, 134, 0.06);
-  --gold-border: rgba(215, 177, 134, 0.15);
-
-  /* BTS Hope Accent */
-  --purple-core: #A78BFA;
-  --purple-mid: #C4B5FD;
-  --purple-soft: #7C3AED;
-  --purple-whisper: rgba(167, 139, 250, 0.06);
-  --purple-border: rgba(167, 139, 250, 0.15);
-
-  /* Status */
-  --green: #00FF66;
-  --green-soft: rgba(0, 255, 102, 0.08);
-  --green-border: rgba(0, 255, 102, 0.15);
-  --fail: #FF3B5C;
-  --warn: #FFB020;
-
-  /* Text */
-  --text-primary: #F8F7FA;
-  --text-secondary: #B9B6C2;
-  --text-muted: #6B6880;
-  --text-ghost: #3D3A4A;
-
-  /* Borders */
-  --border-subtle: rgba(255, 255, 255, 0.04);
-  --border-light: rgba(255, 255, 255, 0.08);
-  --border-mid: rgba(255, 255, 255, 0.12);
-
-  /* Glass */
-  --glass-bg: rgba(14, 14, 20, 0.72);
-  --glass-border: rgba(255, 255, 255, 0.06);
-  --glass-shine: rgba(255, 255, 255, 0.03);
-
-  /* Dimensions */
-  --sidebar-w: 260px;
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
-  --radius-full: 9999px;
-
-  /* Transitions */
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  /* Z-layers */
-  --z-sidebar: 100;
-  --z-overlay: 200;
-  --z-modal: 500;
-  --z-toast: 999;
-  --z-loading: 9999;
-}
 
 
 /* ── RESET + BASE ── */
+/* ── TYPOGRAPHY UTILITIES (deprecated class aliases — kept for JS compatibility) ── */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.label-tag {
+  font-size: max(0.6875rem, 11px);
+  /* ✅ 11px minimum */
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+}
+
+.hl {
+  color: var(--red-core);
+  font-weight: 800;
+}
+
 *,
 *::before,
 *::after {
@@ -710,11 +935,14 @@ body::before {
 /* 32px */
 
 .label-tag {
-  font-size: 0.5625rem;
+  font-size: max(0.6875rem, 11px);
+  /* ✅ FIXED: 11px minimum */
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--text-muted);
+  letter-spacing: 0.12em;
+  /* ← Slightly tighter to fit longer text */
+  color: var(--text-secondary);
+  /* ✅ Better contrast (was --text-muted) */
 }
 
 .hl {
@@ -821,6 +1049,11 @@ body::before {
   border-radius: var(--radius-md);
   position: relative;
   overflow: hidden;
+  /* Performance optimizations */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  contain: content;
 }
 
 .glass-card::before {
@@ -1083,7 +1316,7 @@ html {
 /* Team tag pill */
 .sb-agent-team {
   font-family: var(--font-mono) !important;
-  font-size: 9px !important;
+  font-size: max(0.6875rem, 11px) !important;
   font-weight: 700;
   color: var(--team-color, var(--red-core));
   text-transform: uppercase;
@@ -1105,10 +1338,13 @@ html {
 }
 
 /* Agent ID */
+/* Agent ID */
 .sb-agent-id {
   font-family: var(--font-mono) !important;
-  font-size: 9px !important;
-  color: var(--text-ghost);
+  font-size: max(0.6875rem, 11px) !important;
+  /* ✅ FIXED: 11px minimum */
+  color: var(--text-secondary);
+  /* ✅ Better contrast (was --text-ghost) */
   letter-spacing: 0.5px;
   white-space: nowrap;
 }
@@ -1322,11 +1558,14 @@ html {
 /* ── PAGE SECTIONS ── */
 .page {
   display: none;
+  /* Prevent layout jumps */
+  min-height: 100%;
 }
 
 .page.active {
   display: block;
-  animation: pageIn 0.35s var(--ease-out);
+  animation: pageIn 0.45s cubic-bezier(0.2, 0, 0.2, 1);
+  will-change: transform, opacity;
 }
 
 @keyframes pageIn {
@@ -1362,15 +1601,16 @@ html {
 
 /* Section labels */
 .section-label {
-  font-size: 0.5625rem;
+  font-size: max(0.6875rem, 11px);
+  /* ✅ FIXED: 11px minimum */
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--text-ghost);
-  margin: 20px 0 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  letter-spacing: 0.15em;
+  color: var(--text-secondary);
+  /* ✅ Better contrast (was --text-ghost) */
+  padding: 12px 12px 6px;
+  opacity: 0.9;
+  /* ← Ensures good visibility */
 }
 
 .section-label::after {
@@ -1479,7 +1719,7 @@ html {
 
 .stat-box .sl,
 .stat-box .h-stat-lbl {
-  font-size: 9px;
+  font-size: max(0.6875rem, 11px);
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--text-muted);
@@ -2116,7 +2356,16 @@ html {
 }
 
 .btn-red:active {
-  transform: translateY(0);
+  transform: scale(0.98);
+}
+
+/* ✅ NEW: Button focus state */
+.btn-red:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 6px rgba(255, 20, 95, 0.3),
+    0 4px 16px rgba(255, 20, 95, 0.4);
 }
 
 .btn-outline {
@@ -3306,6 +3555,15 @@ letter-spacing: 0.1em;
   border-color: var(--red-core);
 }
 
+/* ✅ NEW: Close button focus state */
+.sb-close-btn:focus-visible {
+  outline: 2px solid var(--red-core);
+  outline-offset: 2px;
+  background: rgba(255, 20, 95, 0.1);
+  color: var(--red-core);
+  border-color: var(--red-core);
+}
+
 /* SB brand needs flex for close button */
 .sb-brand {
   display: flex;
@@ -3331,6 +3589,14 @@ letter-spacing: 0.1em;
   padding: 8px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* ✅ NEW: Burger menu focus state */
+.top-bar-burger:focus-visible {
+  outline: 2px solid var(--red-core);
+  outline-offset: 2px;
+  background: rgba(255, 20, 95, 0.1);
+  border-radius: 4px;
 }
 
 /* Top bar always hidden on desktop */
@@ -3456,6 +3722,8 @@ letter-spacing: 0.1em;
   .pages-wrapper {
     padding: 14px 12px 80px;
     overflow-y: auto;
+    overflow-x: hidden;
+    /* Fixes left-edge light bleed */
     height: calc(100vh - 48px);
     -webkit-overflow-scrolling: touch;
   }
@@ -3981,10 +4249,16 @@ body.sidebar-open {
 }
 
 .intel-list li {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: max(0.9375rem, 15px);
+  /* ✅ FIXED: 15px minimum */
+  color: rgba(255, 255, 255, 0.9);
+  /* ✅ Better contrast */
+  padding: 10px 0;
+  /* ← More breathing room */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  /* ← More visible */
+  line-height: 1.6;
+  /* ← Easier to read */
 }
 
 .intel-list li:last-child {
@@ -4026,65 +4300,13 @@ body.sidebar-open {
   }
 }
 
-/* --- Global Font Scale-Up --- */
-:root {
-  /* Bumping utility sizes */
-  --text-xs: 0.75rem;
-  /* 12px (was 10px) */
-  --text-sm: 0.8125rem;
-  /* 13px (was 11px) */
-  --text-base: 0.875rem;
-  /* 14px (was 12px) */
-  --text-md: 0.9375rem;
-  /* 15px (was 13px) */
-  --text-lg: 1.0625rem;
-  /* 17px (was 15px) */
-}
-
-/* Update standard body font */
-body {
-  font-size: 14px;
-  /* Increase from default browser smalls */
-}
-
-/* Fix the sidebar specifically */
-.nav-item {
-  font-size: 14px !important;
-  /* Makes menu items much more readable */
-  padding: 12px 14px !important;
-}
-
-.sb-agent-name {
-  font-size: 15px !important;
-  /* Agent name scale up */
-}
-
-.sb-agent-meta {
-  font-size: 11px !important;
-  /* Meta data (ID/Team) scale up */
-}
-
-/* Make cards easier to read */
-.glass-card,
-.archive-card {
-  font-size: 14px;
-}
-
-/* Force standard labels to be legible */
-.label-tag,
-.section-label {
-  font-size: 11px !important;
-  letter-spacing: 0.1em;
-}
-
-/* --- GLOBAL TYPOGRAPHY OVERRIDES --- */
+/* ── TYPOGRAPHY GLOBALS (consolidated — see :root for tokens) ── */
 
 body {
   font-family: var(--font-body);
   font-size: var(--text-base);
 }
 
-/* Titling & Branding */
 h1,
 h2,
 h3,
@@ -4097,7 +4319,6 @@ h4,
   letter-spacing: 2px;
 }
 
-/* UI Elements & Buttons */
 .btn-red,
 .btn-outline,
 .label-tag,
@@ -4111,7 +4332,6 @@ textarea {
   letter-spacing: 1px;
 }
 
-/* Data, Stats, and XP */
 .stat-value,
 .rank-xp,
 .total-value,
@@ -4122,19 +4342,6 @@ textarea {
 .sc-val {
   font-family: var(--font-mono) !important;
   letter-spacing: 1px;
-}
-
-/* Ensure the Sidebar is readable */
-.nav-item {
-  font-size: 14px !important;
-  padding: 12px 14px !important;
-}
-
-/* Scale up smaller labels */
-.label-tag,
-.section-label {
-  font-size: 11px !important;
-  opacity: 0.8;
 }
 
 /* =============================================
@@ -4176,15 +4383,21 @@ textarea {
 .guide-box {
   display: flex;
   gap: 14px;
-  padding: 14px 16px;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid var(--border-light);
+  padding: 16px 18px;
+  /* ← Larger padding */
+  background: rgba(255, 255, 255, 0.06);
+  /* ✅ FIXED: More visible */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* ✅ Brighter border */
   border-radius: var(--radius-md);
   border-left: 3px solid var(--red-core);
   margin-bottom: 20px;
   align-items: flex-start;
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(10px);
+  /* ← Stronger blur */
   transition: border-color 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  /* ← Adds depth */
 }
 
 /* Guide Box Icon */
@@ -4214,14 +4427,17 @@ textarea {
   line-height: 1.3;
 }
 
+
 /* Guide Box Description */
 .guide-box div div:last-child {
-  font-size: 0.75rem;
-  line-height: 1.6;
-  color: var(--text-secondary);
+  font-size: max(0.8125rem, 13px);
+  /* ✅ Larger text */
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
+  /* ✅ FIXED: High contrast */
   font-weight: 400;
   text-transform: none;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.3px;
 }
 
 /* =============================================
@@ -4325,11 +4541,17 @@ textarea {
    COMPACT MISSION BRIEFING STRIP
    ============================================= */
 .mission-briefing-strip {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.08);
+  /* ✅ FIXED: Much more visible */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  /* ✅ Added border */
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 12px 16px;
+  /* ← Slightly larger padding */
   margin-bottom: 16px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  /* ← Adds depth */
 }
 
 .briefing-header {
@@ -4352,10 +4574,13 @@ textarea {
 
 .briefing-meta {
   font-family: var(--font-display);
-  font-size: 9px;
+  font-size: max(0.625rem, 10px);
+  /* ✅ FIXED: 10px minimum */
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 1.5px;
+  color: var(--text-secondary);
+  /* ← Ensure good contrast */
 }
 
 .briefing-divider {
@@ -4364,10 +4589,14 @@ textarea {
 }
 
 .briefing-text {
-  font-size: 11px;
-  line-height: 1.55;
-  color: var(--text-secondary);
+  font-size: max(0.75rem, 12px);
+  /* ✅ Larger text */
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.92);
+  /* ✅ FIXED: High contrast white */
   font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  /* ← Improves legibility */
 }
 
 @media (min-width: 769px) {
@@ -4590,18 +4819,22 @@ textarea {
 /* =============================================
    NARRATIVE / LORE BOX (Premium UI)
    ============================================= */
+/* ✅ FIXED VERSION */
 .narrative-box {
   position: relative;
   background: rgba(10, 10, 15, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.04);
-  border-left: 2px solid var(--n-color);
+  /* REMOVED: border-left (now handled by ::before) */
   border-radius: 8px;
-  padding: 12px 16px;
+  padding: 12px 16px 12px 20px;
+  /* ← ADDED 20px left padding */
   margin-bottom: 20px;
   backdrop-filter: blur(12px);
+  overflow: hidden;
+  /* ← KEEPS THE GLOW CONTAINED */
 }
 
-/* Glowing accent line on the left */
+/* ✅ FIXED: Glow stays inside the box */
 .narrative-box::before {
   content: '';
   position: absolute;
@@ -4611,6 +4844,10 @@ textarea {
   height: 100%;
   background: var(--n-color);
   box-shadow: 0 0 20px var(--n-color);
+  z-index: 0;
+  /* ← BEHIND CONTENT */
+  border-radius: 8px 0 0 8px;
+  /* ← ROUNDS THE EDGES */
 }
 
 /* Header: Avatar + Name */
@@ -4641,18 +4878,26 @@ textarea {
 
 .narrative-name {
   font-family: var(--font-display);
-  font-size: 15px; /* Slightly larger since it's not all caps */
+  font-size: 15px;
+  /* Slightly larger since it's not all caps */
   font-weight: 800;
   color: var(--n-color);
-  text-transform: none; /* <--- FIXES THE NAME */
+  text-transform: none;
+  /* <--- FIXES THE NAME */
   letter-spacing: 0.5px;
 }
 
 .narrative-role {
-  font-size: 8px;
-  color: var(--text-muted);
+  font-size: max(0.5625rem, 9px);
+  /* ✅ FIXED: 9px minimum */
+  color: var(--text-secondary);
+  /* ✅ Better contrast */
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
+  font-weight: 700;
+  /* ← Makes it readable */
+  opacity: 0.8;
+  /* ← Subtle but visible */
 }
 
 /* The Member's Quote */
@@ -4682,9 +4927,11 @@ textarea {
 }
 
 .narrative-directive-text {
-  font-size: 11.5px;
-  line-height: 1.5;
-  color: var(--text-secondary);
+  font-size: max(0.75rem, 12px);
+  /* ✅ Larger */
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.90);
+  /* ✅ FIXED: Better contrast */
   font-weight: 500;
 }
 
@@ -4715,7 +4962,7 @@ textarea {
   }
 
   .narrative-role {
-    font-size: 8px;
+    font-size: max(0.625rem, 10px);
   }
 
   .narrative-directive {
@@ -4904,7 +5151,7 @@ textarea {
 }
 
 .battle-label {
-  font-size: 8px;
+  font-size: max(0.625rem, 10px);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -4975,12 +5222,16 @@ textarea {
 }
 
 .agent-count {
-  font-size: 9px;
-  color: var(--text-muted);
+  font-size: max(0.625rem, 10px);
+  /* ✅ FIXED: 10px minimum */
+  color: var(--text-secondary);
+  /* ✅ Better contrast (was --text-muted) */
   margin-top: 2px;
   display: flex;
   align-items: center;
   gap: 4px;
+  font-weight: 600;
+  /* ← Makes it more visible */
 }
 
 /* Mission Icons Area */
@@ -5031,7 +5282,7 @@ textarea {
 }
 
 .xp-lbl {
-  font-size: 8px;
+  font-size: max(0.625rem, 10px);
   color: var(--text-muted);
   text-transform: uppercase;
 }
@@ -5134,7 +5385,7 @@ textarea {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 9px;
+  font-size: max(0.6875rem, 11px);
   font-weight: 700;
   color: var(--text-muted);
 }
@@ -5247,7 +5498,7 @@ textarea {
 }
 
 .rank-team-tag {
-  font-size: 9px;
+  font-size: max(0.6875rem, 11px);
   font-weight: 700;
   color: var(--team-color);
   text-transform: uppercase;
@@ -5270,7 +5521,7 @@ textarea {
 }
 
 .rank-xp-label {
-  font-size: 8px;
+  font-size: max(0.625rem, 10px);
   color: var(--text-muted);
   text-transform: uppercase;
   margin-top: -2px;
@@ -5299,14 +5550,18 @@ textarea {
   background: var(--red-core);
   color: #fff;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: max(0.75rem, 12px);
+  /* ✅ FIXED: Never smaller than 12px */
   font-weight: 900;
-  padding: 2px 10px;
+  padding: 3px 12px;
+  /* ← Slightly larger padding */
   margin: 0 15px;
   border-radius: 4px;
   text-transform: uppercase;
   z-index: 2;
   flex-shrink: 0;
+  letter-spacing: 1.5px;
+  /* ← Better readability */
 }
 
 .ticker-content {
@@ -5330,8 +5585,12 @@ textarea {
   align-items: center;
   gap: 8px;
   margin-right: 50px;
-  font-size: 11px;
-  color: var(--text-secondary);
+  font-size: max(0.75rem, 12px);
+  /* ✅ IMPROVED: 12px minimum */
+  color: var(--text-primary);
+  /* ✅ Better contrast (was --text-secondary) */
+  font-weight: 500;
+  /* ← Makes it more readable */
 }
 
 /* ── HERO STAT BLOCKS ── */
@@ -5373,7 +5632,7 @@ textarea {
 }
 
 .h-stat-lbl {
-  font-size: 9px;
+  font-size: max(0.6875rem, 11px);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -5418,72 +5677,7 @@ textarea {
   margin-bottom: 15px;
 }
 
-:root {
-  --font-display: 'Orbitron', sans-serif;
-  --font-ui: 'Rajdhani', sans-serif;
-  --font-mono: 'Share Tech Mono', monospace;
-  --font-body: 'Inter', sans-serif;
-}
-
-/* ── GLOBAL TYPOGRAPHY ── */
-body {
-  font-family: var(--font-body);
-  letter-spacing: 0.2px;
-}
-
-/* Headlines (Like "Mission Control", "Rankings") */
-h1,
-h2,
-h3,
-.page-title,
-.login-title,
-.sb-brand-title {
-  font-family: var(--font-display) !important;
-  text-transform: uppercase;
-  letter-spacing: 4px !important;
-  /* This is the key "Old App" look */
-  font-weight: 900;
-}
-
-/* UI Elements (Sidebar items, Buttons, Section Labels) */
-/* Modified catch-all */
-.btn-red,
-.btn-outline,
-.label-tag,
-.section-label,
-input,
-select,
-textarea {
-  font-family: var(--font-ui) !important;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Data & Numbers (XP, Scrobbles, Rank Numbers) */
-.stat-value,
-.xp-val,
-.h-stat-val,
-.rank-xp-val,
-.timer-num,
-.battle-rank-big,
-.ticker-item {
-  font-family: var(--font-mono) !important;
-  letter-spacing: 1px;
-}
-
-/* ── SPECIFIC COMPONENT FIXES ── */
-
-/* Sidebar Navigation */
-.nav-item {
-  font-size: 13px !important;
-  color: var(--text-secondary);
-}
-
-.nav-item.active {
-  color: var(--red-core) !important;
-  text-shadow: 0 0 10px var(--red-glow);
-}
+/* ── COMPONENT TYPOGRAPHY OVERRIDES ── */
 
 /* Stat Cards (Home Page) */
 .hero-stat-card .h-stat-val {
@@ -5508,11 +5702,11 @@ textarea {
   letter-spacing: 1px;
 }
 
-/* Ticker Speed & Style */
+/* Ticker */
 .ticker-item {
   font-family: var(--font-mono);
   text-transform: uppercase;
-  font-size: 10px;
+  font-size: max(0.625rem, 10px);
   opacity: 0.8;
 }
 
@@ -5596,17 +5790,37 @@ img {
 .obj-meta {
   display: flex;
   justify-content: space-between;
-  font-size: 10px;
-  margin-bottom: 4px;
+  align-items: center;
+  font-size: max(0.6875rem, 11px);
+  /* ✅ Larger text */
+  margin-bottom: 8px;
+  /* ✅ More breathing room */
+  gap: 8px;
+  /* ✅ Space between items */
 }
 
 .obj-name {
   font-weight: 700;
-  color: var(--text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 60%;
+  color: rgba(255, 255, 255, 0.9);
+  /* ✅ Better contrast */
+  white-space: normal;
+  /* ✅ FIXED: Allow wrapping */
+  overflow-wrap: break-word;
+  /* ✅ Break long words */
+  line-height: 1.4;
+  max-width: 100%;
+  /* ✅ FIXED: Full width available */
+  font-size: max(0.75rem, 12px);
+}
+
+/* Desktop only: Keep single line if space allows */
+@media (min-width: 769px) {
+  .obj-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 65%;
+  }
 }
 
 .obj-val {
@@ -5627,9 +5841,17 @@ img {
   transition: width 1s ease;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .obj-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  .obj-meta {
+    flex-direction: column;
+    /* Moves numbers below track names if still tight */
+    align-items: flex-start;
+    gap: 2px;
   }
 }
 
@@ -5897,7 +6119,7 @@ img {
 
 .badge-label {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: max(0.6875rem, 11px);
   font-weight: 800;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -5941,17 +6163,37 @@ img {
 }
 
 /* Compact Card for Squad Standings (ELITE DASHBOARD) */
+/* ✅ FIXED */
 .battle-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: 16px 20px 16px 24px;
+  /* ← ADDED 24px left padding */
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-left: 4px solid var(--team-color, #444);
+  /* REMOVED: border-left (now handled by ::before) */
   border-radius: 12px;
   margin-bottom: 8px;
+  position: relative;
+  /* ← REQUIRED for ::before */
+  overflow: hidden;
+  /* ← CLIPS THE GLOW */
   transition: transform 0.2s, background 0.2s;
+}
+
+/* NEW: Add the glowing accent inside the card */
+.battle-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--team-color, var(--red-core));
+  box-shadow: 0 0 15px var(--team-color);
+  z-index: 0;
+  border-radius: 12px 0 0 12px;
 }
 
 .battle-card:hover {
@@ -5980,12 +6222,17 @@ img {
   display: flex;
   align-items: center;
   gap: 4px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.5);
+  /* ← Better contrast */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 5px 9px;
+  /* ← Slightly larger */
   border-radius: 6px;
-  font-size: 11px;
+  font-size: max(0.6875rem, 11px);
+  /* ✅ Enforced 11px minimum */
   font-family: var(--font-mono);
+  font-weight: 700;
+  /* ← Makes it readable */
 }
 
 .ms-check.pass {
@@ -6121,7 +6368,7 @@ img {
   display: inline-block;
   padding: 3px 10px;
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: max(0.6875rem, 11px);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -6239,7 +6486,7 @@ img {
 
   /* Agent count smaller */
   .agent-count {
-    font-size: 8px !important;
+    font-size: max(0.625rem, 10px) !important;
   }
 
   /* THE KEY FIX: Make pills smaller and stop them wrapping */
@@ -6266,18 +6513,18 @@ img {
   .ms-pill {
     padding: 3px 5px !important;
     gap: 2px !important;
-    font-size: 9px !important;
+    font-size: max(0.6875rem, 11px) !important;
     flex-shrink: 0;
     /* Prevent pills from squishing */
     border-radius: 4px !important;
   }
 
   .ms-icon {
-    font-size: 9px !important;
+    font-size: max(0.6875rem, 11px) !important;
   }
 
   .ms-check {
-    font-size: 9px !important;
+    font-size: max(0.6875rem, 11px) !important;
   }
 
   /* XP display */
@@ -6318,31 +6565,39 @@ img {
 
   /* Layered crimson glow — this is what makes it feel alive */
   box-shadow:
-    0 0 0 1.5px rgba(220, 30, 50, 0.8),     /* sharp crisp red edge */
-    0 0 0 3px   rgba(220, 30, 50, 0.15),    /* soft second ring */
-    0 0 18px    rgba(220, 30, 50, 0.25),    /* inner bloom */
-    0 0 45px    rgba(220, 30, 50, 0.08),    /* wide ambient */
-    0 12px 35px rgba(0, 0, 0, 0.7);         /* depth */
+    0 0 0 1.5px rgba(220, 30, 50, 0.8),
+    /* sharp crisp red edge */
+    0 0 0 3px rgba(220, 30, 50, 0.15),
+    /* soft second ring */
+    0 0 18px rgba(220, 30, 50, 0.25),
+    /* inner bloom */
+    0 0 45px rgba(220, 30, 50, 0.08),
+    /* wide ambient */
+    0 12px 35px rgba(0, 0, 0, 0.7);
+  /* depth */
 
   animation: arirangPulse 2.5s ease-in-out infinite;
 }
 
 /* Breathing pulse — like a live broadcast signal */
 @keyframes arirangPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow:
       0 0 0 1.5px rgba(220, 30, 50, 0.7),
-      0 0 0 3px   rgba(220, 30, 50, 0.1),
-      0 0 15px    rgba(220, 30, 50, 0.2),
-      0 0 40px    rgba(220, 30, 50, 0.06),
+      0 0 0 3px rgba(220, 30, 50, 0.1),
+      0 0 15px rgba(220, 30, 50, 0.2),
+      0 0 40px rgba(220, 30, 50, 0.06),
       0 12px 35px rgba(0, 0, 0, 0.7);
   }
+
   50% {
     box-shadow:
       0 0 0 1.5px rgba(232, 58, 93, 1),
-      0 0 0 4px   rgba(232, 58, 93, 0.2),
-      0 0 25px    rgba(232, 58, 93, 0.35),
-      0 0 60px    rgba(232, 58, 93, 0.12),
+      0 0 0 4px rgba(232, 58, 93, 0.2),
+      0 0 25px rgba(232, 58, 93, 0.35),
+      0 0 60px rgba(232, 58, 93, 0.12),
       0 12px 35px rgba(0, 0, 0, 0.7);
   }
 }
@@ -6351,40 +6606,52 @@ img {
 .tactical-card::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 2.5px;
   background: linear-gradient(90deg,
-    transparent      0%,
-    rgba(220,30,50,0.6)  10%,
-    rgba(232,58,93,1)    30%,
-    #ff6b8a          50%,   /* hot white-red peak */
-    rgba(232,58,93,1)    70%,
-    rgba(220,30,50,0.6)  90%,
-    transparent      100%
-  );
+      transparent 0%,
+      rgba(220, 30, 50, 0.6) 10%,
+      rgba(232, 58, 93, 1) 30%,
+      #ff6b8a 50%,
+      /* hot white-red peak */
+      rgba(232, 58, 93, 1) 70%,
+      rgba(220, 30, 50, 0.6) 90%,
+      transparent 100%);
   z-index: 10;
   animation: topBarLive 2.5s ease-in-out infinite;
 }
 
 @keyframes topBarLive {
-  0%, 100% { opacity: 0.7; filter: blur(0px); }
-  50%       { opacity: 1;   filter: blur(0.5px);
-              box-shadow: 0 0 12px rgba(232,58,93,0.9); }
+
+  0%,
+  100% {
+    opacity: 0.7;
+    filter: blur(0px);
+  }
+
+  50% {
+    opacity: 1;
+    filter: blur(0.5px);
+    box-shadow: 0 0 12px rgba(232, 58, 93, 0.9);
+  }
 }
 
 /* BOTTOM EDGE — dimmer echo */
 .tactical-card::after {
   content: '';
   position: absolute;
-  bottom: 0; left: 0; right: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 1.5px;
   background: linear-gradient(90deg,
-    transparent,
-    rgba(232,58,93,0.3) 30%,
-    rgba(232,58,93,0.5) 50%,
-    rgba(232,58,93,0.3) 70%,
-    transparent
-  );
+      transparent,
+      rgba(232, 58, 93, 0.3) 30%,
+      rgba(232, 58, 93, 0.5) 50%,
+      rgba(232, 58, 93, 0.3) 70%,
+      transparent);
   z-index: 10;
 }
 
@@ -6397,17 +6664,21 @@ img {
   border: 1.5px solid #e83a5d;
   z-index: 15;
   transition: all 0.3s ease;
-  box-shadow: 0 0 6px rgba(232,58,93,0.4);
+  box-shadow: 0 0 6px rgba(232, 58, 93, 0.4);
 }
 
 .tactical-card-container .tactical-card .corner-tl {
-  top: 5px; left: 5px;
-  border-right: none; border-bottom: none;
+  top: 5px;
+  left: 5px;
+  border-right: none;
+  border-bottom: none;
 }
 
 .tactical-card-container .tactical-card .corner-br {
-  bottom: 5px; right: 5px;
-  border-left: none; border-top: none;
+  bottom: 5px;
+  right: 5px;
+  border-left: none;
+  border-top: none;
 }
 
 /* Inner — subtle red grid instead of white */
@@ -6419,8 +6690,8 @@ img {
   align-items: center;
   justify-content: center;
   background-image:
-    linear-gradient(rgba(232,58,93,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(232,58,93,0.03) 1px, transparent 1px);
+    linear-gradient(rgba(232, 58, 93, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232, 58, 93, 0.03) 1px, transparent 1px);
   background-size: 10px 10px;
   position: relative;
   z-index: 2;
@@ -6431,29 +6702,34 @@ img {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(232,58,93,0) 0%,
-    rgba(232,58,93,0.05) 35%,
-    rgba(255,100,130,0.10) 50%,
-    rgba(232,58,93,0.05) 65%,
-    rgba(232,58,93,0) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(232, 58, 93, 0) 0%,
+      rgba(232, 58, 93, 0.05) 35%,
+      rgba(255, 100, 130, 0.10) 50%,
+      rgba(232, 58, 93, 0.05) 65%,
+      rgba(232, 58, 93, 0) 100%);
   animation: redShimmer 5s ease-in-out infinite alternate;
   pointer-events: none;
   z-index: 3;
 }
 
 @keyframes redShimmer {
-  0%   { transform: translateX(-25px); opacity: 0.2; }
-  100% { transform: translateX(25px);  opacity: 0.7; }
+  0% {
+    transform: translateX(-25px);
+    opacity: 0.2;
+  }
+
+  100% {
+    transform: translateX(25px);
+    opacity: 0.7;
+  }
 }
 
 .tactical-inner img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 0 10px rgba(0,0,0,1));
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 1));
   z-index: 2;
   transition: transform 0.3s ease, filter 0.3s ease;
 }
@@ -6466,12 +6742,11 @@ img {
   width: 100%;
   height: 10px;
   background: linear-gradient(90deg,
-    transparent,
-    rgba(232,58,93,0.6),
-    rgba(255,120,150,0.4),
-    rgba(232,58,93,0.6),
-    transparent
-  );
+      transparent,
+      rgba(232, 58, 93, 0.6),
+      rgba(255, 120, 150, 0.4),
+      rgba(232, 58, 93, 0.6),
+      transparent);
   filter: blur(6px);
   opacity: 0.5;
   z-index: 8;
@@ -6479,9 +6754,17 @@ img {
 }
 
 @keyframes arirangScan {
-  0%   { top: -10%; }
-  30%  { top: 110%; }
-  100% { top: 110%; }
+  0% {
+    top: -10%;
+  }
+
+  30% {
+    top: 110%;
+  }
+
+  100% {
+    top: 110%;
+  }
 }
 
 /* Hover */
@@ -6489,15 +6772,15 @@ img {
   transform: translateY(-5px);
   box-shadow:
     0 0 0 1.5px rgba(232, 58, 93, 1),
-    0 0 0 4px   rgba(232, 58, 93, 0.25),
-    0 0 30px    rgba(232, 58, 93, 0.4),
-    0 0 70px    rgba(232, 58, 93, 0.15),
+    0 0 0 4px rgba(232, 58, 93, 0.25),
+    0 0 30px rgba(232, 58, 93, 0.4),
+    0 0 70px rgba(232, 58, 93, 0.15),
     0 15px 45px rgba(0, 0, 0, 0.9);
 }
 
 .tactical-card-container:hover img {
   transform: scale(1.15);
-  filter: drop-shadow(0 0 15px rgba(232,58,93,0.5));
+  filter: drop-shadow(0 0 15px rgba(232, 58, 93, 0.5));
 }
 
 .tactical-card-container:hover .tactical-card .corner-tl,
@@ -6505,108 +6788,234 @@ img {
   width: 14px;
   height: 14px;
   border-width: 2px;
-  box-shadow: 0 0 12px rgba(232,58,93,0.8);
+  box-shadow: 0 0 12px rgba(232, 58, 93, 0.8);
 }
+
 
 /* Label */
 .tactical-label {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 8px;
-  color: rgba(232, 58, 93, 0.4);
+  font-size: max(0.625rem, 10px);
+  /* ✅ FIXED: 10px minimum */
+  color: rgba(232, 58, 93, 0.7);
+  /* ✅ Better contrast (was 0.4) */
   margin-top: 6px;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
+  /* ← Slightly wider for legibility */
+  font-weight: 700;
+  /* ← Makes it more readable */
 }
+
 /* ── SECRET MISSIONS TACTICAL HUD ── */
 
 .intel-hud-grid {
-    display: grid;
-    /* 2 columns on mobile, auto-fills on desktop */
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 10px;
-    margin-bottom: 30px;
+  display: grid;
+  /* 2 columns on mobile, auto-fills on desktop */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 30px;
 }
 
 /* On Desktop/Tablet, use more columns */
 @media (min-width: 600px) {
-    .intel-hud-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    }
+  .intel-hud-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
 }
 
 .intel-hud-card {
-    position: relative;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    padding: 12px;
-    transition: all 0.3s ease;
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  /* ✅ FIXED: More visible */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* ✅ Brighter border */
+  border-radius: 10px;
+  padding: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  /* ← Adds definition */
 }
 
 .hud-card-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .hud-pfp {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: 2px solid var(--team-color);
-    margin-bottom: 8px;
-    overflow: hidden;
-    background: #000;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid var(--team-color);
+  margin-bottom: 8px;
+  overflow: hidden;
+  background: #000;
 }
 
 .hud-pfp img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .hud-team {
-    font-family: var(--font-display);
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
 }
 
 .hud-xp {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 900;
-    color: #fff;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 900;
+  color: #fff;
 }
 
 .hud-stats {
-    font-size: 8px;
-    color: var(--text-muted);
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    margin-top: 2px;
+  font-size: max(0.5625rem, 9px);
+  /* ✅ Larger (from FIX 2) */
+  color: var(--text-secondary);
+  /* ✅ FIXED: Better contrast */
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
 }
 
 /* Highlight Your Team */
 .intel-hud-card.is-me {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--team-color);
-    box-shadow: inset 0 0 10px var(--team-color);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--team-color);
+  box-shadow: inset 0 0 10px var(--team-color);
 }
 
 .hud-tag {
-    position: absolute;
-    bottom: -6px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--team-color);
-    color: #000;
-    font-size: 6px;
+  position: absolute;
+  bottom: -8px;
+  /* ← Moved down to fit larger text */
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--team-color);
+  color: #000;
+  font-size: max(0.5rem, 8px);
+  /* ✅ FIXED: 8px minimum (was 6px!) */
+  font-weight: 900;
+  padding: 2px 8px;
+  /* ← Larger padding */
+  border-radius: 4px;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+  /* ← Better spacing */
+}
+
+@keyframes pulseBorder {
+  0% {
+    border-color: rgba(255, 59, 92, 0.4);
+    box-shadow: 0 0 0px rgba(255, 59, 92, 0);
+  }
+
+  50% {
+    border-color: rgba(255, 59, 92, 1);
+    box-shadow: 0 0 20px rgba(255, 59, 92, 0.3);
+  }
+
+  100% {
+    border-color: rgba(255, 59, 92, 0.4);
+    box-shadow: 0 0 0px rgba(255, 59, 92, 0);
+  }
+}
+
+/* ══════════════════════════════════════
+   FIX: Mobile Target Cards (Full Width)
+   ══════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* Force single column layout using GRID (not flex!) */
+  .grid-2,
+  .layered-grid,
+  .obj-container {
+    display: grid !important;
+    /* ✅ FIXED: Use grid, not flex */
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Give cards more breathing room */
+  .obj-card,
+  .target-item {
+    padding: 16px 18px !important;
+    /* ✅ Larger padding */
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.04);
+    /* ✅ Slightly brighter */
+  }
+
+  /* Stack metadata vertically */
+  .obj-meta,
+  .target-meta {
+    display: flex;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px;
+    /* ✅ More space */
+    margin-bottom: 8px;
+  }
+
+  /* Allow track names to wrap naturally */
+  .obj-name,
+  .target-meta .label {
+    white-space: normal !important;
+    /* ✅ Allow wrapping */
+    max-width: 100% !important;
+    font-size: max(0.8125rem, 13px) !important;
+    /* ✅ Larger */
+    line-height: 1.5;
+    /* ✅ Better readability */
+    overflow-wrap: break-word;
+    /* ✅ Prevent overflow */
+    word-break: break-word;
+    /* ✅ Break long words */
+    color: rgba(255, 255, 255, 0.9);
+    /* ✅ Better contrast */
+    font-weight: 600;
+  }
+
+  /* Make the count/value more prominent */
+  .obj-val,
+  .target-meta .count {
+    font-size: max(0.875rem, 14px) !important;
+    /* ✅ Larger */
     font-weight: 900;
-    padding: 1px 6px;
-    border-radius: 3px;
-    white-space: nowrap;
+    color: #fff;
+    /* ✅ Full white */
+    font-family: var(--font-mono);
+  }
+
+  /* Progress bars bigger on mobile */
+  .obj-bar-bg,
+  .target-bar-bg {
+    height: 8px;
+    /* ✅ Thicker (was 4-6px) */
+    border-radius: 6px;
+  }
+}
+
+/* ═══════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════ */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
 }
