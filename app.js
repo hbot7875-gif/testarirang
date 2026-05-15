@@ -5476,9 +5476,6 @@ function renderTeams() {
 // ██████  ACTIVITY FEED PAGE
 // =============================================
 
-/**
- * Full activity feed page — cached 30s.
- */
 async function loadFeed() {
   const container = $('feedContent');
   if (!container) return;
@@ -5496,7 +5493,6 @@ async function loadFeed() {
         let msg = '';
 
         try {
-          // Try template first, then data.message, then raw type
           msg = typeConfig?.template(data) || data.message || a.type.replace(/_/g, ' ');
         } catch (e) {
           msg = data.message || a.type;
@@ -5519,11 +5515,9 @@ async function loadFeed() {
 // =============================================
 // ██████  CHAT
 // =============================================
-// v2.0: Uses Timers manager for polling, short-lived cache.
 
 async function loadChat() {
   try {
-    // 5s cache — feels real-time but prevents hammering during rapid calls
     const d = await Api.call('getChatMessages', { limit: 50 }, { cache: true, ttl: 5_000, silent: true });
     if (!d.success) return;
 
@@ -5540,7 +5534,6 @@ async function loadChat() {
 
     box.scrollTop = box.scrollHeight;
 
-    // v2.0: Uses Timers — auto-clears previous interval
     if (STATE.page === 'chat') {
       Timers.setInterval('chat', loadChat, 10_000);
     }
@@ -5557,14 +5550,12 @@ async function sendChat() {
 
   try {
     await Api.call('sendChatMessage', { agentNo: STATE.agentNo, message: msg }, { dedupe: false, cache: false });
-    // Invalidate chat cache so next load is fresh
     Api.invalidate('getChatMessages');
     loadChat();
   } catch {
     showToast('Failed to send', 'error');
   }
 }
-
 
 
 // =============================================
@@ -5593,26 +5584,28 @@ async function renderWrappedPage() {
     const isMyTeam = profile.team === myTeamName;
     const realData = teamsData.find(t => t.team && t.team.toLowerCase() === profile.team.toLowerCase()) || {};
     
-    // Base Team Stats
-    const xp = realData.teamXP || (10000 + idx * 2500);
+    // Base Team Stats (Cumulative Scale for 8+ Weeks)
+    const xp = realData.teamXP || (85000 + idx * 12500); 
     const activeCount = realData.agentCount || (20 + idx * 5);
-    const squadTotalStreams = xp * (12 + (idx%3));
+    const seasonTotalStreams = xp * (14 + (idx%3));
     
-    // Split into Album vs Tracks for the team
-    const squadAlbumStreams = Math.floor(squadTotalStreams * 0.62);
-    const squadTrackStreams = squadTotalStreams - squadAlbumStreams;
+    // Split into Album vs Tracks for the season
+    const seasonAlbumStreams = Math.floor(seasonTotalStreams * 0.62);
+    const seasonTrackStreams = seasonTotalStreams - seasonAlbumStreams;
     
-    // Personal Stats (Only for my team)
+    // Personal Stats (Cumulative Season Impact)
     const myXP = myStats.totalXP || 0;
     const myStreams = myStats.trackScrobbles || 0;
-    const contributionPercent = squadTotalStreams > 0 ? ((myStreams / squadTotalStreams) * 100).toFixed(2) : '0.00';
+    const contributionPercent = seasonTotalStreams > 0 ? ((myStreams / seasonTotalStreams) * 100).toFixed(2) : '0.00';
 
     // Strengths Logic
     let strengthLabel = "ELITE OPERATIONS";
-    if (xp > 20000) strengthLabel = "UNSTOPPABLE MOMENTUM";
+    if (xp > 150000) strengthLabel = "SEASON DOMINANCE";
+    else if (xp > 100000) strengthLabel = "UNSTOPPABLE MOMENTUM";
     else if (activeCount > 40) strengthLabel = "MASSIVE MOBILIZATION";
-    else strengthLabel = "STRATEGIC DOMINANCE";
+    else strengthLabel = "STRATEGIC STRIKE FORCE";
 
+    // Track Stats
     let trackStats = [];
     if (isMyTeam && Object.keys(myTracks).length > 0) {
       trackStats = Object.entries(myTracks)
@@ -5621,13 +5614,24 @@ async function renderWrappedPage() {
         .map(([name, count], i) => ({ name, count, variation: Math.max(10, 100 - (i * 15)) }));
     } else {
       trackStats = CONFIG.ARIRANG_TRACKS.map((track, tIdx) => {
-        const base = squadTrackStreams / 14;
+        const base = seasonTrackStreams / 14;
         const variation = (Math.sin((idx * 7) + tIdx) * 0.4) + 1;
         return { name: track, count: Math.floor(base * variation), variation: variation * 70 };
       }).sort((a, b) => b.count - a.count).slice(0, 5);
     }
 
-    const contributionBadge = isMyTeam ? `<div class="contribution-badge">YOUR IMPACT: ${contributionPercent}%</div>` : '';
+    // Album Stats (Simulated based on team projects)
+    const allAlbums = Object.values(CONFIG.TEAMS).map(t => t.ref);
+    const squadTopAlbums = [
+      profile.ref, 
+      ...allAlbums.filter(a => a !== profile.ref).sort(() => Math.random() - 0.5)
+    ].slice(0, 5).map((name, i) => ({
+      name,
+      count: Math.floor(seasonAlbumStreams * (0.4 - (i * 0.08))),
+      percent: Math.max(10, 90 - (i * 18))
+    }));
+
+    const contributionBadge = isMyTeam ? `<div class="contribution-badge">SEASON IMPACT: ${contributionPercent}%</div>` : '';
 
     cardsHtml += `
       <div class="wrapped-story-card" id="wrapped-card-${profile.team.replace(/\s+/g, '')}" style="--team-color: ${profile.color};" data-team="${profile.team}">
@@ -5649,38 +5653,56 @@ async function renderWrappedPage() {
 
         <div class="bento-grid">
             <div class="bento-box hero-box">
-                <div class="bento-label">SQUAD TOTAL STREAMS</div>
-                <div class="bento-value highlight smart-counter" data-target="${squadTotalStreams}">0</div>
+                <div class="bento-label">SEASON TOTAL STREAMS</div>
+                <div class="bento-value highlight smart-counter" data-target="${seasonTotalStreams}">0</div>
             </div>
             
             <div class="bento-box">
-                <div class="bento-label">📀 ALBUM STREAMS</div>
-                <div class="bento-value">${squadAlbumStreams.toLocaleString()}</div>
+                <div class="bento-label">📀 SEASON ALBUM</div>
+                <div class="bento-value">${seasonAlbumStreams.toLocaleString()}</div>
             </div>
             <div class="bento-box">
-                <div class="bento-label">🎵 TRACK STREAMS</div>
-                <div class="bento-value">${squadTrackStreams.toLocaleString()}</div>
+                <div class="bento-label">🎵 SEASON TRACKS</div>
+                <div class="bento-value">${seasonTrackStreams.toLocaleString()}</div>
             </div>
         </div>
 
         ${isMyTeam ? `
         <div class="bento-box full-width personal-box">
-            <div class="bento-label" style="color:var(--team-color); font-weight:900;">AGENT CONTRIBUTION</div>
+            <div class="bento-label" style="color:var(--team-color); font-weight:900;">CUMULATIVE AGENT IMPACT</div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
                 <div>
                     <div class="bento-value" style="font-size:14px;">${myStreams.toLocaleString()} STREAMS</div>
-                    <div class="bento-label" style="margin-top:2px;">SCROBBLED BY YOU</div>
+                    <div class="bento-label" style="margin-top:2px;">SINCE WEEK 1</div>
                 </div>
                 <div style="text-align:right;">
                     <div class="bento-value" style="font-size:14px;">${myXP.toLocaleString()} XP</div>
-                    <div class="bento-label" style="margin-top:2px;">PERSONAL MERIT</div>
+                    <div class="bento-label" style="margin-top:2px;">SEASON TOTAL</div>
                 </div>
             </div>
         </div>
         ` : ''}
 
         <div class="bento-box full-width">
-            <div class="bento-label" style="margin-bottom: 12px;">🎵 SQUAD TOP 5 TRACKS</div>
+            <div class="bento-label" style="margin-bottom: 12px;">📀 SEASON TOP 5 ALBUMS</div>
+            <div class="top-tracks-list">
+              ${squadTopAlbums.map((album, i) => `
+                <div class="track-row">
+                  <span class="track-rank">${i + 1}</span>
+                  <div class="track-info">
+                      <div class="track-name">${album.name}</div>
+                      <div class="track-bar-bg">
+                          <div class="track-bar-fill animated-bar" data-width="${album.percent}%" style="width: 0%;"></div>
+                      </div>
+                  </div>
+                  <span class="track-count">${album.count.toLocaleString()}</span>
+                </div>
+              `).join('')}
+            </div>
+        </div>
+
+        <div class="bento-box full-width">
+            <div class="bento-label" style="margin-bottom: 12px;">🎵 SEASON TOP 5 TRACKS</div>
             <div class="top-tracks-list">
               ${trackStats.map((track, i) => `
                 <div class="track-row">
@@ -5705,7 +5727,7 @@ async function renderWrappedPage() {
       .wrapped-container { color: #ffffff; padding-bottom: 80px; overflow-x: hidden; position: relative; }
       .wrapped-hero { text-align: center; padding: 20px 20px 30px; }
       .wrapped-title { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900; letter-spacing: 2px; margin: 10px 0; text-transform: uppercase; }
-      .wrapped-subtitle { font-family: var(--font-mono); color: var(--purple-mid); font-size: 10px; letter-spacing: 3px; }
+      .wrapped-subtitle { font-family: var(--font-mono); color: var(--purple-mid); font-size: 9px; letter-spacing: 3px; font-weight: 800; text-transform: uppercase; }
       
       .wrapped-cards-wrapper {
         display: flex; gap: 20px; padding: 0 20px 40px; overflow-x: auto;
@@ -5733,8 +5755,8 @@ async function renderWrappedPage() {
       .wrapped-pfp-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
       
       .contribution-badge {
-        position: absolute; top: -15px; right: 10%; background: var(--team-color); color: #fff;
-        font-size: 9px; padding: 4px 10px; border-radius: 20px; font-weight: 900;
+        position: absolute; top: -15px; right: 5%; background: var(--team-color); color: #fff;
+        font-size: 9px; padding: 4px 12px; border-radius: 20px; font-weight: 900;
         font-family: var(--font-mono); letter-spacing: 1px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         animation: badgeFloat 2s ease-in-out infinite;
       }
@@ -5780,7 +5802,7 @@ async function renderWrappedPage() {
 
     <div class="wrapped-container">
       <div class="wrapped-hero">
-        <div class="wrapped-subtitle">GLOBAL SQUAD INTEL</div>
+        <div class="wrapped-subtitle">SEASON INTELLIGENCE: SINCE WEEK 1</div>
         <div class="wrapped-title">HOPETRACKER<br/><span style="color: var(--purple-core);">WRAPPED</span></div>
       </div>
       
