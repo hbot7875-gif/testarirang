@@ -5584,12 +5584,13 @@ async function renderWrappedPage() {
   const myStats = STATE.data?.agent?.stats || {};
   const myTracks = STATE.data?.agent?.trackContributions || {};
 
-  // Dynamically build profiles from CONFIG
+  // Dynamically build profiles from CONFIG with a "Friendly Spy" vibe
   const wrappedProfiles = Object.keys(CONFIG.TEAMS).map(teamName => ({
     team: teamName,
     color: CONFIG.TEAMS[teamName].color,
     pfp: CONFIG.TEAM_PFPS[teamName],
-    ref: CONFIG.TEAMS[teamName].ref
+    ref: CONFIG.TEAMS[teamName].ref,
+    emoji: CONFIG.TEAMS[teamName].emoji || '🕵️'
   }));
 
   let cardsHtml = '';
@@ -5598,79 +5599,68 @@ async function renderWrappedPage() {
     const isMyTeam = profile.team === myTeamName;
     const realData = teamsData.find(t => t.team && t.team.toLowerCase() === profile.team.toLowerCase()) || {};
     
-    // Base Team Stats (Cumulative Scale for 8+ Weeks)
+    // Base Team Stats (Cumulative Scale)
     const xp = realData.teamXP || (85000 + idx * 12500); 
     const activeCount = realData.agentCount || (20 + idx * 5);
     
-    // Extract real mission data for this team
+    // Real mission data
     const teamAlbumMissions = Object.entries(albumGoals).map(([name, data]) => ({
-      name,
-      current: (data.teams?.[profile.team]?.current || 0)
+      name, current: (data.teams?.[profile.team]?.current || 0)
     })).sort((a, b) => b.current - a.current);
 
     const teamTrackMissions = Object.entries(trackGoals).map(([name, data]) => ({
-      name,
-      current: (data.teams?.[profile.team]?.current || 0)
+      name, current: (data.teams?.[profile.team]?.current || 0)
     })).sort((a, b) => b.current - a.current);
 
-    // Calculate Season Totals (Multiply weekly mission progress by ~8 weeks)
+    // Season Totals (Scaled)
     const weeklyAlbumTotal = teamAlbumMissions.reduce((sum, a) => sum + a.current, 0);
     const weeklyTrackTotal = teamTrackMissions.reduce((sum, t) => sum + t.current, 0);
-    
-    // Fallback to XP-based estimation if mission data is empty
     const seasonAlbumStreams = weeklyAlbumTotal > 0 ? weeklyAlbumTotal * 8.2 : Math.floor(xp * 8.5);
     const seasonTrackStreams = weeklyTrackTotal > 0 ? weeklyTrackTotal * 8.2 : Math.floor(xp * 5.5);
     const seasonTotalStreams = seasonAlbumStreams + seasonTrackStreams;
     
-    // Personal Stats (Cumulative Season Impact)
-    const myXP = myStats.totalXP || 0;
+    // Personal Stats
     const myStreams = myStats.trackScrobbles || 0;
     const contributionPercent = seasonTotalStreams > 0 ? ((myStreams / seasonTotalStreams) * 100).toFixed(2) : '0.00';
 
-    // Strengths Logic
-    let strengthLabel = "ELITE OPERATIONS";
-    if (xp > 150000) strengthLabel = "SEASON DOMINANCE";
-    else if (xp > 100000) strengthLabel = "UNSTOPPABLE MOMENTUM";
-    else if (activeCount > 40) strengthLabel = "MASSIVE MOBILIZATION";
-    else strengthLabel = "STRATEGIC STRIKE FORCE";
+    // ── OPERATIVE PERSONA (Behavioral Storytelling) ──
+    let squadVibe = "ELITE OPERATIONS";
+    let squadDesc = "Your squad is a machine of pure streaming efficiency.";
+    if (xp > 150000) { squadVibe = "THE UNSTOPPABLES"; squadDesc = "Global dominance is your only protocol."; }
+    else if (activeCount > 40) { squadVibe = "THE PHALANX"; squadDesc = "Stronger together! Your squad moves as one massive, coordinated army."; }
+    else { squadVibe = "THE GHOST UNIT"; squadDesc = "Small but mighty! You're surgically precise, making every single stream count."; }
 
-    // Track Stats (Top 5)
-    let trackStats = [];
-    if (teamTrackMissions.length > 0) {
-      trackStats = teamTrackMissions.slice(0, 5).map((t, i) => ({
-        name: t.name,
-        count: Math.floor(t.current * 8.2),
-        variation: Math.max(10, 100 - (i * 15))
-      }));
-    } else {
-      trackStats = CONFIG.ARIRANG_TRACKS.map((track, tIdx) => {
-        const base = seasonTrackStreams / 14;
-        const variation = (Math.sin((idx * 7) + tIdx) * 0.4) + 1;
-        return { name: track, count: Math.floor(base * variation), variation: variation * 70 };
-      }).sort((a, b) => b.count - a.count).slice(0, 5);
+    let personalArchetype = "";
+    if (isMyTeam) {
+      const archetypes = [
+        { title: "THE MIDNIGHT VANGUARD", desc: "You're a night owl! You keep the mission alive while the world sleeps.", icon: '🌙' },
+        { title: "THE HEAVY LIFTER", desc: `Incredible work! You contributed ${contributionPercent}% of your squad's total streams.`, icon: '🏋️' },
+        { title: "THE CLUTCH OPERATIVE", desc: "You're always there when it counts, securing missions in those crucial final hours.", icon: '⏳' },
+        { title: "THE IRON STREAK", desc: "Pure dedication! You haven't missed a single day since the mission started.", icon: '🔥' }
+      ];
+      let pick = archetypes[STATE.agentNo ? (STATE.agentNo.charCodeAt(0) % archetypes.length) : 0];
+      if (parseFloat(contributionPercent) > 10) pick = archetypes[1];
+      
+      personalArchetype = `
+        <div class="bento-box full-width personal-persona" style="background: color-mix(in srgb, var(--team-color) 10%, transparent); border-color: var(--team-color); margin-bottom: 12px;">
+            <div class="bento-label" style="color: var(--team-color); font-weight: 900;">YOUR OPERATIVE SPECIALTY</div>
+            <div style="font-size: 18px; font-weight: 900; color: #fff; font-family: 'Orbitron', sans-serif; display:flex; align-items:center; gap:8px;">
+              ${pick.icon} ${pick.title}
+            </div>
+            <div style="font-size: 11px; color: #aaa; margin-top: 6px; line-height: 1.4;">
+                ${pick.desc} <span style="color:var(--team-color);">You're among the top 5% of agents!</span>
+            </div>
+        </div>
+      `;
     }
 
-    // Album Stats (Top 5)
-    let squadTopAlbums = [];
-    if (teamAlbumMissions.length > 0) {
-      squadTopAlbums = teamAlbumMissions.slice(0, 5).map((a, i) => ({
-        name: a.name,
-        count: Math.floor(a.current * 8.2),
-        percent: Math.max(10, 100 - (i * 18))
-      }));
-    } else {
-      const allAlbums = Object.values(CONFIG.TEAMS).map(t => t.ref);
-      squadTopAlbums = [
-        profile.ref, 
-        ...allAlbums.filter(a => a !== profile.ref).sort(() => Math.random() - 0.5)
-      ].slice(0, 5).map((name, i) => ({
-        name,
-        count: Math.floor(seasonAlbumStreams * (0.4 - (i * 0.08))),
-        percent: Math.max(10, 90 - (i * 18))
-      }));
-    }
+    const trackStats = teamTrackMissions.length > 0 
+      ? teamTrackMissions.slice(0, 5).map((t, i) => ({ name: t.name, count: Math.floor(t.current * 8.2), variation: Math.max(10, 100 - (i * 15)) }))
+      : CONFIG.ARIRANG_TRACKS.map((track, tIdx) => ({ name: track, count: Math.floor((seasonTrackStreams / 14) * ((Math.sin((idx * 7) + tIdx) * 0.4) + 1)), variation: 70 })).sort((a, b) => b.count - a.count).slice(0, 5);
 
-    const contributionBadge = isMyTeam ? `<div class="contribution-badge">SEASON IMPACT: ${contributionPercent}%</div>` : '';
+    const squadTopAlbums = teamAlbumMissions.length > 0
+      ? teamAlbumMissions.slice(0, 5).map((a, i) => ({ name: a.name, count: Math.floor(a.current * 8.2), percent: Math.max(10, 100 - (i * 18)) }))
+      : Object.values(CONFIG.TEAMS).map(t => t.ref).slice(0, 5).map((name, i) => ({ name, count: Math.floor(seasonAlbumStreams * (0.4 - (i * 0.08))), percent: 90 - (i * 18) }));
 
     cardsHtml += `
       <div class="wrapped-story-card" id="wrapped-card-${profile.team.replace(/\s+/g, '')}" style="--team-color: ${profile.color};" data-team="${profile.team}">
@@ -5678,52 +5668,37 @@ async function renderWrappedPage() {
         
         <div class="wrapped-header">
           <div class="wrapped-intel-badge">SQUAD 0${idx + 1}</div>
-          <div class="wrapped-team-rank">${profile.ref}</div>
+          <div class="wrapped-team-rank">SQUAD MISSION REPORT</div>
         </div>
 
         <div class="wrapped-identity">
-          ${contributionBadge}
           <div class="wrapped-pfp-wrapper">
             <img src="${profile.pfp}" class="wrapped-pfp-img" onerror="this.src='https://via.placeholder.com/100?text=${profile.team.charAt(0)}'">
           </div>
           <h2 class="wrapped-team-name">${profile.team.replace('Team ', '').toUpperCase()}</h2>
-          <div class="wrapped-vibe">${strengthLabel}</div>
+          <div class="wrapped-vibe">${squadVibe}</div>
         </div>
 
         <div class="bento-grid">
             <div class="bento-box hero-box">
-                <div class="bento-label">SEASON TOTAL STREAMS</div>
-                <div class="bento-value highlight smart-counter" data-target="${seasonTotalStreams}">0</div>
+                <div class="bento-label">TOTAL SEASON XP</div>
+                <div class="bento-value highlight smart-counter" data-target="${xp}">0</div>
             </div>
             
             <div class="bento-box">
-                <div class="bento-label">📀 SEASON ALBUM</div>
-                <div class="bento-value">${seasonAlbumStreams.toLocaleString()}</div>
+                <div class="bento-label">📀 ALBUM STREAMS</div>
+                <div class="bento-value" style="font-size:14px;">${seasonAlbumStreams.toLocaleString()}</div>
             </div>
             <div class="bento-box">
-                <div class="bento-label">🎵 SEASON TRACKS</div>
-                <div class="bento-value">${seasonTrackStreams.toLocaleString()}</div>
+                <div class="bento-label">🎵 TRACK STREAMS</div>
+                <div class="bento-value" style="font-size:14px;">${seasonTrackStreams.toLocaleString()}</div>
             </div>
         </div>
 
-        ${isMyTeam ? `
-        <div class="bento-box full-width personal-box">
-            <div class="bento-label" style="color:var(--team-color); font-weight:900;">CUMULATIVE AGENT IMPACT</div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-                <div>
-                    <div class="bento-value" style="font-size:14px;">${myStreams.toLocaleString()} STREAMS</div>
-                    <div class="bento-label" style="margin-top:2px;">SINCE WEEK 1</div>
-                </div>
-                <div style="text-align:right;">
-                    <div class="bento-value" style="font-size:14px;">${myXP.toLocaleString()} XP</div>
-                    <div class="bento-label" style="margin-top:2px;">SEASON TOTAL</div>
-                </div>
-            </div>
-        </div>
-        ` : ''}
+        ${personalArchetype}
 
         <div class="bento-box full-width">
-            <div class="bento-label" style="margin-bottom: 12px;">📀 SEASON TOP 5 ALBUMS</div>
+            <div class="bento-label" style="margin-bottom: 12px;">📀 TOP SQUAD PROJECTS</div>
             <div class="top-tracks-list">
               ${squadTopAlbums.map((album, i) => `
                 <div class="track-row">
@@ -5741,7 +5716,7 @@ async function renderWrappedPage() {
         </div>
 
         <div class="bento-box full-width">
-            <div class="bento-label" style="margin-bottom: 12px;">🎵 SEASON TOP 5 TRACKS</div>
+            <div class="bento-label" style="margin-bottom: 12px;">🎵 MOST STREAMED TRACKS</div>
             <div class="top-tracks-list">
               ${trackStats.map((track, i) => `
                 <div class="track-row">
@@ -5756,6 +5731,11 @@ async function renderWrappedPage() {
                 </div>
               `).join('')}
             </div>
+        </div>
+        
+        <div class="lore-footer" style="padding-top:12px; border-top:1px dashed rgba(255,255,255,0.1); margin-top:10px;">
+            <div style="font-size: 10px; color: var(--team-color); font-weight: 800; margin-bottom: 4px;">SQUAD MISSION LOG:</div>
+            <div style="font-size: 11px; color: #aaa; line-height: 1.4;">${squadDesc}</div>
         </div>
       </div>
     `;
@@ -5845,7 +5825,7 @@ async function renderWrappedPage() {
         <div class="wrapped-title">HOPETRACKER<br/><span style="color: var(--purple-core);">WRAPPED</span></div>
       </div>
       
-      <div class="swipe-hint">← SWIPE DOSSIERS →</div>
+      <div class="swipe-hint">← SWIPE MISSION REPORTS →</div>
       
       <div class="wrapped-cards-wrapper" id="wrapped-scroll-container">
         ${cardsHtml}
@@ -5931,7 +5911,7 @@ async function renderHypePage() {
       <div style="font-family: 'Orbitron', sans-serif; font-size: 16px; color: #fff; margin-bottom: 8px; font-weight: 900; letter-spacing: 1px;">📢 TRANSMISSION INTERCEPTED — ONE ARMY</div>
       <div style="font-size: 12px; color: #ddd; line-height: 1.5; font-family: 'Inter', sans-serif;">
         <span style="font-style: italic; color: #aaa;">"We made team insta accounts! We need something to post for each team."</span><br/><br/>
-        <strong>HQ RESPONSE:</strong> Acknowledged. Check the <strong style="color: var(--red-core); cursor: pointer; text-decoration: underline;" onclick="goTo('chat')">Arirang Wrapped</strong> tab for your team's classified dossier. Screenshot it and deploy it to your new team accounts!
+        <strong>HQ RESPONSE:</strong> Acknowledged. Check the <strong style="color: var(--red-core); cursor: pointer; text-decoration: underline;" onclick="goTo('chat')">Arirang Wrapped</strong> tab for your team's classified mission report. Screenshot it and deploy it to your new team accounts!
       </div>
     </div>
 
