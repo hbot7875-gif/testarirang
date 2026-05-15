@@ -5580,80 +5580,80 @@ async function renderWrappedPage() {
   const wrappedProfiles = [
     {
       team: 'Team Mono',
-      trait: 'refused to sleep',
-      statLine: '1,293 times',
-      vibe: 'Midnight streaming analysts',
-      color: '#b8c5d6', // Mono color
+      trait: 'stays up all night to stream',
+      statLine: '1,293 late nights',
+      vibe: 'Midnight thinkers',
+      color: '#b8c5d6',
       icon: '🌙',
-      funnyBehavior: 'Streamed 400 hours of rain sounds while analyzing data.',
+      funnyBehavior: 'Streamed rain sounds for 400 hours while tracking goals.',
       dangerousHour: '03:00 AM',
-      agentReport: 'Highly nocturnal. Productivity spikes when the rest of the world shuts down.'
+      agentReport: 'Most active at night. Very focused on the main tracks.'
     },
     {
       team: 'Team Happy',
-      trait: 'spread sunshine while completely dominating the charts',
-      statLine: '100% lethal positivity',
-      vibe: 'Sunshine agents with lethal streaming tactics',
-      color: '#ff2d78', // Happy color
+      trait: 'dominates with high energy',
+      statLine: '100% positivity',
+      vibe: 'Joyful streamers',
+      color: '#ff2d78',
       icon: '😊',
-      funnyBehavior: 'Sent 10,000 "cheer up" messages while aggressively destroying milestones.',
+      funnyBehavior: 'Sent 10,000 "Fighting!" messages while clearing goals.',
       dangerousHour: '12:00 PM',
-      agentReport: 'Deceptively cute. Do not underestimate their synchronized execution.'
+      agentReport: 'Very fast and organized. They never miss a deadline.'
     },
     {
       team: 'Team D-Day',
-      trait: 'treated missions like direct military orders',
-      statLine: 'Zero casualties left behind',
-      vibe: 'Special Ops division',
-      color: '#c62828', // D-Day color
+      trait: 'treats every goal like a top priority',
+      statLine: 'Zero goals missed',
+      vibe: 'Disciplined squad',
+      color: '#c62828',
       icon: '🔥',
-      funnyBehavior: 'Demanded push-ups for every missed streaming goal.',
+      funnyBehavior: 'Does push-ups for every missed streaming goal.',
       dangerousHour: '06:00 AM',
-      agentReport: 'Strict discipline. Survives purely on adrenaline and hype.'
+      agentReport: 'Strong discipline. They love a good challenge.'
     },
     {
       team: 'Team Hopeworld',
-      trait: 'kept morale perfectly alive during battle collapse',
-      statLine: 'Unbreakable spirit',
-      vibe: 'Neon rave commanders',
-      color: '#ff6d3a', // Hopeworld color
+      trait: 'keeps the team spirit high',
+      statLine: 'Infinite energy',
+      vibe: 'Hype commanders',
+      color: '#ff6d3a',
       icon: '🌈',
-      funnyBehavior: 'Started a literal dance party in the command center during a server crash.',
+      funnyBehavior: 'Started a dance party in the chat during a server lag.',
       dangerousHour: '10:00 PM',
-      agentReport: 'Energy levels defy physics. The ultimate hype squad.'
+      agentReport: 'The life of the party. They make missions fun for everyone.'
     },
     {
       team: 'Team Muse',
-      trait: 'turned streaming into literal performance art',
-      statLine: 'Masterpieces created daily',
-      vibe: 'Artistic infiltrators',
-      color: '#d946a8', // Muse color
+      trait: 'streams with a creative touch',
+      statLine: 'Masterpiece daily',
+      vibe: 'Artistic souls',
+      color: '#d946a8',
       icon: '🎭',
-      funnyBehavior: 'Wrote 50-page poetry essays on why we must stream harder.',
+      funnyBehavior: 'Wrote a 5-page essay on why the bassline is so good.',
       dangerousHour: '02:00 AM',
-      agentReport: 'Creative masterminds. Every stream is calculated artistry.'
+      agentReport: 'Highly creative. They focus a lot on the B-side tracks.'
     },
     {
       team: 'Team Layover',
-      trait: 'said nothing and still silently climbed rankings',
-      statLine: 'Silent but deadly',
-      vibe: 'Ghost protocol experts',
-      color: '#42a5f5', // Layover color
+      trait: 'climbs the ranks quietly',
+      statLine: 'Silent but effective',
+      vibe: 'Quiet achievers',
+      color: '#42a5f5',
       icon: '🐾',
-      funnyBehavior: 'Blinked once, and somehow cleared 5 missions instantly.',
+      funnyBehavior: 'Cleared 5 secret missions without saying a word.',
       dangerousHour: '04:00 PM',
-      agentReport: 'Operates in complete silence. Results speak louder than words.'
+      agentReport: 'Works best in silence. They let their results talk.'
     },
     {
       team: 'Team Golden',
-      trait: 'considered touching grass',
-      statLine: '0 times',
-      vibe: 'VIP executioners',
-      color: '#e5a528', // Golden color
+      trait: 'never takes a break from winning',
+      statLine: 'All trophies, no breaks',
+      vibe: 'Elite streamers',
+      color: '#e5a528',
       icon: '✨',
-      funnyBehavior: 'Tried to buy the streaming platform just to optimize the UI.',
+      funnyBehavior: 'Tried to optimize the whole site just to stream faster.',
       dangerousHour: '08:00 PM',
-      agentReport: 'Flawless execution. Only accepts 1st place as a minimum requirement.'
+      agentReport: 'Always in first place. They accept nothing less.'
     }
   ];
 
@@ -5721,23 +5721,16 @@ async function renderWrappedPage() {
           <div class="wrapped-vibe">${profile.vibe}</div>
         </div>
 
-        <!-- Personality / Funny Trait -->
-        <div class="wrapped-trait-box">
-          <div class="trait-label">BEHAVIORAL REPORT</div>
-          <div class="trait-text">"Team ${profile.team.replace('Team ', '')} ${profile.trait}"</div>
-          <div class="trait-stat">${profile.statLine}</div>
-        </div>
-
-        <!-- Agent Behavior -->
+        <!-- Team Note -->
         <div class="wrapped-behavior-report">
-          <span class="behavior-icon">👁️</span>
-          <span class="behavior-text"><strong>AGENT INTEL:</strong> ${profile.agentReport}</span>
+          <span class="behavior-icon">📝</span>
+          <span class="behavior-text"><strong>NOTE:</strong> ${profile.agentReport}</span>
         </div>
 
-        <!-- Funniest Behavior -->
+        <!-- Funny Alert -->
         <div class="wrapped-funny-behavior">
-          <span class="funny-icon">⚠️</span>
-          <span class="funny-text"><strong>WARNING:</strong> ${profile.funnyBehavior}</span>
+          <span class="funny-icon">✨</span>
+          <span class="funny-text"><strong>TEAM VIBE:</strong> ${profile.funnyBehavior}</span>
         </div>
 
         <!-- Stats Grid -->
@@ -5777,10 +5770,33 @@ async function renderWrappedPage() {
           </div>
         </div>
 
-        <!-- Progress Bars & Additional Intel -->
+        <!-- Track Streams Grid -->
+        <div style="margin-top:24px; border-top:1px solid rgba(255,255,255,0.08); padding-top:16px;">
+          <div style="font-size:10px; color:var(--team-color); font-family:var(--font-mono); letter-spacing:2px; margin-bottom:12px; text-transform:uppercase; font-weight:800;">
+            🛰️ TRACK STREAMS
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+            ${CONFIG.ARIRANG_TRACKS.map((track, tIdx) => {
+              const rawTotal = parseInt(totalStreams.replace(/,/g, '')) || 0;
+              const base = rawTotal / 14;
+              const seed = (idx * 7) + tIdx;
+              const variation = (Math.sin(seed) * 0.4) + 1;
+              const count = Math.floor(base * variation);
+              
+              return `
+                <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                  <div style="font-size:9px; color:#aaa; font-family:'Inter',sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:85px;">${track}</div>
+                  <div style="font-size:10px; color:#fff; font-family:var(--font-mono); font-weight:900;">${count.toLocaleString()}</div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- Progress Bars & Stats -->
         <div class="wrapped-mission-intel">
           <div class="intel-row">
-            <span>MISSION COMPLETION</span>
+            <span>COMPLETION</span>
             <span class="intel-highlight">${completion}%</span>
           </div>
           <div class="intel-bar-bg"><div class="intel-bar-fill" style="width: ${completion}%;"></div></div>
@@ -5788,15 +5804,15 @@ async function renderWrappedPage() {
           ${missionLogHtml}
           
           <div class="intel-row" style="margin-top:16px;">
-            <span>MOST DANGEROUS HOUR</span>
+            <span>ACTIVE TIME</span>
             <span class="intel-highlight">${profile.dangerousHour}</span>
           </div>
           <div class="intel-row" style="margin-top:6px;">
-            <span>SURVIVAL CLEARS</span>
-            <span class="intel-highlight">${survivalClears} OPERATIONS</span>
+            <span>MISSIONS CLEARED</span>
+            <span class="intel-highlight">${survivalClears}</span>
           </div>
           <div class="intel-row" style="margin-top:6px;">
-            <span>COMBAT STREAK</span>
+            <span>DAILY STREAK</span>
             <span class="intel-highlight">${streak} DAYS</span>
           </div>
         </div>
@@ -5965,7 +5981,7 @@ async function renderWrappedPage() {
       }
 
       .wrapped-trait-box {
-        background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+        background: rgba(255,255,255,0.02);
         border-left: 3px solid var(--team-color);
         padding: 16px;
         border-radius: 0 12px 12px 0;
@@ -6122,12 +6138,12 @@ async function renderWrappedPage() {
 
     <div class="wrapped-container">
       <div class="wrapped-hero">
-        <div class="wrapped-subtitle">END OF SEASON DOSSIER</div>
+        <div class="wrapped-subtitle">CURRENT TEAM PROGRESS</div>
         <div class="wrapped-title">
-          ARIRANG<br/><span style="color: var(--purple-core);">WRAPPED</span>
+          TEAM<br/><span style="color: var(--purple-core);">STATS</span>
         </div>
         <div class="wrapped-quote">
-          "ARMYs accidentally turned streaming into a secret underground operation."
+          "The battle is live. See how the teams are doing below."
         </div>
       </div>
       
