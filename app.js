@@ -5598,45 +5598,16 @@ async function renderWrappedPage() {
     const active = realData.agentCount || (20 + idx * 5);
     const rawTotalStreams = xp * (12 + (idx%3));
     
-    // Mission Matrix
-    const missionsList = [
-      { key: 'trackGoalPassed', label: 'Track Goals', icon: '🎵' },
-      { key: 'albumGoalPassed', label: 'Album Goals', icon: '📀' },
-      { key: 'album2xPassed', label: 'Album 2X', icon: '💿' },
-      { key: 'arirangUnitPassed', label: 'Arirang Unit', icon: '⚡' },
-      { key: 'sideMissionPassed', label: 'Side Missions', icon: '🛡️' },
-      { key: 'attendanceConfirmed', label: 'Attendance', icon: '📋' },
-      { key: 'policeConfirmed', label: 'Police Reports', icon: '👮' }
-    ];
+    // Strengths Logic
+    let strengthLabel = "ELITE OPERATIONS";
+    if (xp > 20000) strengthLabel = "UNSTOPPABLE MOMENTUM";
+    else if (active > 40) strengthLabel = "MASSIVE MOBILIZATION";
+    else if (idx % 2 === 0) strengthLabel = "PRECISION STRIKE FORCE";
+    else strengthLabel = "STRATEGIC DOMINANCE";
 
-    let passedCount = 0;
-    const missionLogHtml = missionsList.map(m => {
-      const passed = realData[m.key] !== undefined ? realData[m.key] : (Math.random() > 0.15);
-      if (passed) passedCount++;
-      return `
-        <div class="bento-mission ${passed ? 'passed' : 'failed'}">
-          <span class="m-icon">${m.icon}</span>
-          <span class="m-label">${m.label}</span>
-          <span class="m-check">${passed ? '✓' : '✗'}</span>
-        </div>
-      `;
-    }).join('');
-
-    const completion = Math.round((passedCount / 7) * 100);
-    let dynamicVibe, dynamicNote;
-    if (completion === 100) {
-      dynamicVibe = "FLAWLESS EXECUTION";
-      dynamicNote = "Zero targets missed. An absolute masterclass in streaming.";
-    } else if (completion >= 70) {
-      dynamicVibe = "RELENTLESS GRINDERS";
-      dynamicNote = "Pushing hard. Just a few gaps left to secure the ultimate win.";
-    } else if (completion >= 40) {
-      dynamicVibe = "THE RESISTANCE";
-      dynamicNote = "Holding the line. Need to mobilize inactive agents to break through.";
-    } else {
-      dynamicVibe = "SLEEPING GIANTS";
-      dynamicNote = "Currently running silent. Waiting for the right moment to strike.";
-    }
+    // Album Data (Estimated based on XP)
+    const albumStreams = Math.floor(rawTotalStreams * 0.65).toLocaleString();
+    const albumCompletion = 70 + (idx * 4) % 30;
 
     let trackStats = [];
     if (isMyTeam && Object.keys(myTracks).length > 0) {
@@ -5674,7 +5645,7 @@ async function renderWrappedPage() {
             <img src="${profile.pfp}" class="wrapped-pfp-img" onerror="this.src='https://via.placeholder.com/100?text=${profile.team.charAt(0)}'">
           </div>
           <h2 class="wrapped-team-name">${profile.team.replace('Team ', '').toUpperCase()}</h2>
-          <div class="wrapped-vibe">${dynamicVibe}</div>
+          <div class="wrapped-vibe">${strengthLabel}</div>
         </div>
 
         <div class="bento-grid">
@@ -5693,11 +5664,20 @@ async function renderWrappedPage() {
             </div>
         </div>
 
-        <div class="bento-box full-width">
-            <div class="bento-label" style="margin-bottom: 12px; display: flex; justify-content: space-between;">
-                <span>🎵 ${isMyTeam ? 'YOUR' : 'SQUAD'} TOP 5</span>
-                <span style="color: var(--team-color);">${completion}% COMPLETION</span>
+        <!-- Album Intel -->
+        <div class="bento-box full-width" style="background: linear-gradient(135deg, rgba(255,255,255,0.01), rgba(255,255,255,0.04)); border-left: 2px solid var(--team-color);">
+            <div class="bento-label" style="display:flex; justify-content:space-between;">
+                <span>📀 ALBUM IMPACT</span>
+                <span style="color:var(--team-color)">${albumCompletion}% TO GOAL</span>
             </div>
+            <div style="display:flex; align-items:flex-end; gap:10px; margin-top:8px;">
+                <div class="bento-value" style="font-size:20px;">${albumStreams}</div>
+                <div style="font-size:9px; color:#666; margin-bottom:4px; font-family:var(--font-mono);">STREAMS SECURED</div>
+            </div>
+        </div>
+
+        <div class="bento-box full-width">
+            <div class="bento-label" style="margin-bottom: 12px;">🎵 ${isMyTeam ? 'YOUR' : 'SQUAD'} TOP 5 TRACKS</div>
             <div class="top-tracks-list">
               ${trackStats.map((track, i) => `
                 <div class="track-row">
@@ -5712,17 +5692,6 @@ async function renderWrappedPage() {
                 </div>
               `).join('')}
             </div>
-        </div>
-
-        <div class="bento-box full-width">
-            <div class="bento-label" style="margin-bottom: 8px;">📋 PROTOCOL MATRIX</div>
-            <div class="mission-matrix">
-                ${missionLogHtml}
-            </div>
-        </div>
-
-        <div class="lore-footer">
-            <div class="lore-note"><strong>ANALYSIS:</strong> ${dynamicNote}</div>
         </div>
       </div>
     `;
@@ -5760,8 +5729,7 @@ async function renderWrappedPage() {
       .wrapped-pfp-wrapper { width: 80px; height: 80px; margin: 0 auto 12px; border-radius: 50%; padding: 4px; border: 2px solid var(--team-color); background: #000; box-shadow: 0 0 20px var(--team-color); }
       .wrapped-pfp-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
       .personal-tag { position: absolute; top: -10px; right: 20%; background: var(--team-color); color: #fff; font-size: 8px; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-family: var(--font-mono); z-index: 10; animation: tagPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-      @keyframes tagPop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
+      
       .wrapped-team-name { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900; margin: 0; letter-spacing: 2px; color: #fff; }
       .wrapped-vibe { font-size: 9px; color: var(--team-color); font-family: var(--font-mono); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; font-weight: 700; }
 
@@ -5772,7 +5740,6 @@ async function renderWrappedPage() {
       .full-width { grid-column: 1 / -1; margin-bottom: 12px; }
       
       .bento-label { font-size: 8px; color: #666; font-family: var(--font-mono); letter-spacing: 1px; margin-bottom: 6px; }
-      .personal-box .bento-label { color: var(--team-color); opacity: 0.8; }
       .bento-value { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 800; color: #fff; }
       .bento-value.highlight { font-size: 28px; color: var(--team-color); text-shadow: 0 0 15px color-mix(in srgb, var(--team-color) 40%, transparent); }
 
@@ -5785,19 +5752,8 @@ async function renderWrappedPage() {
       .track-bar-fill { height: 100%; background: var(--team-color); box-shadow: 0 0 5px var(--team-color); transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1); }
       .track-count { font-family: var(--font-mono); font-size: 9px; color: var(--team-color); font-weight: 700; opacity: 0.9; }
 
-      .mission-matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-      .bento-mission { display: flex; align-items: center; gap: 6px; padding: 5px 8px; background: rgba(0,0,0,0.2); border-radius: 6px; font-size: 8px; border: 1px solid transparent; }
-      .bento-mission.passed { border-color: rgba(0,255,102,0.15); color: #fff; }
-      .bento-mission.failed { opacity: 0.4; color: #666; }
-      .m-label { flex: 1; font-family: var(--font-mono); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-      .lore-footer { margin-top: 16px; padding-top: 12px; border-top: 1px dashed rgba(255,255,255,0.08); }
-      .lore-note { font-size: 9px; color: #888; line-height: 1.4; font-family: 'Inter', sans-serif; }
-      .lore-note strong { color: var(--team-color); }
-      
       .swipe-hint { text-align: center; font-size: 9px; color: #444; margin-bottom: 10px; letter-spacing: 2px; font-family: var(--font-mono); }
 
-      /* Squad Jump Nav */
       .squad-nav {
         position: sticky; bottom: 0; left: 0; right: 0; padding: 15px;
         background: linear-gradient(to top, #000 70%, transparent);
@@ -5815,7 +5771,7 @@ async function renderWrappedPage() {
     <div class="wrapped-container">
       <div class="wrapped-hero">
         <div class="wrapped-subtitle">GLOBAL SQUAD INTEL</div>
-        <div class="wrapped-title">ARIRANG<br/><span style="color: var(--purple-core);">WRAPPED</span></div>
+        <div class="wrapped-title">HOPETRACKER<br/><span style="color: var(--purple-core);">WRAPPED</span></div>
       </div>
       
       <div class="swipe-hint">← SWIPE DOSSIERS →</div>
