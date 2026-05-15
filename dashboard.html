@@ -349,9 +349,12 @@
                     <div class="nav-item" onclick="goTo('secretmissions')"><span class="nav-icon">🕵️</span> Secret
                         Missions</div>
                     <div class="nav-item" onclick="goTo('sotd')"><span class="nav-icon">🎬</span> Song of the Day</div>
+                    <div class="nav-item" onclick="goTo('hype')" style="border-left:2px solid #e83a5d; margin-top:4px;">
+                        <span class="nav-icon">🔥</span> Fan Hype Wall
+                    </div>
                     <div class="nav-item" onclick="goTo('army')"
                         style="border-left:2px solid var(--purple-core,#a78bfa); margin-top:4px;"><span
-                            class="nav-icon">💜</span> The 8th Mission</div>
+                            class="nav-icon">💜</span> Protocol 8 — Vote!</div>
                 </div>
 
                 <!-- NAV: INTEL -->
@@ -373,7 +376,7 @@
                     <div class="nav-section-title">Comms & Tools</div>
                     <div class="nav-item" onclick="goTo('announcements')"><span class="nav-icon">📢</span> Announcements
                     </div>
-                    <div class="nav-item" onclick="goTo('chat')"><span class="nav-icon">💬</span> Hype Channel</div>
+                    <div class="nav-item" onclick="goTo('chat')"><span class="nav-icon">🎬</span> Arirang Wrapped</div>
                     <div class="nav-item" onclick="goTo('gclinks')"><span class="nav-icon">👥</span> Group Chats</div>
                     <div class="nav-item" onclick="goTo('playlists')"><span class="nav-icon">🎵</span> Playlists</div>
                     <div class="nav-item" onclick="goTo('summary')"><span class="nav-icon">📊</span> Weekly Results
@@ -650,8 +653,8 @@
                         <div class="mission-header-top">
                             <div class="mission-header-icon">💜</div>
                             <div class="mission-header-text">
-                                <div class="page-title">The 8th Mission</div>
-                                <div class="page-subtitle">Calling the 8th Member — Cast your daily votes</div>
+                                <div class="page-title">Protocol 8: ARMY Division</div>
+                                <div class="page-subtitle">Cast your cyber ballots — Operation Golden</div>
                             </div>
                         </div>
                     </div>
@@ -669,18 +672,32 @@
 
                 <!-- ══ CHAT ══ -->
                 <div class="page" id="page-chat">
-                    <div class="page-header">
-                        <div class="page-title">💬 Hype Channel</div>
-                        <div class="page-subtitle">ONE ARMY 💜</div>
+                    <div class="page-header mission-header" style="--mission-accent:#e83a5d;">
+                        <div class="mission-header-top">
+                            <div class="mission-header-icon">🎬</div>
+                            <div class="mission-header-text">
+                                <div class="page-title">Arirang Wrapped</div>
+                                <div class="page-subtitle">End of Season Report</div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="chatBox" style="min-height:200px;max-height:400px;overflow-y:auto;"></div>
-                    <div
-                        style="display:flex;gap:8px;position:sticky;bottom:0;padding:10px 0;background:var(--bg-abyss);">
-                        <input type="text" id="chatInput" class="input-field" placeholder="Type message..."
-                            style="flex:1;">
-                        <button class="btn-red" onclick="sendChat()" style="width:auto;padding:12px 20px;">Send</button>
-                    </div>
+                    <div id="wrappedContent"></div>
                 </div>
+
+                <!-- ══ FAN HYPE WALL ══ -->
+                <div class="page" id="page-hype">
+                    <div class="page-header mission-header" style="--mission-accent:#e83a5d;">
+                        <div class="mission-header-top">
+                            <div class="mission-header-icon">🔥</div>
+                            <div class="mission-header-text">
+                                <div class="page-title">Fan Hype Wall</div>
+                                <div class="page-subtitle">Boost Agent Signals 📡</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="hypeContent"></div>
+                </div>
+
 
                 <!-- ══ GROUP CHATS ══ -->
                 <div class="page" id="page-gclinks">
