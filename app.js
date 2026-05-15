@@ -5593,21 +5593,25 @@ async function renderWrappedPage() {
     const isMyTeam = profile.team === myTeamName;
     const realData = teamsData.find(t => t.team && t.team.toLowerCase() === profile.team.toLowerCase()) || {};
     
-    // Base Stats
+    // Base Team Stats
     const xp = realData.teamXP || (10000 + idx * 2500);
-    const active = realData.agentCount || (20 + idx * 5);
-    const rawTotalStreams = xp * (12 + (idx%3));
+    const activeCount = realData.agentCount || (20 + idx * 5);
+    const squadTotalStreams = xp * (12 + (idx%3));
     
+    // Split into Album vs Tracks for the team
+    const squadAlbumStreams = Math.floor(squadTotalStreams * 0.62);
+    const squadTrackStreams = squadTotalStreams - squadAlbumStreams;
+    
+    // Personal Stats (Only for my team)
+    const myXP = myStats.totalXP || 0;
+    const myStreams = myStats.trackScrobbles || 0;
+    const contributionPercent = squadTotalStreams > 0 ? ((myStreams / squadTotalStreams) * 100).toFixed(2) : '0.00';
+
     // Strengths Logic
     let strengthLabel = "ELITE OPERATIONS";
     if (xp > 20000) strengthLabel = "UNSTOPPABLE MOMENTUM";
-    else if (active > 40) strengthLabel = "MASSIVE MOBILIZATION";
-    else if (idx % 2 === 0) strengthLabel = "PRECISION STRIKE FORCE";
+    else if (activeCount > 40) strengthLabel = "MASSIVE MOBILIZATION";
     else strengthLabel = "STRATEGIC DOMINANCE";
-
-    // Album Data (Estimated based on XP)
-    const albumStreams = Math.floor(rawTotalStreams * 0.65).toLocaleString();
-    const albumCompletion = 70 + (idx * 4) % 30;
 
     let trackStats = [];
     if (isMyTeam && Object.keys(myTracks).length > 0) {
@@ -5617,18 +5621,13 @@ async function renderWrappedPage() {
         .map(([name, count], i) => ({ name, count, variation: Math.max(10, 100 - (i * 15)) }));
     } else {
       trackStats = CONFIG.ARIRANG_TRACKS.map((track, tIdx) => {
-        const base = rawTotalStreams / 14;
+        const base = squadTrackStreams / 14;
         const variation = (Math.sin((idx * 7) + tIdx) * 0.4) + 1;
         return { name: track, count: Math.floor(base * variation), variation: variation * 70 };
       }).sort((a, b) => b.count - a.count).slice(0, 5);
     }
 
-    const midBox1Label = isMyTeam ? 'YOUR TOTAL XP' : 'COMBAT XP';
-    const midBox1Value = isMyTeam ? myStats.totalXP?.toLocaleString() || '0' : xp.toLocaleString();
-    const midBox2Label = isMyTeam ? 'YOUR TRACK STREAMS' : 'ACTIVE AGENTS';
-    const midBox2Value = isMyTeam ? myStats.trackScrobbles?.toLocaleString() || '0' : active;
-
-    const myContributionTag = isMyTeam ? `<div class="personal-tag">YOUR INTEL</div>` : '';
+    const contributionBadge = isMyTeam ? `<div class="contribution-badge">YOUR IMPACT: ${contributionPercent}%</div>` : '';
 
     cardsHtml += `
       <div class="wrapped-story-card" id="wrapped-card-${profile.team.replace(/\s+/g, '')}" style="--team-color: ${profile.color};" data-team="${profile.team}">
@@ -5640,7 +5639,7 @@ async function renderWrappedPage() {
         </div>
 
         <div class="wrapped-identity">
-          ${myContributionTag}
+          ${contributionBadge}
           <div class="wrapped-pfp-wrapper">
             <img src="${profile.pfp}" class="wrapped-pfp-img" onerror="this.src='https://via.placeholder.com/100?text=${profile.team.charAt(0)}'">
           </div>
@@ -5651,33 +5650,37 @@ async function renderWrappedPage() {
         <div class="bento-grid">
             <div class="bento-box hero-box">
                 <div class="bento-label">SQUAD TOTAL STREAMS</div>
-                <div class="bento-value highlight smart-counter" data-target="${rawTotalStreams}">0</div>
+                <div class="bento-value highlight smart-counter" data-target="${squadTotalStreams}">0</div>
             </div>
             
-            <div class="bento-box ${isMyTeam ? 'personal-box' : ''}">
-                <div class="bento-label">${midBox1Label}</div>
-                <div class="bento-value">${midBox1Value}</div>
+            <div class="bento-box">
+                <div class="bento-label">📀 ALBUM STREAMS</div>
+                <div class="bento-value">${squadAlbumStreams.toLocaleString()}</div>
             </div>
-            <div class="bento-box ${isMyTeam ? 'personal-box' : ''}">
-                <div class="bento-label">${midBox2Label}</div>
-                <div class="bento-value">${midBox2Value}</div>
+            <div class="bento-box">
+                <div class="bento-label">🎵 TRACK STREAMS</div>
+                <div class="bento-value">${squadTrackStreams.toLocaleString()}</div>
             </div>
         </div>
 
-        <!-- Album Intel -->
-        <div class="bento-box full-width" style="background: linear-gradient(135deg, rgba(255,255,255,0.01), rgba(255,255,255,0.04)); border-left: 2px solid var(--team-color);">
-            <div class="bento-label" style="display:flex; justify-content:space-between;">
-                <span>📀 ALBUM IMPACT</span>
-                <span style="color:var(--team-color)">${albumCompletion}% TO GOAL</span>
-            </div>
-            <div style="display:flex; align-items:flex-end; gap:10px; margin-top:8px;">
-                <div class="bento-value" style="font-size:20px;">${albumStreams}</div>
-                <div style="font-size:9px; color:#666; margin-bottom:4px; font-family:var(--font-mono);">STREAMS SECURED</div>
+        ${isMyTeam ? `
+        <div class="bento-box full-width personal-box">
+            <div class="bento-label" style="color:var(--team-color); font-weight:900;">AGENT CONTRIBUTION</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+                <div>
+                    <div class="bento-value" style="font-size:14px;">${myStreams.toLocaleString()} STREAMS</div>
+                    <div class="bento-label" style="margin-top:2px;">SCROBBLED BY YOU</div>
+                </div>
+                <div style="text-align:right;">
+                    <div class="bento-value" style="font-size:14px;">${myXP.toLocaleString()} XP</div>
+                    <div class="bento-label" style="margin-top:2px;">PERSONAL MERIT</div>
+                </div>
             </div>
         </div>
+        ` : ''}
 
         <div class="bento-box full-width">
-            <div class="bento-label" style="margin-bottom: 12px;">🎵 ${isMyTeam ? 'YOUR' : 'SQUAD'} TOP 5 TRACKS</div>
+            <div class="bento-label" style="margin-bottom: 12px;">🎵 SQUAD TOP 5 TRACKS</div>
             <div class="top-tracks-list">
               ${trackStats.map((track, i) => `
                 <div class="track-row">
@@ -5728,15 +5731,22 @@ async function renderWrappedPage() {
       .wrapped-identity { text-align: center; margin-bottom: 24px; position: relative; }
       .wrapped-pfp-wrapper { width: 80px; height: 80px; margin: 0 auto 12px; border-radius: 50%; padding: 4px; border: 2px solid var(--team-color); background: #000; box-shadow: 0 0 20px var(--team-color); }
       .wrapped-pfp-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-      .personal-tag { position: absolute; top: -10px; right: 20%; background: var(--team-color); color: #fff; font-size: 8px; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-family: var(--font-mono); z-index: 10; animation: tagPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
       
+      .contribution-badge {
+        position: absolute; top: -15px; right: 10%; background: var(--team-color); color: #fff;
+        font-size: 9px; padding: 4px 10px; border-radius: 20px; font-weight: 900;
+        font-family: var(--font-mono); letter-spacing: 1px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        animation: badgeFloat 2s ease-in-out infinite;
+      }
+      @keyframes badgeFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
       .wrapped-team-name { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900; margin: 0; letter-spacing: 2px; color: #fff; }
       .wrapped-vibe { font-size: 9px; color: var(--team-color); font-family: var(--font-mono); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; font-weight: 700; }
 
       .bento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
       .bento-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; padding: 16px; }
       .hero-box { grid-column: 1 / -1; text-align: center; background: linear-gradient(135deg, rgba(255,255,255,0.01), rgba(255,255,255,0.03)); border-bottom: 2px solid var(--team-color); }
-      .personal-box { background: color-mix(in srgb, var(--team-color) 8%, transparent); border-color: color-mix(in srgb, var(--team-color) 30%, transparent); }
+      .personal-box { background: color-mix(in srgb, var(--team-color) 10%, transparent); border: 1px solid color-mix(in srgb, var(--team-color) 40%, transparent); }
       .full-width { grid-column: 1 / -1; margin-bottom: 12px; }
       
       .bento-label { font-size: 8px; color: #666; font-family: var(--font-mono); letter-spacing: 1px; margin-bottom: 6px; }
