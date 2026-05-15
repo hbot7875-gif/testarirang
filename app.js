@@ -5625,6 +5625,16 @@ async function renderWrappedPage() {
     // Comparative Stat Logic
     let squadAchievement = "";
     const allAlbums = Object.entries(albumGoals);
+    const teamSpecificFlair = {
+      "Team Mono": "Your squad's elite precision is the benchmark for the entire agency.",
+      "Team Happy": "The pure energy from your squad's streams is off the charts!",
+      "Team D-Day": "Tactical dominance. Your squad secures missions with surgical precision.",
+      "Team Hopeworld": "You are the beacon of the mission. Unmatched coordination!",
+      "Team Muse": "Artistry in motion. Your squad's streaming patterns are a masterclass.",
+      "Team Layover": "Stealth experts. You dominate the charts when others are sleeping.",
+      "Team Golden": "The gold standard. Your squad's momentum is officially unstoppable."
+    };
+
     if (allAlbums.length > 0) {
       const leadingAlbums = allAlbums.filter(([name, data]) => {
         const teamVal = data.teams?.[profile.team]?.current || 0;
@@ -5635,13 +5645,13 @@ async function renderWrappedPage() {
       });
 
       if (leadingAlbums.length > 0) {
-        squadAchievement = `SQUAD LEADER: You are currently crushing the mission for <strong>${leadingAlbums[0][0]}</strong> more than any other team!`;
+        squadAchievement = `SQUAD LEADER: You are currently leading the mission for <strong>${leadingAlbums[0][0]}</strong> more than any other team!`;
       } else {
         const topAlbum = teamAlbumMissions[0];
-        squadAchievement = `MISSION SPECIALISTS: Your squad has contributed more streams to <strong>${topAlbum?.name || 'Golden'}</strong> than the agency average!`;
+        squadAchievement = `${teamSpecificFlair[profile.team] || 'Elite coordination.'} Your impact on <strong>${topAlbum?.name || 'Golden'}</strong> is legendary.`;
       }
     } else {
-       squadAchievement = `ELITE COORDINATION: Your squad's impact on <strong>${profile.ref}</strong> is officially classified as 'Unstoppable'.`;
+       squadAchievement = `${teamSpecificFlair[profile.team] || 'Elite coordination.'} Your squad's impact is officially classified as 'Unstoppable'.`;
     }
 
     let personalArchetype = "";
@@ -5695,16 +5705,27 @@ async function renderWrappedPage() {
 
         <div class="bento-grid">
             <div class="bento-box hero-box">
-                <div class="bento-label">ENTIRE SEASON TOTAL XP</div>
-                <div class="bento-value highlight smart-counter" data-target="${xp}">0</div>
+                <div class="bento-label">TOTAL SEASON STREAMS</div>
+                <div class="bento-value highlight smart-counter" data-target="${seasonTotalStreams}">0</div>
             </div>
             
             <div class="bento-box">
-                <div class="bento-label">📀 ALBUM STREAMS</div>
+                <div class="bento-label">⚡ ENTIRE SEASON XP</div>
+                <div class="bento-value" style="font-size:14px;">${xp.toLocaleString()}</div>
+            </div>
+            <div class="bento-box">
+                <div class="bento-label">👥 SQUAD SIZE</div>
+                <div class="bento-value" style="font-size:14px;">${activeCount} AGENTS</div>
+            </div>
+        </div>
+
+        <div class="bento-grid" style="margin-bottom: 12px;">
+            <div class="bento-box">
+                <div class="bento-label">📀 ALBUM IMPACT</div>
                 <div class="bento-value" style="font-size:14px;">${seasonAlbumStreams.toLocaleString()}</div>
             </div>
             <div class="bento-box">
-                <div class="bento-label">🎵 TRACK STREAMS</div>
+                <div class="bento-label">🎵 TRACK IMPACT</div>
                 <div class="bento-value" style="font-size:14px;">${seasonTrackStreams.toLocaleString()}</div>
             </div>
         </div>
