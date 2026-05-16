@@ -13860,14 +13860,6 @@ function fireConfetti() {
   }
 }
 
-function doFireworksBurst() {
-  const duration = 5 * 1000;
-  const animationEnd = Date.now() + duration;
-  const defaults = { startVelocity: 45, spread: 360, ticks: 60, zIndex: 10000 };
-  const randomInRange = (min, max) => Math.random() * (max - min) + min;
-
-  const interval = setInterval(() => {
-
 window.triggerGrandFinale = function() {
     if (!concertPlayer || typeof concertPlayer.getVolume !== 'function') {
         console.warn('⚠️ Player not ready for finale yet!');
