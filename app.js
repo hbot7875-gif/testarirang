@@ -13423,10 +13423,15 @@ window.launchTheVoyage = function () {
                 <button class="soft-btn color-btn" style="--btn-color: #22c55e;" onclick="changeBombColor('#22c55e')"></button>
                 <button class="soft-btn color-btn rainbow-btn" onclick="changeBombColor('rainbow')"></button>
                 <div style="width: 1px; height: 18px; background: rgba(255,255,255,0.2);"></div>
-                <button class="soft-btn text-btn" onclick="triggerFanchant()" style="letter-spacing: 2px;">FANCHANT</button>
+                <button class="soft-btn text-btn" onclick="initiateOceanWave()" style="color: #fbbf24;">🌊 WAVE</button>
+                <button class="soft-btn text-btn" onclick="triggerFanchant()">FANCHANT</button>
                 <button class="soft-btn text-btn" onclick="toggleStrobe()">STROBE</button>
             </div>
         </div>
+
+        <div id="fever-overlay" class="fever-glow"></div>
+        <div id="laser-container" style="position: absolute; inset: 0; z-index: 5; pointer-events: none; overflow: hidden;"></div>
+        <div id="crowd-container" style="position: absolute; inset: 0; z-index: 2; pointer-events: none;"></div>
 
         <button onclick="exitConcert()" style="position: absolute; top: 30px; right: 30px; z-index: 1001; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-family:'Orbitron'; font-size:9px; font-weight:800; backdrop-filter: blur(5px);">EXIT ARENA ✕</button>
     </div>
@@ -13497,6 +13502,56 @@ window.launchTheVoyage = function () {
           phase2.appendChild(whale);
           setTimeout(() => whale.remove(), 28000);
       }, 35000);
+
+      // --- NEW: VIP INTERACTIVE FEATURES ---
+      
+      // 1. Generate Crowd
+      const crowd = document.getElementById('crowd-container');
+      for(let i=0; i<150; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'vy-crowd-dot';
+          dot.style.left = Math.random() * 100 + '%';
+          dot.style.top = (60 + Math.random() * 40) + '%';
+          dot.style.opacity = 0.1 + Math.random() * 0.3;
+          crowd.appendChild(dot);
+      }
+
+      // 2. Generate Lasers
+      const laserCont = document.getElementById('laser-container');
+      const colors = ['#a855f7', '#3b82f6', '#ec4899'];
+      for(let i=0; i<6; i++) {
+          const laser = document.createElement('div');
+          laser.className = 'vy-laser vy-laser--active';
+          laser.style.left = (20 + i * 12) + '%';
+          laser.style.setProperty('--glow-color', colors[i % 3]);
+          laser.style.animationDelay = (i * 0.4) + 's';
+          laserCont.appendChild(laser);
+      }
+
+      // 3. Tap to Cheer & Fever Mode
+      let tapCount = 0;
+      let lastTap = 0;
+      phase2.addEventListener('click', (e) => {
+          if (e.target.closest('#lightstick-controls')) return;
+          
+          // Firework spark
+          const bomb = document.getElementById('my-army-bomb');
+          const color = bomb ? getComputedStyle(bomb).getPropertyValue('--glow-color').trim() : '#a855f7';
+          window.confetti({
+              particleCount: 15, spread: 40, origin: { x: e.clientX/window.innerWidth, y: e.clientY/window.innerHeight },
+              colors: [color, '#ffffff'], gravity: 1.2, scalar: 0.7, ticks: 60
+          });
+
+          // Fever Logic
+          const now = Date.now();
+          if (now - lastTap < 400) tapCount++; else tapCount = 1;
+          lastTap = now;
+
+          if (tapCount >= 10) {
+              triggerFeverMode();
+              tapCount = 0;
+          }
+      });
     }
   }, 5000);
 
@@ -13534,6 +13589,45 @@ window.toggleControlPanel = function() {
     }
 };
 
+window.triggerFeverMode = function() {
+    const overlay = document.getElementById('fever-overlay');
+    const bomb = document.getElementById('my-army-bomb');
+    if (!overlay || !bomb) return;
+
+    overlay.classList.add('active');
+    bomb.style.setProperty('--wave-speed', '0.5s');
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100]);
+
+    setTimeout(() => {
+        overlay.classList.remove('active');
+        bomb.style.setProperty('--wave-speed', '4s');
+    }, 4000);
+};
+
+window.initiateOceanWave = function() {
+    const dots = document.querySelectorAll('.vy-crowd-dot');
+    const bomb = document.getElementById('my-army-bomb');
+    const color = bomb ? getComputedStyle(bomb).getPropertyValue('--glow-color').trim() : '#a855f7';
+    
+    dots.forEach((dot, i) => {
+        const xPos = parseFloat(dot.style.left);
+        setTimeout(() => {
+            dot.style.transition = 'all 0.5s ease';
+            dot.style.background = color;
+            dot.style.opacity = '1';
+            dot.style.transform = 'translateY(-15px) scale(2)';
+            dot.style.boxShadow = `0 0 15px ${color}`;
+            
+            setTimeout(() => {
+                dot.style.background = 'rgba(255,255,255,0.1)';
+                dot.style.opacity = '0.3';
+                dot.style.transform = 'translateY(0) scale(1)';
+                dot.style.boxShadow = 'none';
+            }, 1000);
+        }, xPos * 30);
+    });
+};
+
 // --- Helper Functions for Phase 2 ---
 
 function initYouTubePlayer(videoId) {
@@ -13548,12 +13642,13 @@ function initYouTubePlayer(videoId) {
     videoId: videoId, 
     playerVars: {
       'autoplay': 1,
-      'controls': 0, // Hides YouTube UI
+      'controls': 0,
       'disablekb': 1,
       'fs': 0,
       'modestbranding': 1,
       'rel': 0,
       'showinfo': 0,
+      'iv_load_policy': 3,
       'playsinline': 1
     },
     events: {
@@ -14863,14 +14958,28 @@ const VOYAGE_ARENA_CSS = `
     /* Fix for video wrapper covering interactions */
     #video-wrapper { pointer-events: none !important; }
     #phase-2-concert { pointer-events: all !important; cursor: crosshair; }
+
+    /* VIP Lasers */
+    .vy-laser { position: absolute; bottom: 0; width: 2px; height: 150vh; background: linear-gradient(to top, var(--glow-color, #a855f7), transparent); transform-origin: bottom center; mix-blend-mode: screen; opacity: 0; z-index: 5; pointer-events: none; }
+    .vy-laser--active { animation: laserSweep 5.1s infinite ease-in-out, laserFlash 0.64s infinite alternate; }
+    @keyframes laserSweep { 0%, 100% { transform: rotate(-45deg); } 50% { transform: rotate(45deg); } }
+    @keyframes laserFlash { 0% { opacity: 0.1; } 100% { opacity: 0.5; } }
+
+    /* Crowd Dots */
+    .vy-crowd-dot { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.15); filter: blur(1px); z-index: 2; transition: all 0.3s; }
+
+    /* Fever Mode */
+    .fever-glow { position: absolute; inset: 0; box-shadow: inset 0 0 150px #a855f7; opacity: 0; transition: opacity 0.3s; z-index: 55; pointer-events: none; }
+    .fever-glow.active { animation: feverPulse 0.32s infinite alternate; }
+    @keyframes feverPulse { 0% { opacity: 0.2; } 100% { opacity: 0.7; } }
 `;
 
 const VOYAGE_SHIP_CSS = `
-/* ═══ Voyage Arirang Ship (overlay) ═══ */
-.vy-arirang-ship { width: 280px; height: 200px; position: relative; animation: vyShipBob 4s ease-in-out infinite; }
-@keyframes vyShipBob { 0%, 100% { transform: translateY(0) rotate(-0.5deg); } 50% { transform: translateY(-4px) rotate(0.5deg); } }
+/* ═══ Voyage Arirang Ship (94 BPM Synchronized) ═══ */
+.vy-arirang-ship { width: 280px; height: 200px; position: relative; animation: vyShipBob 2.55s ease-in-out infinite; }
+@keyframes vyShipBob { 0%, 100% { transform: translateY(0) rotate(-0.5deg); } 50% { transform: translateY(-5px) rotate(0.5deg); } }
 
-.vy-arirang__glow { position: absolute; bottom: -10px; left: -15px; width: calc(100% + 30px); height: 30px; background: radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.15), transparent 70%); filter: blur(8px); animation: vyGlowPulse 3s ease-in-out infinite; }
+.vy-arirang__glow { position: absolute; bottom: -10px; left: -15px; width: calc(100% + 30px); height: 30px; background: radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.15), transparent 70%); filter: blur(8px); animation: vyGlowPulse 2.55s ease-in-out infinite; }
 @keyframes vyGlowPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
 .vy-arirang__mast { position: absolute; background: linear-gradient(90deg, #4a3a1a, #6b5228 30%, #7a5e30 50%, #6b5228 70%, #4a3a1a); border-radius: 1.5px; }
@@ -14879,10 +14988,10 @@ const VOYAGE_SHIP_CSS = `
 .vy-arirang__mast--3 { bottom: 24%; left: 56%; width: 3.5px; height: 54%; }
 .vy-arirang__mast--4 { bottom: 24%; left: 75%; width: 3px; height: 45%; }
 
-.vy-arirang__lantern { position: absolute; top: -3px; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; background: radial-gradient(circle, #fff, #ffd866); border-radius: 50%; box-shadow: 0 0 8px rgba(255,220,100,0.8), 0 0 16px rgba(255,200,50,0.5), 0 0 30px rgba(255,180,0,0.3); animation: vyLanternPulse 3s ease-in-out infinite; }
-.vy-arirang__mast--2 .vy-arirang__lantern { animation-delay: 0.75s; }
-.vy-arirang__mast--3 .vy-arirang__lantern { animation-delay: 1.5s; }
-.vy-arirang__mast--4 .vy-arirang__lantern { animation-delay: 2.25s; }
+.vy-arirang__lantern { position: absolute; top: -3px; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; background: radial-gradient(circle, #fff, #ffd866); border-radius: 50%; box-shadow: 0 0 8px rgba(255,220,100,0.8), 0 0 16px rgba(255,200,50,0.5), 0 0 30px rgba(255,180,0,0.3); animation: vyLanternPulse 1.28s ease-in-out infinite; }
+.vy-arirang__mast--2 .vy-arirang__lantern { animation-delay: 0.32s; }
+.vy-arirang__mast--3 .vy-arirang__lantern { animation-delay: 0.64s; }
+.vy-arirang__mast--4 .vy-arirang__lantern { animation-delay: 0.96s; }
 @keyframes vyLanternPulse { 0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.7; } 50% { transform: translateX(-50%) scale(1.4); opacity: 1; } }
 
 .vy-arirang__xtree { position: absolute; height: 2.5px; background: #5a3a10; border-radius: 1px; }
@@ -14891,12 +15000,12 @@ const VOYAGE_SHIP_CSS = `
 .vy-arirang__rig { position: absolute; width: 0.8px; background: rgba(50,35,15,0.3); }
 
 .vy-arirang__sail { position: absolute; opacity: 0.88; }
-.vy-arirang__sail--g1 { bottom: 40%; left: 17%; width: 17%; height: 34%; background: linear-gradient(180deg, rgba(220,215,200,0.9), rgba(200,195,180,0.85), rgba(180,175,165,0.8)); clip-path: polygon(0% 0%, 65% 0%, 100% 100%, 0% 100%); animation: vySailBillow 8s ease-in-out infinite; }
-.vy-arirang__sail--g2 { bottom: 43%; left: 36%; width: 19%; height: 37%; background: linear-gradient(180deg, rgba(225,220,205,0.9), rgba(205,200,185,0.85), rgba(185,180,170,0.8)); clip-path: polygon(0% 0%, 70% 0%, 100% 100%, 0% 100%); animation: vySailBillow 9s ease-in-out infinite 1s; }
-.vy-arirang__sail--g3 { bottom: 41%; left: 58%; width: 16%; height: 35%; background: linear-gradient(180deg, rgba(220,215,200,0.9), rgba(200,195,180,0.85), rgba(180,175,165,0.8)); clip-path: polygon(0% 0%, 68% 0%, 100% 100%, 0% 100%); animation: vySailBillow 8.5s ease-in-out infinite 0.5s; }
-.vy-arirang__sail--jib1 { bottom: 26%; left: 77%; width: 27%; height: 44%; background: linear-gradient(135deg, rgba(215,210,195,0.85), rgba(195,190,175,0.8), rgba(175,170,160,0.75)); clip-path: polygon(0% 0%, 0% 100%, 100% 82%); animation: vySailBillow 7s ease-in-out infinite 2s; }
-.vy-arirang__sail--jib2 { bottom: 30%; left: 79%; width: 20%; height: 36%; background: linear-gradient(135deg, rgba(210,205,190,0.8), rgba(190,185,170,0.75)); clip-path: polygon(0% 0%, 0% 100%, 100% 72%); opacity: 0.75; animation: vySailBillow 7.5s ease-in-out infinite 1.5s; }
-.vy-arirang__sail::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(124,58,237,0.05), rgba(167,139,250,0.08), rgba(124,58,237,0.03)); animation: vySailMagic 5s ease-in-out infinite; }
+.vy-arirang__sail--g1 { bottom: 40%; left: 17%; width: 17%; height: 34%; background: linear-gradient(180deg, rgba(220,215,200,0.9), rgba(200,195,180,0.85), rgba(180,175,165,0.8)); clip-path: polygon(0% 0%, 65% 0%, 100% 100%, 0% 100%); animation: vySailBillow 5.1s ease-in-out infinite; }
+.vy-arirang__sail--g2 { bottom: 43%; left: 36%; width: 19%; height: 37%; background: linear-gradient(180deg, rgba(225,220,205,0.9), rgba(205,200,185,0.85), rgba(185,180,170,0.8)); clip-path: polygon(0% 0%, 70% 0%, 100% 100%, 0% 100%); animation: vySailBillow 5.1s ease-in-out infinite 0.64s; }
+.vy-arirang__sail--g3 { bottom: 41%; left: 58%; width: 16%; height: 35%; background: linear-gradient(180deg, rgba(220,215,200,0.9), rgba(200,195,180,0.85), rgba(180,175,165,0.8)); clip-path: polygon(0% 0%, 68% 0%, 100% 100%, 0% 100%); animation: vySailBillow 5.1s ease-in-out infinite 0.32s; }
+.vy-arirang__sail--jib1 { bottom: 26%; left: 77%; width: 27%; height: 44%; background: linear-gradient(135deg, rgba(215,210,195,0.85), rgba(195,190,175,0.8), rgba(175,170,160,0.75)); clip-path: polygon(0% 0%, 0% 100%, 100% 82%); animation: vySailBillow 5.1s ease-in-out infinite 1.28s; }
+.vy-arirang__sail--jib2 { bottom: 30%; left: 79%; width: 20%; height: 36%; background: linear-gradient(135deg, rgba(210,205,190,0.8), rgba(190,185,170,0.75)); clip-path: polygon(0% 0%, 0% 100%, 100% 72%); opacity: 0.75; animation: vySailBillow 5.1s ease-in-out infinite 0.96s; }
+.vy-arirang__sail::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(124,58,237,0.05), rgba(167,139,250,0.08), rgba(124,58,237,0.03)); animation: vySailMagic 2.55s ease-in-out infinite; }
 @keyframes vySailBillow { 0%, 100% { transform: skewX(0deg) scaleX(1); } 50% { transform: skewX(1.2deg) scaleX(1.02); } }
 @keyframes vySailMagic { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
