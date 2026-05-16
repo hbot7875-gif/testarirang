@@ -13440,13 +13440,14 @@ window.launchTheVoyage = function () {
 
   document.body.appendChild(root);
 
-  // 2. Load YouTube API
+  // 2. Load External APIs
   if (!window.YT) {
     const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    document.head.appendChild(tag);
   }
+
+  console.log('✨ Magic Shop Portal Initiated');
 
   // Fade in the root overlay
   requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add('visible')));
@@ -13535,13 +13536,9 @@ window.launchTheVoyage = function () {
       phase2.addEventListener('click', (e) => {
           if (e.target.closest('#lightstick-controls')) return;
           
-          // Firework spark
-          const bomb = document.getElementById('my-army-bomb');
-          const color = bomb ? getComputedStyle(bomb).getPropertyValue('--glow-color').trim() : '#a855f7';
-          window.confetti({
-              particleCount: 15, spread: 40, origin: { x: e.clientX/window.innerWidth, y: e.clientY/window.innerHeight },
-              colors: [color, '#ffffff'], gravity: 1.2, scalar: 0.7, ticks: 60
-          });
+          // Real Firework Burst on Click
+          const colors = ['#a855f7', '#fbbf24', '#ffffff'];
+          createFireworkBurst(e.clientX, e.clientY, colors[Math.floor(Math.random()*colors.length)]);
 
           // Fever Logic
           const now = Date.now();
@@ -13846,48 +13843,112 @@ function doFireworksBurst() {
 }
 
 window.triggerGrandFinale = function() {
+    console.log('🎆 REAL FIREWORKS FINALE INITIATED');
+    
     // 1. Fade out the volume
     if (concertPlayer && typeof concertPlayer.getVolume === 'function') {
         let vol = concertPlayer.getVolume();
         const fadeInterval = setInterval(() => {
-            vol -= 5;
+            vol -= 10;
             if (vol <= 0) {
                 clearInterval(fadeInterval);
+                concertPlayer.setVolume(0);
                 concertPlayer.pauseVideo();
             } else {
                 concertPlayer.setVolume(vol);
             }
-        }, 200);
+        }, 150);
     }
 
-    // 2. Start Fireworks
-    const duration = 6 * 1000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 3000 };
+    // 2. High-Fidelity Canvas Fireworks
+    const duration = 7 * 1000;
+    const endTime = Date.now() + duration;
+    const colors = ['#a855f7', '#fbbf24', '#ffffff', '#e879f9', '#fcd34d'];
 
-    const randomInRange = (min, max) => Math.random() * (max - min) + min;
+    const fireworkInterval = setInterval(() => {
+        if (Date.now() > endTime) return clearInterval(fireworkInterval);
+        
+        // Random bursts across the sky
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * (window.innerHeight * 0.6);
+        createFireworkBurst(x, y, colors[Math.floor(Math.random() * colors.length)]);
+    }, 350);
 
-    const interval = setInterval(() => {
-        const timeLeft = animationEnd - Date.now();
-        if (timeLeft <= 0) return clearInterval(interval);
-
-        const particleCount = 50 * (timeLeft / duration);
-        window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#a855f7', '#ffffff'] });
-        window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#fbbf24', '#ffffff'] });
-    }, 450);
-
-    // 3. Fade out the Arena content
+    // 3. Final Arena Fade
     const phase2 = document.getElementById('phase-2-concert');
     if (phase2) {
         setTimeout(() => {
-            phase2.style.transition = 'opacity 3s ease-out';
+            phase2.style.transition = 'opacity 5s ease-out';
             phase2.style.opacity = '0';
-        }, 4000);
+        }, 3000);
     }
 
-    // 4. Exit
-    setTimeout(window.exitConcert, 8000);
+    setTimeout(window.exitConcert, 9500);
 };
+
+// --- CUSTOM FIREWORK ENGINE ---
+let fwCanvas, fwCtx, particles = [];
+
+function initFireworkCanvas() {
+    if (fwCanvas) return;
+    fwCanvas = document.createElement('canvas');
+    fwCanvas.id = 'firework-engine';
+    fwCanvas.style.cssText = 'position:fixed; inset:0; z-index:5000; pointer-events:none;';
+    document.body.appendChild(fwCanvas);
+    fwCtx = fwCanvas.getContext('2d');
+    
+    window.addEventListener('resize', () => {
+        fwCanvas.width = window.innerWidth;
+        fwCanvas.height = window.innerHeight;
+    });
+    fwCanvas.width = window.innerWidth;
+    fwCanvas.height = window.innerHeight;
+    
+    requestAnimationFrame(updateFireworks);
+}
+
+function createFireworkBurst(x, y, color) {
+    if (!fwCanvas) initFireworkCanvas();
+    const count = 40;
+    for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 / count) * i;
+        const velocity = 2 + Math.random() * 4;
+        particles.push({
+            x, y,
+            vx: Math.cos(angle) * velocity,
+            vy: Math.sin(angle) * velocity,
+            alpha: 1,
+            color,
+            size: 1 + Math.random() * 2
+        });
+    }
+}
+
+function updateFireworks() {
+    fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+    for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.05; // gravity
+        p.alpha -= 0.015;
+        
+        if (p.alpha <= 0) {
+            particles.splice(i, 1);
+        } else {
+            fwCtx.globalAlpha = p.alpha;
+            fwCtx.fillStyle = p.color;
+            fwCtx.beginPath();
+            fwCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            fwCtx.fill();
+            // Glow effect
+            fwCtx.shadowBlur = 10;
+            fwCtx.shadowColor = p.color;
+        }
+    }
+    fwCtx.shadowBlur = 0;
+    requestAnimationFrame(updateFireworks);
+}
 
 
 
