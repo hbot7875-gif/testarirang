@@ -13867,14 +13867,6 @@ function doFireworksBurst() {
   const randomInRange = (min, max) => Math.random() * (max - min) + min;
 
   const interval = setInterval(() => {
-    const timeLeft = animationEnd - Date.now();
-    if (timeLeft <= 0) return clearInterval(interval);
-    const particleCount = 50 * (timeLeft / duration);
-    window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#a855f7', '#ffffff'] });
-    window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#ff00ff', '#ffffff'] });
-    window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.4, 0.6), y: Math.random() - 0.2 }, colors: ['#3b82f6', '#ffffff'] });
-  }, 250);
-}
 
 window.triggerGrandFinale = function() {
     if (!concertPlayer || typeof concertPlayer.getVolume !== 'function') {
@@ -13893,7 +13885,6 @@ window.triggerGrandFinale = function() {
                 concertPlayer.setVolume(vol);
             }
         }, 150);
-    }
 
     // 2. High-Fidelity Canvas Fireworks
     const duration = 7 * 1000;
