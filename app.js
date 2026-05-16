@@ -5961,148 +5961,457 @@ async function renderHypePage() {
       
       <input type="text" id="hypeIgUsername" class="input-field" placeholder="IG Username (e.g. @agent)" style="margin-bottom:10px;">
       <input type="text" id="hypePostUrl" class="input-field" placeholder="Instagram Post URL" style="margin-bottom:10px;">
-      <textarea id="hypeCaption" class="input-field" placeholder="Caption / Intel..." rows="3" style="margin-bottom:10px;" oninput="updateCaptionCount()"></textarea>
+    ${renderGuide('hype') || ''}
+    
+    <!-- 1. COMPACT GUIDE SECTION -->
+    <div style="background: #111; border: 1px solid #1c1c1c; border-radius: 12px; margin-bottom: 24px; overflow: hidden;">
+      <div style="padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleHypeGuide()">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px; filter: grayscale(0.2);">📖</span>
+          <div>
+            <div style="font-size: 11px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 2px;">Protocol Manual</div>
+            <div style="font-size: 10px; color: #888;">Operation: Hype Wall Instructions</div>
+          </div>
+        </div>
+        <span id="guide-arrow" style="color: #666; font-size: 10px; transition: transform 0.3s ease;">▼</span>
+      </div>
       
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-        <div id="captionCount" style="font-size:10px; color:#666; font-family:var(--font-mono);">0 chars</div>
-        <div style="display:flex; gap:8px;">
-          <label style="font-size:10px; color:#aaa;"><input type="radio" name="contentType" value="Edit" checked> Edit</label>
-          <label style="font-size:10px; color:#aaa;"><input type="radio" name="contentType" value="Fanart"> Fanart</label>
-          <label style="font-size:10px; color:#aaa;"><input type="radio" name="contentType" value="Reel"> Reel</label>
+      <div id="hype-guide-content" style="display: none; padding: 0 16px 20px 16px; border-top: 1px solid #1c1c1c;">
+        <div style="display: grid; gap: 16px; margin-top: 20px;">
+          <div style="display: flex; gap: 16px;">
+            <div style="font-family: var(--font-mono); font-size: 10px; color: var(--pink-main); font-weight: 900;">01</div>
+            <div>
+              <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px;">Content Creation</div>
+              <div style="font-size: 11px; color: #888; line-height: 1.5;">Create an Instagram post or reel promoting the Arirang Mission.</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 16px;">
+            <div style="font-family: var(--font-mono); font-size: 10px; color: var(--pink-main); font-weight: 900;">02</div>
+            <div>
+              <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px;">Broadcast Link</div>
+              <div style="font-size: 11px; color: #888; line-height: 1.5;">Paste your IG link below to earn <span style="color: #fff;">+5 XP</span> (Daily limit: 1).</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 16px;">
+            <div style="font-family: var(--font-mono); font-size: 10px; color: var(--pink-main); font-weight: 900;">03</div>
+            <div>
+              <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px;">Mutual Support</div>
+              <div style="font-size: 11px; color: #888; line-height: 1.5;">Boost 5 posts from other agents to earn <span style="color: #fff;">+1 XP</span>.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 2. MISSION BRIEFING (BANNER) -->
+    <div style="background: linear-gradient(135deg, #181818 0%, #111 100%); border: 1px solid #222; border-radius: 12px; margin-bottom: 24px; padding: 24px; position: relative;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div style="font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 18px; color: #fff; letter-spacing: 3px; text-transform: uppercase;">
+          OP: HYPE
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.3); padding: 4px 10px; border-radius: 20px; border: 1px solid #222;">
+          <div class="pulse-dot" style="background: #e83a5d; width: 6px; height: 6px;"></div>
+          <span style="font-size: 9px; color: #888; font-family: var(--font-mono); font-weight: 700; letter-spacing: 1px;">ACTIVE_FREQ</span>
         </div>
       </div>
       
-      <button id="hypeSubmitBtn" class="btn-red" onclick="submitHypePost()" style="width:100%;">INITIATE BROADCAST</button>
+      <p style="font-size: 13px; color: #aaa; line-height: 1.6; margin-bottom: 20px;">
+        High-frequency visibility is mission critical. Share your broadcasts and support fellow agents to amplify the Arirang Signal.
+      </p>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+         <div style="background: #0a0a0a; padding: 12px; border-radius: 8px; border: 1px solid #1c1c1c;">
+           <div style="font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-family: var(--font-mono);">Daily Broadcast</div>
+           <div style="font-size: 14px; color: #fff; font-weight: 800; font-family: 'Orbitron', sans-serif;">+5 XP</div>
+         </div>
+         <div style="background: #0a0a0a; padding: 12px; border-radius: 8px; border: 1px solid #1c1c1c;">
+           <div style="font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-family: var(--font-mono);">Agent Support</div>
+           <div style="font-size: 14px; color: #fff; font-weight: 800; font-family: 'Orbitron', sans-serif;">+1 XP</div>
+         </div>
+      </div>
     </div>
 
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-      <div style="font-size:12px; font-weight:700; color:#fff;">LATEST INTERCEPTS</div>
-      <select id="hypeFilter" class="input-field" style="width:auto; padding:4px 8px; font-size:10px;" onchange="filterHypePosts()">
-        <option value="all">All Signals</option>
-        <option value="Edit">Edits</option>
-        <option value="Fanart">Fanart</option>
-        <option value="Reel">Reels</option>
-      </select>
-    </div>
+    <!-- 3. SUBMISSION CONSOLE -->
+    <div style="background: #111; border: 1px solid #1c1c1c; border-radius: 12px; margin-bottom: 32px; overflow: hidden;">
+      <div style="padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1c1c1c;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">📲</span>
+          <span style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900; color: #fff; letter-spacing: 2px; text-transform: uppercase;">Broadcast Terminal</span>
+        </div>
+        <button onclick="toggleHypeForm()" style="background: none; border: none; color: #555; font-size: 9px; font-family: var(--font-mono); font-weight: 700; cursor: pointer; letter-spacing: 1px;" id="toggleFormBtn">
+          COLLAPSE ▲
+        </button>
+      </div>
+      
+      <div id="hypeFormContent" style="padding: 24px; ${STATE.hype.hasUploadedToday ? 'display: none;' : ''}">
+        ${STATE.hype.hasUploadedToday ? `
+          <div style="background: #0a0a0a; padding: 32px 24px; border-radius: 8px; text-align: center; border: 1px solid #1c1c1c;">
+            <div style="font-size: 24px; margin-bottom: 16px;">✅</div>
+            <div style="font-family: 'Orbitron', sans-serif; font-size: 12px; color: #fff; font-weight: 900; letter-spacing: 2px; margin-bottom: 8px;">SIGNAL SECURED</div>
+            <div style="font-size: 11px; color: #666; line-height: 1.5;">Daily transmission limit reached. Your dossier has been updated.</div>
+          </div>
+        ` : `
+        <div style="display: grid; gap: 20px; margin-bottom: 24px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="hype-input-group">
+              <label style="color: #666; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; display: block; font-family: var(--font-mono);">Agent Handle</label>
+              <input type="text" id="hypeIgUsername" placeholder="@username" style="width: 100%; background: #070707; border: 1px solid #222; padding: 14px; border-radius: 8px; color: #fff; font-size: 12px; font-family: 'Inter', sans-serif;">
+            </div>
+            <div class="hype-input-group">
+              <label style="color: #666; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; display: block; font-family: var(--font-mono);">Direct Link</label>
+              <input type="text" id="hypePostUrl" placeholder="https://instagram.com/..." style="width: 100%; background: #070707; border: 1px solid #222; padding: 14px; border-radius: 8px; color: #fff; font-size: 12px; font-family: 'Inter', sans-serif;">
+            </div>
+          </div>
 
-    <div id="hypePostsContainer">
-      <div style="text-align:center; padding:40px; color:#666; font-size:12px;"><span class="spinner"></span> SCANNING FREQUENCIES...</div>
+          <div class="hype-input-group">
+            <label style="color: #666; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; display: flex; justify-content: space-between; font-family: var(--font-mono);">
+              <span>Transmission Notes</span>
+              <span id="captionCount" style="color: #444;">0/500</span>
+            </label>
+            <textarea id="hypeCaption" rows="3" placeholder="Describe your broadcast content..." maxlength="500" style="width: 100%; background: #070707; border: 1px solid #222; padding: 14px; border-radius: 8px; color: #fff; font-size: 12px; font-family: 'Inter', sans-serif; resize: none;" oninput="updateCaptionCount()"></textarea>
+          </div>
+
+          <div class="hype-input-group">
+            <label style="color: #666; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; display: block; font-family: var(--font-mono);">Content Class</label>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+              ${['Edit', 'Reel', 'Story', 'Post'].map((type, idx) => `
+                <label class="hype-type-btn" style="cursor: pointer;">
+                  <input type="radio" name="contentType" value="${type}" ${idx === 0 ? 'checked' : ''} style="display: none;">
+                  <div class="hype-type-inner" style="background: #0a0a0a; border: 1px solid #1c1c1c; padding: 12px 4px; border-radius: 8px; text-align: center; font-size: 10px; font-weight: 700; color: #555; transition: all 0.2s;">
+                    ${type}
+                  </div>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+        
+        <button class="hype-submit-btn" onclick="submitHypePost()" id="hypeSubmitBtn">
+          INITIATE BROADCAST
+        </button>
+        `}
+      </div>
     </div>
     
-    <div style="text-align:center; margin-top:20px;">
-      <button id="loadMoreHypeBtn" class="btn-ghost" onclick="loadMoreHypePosts()" style="display:none; font-size:11px;">LOAD MORE SIGNALS</button>
+    <!-- 4. LIVE FEED -->
+    <div style="margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+        <div>
+          <div style="font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 900; color: #fff; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px;">Live Signal Feed</div>
+          <div style="font-size: 10px; color: #666; font-family: var(--font-mono); letter-spacing: 1px;">MONITORING AGENT BROADCASTS</div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <select id="hypeFilter" onchange="filterHypePosts()" style="background: #111; border: 1px solid #1c1c1c; color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-family: var(--font-mono); cursor: pointer; outline: none;">
+            <option value="all">ALL_POSTS</option>
+            <option value="mine">MY_LOGS</option>
+            <option value="popular">TOP_RATED</option>
+          </select>
+          <button onclick="loadHypePosts()" style="background: #111; border: 1px solid #1c1c1c; color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-family: var(--font-mono); cursor: pointer; font-weight: 700;">REFRESH</button>
+        </div>
+      </div>
+      
+      <div id="hypePostsList" style="display: grid; gap: 16px;">
+        <div class="page-loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+
+    <!-- 5. PAGINATION -->
+    <div id="loadMoreContainer" style="text-align: center; margin-top: 32px; display: none;">
+      <button onclick="loadMoreHypePosts()" id="loadMoreBtn" style="background: #111; border: 1px solid #1c1c1c; color: #fff; padding: 14px 32px; border-radius: 8px; font-size: 11px; font-family: 'Orbitron', sans-serif; font-weight: 700; letter-spacing: 2px; cursor: pointer; transition: all 0.2s;">
+        LOAD_NEXT_SECTOR
+      </button>
     </div>
   `;
 
-  if (!window.allHypePosts) window.allHypePosts = [];
-  STATE.hype = { page: 0, openedPosts: new Set() };
-  loadHypePosts(true);
+  // Refined CSS Styles
+  if (!document.getElementById('hype-wall-styles')) {
+    const style = document.createElement('style');
+    style.id = 'hype-wall-styles';
+    style.textContent = `
+      .hype-submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: #e83a5d;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 3px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .hype-submit-btn:hover {
+        background: #ff145f;
+        transform: translateY(-2px);
+      }
+      .hype-type-btn input:checked + .hype-type-inner {
+        background: #e83a5d11 !important;
+        border-color: #e83a5d !important;
+        color: #e83a5d !important;
+      }
+      .hype-type-btn:hover .hype-type-inner {
+        border-color: #333;
+        color: #888;
+      }
+      @media (max-width: 600px) {
+        .hype-submit-btn { padding: 18px; font-size: 13px; }
+        .hype-type-inner { padding: 14px 4px !important; font-size: 11px !important; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  loadHypePosts();
 }
 
-window.toggleHypeForm = function() {
-  const form = $('hypeSubmitForm');
-  if(form.style.display === 'none') {
-    form.style.display = 'block';
+// Toggle Guide
+window.toggleHypeGuide = function () {
+  const content = $('hype-guide-content');
+  const arrow = $('guide-arrow');
+  if (!content || !arrow) return;
+
+  if (content.style.display === 'none' || content.style.display === '') {
+    content.style.display = 'block';
+    arrow.style.transform = 'rotate(180deg)';
   } else {
-    form.style.display = 'none';
+    content.style.display = 'none';
+    arrow.style.transform = 'rotate(0deg)';
   }
 };
 
-window.updateCaptionCount = function() {
-  const cap = $('hypeCaption');
-  const count = $('captionCount');
-  if(cap && count) count.textContent = cap.value.length + ' chars';
+// Show Link Help Modal
+window.showLinkHelp = function () {
+  showToast('On Instagram: Tap "..." on your post → "Copy Link"', 'info', 5000);
 };
 
-window.filterHypePosts = function() {
-  renderHypePostsList();
-};
-
-window.verifyHypeOpen = function(postId, el) {
-  STATE.hype.openedPosts.add(postId);
-  const likeBtn = document.getElementById('hype-like-' + postId);
-  if(likeBtn) {
-    likeBtn.style.opacity = '1';
-    likeBtn.style.pointerEvents = 'auto';
+// Caption Counter
+window.updateCaptionCount = function () {
+  const caption = $('hypeCaption');
+  const counter = $('captionCount');
+  if (caption && counter) {
+    counter.textContent = `${caption.value.length}/500`;
+    counter.style.color = caption.value.length > 450 ? 'var(--fail)' : 'var(--text-ghost)';
   }
 };
 
-async function loadHypePosts(reset = false) {
-  if (reset) {
-    STATE.hype.page = 0;
-    $('hypePostsContainer').innerHTML = '<div style="text-align:center; padding:40px; color:#666; font-size:12px;"><span class="spinner"></span> SCANNING FREQUENCIES...</div>';
+// Form Toggle
+window.toggleHypeForm = function () {
+  const content = $('hypeFormContent');
+  const btn = $('toggleFormBtn');
+  if (!content || !btn) return;
+
+  if (content.style.display === 'none') {
+    content.style.display = 'block';
+    btn.textContent = 'COLLAPSE ▲';
+  } else {
+    content.style.display = 'none';
+    btn.textContent = 'EXPAND ▼';
+  }
+};
+
+let currentHypeFilter = 'all';
+let currentHypePage = 1;
+let allHypePosts = [];
+
+async function loadHypePosts(append = false) {
+  const list = $('hypePostsList');
+  if (!list) return;
+
+  if (!append) {
+    list.innerHTML = '<div class="page-loading"><div class="spinner"></div></div>';
   }
 
   try {
-    const res = await Api.call('getHypePosts', { page: STATE.hype.page, limit: 15 }, { cache: false });
-    if (res.success) {
-      if (reset) window.allHypePosts = res.posts;
-      else window.allHypePosts = [...window.allHypePosts, ...res.posts];
-      
-      renderHypePostsList();
-      
-      const btn = $('loadMoreHypeBtn');
-      if (btn) {
-        if (res.hasMore) btn.style.display = 'inline-block';
-        else btn.style.display = 'none';
-      }
+    const res = await Api.call('getHypePosts', { limit: 50 }, { cache: false });
+
+    if (!res.success) throw new Error(res.error);
+
+    allHypePosts = res.posts || [];
+
+    // Fetch user status if logged in
+    if (STATE.agentNo) {
+      try {
+        const statusRes = await Api.call('getHypeUserStatus', { agentNo: STATE.agentNo });
+        if (statusRes.success) {
+          STATE.hype.weeklyLikes = statusRes.weeklyLikes || 0;
+          STATE.hype.hasUploadedToday = statusRes.hasUploadedToday;
+
+          // Re-render form part if needed
+          const formContent = $('hypeFormContent');
+          if (formContent) {
+            if (STATE.hype.hasUploadedToday) {
+              formContent.style.display = 'none';
+              // Check if we need to show the completion message
+              if (!formContent.parentElement.querySelector('.transmission-complete-msg')) {
+                const msg = document.createElement('div');
+                msg.className = 'transmission-complete-msg';
+                msg.innerHTML = `
+                  <div style="background: rgba(0, 255, 102, 0.1); border: 1px solid rgba(0, 255, 102, 0.3); padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 24px; margin-bottom: 10px;">✅</div>
+                    <div style="font-family: 'Orbitron', sans-serif; font-size: 14px; color: #00ff66; font-weight: 800; margin-bottom: 4px;">POST SHARED</div>
+                    <div style="font-size: 11px; color: var(--text-ghost); font-family: 'Rajdhani', sans-serif;">You have already uploaded today. Come back tomorrow for more XP!</div>
+                  </div>
+                `;
+                formContent.parentElement.insertBefore(msg, formContent);
+              }
+            } else {
+              formContent.style.display = 'block';
+            }
+          }
+        }
+      } catch (err) { console.error('Failed to get user hype status', err); }
     }
+
+    // Update Stats
+    updateHypeStats(allHypePosts);
+
+    // Apply filter
+    filterHypePosts();
+
+    // Update Load More visibility
+    const loadMoreBtn = $('loadMoreContainer');
+    if (loadMoreBtn) {
+      loadMoreBtn.style.display = allHypePosts.length >= 50 ? 'block' : 'none';
+    }
+
   } catch (e) {
-    $('hypePostsContainer').innerHTML = '<div style="text-align:center; color:var(--fail); padding:20px;">Signal lost. Try again.</div>';
+    list.innerHTML = `<div class="error-msg" style="display:block;">Connection error: ${e.message}</div>`;
   }
 }
 
-window.loadMoreHypePosts = function() {
-  STATE.hype.page++;
-  loadHypePosts();
+window.loadMoreHypePosts = async function () {
+  const btn = $('loadMoreBtn');
+  if (!btn || btn.disabled) return;
+
+  btn.disabled = true;
+  btn.textContent = 'INTERCEPTING...';
+
+  try {
+    const res = await Api.call('getHypePosts', {
+      limit: 30,
+      offset: allHypePosts.length
+    }, { cache: false });
+
+    if (res.success && res.posts?.length > 0) {
+      allHypePosts = [...allHypePosts, ...res.posts];
+      filterHypePosts();
+
+      if (res.posts.length < 30) {
+        $('loadMoreContainer').style.display = 'none';
+      }
+    } else {
+      $('loadMoreContainer').style.display = 'none';
+    }
+  } catch (e) {
+    showToast('Failed to load more posts', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'LOAD MORE TRANSMISSIONS';
+  }
 };
 
-function renderHypePostsList() {
-  const container = $('hypePostsContainer');
-  const filter = $('hypeFilter')?.value || 'all';
-  
-  let posts = window.allHypePosts || [];
-  if (filter !== 'all') {
-    posts = posts.filter(p => p.content_type === filter);
+function updateHypeStats(posts) {
+  const totalPosts = posts.length;
+  const totalLikes = posts.reduce((sum, p) => sum + (p.like_count || 0), 0);
+  const yourPosts = posts.filter(p => p.agent_no === STATE.agentNo).length;
+
+  const totalPostsEl = $('totalPosts');
+  const totalLikesEl = $('totalLikes');
+  const yourPostsEl = $('yourPosts');
+
+  if (totalPostsEl) totalPostsEl.textContent = totalPosts;
+  if (totalLikesEl) totalLikesEl.textContent = totalLikes;
+  if (yourPostsEl) yourPostsEl.textContent = yourPosts;
+}
+
+window.filterHypePosts = function () {
+  const filterSelect = $('hypeFilter');
+  if (filterSelect) {
+    currentHypeFilter = filterSelect.value;
   }
-  
+
+  let filtered = [...allHypePosts];
+
+  if (currentHypeFilter === 'mine') {
+    filtered = filtered.filter(p => p.agent_no === STATE.agentNo);
+  } else if (currentHypeFilter === 'popular') {
+    filtered = filtered.sort((a, b) => (b.like_count || 0) - (a.like_count || 0));
+  }
+
+  renderHypePosts(filtered);
+};
+
+function renderHypePosts(posts) {
+  const list = $('hypePostsList');
+  if (!list) return;
+
   if (posts.length === 0) {
-    container.innerHTML = '<div style="text-align:center; padding:40px; color:#666; font-size:12px;">No signals intercepted yet. Be the first.</div>';
+    list.innerHTML = `
+      <div style="padding: 48px 24px; text-align: center; background: #111; border: 1px dashed #222; border-radius: 12px;">
+        <div style="font-size: 32px; margin-bottom: 16px; opacity: 0.2;">📡</div>
+        <div style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900; color: #555; letter-spacing: 2px;">ZERO_SIGNALS_DETECTED</div>
+        <div style="font-size: 11px; color: #444; margin-top: 8px;">Waiting for agent broadcasts...</div>
+      </div>
+    `;
     return;
   }
-  
-  container.innerHTML = posts.map(p => {
-    const isOpened = STATE.hype.openedPosts.has(p.id);
-    const hasLiked = false;
-    
+
+  list.innerHTML = posts.map((p, i) => {
+    const isOwn = p.agent_no === STATE.agentNo;
+    const hasLiked = p.liked_by?.includes(STATE.agentNo) || false;
+
     return `
-    <div style="background:#0a0a0a; border:1px solid #1c1c1c; border-radius:12px; padding:16px; margin-bottom:16px; display:flex; gap:16px;">
-      <div style="flex:1;">
-        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-          <div style="font-weight:700; color:#fff; font-size:13px;">\${sanitize(p.ig_username)}</div>
-          <div style="font-size:10px; color:#666; font-family:var(--font-mono);">\${p.content_type || 'Intel'}</div>
+      <div style="background: #111; border: 1px solid #1c1c1c; border-radius: 12px; padding: 20px; position: relative; animation: slideUp 0.4s ease forwards; animation-delay: ${i * 0.05}s; opacity: 0; transform: translateY(10px);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 36px; height: 36px; border-radius: 8px; background: #0a0a0a; border: 1px solid #1c1c1c; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">
+              ${isOwn ? '👤' : '🕵️'}
+            </div>
+            <div style="min-width: 0;">
+              <div style="font-weight: 800; font-size: 13px; color: #fff; font-family: 'Rajdhani', sans-serif; letter-spacing: 0.5px;">${p.agent_name}</div>
+              <div style="font-size: 10px; color: #666; font-family: var(--font-mono); margin-top: 2px;">
+                <span style="color: ${teamColor(p.agent_team)};">${p.agent_team.replace('Team ', '')}</span> • ${p.ig_username}
+              </div>
+            </div>
+          </div>
+          <div style="text-align: right;">
+             <div style="font-family: var(--font-mono); font-size: 9px; color: #444; text-transform: uppercase;">Logged</div>
+             <div style="font-family: var(--font-mono); font-size: 10px; color: #666; margin-top: 2px;">${new Date(p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+          </div>
         </div>
-        <div style="font-size:11px; color:#aaa; margin-bottom:12px; line-height:1.4;">
-          \${sanitize(p.caption)}
+        
+        <div style="background: #0a0a0a; border: 1px solid #1c1c1c; padding: 14px; border-radius: 8px; font-size: 12px; color: #ccc; line-height: 1.6; margin-bottom: 20px; overflow-wrap: break-word; font-family: 'Inter', sans-serif;">
+          ${p.caption}
+          ${p.content_type ? `<div style="display: inline-block; background: #181818; color: #888; font-size: 8px; padding: 3px 8px; border-radius: 4px; margin-top: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">${p.content_type}</div>` : ''}
         </div>
-        <div style="display:flex; gap:8px;">
-          <a href="\${sanitize(p.post_url)}" target="_blank" onclick="verifyHypeOpen('\${p.id}', this)" class="btn-ghost" style="padding:6px 12px; font-size:10px;">VIEW TARGET</a>
-          <button id="hype-like-\${p.id}" class="btn-ghost" onclick="likeHypePost('\${p.id}', this)" style="padding:6px 12px; font-size:10px; \${isOpened ? '' : 'opacity:0.5; pointer-events:none;'}">
-            <span class="btn-text">BOOST SIGNAL</span> (<span class="like-count">\${p.like_count || 0}</span>)
-          </button>
+        
+        <div style="display: flex; gap: 10px;">
+          <a href="${p.post_url}" target="_blank" rel="noopener noreferrer" 
+             onclick="window.verifyHypeOpen('${p.id}', this)"
+             style="flex: 1; background: #181818; border: 1px solid #222; color: #fff; border-radius: 8px; padding: 12px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px; transition: all 0.2s;">
+            <span>📡</span> OPEN_POST
+          </a>
+          
+          ${isOwn ? `
+            <div style="flex: 1; background: #0a0a0a; border: 1px solid #1c1c1c; color: #444; border-radius: 8px; padding: 12px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px;">
+              OWN_LOG
+            </div>
+          ` : `
+            <button id="boost-btn-${p.id}" class="hype-boost-btn ${hasLiked ? 'liked' : ''}" onclick="likeHypePost('${p.id}', this)" 
+                    style="flex: 1; border-radius: 8px; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px; transition: all 0.2s; ${(hasLiked || !STATE.hype.openedPosts.has(p.id)) ? 'background: #0a0a0a; border: 1px solid #1c1c1c; color: #333; cursor: not-allowed;' : 'background: #e83a5d11; border: 1px solid #e83a5d; color: #e83a5d; cursor: pointer;'}" 
+                    ${(hasLiked || !STATE.hype.openedPosts.has(p.id)) ? 'disabled' : ''}>
+              <span style="font-size: 14px;">${hasLiked ? '⚡' : '❤️'}</span> 
+              <span>${hasLiked ? 'BOOSTED' : 'BOOST'}</span>
+              <span style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; font-size: 9px; margin-left: 4px;">${p.like_count || 0}</span>
+            </button>
+          `}
         </div>
       </div>
-    </div>
     `;
   }).join('');
 }
-
-async function submitHypePost() {
-  const username = $('hypeIgUsername')?.value.trim();
-  const url = $('hypePostUrl')?.value.trim();
-  const caption = $('hypeCaption')?.value.trim();
-  const typeEl = document.querySelector('input[name="contentType"]:checked');
-  const type = typeEl ? typeEl.value : 'Edit';
 
   if (!username || !url) {
     showToast('IG Username and Post URL required', 'error');
@@ -13238,36 +13547,38 @@ window.launchTheVoyage = function () {
     <div id="magic-flash" style="position: absolute; inset: 0; background: radial-gradient(circle, #fff 0%, #a855f7 50%, #000 100%); opacity: 0; pointer-events: none; z-index: 50; transition: opacity 2s ease-in;"></div>
 
     <!-- PHASE 2: THE CONCERT ARENA (Hidden initially) -->
-    <div id="phase-2-concert" style="position: absolute; inset: 0; opacity: 0; pointer-events: none; z-index: 60; transition: opacity 2s ease-out; background: #000;">
+    <div id="phase-2-concert" style="position: absolute; inset: 0; opacity: 0; pointer-events: none; z-index: 60; transition: opacity 2s ease-out; background: #000; overflow: hidden;">
         
-        <!-- YouTube Background -->
-        <div id="video-wrapper" style="position: absolute; inset: 0; pointer-events: none;">
-            <div id="youtube-player"></div>
-            <!-- Dark gradient overlay so the Army Bomb pops -->
-            <div style="position: absolute; inset: 0; background: radial-gradient(circle at center 60%, transparent 20%, rgba(0,0,0,0.9) 100%);"></div>
+        <div id="video-wrapper" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 150vw; height: 150vh; pointer-events: none;">
+            <div id="youtube-player" style="width: 100%; height: 100%;"></div>
         </div>
 
-        <!-- The Interactive Army Bomb -->
-        <div id="fan-zone" style="position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%); z-index: 10;">
-            <div class="cs-bomb" id="my-army-bomb" style="--glow-color: #a855f7; transition: all 0.3s ease;">
-                <div class="cs-sphere" style="box-shadow: 0 0 50px var(--glow-color), inset 0 0 20px var(--glow-color); background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.2) 40%, rgba(0,0,0,0.6));">
-                    <span class="cs-logo" style="text-shadow: 0 0 15px var(--glow-color);">⟭⟬</span>
+        <div style="position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.8) 80%, #000 100%); pointer-events: none;"></div>
+        <div id="ambient-glow" style="position: absolute; inset: 0; background: var(--ambient-color, #a855f7); opacity: 0.15; mix-blend-mode: screen; pointer-events: none; transition: background 0.5s ease;"></div>
+
+        <div class="virtual-crowd" style="position: absolute; bottom: 10%; left: 0; width: 100%; height: 40%; pointer-events: none; z-index: 5;">
+            </div>
+
+        <div id="fan-zone" style="position: absolute; bottom: 15%; left: 50%; transform: translateX(-50%); z-index: 10;">
+            <div id="bomb-back-glow" style="position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%); width: 250px; height: 250px; background: var(--ambient-color, #a855f7); filter: blur(60px); opacity: 0.4; pointer-events: none; transition: background 0.3s ease;"></div>
+            
+            <div class="cs-bomb" id="my-army-bomb" style="--glow-color: #a855f7; transition: transform 0.1s ease; animation: concertSway 4s ease-in-out infinite alternate;">
+                <div class="cs-sphere" style="box-shadow: 0 0 60px var(--glow-color), inset 0 0 30px var(--glow-color); background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.1) 40%, rgba(0,0,0,0.8)); backdrop-filter: blur(2px);">
+                    <span class="cs-logo" style="text-shadow: 0 0 20px var(--glow-color); opacity: 0.9;">⟭⟬</span>
                 </div>
-                <div class="cs-handle"></div>
+                <div class="cs-handle" style="background: linear-gradient(90deg, #111, #333, #111); box-shadow: inset 0 0 10px rgba(0,0,0,0.8);"></div>
             </div>
         </div>
 
-        <!-- Lightstick Controls -->
-        <div id="lightstick-controls" style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20; background: rgba(0,0,0,0.7); padding: 12px 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); display: flex; gap: 15px; align-items: center;">
-            <button onclick="changeBombColor('#a855f7')" style="background:#a855f7; width:24px; height:24px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></button>
-            <button onclick="changeBombColor('#3b82f6')" style="background:#3b82f6; width:24px; height:24px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></button>
-            <button onclick="changeBombColor('#22c55e')" style="background:#22c55e; width:24px; height:24px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></button>
-            <div style="width: 1px; height: 20px; background: rgba(255,255,255,0.2);"></div>
-            <button onclick="toggleStrobe()" style="background:transparent; color:#fff; font-size:11px; font-weight:900; letter-spacing:1px; border:none; cursor:pointer; font-family:'Orbitron', sans-serif;">STROBE</button>
+        <div id="lightstick-controls" style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20; background: rgba(20, 20, 25, 0.6); padding: 12px 24px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(15px); display: flex; gap: 18px; align-items: center;">
+            <button onclick="changeBombColor('#a855f7')" style="background:#a855f7; width:28px; height:28px; border-radius:50%; border:2px solid rgba(255,255,255,0.8); cursor:pointer; box-shadow: 0 0 10px #a855f7; transition: transform 0.2s;"></button>
+            <button onclick="changeBombColor('#3b82f6')" style="background:#3b82f6; width:28px; height:28px; border-radius:50%; border:2px solid rgba(255,255,255,0.8); cursor:pointer; box-shadow: 0 0 10px #3b82f6; transition: transform 0.2s;"></button>
+            <button onclick="changeBombColor('#22c55e')" style="background:#22c55e; width:28px; height:28px; border-radius:50%; border:2px solid rgba(255,255,255,0.8); cursor:pointer; box-shadow: 0 0 10px #22c55e; transition: transform 0.2s;"></button>
+            <div style="width: 1px; height: 24px; background: rgba(255,255,255,0.2);"></div>
+            <button onclick="toggleStrobe()" style="background:transparent; color:#fff; font-size:12px; font-weight:900; letter-spacing:2px; border:none; cursor:pointer; font-family:'Orbitron', sans-serif; text-shadow: 0 0 5px rgba(255,255,255,0.5);">STROBE</button>
         </div>
 
-        <!-- Exit Button -->
-        <button onclick="exitConcert()" style="position: absolute; top: 20px; right: 20px; z-index: 50; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-family:'Orbitron', sans-serif; font-size:10px; font-weight:800; backdrop-filter: blur(5px);">EXIT ARENA</button>
+        <button onclick="exitConcert()" style="position: absolute; top: 30px; right: 30px; z-index: 50; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 20px; border-radius: 30px; cursor: pointer; font-family:'Orbitron', sans-serif; font-size:10px; font-weight:800; backdrop-filter: blur(10px); transition: all 0.2s;">EXIT ARENA ✕</button>
     </div>
   `;
 
@@ -13358,8 +13669,20 @@ function initYouTubePlayer(videoId) {
 
 window.changeBombColor = function(color) {
   const bomb = document.getElementById('my-army-bomb');
+  const ambient = document.getElementById('ambient-glow');
+  const backGlow = document.getElementById('bomb-back-glow');
+  const crowd = document.querySelector('.virtual-crowd');
+  
   if (bomb) {
     bomb.style.setProperty('--glow-color', color);
+    if (ambient) ambient.style.setProperty('--ambient-color', color);
+    if (backGlow) backGlow.style.setProperty('--ambient-color', color);
+    if (crowd) crowd.style.setProperty('--ambient-color', color);
+    
+    // Add a satisfying little pop animation when clicked
+    bomb.style.transform = 'scale(1.1)';
+    setTimeout(() => { bomb.style.transform = 'scale(1)'; }, 150);
+    
     if(navigator.vibrate) navigator.vibrate(15);
   }
 };
@@ -14521,6 +14844,56 @@ const VOYAGE_SWIM_CSS = `
 
 
 const VOYAGE_ARENA_CSS = `
+/* --- CONCERT VIBE CSS --- */
+
+/* 1. Force the YouTube video to act as a fullscreen background cover */
+#video-wrapper iframe {
+    width: 100vw !important;
+    height: 100vh !important;
+    /* Scale up the iframe slightly to hide the YouTube title bar and black edges */
+    transform: scale(1.3);
+    pointer-events: none;
+}
+
+/* 2. Make the Army Bomb feel like it's being held in a crowd */
+@keyframes concertSway {
+    0% { transform: rotate(-8deg) translateY(0px) scale(1); }
+    33% { transform: rotate(5deg) translateY(-10px) scale(1.02); }
+    66% { transform: rotate(-3deg) translateY(-5px) scale(0.98); }
+    100% { transform: rotate(8deg) translateY(-15px) scale(1.05); }
+}
+
+/* 3. The Virtual Crowd (Generate tiny glowing dots using a CSS background pattern) */
+.virtual-crowd {
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, var(--ambient-color, #a855f7), rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, var(--ambient-color, #a855f7), rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 40px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 130px 80px, var(--ambient-color, #a855f7), rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    opacity: 0.4;
+    filter: blur(1px);
+    animation: crowdWave 8s ease-in-out infinite alternate;
+}
+
+@keyframes crowdWave {
+    0% { transform: translateX(0px) translateY(0px) scale(1); opacity: 0.3; }
+    100% { transform: translateX(-20px) translateY(10px) scale(1.05); opacity: 0.6; }
+}
+
+/* 4. Fix for Mobile layout */
+@media (max-width: 600px) {
+    #video-wrapper iframe {
+        /* On mobile portraits, videos get very letterboxed. Scale it up massively to fill the screen */
+        transform: scale(3.5);
+    }
+    #fan-zone {
+        bottom: 25%; /* Move it up higher on mobile screens */
+    }
+}
+
 /* Ship Warp Drive Animation */
 .ship-warp-drive {
   animation: warpSpeed 3s cubic-bezier(0.5, 0, 0.2, 1) forwards !important;
@@ -14530,22 +14903,6 @@ const VOYAGE_ARENA_CSS = `
   0% { transform: scale(1) translateY(0); filter: blur(0px) brightness(1); }
   40% { transform: scale(0.9) translateY(10px); filter: blur(1px) brightness(1.5); }
   100% { transform: scale(4) translateY(-100px); filter: blur(15px) brightness(5); opacity: 0; }
-}
-
-#youtube-player {
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  object-fit: cover;
-}
-
-#my-army-bomb {
-  animation: gentleSway 4s ease-in-out infinite alternate;
-}
-
-@keyframes gentleSway {
-  0% { transform: rotate(-5deg) translateY(0px); }
-  100% { transform: rotate(5deg) translateY(-15px); }
 }
 `;
 
