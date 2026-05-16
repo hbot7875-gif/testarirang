@@ -13381,17 +13381,17 @@ window.launchTheVoyage = function () {
 
     <div id="magic-flash" style="position: absolute; inset: 0; background: radial-gradient(circle, #fff 0%, #a855f7 50%, #000 100%); opacity: 0; pointer-events: none; z-index: 50; transition: opacity 2s ease-in;"></div>
 
-    <div id="phase-2-concert" style="position: absolute; inset: 0; opacity: 0; pointer-events: none; z-index: 60; transition: opacity 2s ease-out; background: #020202; overflow: hidden;">
-        <div id="video-wrapper" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 1;">
-            <div id="youtube-player" style="width: 100vw; height: 56.25vw; min-height: 100vh; transform: scale(1.35); opacity: 1;"></div>
+    <div id="phase-2-concert" style="position: absolute; inset: 0; opacity: 0; pointer-events: all !important; z-index: 60; transition: opacity 2s ease-out; background: #020202; overflow: hidden; cursor: crosshair;">
+        <div id="video-wrapper" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none !important; z-index: 1;">
+            <div id="youtube-player" style="width: 100vw; height: 100vh; object-fit: cover; opacity: 1 !important; filter: none !important;"></div>
         </div>
-        <div style="position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(circle at 50% 60%, transparent 25%, rgba(0,0,0,0.4) 60%, #000 100%);"></div>
-        <div id="ambient-glow" style="position: absolute; inset: 0; z-index: 3; background: #a855f7; opacity: 0.15; mix-blend-mode: screen; pointer-events: none; transition: background 0.8s ease;"></div>
+        <div style="position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(circle at 50% 60%, transparent 35%, rgba(0,0,0,0.3) 70%, #000 100%);"></div>
+        <div id="ambient-glow" style="position: absolute; inset: 0; z-index: 3; background: #a855f7 !important; opacity: 0.15; mix-blend-mode: screen; pointer-events: none; transition: background 0.8s ease;"></div>
         <div class="concert-dust" style="position: absolute; inset: 0; z-index: 4; pointer-events: none;"></div>
 
         <div id="fan-zone" style="position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; flex-direction: column; align-items: center;">
-            <div id="bomb-back-glow" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; background: #a855f7; filter: blur(60px); opacity: 0.3; transition: background 0.8s ease;"></div>
-            <div class="cs-bomb anim-sway" id="my-army-bomb" style="--glow-color: #a855f7; --wave-speed: 4s;">
+            <div id="bomb-back-glow" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; background: #a855f7 !important; filter: blur(60px); opacity: 0.3; transition: background 0.8s ease;"></div>
+            <div class="cs-bomb anim-sway" id="my-army-bomb" style="--glow-color: #a855f7 !important; --wave-speed: 4s;">
                 <div class="cs-sphere" style="width: 100px; height: 100px; box-shadow: 0 0 50px var(--glow-color), inset 0 0 30px var(--glow-color); background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.1) 40%, rgba(0,0,0,0.5)); backdrop-filter: blur(8px) brightness(1.2); mix-blend-mode: hard-light; border: 1.5px solid rgba(255,255,255,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 2;">
                     <span class="cs-logo" style="text-shadow: 0 0 20px var(--glow-color); color: #fff; font-size: 36px; font-weight: 900; opacity: 0.95;">⟭⟬</span>
                 </div>
@@ -14821,64 +14821,49 @@ const VOYAGE_ARENA_CSS = `
 
     .soft-controls-panel {
         position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); 
-        z-index: 1000; background: rgba(15, 15, 20, 0.7); backdrop-filter: blur(25px); 
+        z-index: 1000; background: rgba(15, 15, 20, 0.75); backdrop-filter: blur(25px); 
         border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 30px;
         display: flex; flex-direction: column; gap: 12px; padding: 18px 24px;
         width: max-content; max-width: 95vw; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        overflow: visible !important;
     }
     .soft-controls-panel.minimized { bottom: -165px; opacity: 0.6; filter: blur(2px) grayscale(1); }
     .panel-toggle-btn {
         position: absolute; top: -38px; left: 50%; transform: translateX(-50%);
-        background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.2);
         color: #fff; border-radius: 15px; padding: 5px 18px; font-size: 10px; font-family: 'Orbitron';
         cursor: pointer; backdrop-filter: blur(12px); box-shadow: 0 -5px 15px rgba(0,0,0,0.3); transition: all 0.3s;
     }
-    .panel-toggle-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateX(-50%) translateY(-2px); }
-.soft-pill-btn {
-    background: rgba(255,255,255,0.05); 
-    border: 1px solid rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.6); 
-    padding: 6px 12px; 
-    border-radius: 12px;
-    font-size: 9px; 
-    font-family: 'Orbitron', sans-serif; 
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.soft-pill-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
-.soft-pill-btn.active {
-    background: rgba(255,255,255,0.25); color: #fff; font-weight: bold;
-    border-color: rgba(255,255,255,0.5); box-shadow: 0 0 10px rgba(255,255,255,0.2);
-}
+    .panel-toggle-btn:hover { background: rgba(255, 255, 255, 0.4); transform: translateX(-50%) translateY(-2px); }
 
-.soft-btn { border: none; outline: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-.color-btn {
-    width: 28px; height: 28px; border-radius: 50%;
-    background: var(--btn-color);
-    box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.5), inset -2px -2px 6px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(0, 0, 0, 0.4);
-}
-.color-btn:hover { transform: translateY(-3px) scale(1.1); box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.6), inset -2px -2px 6px rgba(0, 0, 0, 0.2), 0 8px 15px var(--btn-color); }
-.color-btn:active { transform: translateY(1px) scale(0.95); box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.4); }
+    .soft-pill-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); padding: 6px 12px; border-radius: 12px; font-size: 9px; font-family: 'Orbitron'; cursor: pointer; transition: all 0.2s; }
+    .soft-pill-btn.active { background: rgba(255,255,255,0.25); color: #fff; border-color: rgba(255,255,255,0.5); }
+    .soft-btn { border: none; outline: none; cursor: pointer; transition: 0.3s; }
+    .color-btn { width: 28px; height: 28px; border-radius: 50%; background: var(--btn-color); box-shadow: inset 2px 2px 4px rgba(255,255,255,0.4), 0 4px 10px rgba(0,0,0,0.4); }
+    .rainbow-btn { background: linear-gradient(135deg, #ef4444, #fbbf24, #22c55e, #3b82f6, #a855f7); }
+    .text-btn { background: transparent; color: #fff; font-size: 11px; font-weight: 900; font-family: 'Orbitron'; padding: 6px 12px; border-radius: 20px; }
 
-.rainbow-btn { background: linear-gradient(135deg, #ef4444, #fbbf24, #22c55e, #3b82f6, #a855f7); }
+    #youtube-player { width: 100vw !important; height: 100vh !important; object-fit: cover; opacity: 1 !important; pointer-events: none; filter: none !important; }
+    .concert-dust { position: absolute; inset: 0; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-repeat: repeat; background-size: 200px 200px; animation: magicDrift 20s linear infinite; mix-blend-mode: overlay; opacity: 0.2; }
+    @keyframes magicDrift { 0% { transform: translateY(0px) translateX(0px); } 100% { transform: translateY(-200px) translateX(-50px); } }
 
-.text-btn {
-    background: transparent; color: rgba(255, 255, 255, 0.8); font-size: 11px; font-weight: 900; 
-    letter-spacing: 2px; font-family: 'Orbitron', sans-serif; text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    padding: 6px 12px; border-radius: 20px;
-}
-.text-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); }
+    .bomb-sparkle { position: absolute; width: 4px; height: 4px; border-radius: 50%; pointer-events: none; z-index: 1000; mix-blend-mode: screen; animation: sparkleFade 1s forwards; }
+    @keyframes sparkleFade { 0% { transform: scale(1) translateY(0); opacity: 0.8; background: #fff; } 100% { transform: scale(0) translateY(-25px); opacity: 0; } }
 
-/* Natural Video Aspect Ratio (Prevents weird cropping) */
-#youtube-player {
-    width: 100vw !important;
-    height: 56.25vw !important; 
-    min-height: 100vh !important;
-    object-fit: cover; 
-    pointer-events: none;
-}
+    .fanchant-word { position: absolute; bottom: 15%; left: 50%; transform: translateX(-50%); font-family: 'Orbitron'; font-size: clamp(32px, 8vw, 80px); font-weight: 900; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.6); text-shadow: 0 0 30px rgba(168,85,247,0.8); z-index: 2000; animation: fanchantRise 3s forwards; white-space: nowrap; }
+    @keyframes fanchantRise { 0% { transform: translate(-50%, 50px) scale(0.8); opacity: 0; } 20% { transform: translate(-50%, 0px) scale(1); opacity: 1; } 100% { transform: translate(-50%, -160px) scale(1.1); opacity: 0; filter: blur(10px); } }
+
+    .magic-whale { position: absolute; left: -20%; font-size: clamp(100px, 15vw, 200px); opacity: 0.08; filter: blur(5px) drop-shadow(0 0 40px #a855f7); z-index: 2; animation: whaleSwim 28s linear forwards; pointer-events: none; }
+    @keyframes whaleSwim { 0% { transform: translateX(0vw) rotate(-10deg); } 100% { transform: translateX(125vw) rotate(-15deg); } }
+
+    @media (max-width: 600px) { #video-wrapper iframe { transform: scale(1.5) !important; } #fan-zone { bottom: 15%; } }
+    .vy-finale { position:absolute; inset:0; z-index:70; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none; opacity:0; transition:opacity 1s; }
+    .vy-finale--on { opacity:1; }
+    .vy-finale__army { font-family:Orbitron; font-size:64px; font-weight:900; color:#fff; text-shadow:0 0 40px #a855f7; }
+
+    /* Fix for video wrapper covering interactions */
+    #video-wrapper { pointer-events: none !important; }
+    #phase-2-concert { pointer-events: all !important; cursor: crosshair; }
+`;
 
 /* Magical floating dust */
 .concert-dust {
