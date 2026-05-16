@@ -13640,17 +13640,19 @@ window.triggerFeverMode = function() {
     const lasers = document.querySelectorAll('.vy-laser');
     if (!overlay || !bomb) return;
 
-    console.log('🔥 FEVER MODE ACTIVE');
+    console.log('🌊 FEVER MODE: SWIM VIBE (93 BPM)');
     overlay.classList.add('active');
-    bomb.style.setProperty('--wave-speed', '0.5s');
-    document.body.style.animation = 'screenShake 0.1s infinite';
+    
+    // 93 BPM = ~0.645s per beat. Let's set pulses to match the beat
+    bomb.style.setProperty('--wave-speed', '0.64s');
+    document.body.style.animation = 'oceanBreathe 1.29s infinite ease-in-out';
     
     lasers.forEach(l => {
-        l.style.animationDuration = '0.5s, 0.1s';
-        l.style.setProperty('--glow-color', '#ff00ff');
+        l.style.animationDuration = '4s, 1.29s'; // Slower, flowing lasers
+        l.style.setProperty('--glow-color', '#3b82f6'); // Deep Sea Blue
     });
 
-    if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100, 50, 100]);
+    if (navigator.vibrate) navigator.vibrate([200, 400, 200, 400]);
 
     setTimeout(() => {
         overlay.classList.remove('active');
@@ -13661,7 +13663,7 @@ window.triggerFeverMode = function() {
             const colors = ['#a855f7', '#3b82f6', '#ec4899'];
             l.style.setProperty('--glow-color', colors[i % 3]);
         });
-    }, 5000);
+    }, 6000);
 };
 
 window.initiateOceanWave = function() {
@@ -13691,19 +13693,21 @@ window.initiateOceanWave = function() {
 // --- Helper Functions for Phase 2 ---
 
 function initYouTubePlayer(videoId) {
-  // Prevent duplicate players
   if (concertPlayer && typeof concertPlayer.destroy === 'function') {
-      try { concertPlayer.destroy(); } catch(e) {}
-      concertPlayer = null;
+    try { concertPlayer.destroy(); } catch(e) {}
+    concertPlayer = null;
   }
 
   if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
-      setTimeout(() => initYouTubePlayer(videoId), 500);
-      return;
+    setTimeout(() => initYouTubePlayer(videoId), 500);
+    return;
   }
 
   const target = document.getElementById('youtube-player');
   if (!target) return;
+
+  // Pre-initialize the canvas engine early so it's armed and ready
+  initFireworkCanvas();
 
   concertPlayer = new YT.Player('youtube-player', {
     height: '100%',
@@ -13722,14 +13726,18 @@ function initYouTubePlayer(videoId) {
     },
     events: {
       'onReady': (event) => { 
-          event.target.playVideo(); 
-          if (typeof event.target.setPlaybackQuality === 'function') {
-              event.target.setPlaybackQuality('highres');
-          }
+        event.target.playVideo(); 
+        if (typeof event.target.setPlaybackQuality === 'function') {
+          event.target.setPlaybackQuality('highres');
+        }
       },
       'onStateChange': (event) => {
-        // Trigger Fireworks when video ends
-        if (event.data === YT.PlayerState.ENDED) window.triggerGrandFinale();
+        // Explicitly route to window context to handle API isolation
+        if (event.data === YT.PlayerState.ENDED) {
+          if (typeof window.triggerGrandFinale === 'function') {
+            window.triggerGrandFinale();
+          }
+        }
       }
     }
   });
@@ -13861,47 +13869,55 @@ function fireConfetti() {
 }
 
 window.triggerGrandFinale = function() {
-    if (!concertPlayer || typeof concertPlayer.getVolume !== 'function') {
-        console.warn('⚠️ Player not ready for finale yet!');
-        return;
+  console.log('🎆 REAL FIREWORKS FINALE INITIATED');
+  
+  // Audio Fade-out Block safely wrapped
+  if (concertPlayer && typeof concertPlayer.getVolume === 'function') {
+    let vol = concertPlayer.getVolume();
+    const fadeInterval = setInterval(() => {
+      vol -= 10;
+      if (vol <= 0) {
+        clearInterval(fadeInterval);
+        try {
+          concertPlayer.setVolume(0);
+          concertPlayer.pauseVideo();
+        } catch(e) {}
+      } else {
+        try { concertPlayer.setVolume(vol); } catch(e) {}
+      }
+    }, 150);
+  }
+
+  // Ensure Canvas is active
+  initFireworkCanvas();
+
+  // High-Fidelity Canvas Fireworks Storm Loop
+  const duration = 7000;
+  const endTime = Date.now() + duration;
+  const colors = ['#a855f7', '#fbbf24', '#ffffff', '#e879f9', '#fcd34d'];
+
+  const fireworkInterval = setInterval(() => {
+    if (Date.now() > endTime) {
+      clearInterval(fireworkInterval);
+      return;
     }
-    console.log('🎆 REAL FIREWORKS FINALE INITIATED');
-        let vol = concertPlayer.getVolume();
-        const fadeInterval = setInterval(() => {
-            vol -= 10;
-            if (vol <= 0) {
-                clearInterval(fadeInterval);
-                concertPlayer.setVolume(0);
-                concertPlayer.pauseVideo();
-            } else {
-                concertPlayer.setVolume(vol);
-            }
-        }, 150);
+    
+    // Spawn across top 60% of viewport coordinates
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * (window.innerHeight * 0.6);
+    window.createFireworkBurst(x, y, colors[Math.floor(Math.random() * colors.length)]);
+  }, 250); // Increased generation speed for high-density action
 
-    // 2. High-Fidelity Canvas Fireworks
-    const duration = 7 * 1000;
-    const endTime = Date.now() + duration;
-    const colors = ['#a855f7', '#fbbf24', '#ffffff', '#e879f9', '#fcd34d'];
+  // Smooth Arena Shutdown Transition
+  const phase2 = document.getElementById('phase-2-concert');
+  if (phase2) {
+    setTimeout(() => {
+      phase2.style.transition = 'opacity 4s ease-out';
+      phase2.style.opacity = '0';
+    }, 4000);
+  }
 
-    const fireworkInterval = setInterval(() => {
-        if (Date.now() > endTime) return clearInterval(fireworkInterval);
-        
-        // Random bursts across the sky
-        const x = Math.random() * window.innerWidth;
-        const y = Math.random() * (window.innerHeight * 0.6);
-        createFireworkBurst(x, y, colors[Math.floor(Math.random() * colors.length)]);
-    }, 350);
-
-    // 3. Final Arena Fade
-    const phase2 = document.getElementById('phase-2-concert');
-    if (phase2) {
-        setTimeout(() => {
-            phase2.style.transition = 'opacity 5s ease-out';
-            phase2.style.opacity = '0';
-        }, 3000);
-    }
-
-    setTimeout(window.exitConcert, 9500);
+  setTimeout(window.exitConcert, 8500);
 };
 
 // --- CUSTOM FIREWORK ENGINE ---
@@ -15117,11 +15133,11 @@ const VOYAGE_ARENA_CSS = `
     /* Crowd Dots */
     .vy-crowd-dot { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.15); filter: blur(1px); z-index: 2; transition: all 0.3s; }
 
-    /* Fever Mode */
-    .fever-glow { position: absolute; inset: 0; box-shadow: inset 0 0 150px #a855f7; opacity: 0; transition: opacity 0.3s; z-index: 55; pointer-events: none; }
-    .fever-glow.active { animation: feverPulse 0.32s infinite alternate; }
-    @keyframes feverPulse { 0% { opacity: 0.2; } 100% { opacity: 0.7; } }
-    @keyframes screenShake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+    /* Fever Mode (Swim / 93 BPM Vibe) */
+    .fever-glow { position: absolute; inset: 0; box-shadow: inset 0 0 150px #3b82f6; opacity: 0; transition: opacity 0.8s; z-index: 55; pointer-events: none; }
+    .fever-glow.active { animation: oceanPulse 1.29s infinite alternate ease-in-out; }
+    @keyframes oceanPulse { 0% { opacity: 0.1; background: rgba(59, 130, 246, 0.05); } 100% { opacity: 0.4; background: rgba(168, 85, 247, 0.1); } }
+    @keyframes oceanBreathe { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.02); filter: brightness(1.1) contrast(1.1); } }
 
     /* Magic Petals */
     .magic-petal { position: absolute; top: -5%; background: #d8b4fe; border-radius: 50% 0 50% 50%; opacity: 0.6; pointer-events: none; animation: petalFall linear forwards; }
