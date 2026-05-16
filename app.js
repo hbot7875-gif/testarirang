@@ -13432,6 +13432,7 @@ window.launchTheVoyage = function () {
         <div id="fever-overlay" class="fever-glow"></div>
         <div id="laser-container" style="position: absolute; inset: 0; z-index: 5; pointer-events: none; overflow: hidden;"></div>
         <div id="crowd-container" style="position: absolute; inset: 0; z-index: 2; pointer-events: none;"></div>
+        <div id="magic-elements-layer" style="position: absolute; inset: 0; z-index: 8; pointer-events: none; overflow: hidden;"></div>
 
         <button onclick="exitConcert()" style="position: absolute; top: 30px; right: 30px; z-index: 1001; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-family:'Orbitron'; font-size:9px; font-weight:800; backdrop-filter: blur(5px);">EXIT ARENA ✕</button>
     </div>
@@ -13552,6 +13553,43 @@ window.launchTheVoyage = function () {
               tapCount = 0;
           }
       });
+
+      // 4. Falling Petals
+      const magicLayer = document.getElementById('magic-elements-layer');
+      setInterval(() => {
+          const petal = document.createElement('div');
+          petal.className = 'magic-petal';
+          petal.style.left = Math.random() * 100 + '%';
+          petal.style.width = (5 + Math.random() * 10) + 'px';
+          petal.style.height = petal.style.width;
+          petal.style.animationDuration = (5 + Math.random() * 5) + 's';
+          petal.style.setProperty('--rot', (Math.random() * 360) + 'deg');
+          magicLayer.appendChild(petal);
+          setTimeout(() => petal.remove(), 10000);
+      }, 400);
+
+      // 5. Ripple Effect on click
+      phase2.addEventListener('click', (e) => {
+          if (e.target.closest('#lightstick-controls')) return;
+          const ripple = document.createElement('div');
+          ripple.className = 'magic-ripple';
+          ripple.style.left = e.clientX + 'px';
+          ripple.style.top = e.clientY + 'px';
+          phase2.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 2000);
+      });
+
+      // 6. Predictive Finale Check (8s before end)
+      const finaleCheck = setInterval(() => {
+          if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function') {
+              const time = concertPlayer.getCurrentTime();
+              const duration = concertPlayer.getDuration();
+              if (duration > 0 && (duration - time) < 8) {
+                  clearInterval(finaleCheck);
+                  window.triggerGrandFinale();
+              }
+          }
+      }, 1000);
     }
   }, 5000);
 
@@ -13808,15 +13846,47 @@ function doFireworksBurst() {
 }
 
 window.triggerGrandFinale = function() {
-  const wrapper = document.getElementById('video-wrapper');
-  if (wrapper) wrapper.style.opacity = '0';
-  
-  if (typeof fireConfetti === 'function') {
-      fireConfetti();
-      setTimeout(fireConfetti, 1000); 
-  }
-  
-  setTimeout(window.exitConcert, 6000);
+    // 1. Fade out the volume
+    if (concertPlayer && typeof concertPlayer.getVolume === 'function') {
+        let vol = concertPlayer.getVolume();
+        const fadeInterval = setInterval(() => {
+            vol -= 5;
+            if (vol <= 0) {
+                clearInterval(fadeInterval);
+                concertPlayer.pauseVideo();
+            } else {
+                concertPlayer.setVolume(vol);
+            }
+        }, 200);
+    }
+
+    // 2. Start Fireworks
+    const duration = 6 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 3000 };
+
+    const randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+    const interval = setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
+
+        const particleCount = 50 * (timeLeft / duration);
+        window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#a855f7', '#ffffff'] });
+        window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#fbbf24', '#ffffff'] });
+    }, 450);
+
+    // 3. Fade out the Arena content
+    const phase2 = document.getElementById('phase-2-concert');
+    if (phase2) {
+        setTimeout(() => {
+            phase2.style.transition = 'opacity 3s ease-out';
+            phase2.style.opacity = '0';
+        }, 4000);
+    }
+
+    // 4. Exit
+    setTimeout(window.exitConcert, 8000);
 };
 
 
@@ -14972,6 +15042,14 @@ const VOYAGE_ARENA_CSS = `
     .fever-glow { position: absolute; inset: 0; box-shadow: inset 0 0 150px #a855f7; opacity: 0; transition: opacity 0.3s; z-index: 55; pointer-events: none; }
     .fever-glow.active { animation: feverPulse 0.32s infinite alternate; }
     @keyframes feverPulse { 0% { opacity: 0.2; } 100% { opacity: 0.7; } }
+
+    /* Magic Petals */
+    .magic-petal { position: absolute; top: -5%; background: #d8b4fe; border-radius: 50% 0 50% 50%; opacity: 0.6; pointer-events: none; animation: petalFall linear forwards; }
+    @keyframes petalFall { 0% { transform: translateY(0) rotate(0deg) translateX(0); } 100% { transform: translateY(110vh) rotate(var(--rot)) translateX(50px); } }
+
+    /* Magic Ripple */
+    .magic-ripple { position: absolute; width: 2px; height: 2px; border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 7; animation: rippleExpand 2s ease-out forwards; }
+    @keyframes rippleExpand { 0% { width: 0; height: 0; opacity: 1; border-width: 4px; } 100% { width: 500px; height: 500px; opacity: 0; border-width: 1px; } }
 `;
 
 const VOYAGE_SHIP_CSS = `
