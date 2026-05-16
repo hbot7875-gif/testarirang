@@ -13354,6 +13354,7 @@ let concertPlayer;
 let strobeInterval;
 
 window.launchTheVoyage = function () {
+  console.log("Magic Shop Portal Opening...");
   const existing = document.getElementById('voyage-overlay');
   if (existing) existing.remove();
 
@@ -13363,9 +13364,7 @@ window.launchTheVoyage = function () {
   root.id = 'voyage-overlay';
   root.className = 'vy-root';
   
-  // The HTML structure containing BOTH the Ship (Phase 1) and Concert (Phase 2)
   root.innerHTML = `
-    <!-- PHASE 1: THE MAGIC SHIP -->
     <div id="phase-1-ship" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 1s ease;">
         <div class="vy-arirang-ship" id="sailing-ship">
             <div class="vy-arirang__hull"><div class="vy-arirang__hull-name">Arirang</div></div>
@@ -13375,52 +13374,33 @@ window.launchTheVoyage = function () {
             <div class="vy-arirang__glow"></div>
             <div class="vy-arirang__wake"><div class="vy-arirang__foam"></div></div>
         </div>
-        
-        <div id="warp-text" style="margin-top: 40px; font-family: 'Orbitron', sans-serif; font-size: 14px; color: var(--purple-mid); letter-spacing: 4px; text-transform: uppercase; animation: pulse 1s infinite;">
+        <div id="warp-text" style="margin-top: 40px; font-family: 'Orbitron'; font-size: 14px; color: #a855f7; letter-spacing: 4px; text-transform: uppercase; animation: pulse 1s infinite;">
             Initiating Magic Shop Portal...
         </div>
     </div>
 
-    <!-- THE TRANSITION FLASH -->
     <div id="magic-flash" style="position: absolute; inset: 0; background: radial-gradient(circle, #fff 0%, #a855f7 50%, #000 100%); opacity: 0; pointer-events: none; z-index: 50; transition: opacity 2s ease-in;"></div>
 
-    <!-- PHASE 2: THE CONCERT ARENA (Hidden initially) -->
     <div id="phase-2-concert" style="position: absolute; inset: 0; opacity: 0; pointer-events: none; z-index: 60; transition: opacity 2s ease-out; background: #020202; overflow: hidden;">
-        
         <div id="video-wrapper" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 1;">
-            <div id="youtube-player" style="width: 100vw; height: 56.25vw; min-height: 100vh; transform: scale(1.35); opacity: 0.85;"></div>
+            <div id="youtube-player" style="width: 100vw; height: 56.25vw; min-height: 100vh; transform: scale(1.35); opacity: 1;"></div>
         </div>
-
-        <div style="position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(circle at 50% 60%, transparent 20%, rgba(0,0,0,0.6) 70%, #000 100%);"></div>
-        
-        <div id="ambient-glow" style="position: absolute; inset: 0; z-index: 3; background: var(--ambient-color, #a855f7); opacity: 0.15; mix-blend-mode: screen; pointer-events: none; transition: background 0.8s ease;"></div>
-
+        <div style="position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(circle at 50% 60%, transparent 25%, rgba(0,0,0,0.4) 60%, #000 100%);"></div>
+        <div id="ambient-glow" style="position: absolute; inset: 0; z-index: 3; background: #a855f7; opacity: 0.15; mix-blend-mode: screen; pointer-events: none; transition: background 0.8s ease;"></div>
         <div class="concert-dust" style="position: absolute; inset: 0; z-index: 4; pointer-events: none;"></div>
 
         <div id="fan-zone" style="position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; flex-direction: column; align-items: center;">
-            
-            <div id="bomb-back-glow" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; background: var(--ambient-color, #a855f7); filter: blur(60px); opacity: 0.3; pointer-events: none; transition: background 0.8s ease;"></div>
-            
+            <div id="bomb-back-glow" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; background: #a855f7; filter: blur(60px); opacity: 0.3; transition: background 0.8s ease;"></div>
             <div class="cs-bomb anim-sway" id="my-army-bomb" style="--glow-color: #a855f7; --wave-speed: 4s;">
-                
-                <div class="cs-sphere" style="
-                    width: 100px; height: 100px; 
-                    box-shadow: 0 0 50px var(--glow-color), inset 0 0 30px var(--glow-color); 
-                    background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.1) 40%, rgba(0,0,0,0.5)); 
-                    backdrop-filter: blur(8px) brightness(1.2); 
-                    mix-blend-mode: hard-light; 
-                    border: 1.5px solid rgba(255,255,255,0.4);
-                    border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 2;">
-                    
+                <div class="cs-sphere" style="width: 100px; height: 100px; box-shadow: 0 0 50px var(--glow-color), inset 0 0 30px var(--glow-color); background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.1) 40%, rgba(0,0,0,0.5)); backdrop-filter: blur(8px) brightness(1.2); mix-blend-mode: hard-light; border: 1.5px solid rgba(255,255,255,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 2;">
                     <span class="cs-logo" style="text-shadow: 0 0 20px var(--glow-color); color: #fff; font-size: 36px; font-weight: 900; opacity: 0.95;">⟭⟬</span>
                 </div>
-                
                 <div class="cs-handle" style="width: 22px; height: 90px; background: linear-gradient(90deg, #050505, #222, #050505); border-radius: 0 0 10px 10px; margin-top: -6px; z-index: 1; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 20px 20px rgba(0,0,0,0.9);"></div>
             </div>
         </div>
 
-        <div id="lightstick-controls" class="soft-controls-panel" style="flex-direction: column; gap: 12px; padding: 16px 24px; position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); z-index: 20; background: rgba(20, 20, 25, 0.4); backdrop-filter: blur(16px) saturate(1.2); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 -2px 10px rgba(0, 0, 0, 0.2); border-radius: 30px; display: flex; align-items: center; width: max-content; max-width: 95vw;">
-            
+        <div id="lightstick-controls" class="soft-controls-panel">
+            <button class="panel-toggle-btn" onclick="toggleControlPanel()">HIDE CONTROLS ▽</button>
             <div style="display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap;">
                 <div style="display: flex; gap: 6px;">
                     <button class="soft-pill-btn active" onclick="setWavePattern('sway', this)">〰️ SWAY</button>
@@ -13436,22 +13416,19 @@ window.launchTheVoyage = function () {
                     <button class="soft-pill-btn" onclick="setWaveSpeed(2, this)">3X</button>
                 </div>
             </div>
-
-            <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.08); border-radius: 2px;"></div>
-
+            <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.08);"></div>
             <div style="display: flex; gap: 14px; align-items: center; justify-content: center; flex-wrap: wrap;">
                 <button class="soft-btn color-btn" style="--btn-color: #a855f7;" onclick="changeBombColor('#a855f7')"></button>
-                <button class="soft-btn color-btn" style="--btn-color: #e879f9;" onclick="changeBombColor('#e879f9')"></button>
-                <button class="soft-btn color-btn" style="--btn-color: #6366f1;" onclick="changeBombColor('#6366f1')"></button>
+                <button class="soft-btn color-btn" style="--btn-color: #3b82f6;" onclick="changeBombColor('#3b82f6')"></button>
                 <button class="soft-btn color-btn" style="--btn-color: #22c55e;" onclick="changeBombColor('#22c55e')"></button>
-                <button class="soft-btn color-btn" style="--btn-color: #fbbf24;" onclick="changeBombColor('#fbbf24')"></button>
                 <button class="soft-btn color-btn rainbow-btn" onclick="changeBombColor('rainbow')"></button>
-                <div style="width: 1px; height: 18px; background: rgba(255,255,255,0.2); margin: 0 4px;"></div>
+                <div style="width: 1px; height: 18px; background: rgba(255,255,255,0.2);"></div>
+                <button class="soft-btn text-btn" onclick="triggerFanchant()" style="letter-spacing: 2px;">FANCHANT</button>
                 <button class="soft-btn text-btn" onclick="toggleStrobe()">STROBE</button>
             </div>
         </div>
 
-        <button onclick="exitConcert()" style="position: absolute; top: 30px; right: 30px; z-index: 50; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-family:'Orbitron', sans-serif; font-size:9px; font-weight:800; backdrop-filter: blur(5px); transition: all 0.2s;">EXIT ARENA ✕</button>
+        <button onclick="exitConcert()" style="position: absolute; top: 30px; right: 30px; z-index: 1001; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-family:'Orbitron'; font-size:9px; font-weight:800; backdrop-filter: blur(5px);">EXIT ARENA ✕</button>
     </div>
   `;
 
@@ -13484,10 +13461,7 @@ window.launchTheVoyage = function () {
   }, 3500);
 
   setTimeout(() => {
-    // C. Initialize YouTube Player & Switch Phases
-    // ⚠️ REPLACE 'YOUR_CONCERT_VIDEO_ID' WITH A REAL YOUTUBE ID (e.g., 'jH1RpAetXo4')
     initYouTubePlayer('sj95YLW-7-g'); 
-    
     const phase1 = document.getElementById('phase-1-ship');
     if (phase1) phase1.style.display = 'none';
 
@@ -13495,17 +13469,69 @@ window.launchTheVoyage = function () {
     if (phase2) {
       phase2.style.opacity = '1';
       phase2.style.pointerEvents = 'all';
+
+      // Sparkles Trail
+      const handleMove = (e) => {
+          if (Math.random() > 0.4) return;
+          const x = e.clientX || (e.touches && e.touches[0].clientX);
+          const y = e.clientY || (e.touches && e.touches[0].clientY);
+          if (!x || !y) return;
+          const bomb = document.getElementById('my-army-bomb');
+          const color = bomb ? getComputedStyle(bomb).getPropertyValue('--glow-color').trim() : '#a855f7';
+          const spark = document.createElement('div');
+          spark.className = 'bomb-sparkle';
+          spark.style.left = x + 'px'; spark.style.top = y + 'px';
+          spark.style.boxShadow = `0 0 15px ${color}, 0 0 30px ${color}`;
+          phase2.appendChild(spark);
+          setTimeout(() => spark.remove(), 1000);
+      };
+      phase2.addEventListener('mousemove', handleMove);
+      phase2.addEventListener('touchmove', handleMove);
+
+      // Whalien 52
+      setInterval(() => {
+          const whale = document.createElement('div');
+          whale.className = 'magic-whale';
+          whale.innerText = '🐋';
+          whale.style.top = (20 + Math.random() * 40) + '%';
+          phase2.appendChild(whale);
+          setTimeout(() => whale.remove(), 28000);
+      }, 35000);
     }
   }, 5000);
 
   setTimeout(() => {
-    // D. Fade out flash
     const flash = document.getElementById('magic-flash');
-    if (flash) {
-        flash.style.transition = 'opacity 3s ease-out';
-        flash.style.opacity = '0';
-    }
+    if (flash) { flash.style.transition = 'opacity 3s ease-out'; flash.style.opacity = '0'; }
   }, 6500);
+};
+
+window.triggerFanchant = function() {
+    const names = ["KIM NAMJOON", "KIM SEOKJIN", "MIN YOONGI", "JUNG HOSEOK", "PARK JIMIN", "KIM TAEHYUNG", "JEON JUNGKOOK", "BTS!"];
+    const arena = document.getElementById('phase-2-concert');
+    if (!arena) return;
+    if (navigator.vibrate) navigator.vibrate([40, 80, 40]);
+    names.forEach((name, i) => {
+        setTimeout(() => {
+            const word = document.createElement('div');
+            word.className = 'fanchant-word';
+            word.innerText = name;
+            arena.appendChild(word);
+            setTimeout(() => word.remove(), 3500);
+        }, i * 850);
+    });
+};
+
+window.toggleControlPanel = function() {
+    const panel = document.getElementById('lightstick-controls');
+    const btn = panel.querySelector('.panel-toggle-btn');
+    if (panel.classList.contains('minimized')) {
+        panel.classList.remove('minimized');
+        btn.innerHTML = 'HIDE CONTROLS ▽';
+    } else {
+        panel.classList.add('minimized');
+        btn.innerHTML = 'SHOW CONTROLS △';
+    }
 };
 
 // --- Helper Functions for Phase 2 ---
@@ -14780,54 +14806,35 @@ const VOYAGE_SWIM_CSS = `
 
 
 const VOYAGE_ARENA_CSS = `
-/* --- DYNAMIC MOVEMENT ANIMATIONS --- */
-#my-army-bomb {
-    /* Smooth transitions for scaling and color changes */
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    /* Set default speed */
-    --wave-speed: 4s; 
-}
+    #my-army-bomb { transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); --wave-speed: 4s; }
+    .anim-sway { animation: moveSway var(--wave-speed) ease-in-out infinite alternate; }
+    .anim-drift { animation: moveDrift var(--wave-speed) linear infinite; }
+    .anim-ocean { animation: moveOcean var(--wave-speed) ease-in-out infinite alternate; }
+    .anim-stars { animation: moveStars var(--wave-speed) ease-in-out infinite alternate; }
+    .anim-flutter { animation: moveFlutter var(--wave-speed) linear infinite; }
+    @keyframes moveSway { 0% { transform: rotate(-6deg) translateY(0px) scale(1); } 100% { transform: rotate(5deg) translateY(-12px) scale(1.03); } }
+    @keyframes moveDrift { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(15px, -10px) rotate(3deg); } 50% { transform: translate(-5px, -20px) rotate(-2deg); } 75% { transform: translate(-15px, -5px) rotate(1deg); } }
+    @keyframes moveOcean { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(4deg); } }
+    @keyframes moveStars { 0%, 100% { transform: translateY(0) rotate(0deg) scale(1); } 25% { transform: translateY(-12px) rotate(3deg) scale(1.05); } 75% { transform: translateY(-8px) rotate(-3deg) scale(0.95); } }
+    @keyframes moveFlutter { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-5deg) translate(-3px,-3px); } 50% { transform: rotate(0) translate(0,-5px); } 75% { transform: rotate(5deg) translate(3px,-3px); } }
+    #ambient-glow, #bomb-back-glow { transition: background-color 1s ease; }
 
-/* The 5 Movement Classes */
-.anim-sway { animation: moveSway var(--wave-speed) ease-in-out infinite alternate; }
-.anim-drift { animation: moveDrift var(--wave-speed) linear infinite; }
-.anim-ocean { animation: moveOcean var(--wave-speed) ease-in-out infinite alternate; }
-.anim-stars { animation: moveStars var(--wave-speed) ease-in-out infinite alternate; }
-.anim-flutter { animation: moveFlutter var(--wave-speed) linear infinite; }
-
-/* The Keyframes */
-@keyframes moveSway { 
-    0% { transform: rotate(-6deg) translateY(0px) scale(1); } 
-    100% { transform: rotate(5deg) translateY(-12px) scale(1.03); } 
-}
-@keyframes moveDrift { 
-    0%, 100% { transform: translate(0, 0) rotate(0deg); } 
-    25% { transform: translate(15px, -10px) rotate(3deg); } 
-    50% { transform: translate(-5px, -20px) rotate(-2deg); } 
-    75% { transform: translate(-15px, -5px) rotate(1deg); } 
-}
-@keyframes moveOcean { 
-    0%, 100% { transform: translateY(0) rotate(0deg); } 
-    50% { transform: translateY(-20px) rotate(4deg); } 
-}
-@keyframes moveStars { 
-    0%, 100% { transform: translateY(0) rotate(0deg) scale(1); } 
-    25% { transform: translateY(-12px) rotate(3deg) scale(1.05); } 
-    75% { transform: translateY(-8px) rotate(-3deg) scale(0.95); } 
-}
-@keyframes moveFlutter { 
-    0%, 100% { transform: rotate(0); } 
-    25% { transform: rotate(-5deg) translate(-3px,-3px); } 
-    50% { transform: rotate(0) translate(0,-5px); } 
-    75% { transform: rotate(5deg) translate(3px,-3px); } 
-}
-
-/* Ensure smooth color fading on ambient layers */
-#ambient-glow, #bomb-back-glow {
-    transition: background-color 1s ease;
-}
-
-/* --- SOFT GLASSMORPHISM UI --- */
+    .soft-controls-panel {
+        position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); 
+        z-index: 1000; background: rgba(15, 15, 20, 0.7); backdrop-filter: blur(25px); 
+        border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 30px;
+        display: flex; flex-direction: column; gap: 12px; padding: 18px 24px;
+        width: max-content; max-width: 95vw; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: visible !important;
+    }
+    .soft-controls-panel.minimized { bottom: -165px; opacity: 0.6; filter: blur(2px) grayscale(1); }
+    .panel-toggle-btn {
+        position: absolute; top: -38px; left: 50%; transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff; border-radius: 15px; padding: 5px 18px; font-size: 10px; font-family: 'Orbitron';
+        cursor: pointer; backdrop-filter: blur(12px); box-shadow: 0 -5px 15px rgba(0,0,0,0.3); transition: all 0.3s;
+    }
+    .panel-toggle-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateX(-50%) translateY(-2px); }
 .soft-pill-btn {
     background: rgba(255,255,255,0.05); 
     border: 1px solid rgba(255,255,255,0.1);
