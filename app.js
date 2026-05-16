@@ -13434,6 +13434,14 @@ window.launchTheVoyage = function () {
         <div id="crowd-container" style="position: absolute; inset: 0; z-index: 2; pointer-events: none;"></div>
         <div id="magic-elements-layer" style="position: absolute; inset: 0; z-index: 8; pointer-events: none; overflow: hidden;"></div>
 
+        <!-- VIP Interactive Guide -->
+        <div id="vip-guide" class="vip-guide-panel">
+            <h3>✨ VIP INTERACTIVE ARENA</h3>
+            <div class="guide-item"><span>👆</span> TAP VIDEO FOR SPARKS</div>
+            <div class="guide-item"><span>🔥</span> TAP 10X FOR FEVER MODE</div>
+            <div class="guide-item"><span>🌊</span> USE "WAVE" FOR STADIUM RIPPLE</div>
+        </div>
+
         <button onclick="exitConcert()" style="position: absolute; top: 30px; right: 30px; z-index: 1001; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-family:'Orbitron'; font-size:9px; font-weight:800; backdrop-filter: blur(5px);">EXIT ARENA ✕</button>
     </div>
   `;
@@ -13462,13 +13470,13 @@ window.launchTheVoyage = function () {
   }, 1000);
 
   setTimeout(() => {
-    // B. The Magic Flash
-    const flash = document.getElementById('magic-flash');
-    if (flash) flash.style.opacity = '1';
-  }, 3500);
-
-  setTimeout(() => {
-    initYouTubePlayer('sj95YLW-7-g'); 
+    // C. Transition to Phase 2
+    const phase2 = document.getElementById('phase-2-concert');
+    if (phase2) {
+        phase2.style.opacity = '1';
+        initYouTubePlayer('sj95YLW-7-g'); 
+    }
+  }, 5000);
     const phase1 = document.getElementById('phase-1-ship');
     if (phase1) phase1.style.display = 'none';
 
@@ -13576,7 +13584,14 @@ window.launchTheVoyage = function () {
           setTimeout(() => ripple.remove(), 2000);
       });
 
-      // 6. Predictive Finale Check (8s before end)
+      // 6. Show VIP Guide
+      const guide = document.getElementById('vip-guide');
+      if (guide) {
+          setTimeout(() => guide.classList.add('visible'), 2000);
+          setTimeout(() => guide.classList.remove('visible'), 10000);
+      }
+
+      // 7. Predictive Finale Check (8s before end)
       const finaleCheck = setInterval(() => {
           if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function') {
               const time = concertPlayer.getCurrentTime();
@@ -13627,16 +13642,31 @@ window.toggleControlPanel = function() {
 window.triggerFeverMode = function() {
     const overlay = document.getElementById('fever-overlay');
     const bomb = document.getElementById('my-army-bomb');
+    const lasers = document.querySelectorAll('.vy-laser');
     if (!overlay || !bomb) return;
 
+    console.log('🔥 FEVER MODE ACTIVE');
     overlay.classList.add('active');
     bomb.style.setProperty('--wave-speed', '0.5s');
-    if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100]);
+    document.body.style.animation = 'screenShake 0.1s infinite';
+    
+    lasers.forEach(l => {
+        l.style.animationDuration = '0.5s, 0.1s';
+        l.style.setProperty('--glow-color', '#ff00ff');
+    });
+
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100, 50, 100]);
 
     setTimeout(() => {
         overlay.classList.remove('active');
         bomb.style.setProperty('--wave-speed', '4s');
-    }, 4000);
+        document.body.style.animation = 'none';
+        lasers.forEach((l, i) => {
+            l.style.animationDuration = '5.1s, 0.64s';
+            const colors = ['#a855f7', '#3b82f6', '#ec4899'];
+            l.style.setProperty('--glow-color', colors[i % 3]);
+        });
+    }, 5000);
 };
 
 window.initiateOceanWave = function() {
@@ -13666,10 +13696,19 @@ window.initiateOceanWave = function() {
 // --- Helper Functions for Phase 2 ---
 
 function initYouTubePlayer(videoId) {
+  // Prevent duplicate players
+  if (concertPlayer && typeof concertPlayer.destroy === 'function') {
+      try { concertPlayer.destroy(); } catch(e) {}
+      concertPlayer = null;
+  }
+
   if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
       setTimeout(() => initYouTubePlayer(videoId), 500);
       return;
   }
+
+  const target = document.getElementById('youtube-player');
+  if (!target) return;
 
   concertPlayer = new YT.Player('youtube-player', {
     height: '100%',
@@ -13843,10 +13882,11 @@ function doFireworksBurst() {
 }
 
 window.triggerGrandFinale = function() {
+    if (!concertPlayer || typeof concertPlayer.getVolume !== 'function') {
+        console.warn('⚠️ Player not ready for finale yet!');
+        return;
+    }
     console.log('🎆 REAL FIREWORKS FINALE INITIATED');
-    
-    // 1. Fade out the volume
-    if (concertPlayer && typeof concertPlayer.getVolume === 'function') {
         let vol = concertPlayer.getVolume();
         const fadeInterval = setInterval(() => {
             vol -= 10;
@@ -15103,6 +15143,7 @@ const VOYAGE_ARENA_CSS = `
     .fever-glow { position: absolute; inset: 0; box-shadow: inset 0 0 150px #a855f7; opacity: 0; transition: opacity 0.3s; z-index: 55; pointer-events: none; }
     .fever-glow.active { animation: feverPulse 0.32s infinite alternate; }
     @keyframes feverPulse { 0% { opacity: 0.2; } 100% { opacity: 0.7; } }
+    @keyframes screenShake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
 
     /* Magic Petals */
     .magic-petal { position: absolute; top: -5%; background: #d8b4fe; border-radius: 50% 0 50% 50%; opacity: 0.6; pointer-events: none; animation: petalFall linear forwards; }
@@ -15111,6 +15152,13 @@ const VOYAGE_ARENA_CSS = `
     /* Magic Ripple */
     .magic-ripple { position: absolute; width: 2px; height: 2px; border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 7; animation: rippleExpand 2s ease-out forwards; }
     @keyframes rippleExpand { 0% { width: 0; height: 0; opacity: 1; border-width: 4px; } 100% { width: 500px; height: 500px; opacity: 0; border-width: 1px; } }
+
+    /* VIP Guide Panel */
+    .vip-guide-panel { position: absolute; top: 100px; left: 30px; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); padding: 15px 20px; border-radius: 15px; z-index: 100; opacity: 0; transform: translateX(-20px); transition: all 0.8s ease; pointer-events: none; font-family: 'Orbitron'; }
+    .vip-guide-panel.visible { opacity: 1; transform: translateX(0); }
+    .vip-guide-panel h3 { font-size: 10px; color: #fbbf24; letter-spacing: 2px; margin-bottom: 10px; }
+    .guide-item { font-size: 9px; color: #fff; margin: 5px 0; display: flex; align-items: center; gap: 8px; opacity: 0.8; }
+    .guide-item span { font-size: 12px; }
 `;
 
 const VOYAGE_SHIP_CSS = `
