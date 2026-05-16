@@ -13486,7 +13486,7 @@ window.launchTheVoyage = function () {
   setTimeout(() => {
     // C. Initialize YouTube Player & Switch Phases
     // ⚠️ REPLACE 'YOUR_CONCERT_VIDEO_ID' WITH A REAL YOUTUBE ID (e.g., 'jH1RpAetXo4')
-    initYouTubePlayer('EWVvgYT0Mm8'); 
+    initYouTubePlayer('sj95YLW-7-g'); 
     
     const phase1 = document.getElementById('phase-1-ship');
     if (phase1) phase1.style.display = 'none';
@@ -13660,36 +13660,30 @@ window.exitConcert = function() {
 };
 
 function fireConfetti() {
-  // Inject canvas-confetti from CDN if not present
   if (!window.confetti) {
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
-    script.onload = () => {
-      var duration = 4 * 1000;
-      var end = Date.now() + duration;
-
-      (function frame() {
-        window.confetti({
-          particleCount: 8,
-          angle: 60,
-          spread: 70,
-          origin: { x: 0, y: 0.8 },
-          colors: ['#a855f7', '#fff', '#3b82f6', '#fbbf24']
-        });
-        window.confetti({
-          particleCount: 8,
-          angle: 120,
-          spread: 70,
-          origin: { x: 1, y: 0.8 },
-          colors: ['#a855f7', '#fff', '#3b82f6', '#fbbf24']
-        });
-        if (Date.now() < end) requestAnimationFrame(frame);
-      }());
-    };
+    script.onload = () => { doFireworksBurst(); };
     document.head.appendChild(script);
   } else {
-    window.confetti({ particleCount: 150, spread: 100, origin: { y: 0.7 } });
+    doFireworksBurst();
   }
+}
+
+function doFireworksBurst() {
+  const duration = 5 * 1000;
+  const animationEnd = Date.now() + duration;
+  const defaults = { startVelocity: 45, spread: 360, ticks: 60, zIndex: 10000 };
+  const randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+  const interval = setInterval(() => {
+    const timeLeft = animationEnd - Date.now();
+    if (timeLeft <= 0) return clearInterval(interval);
+    const particleCount = 50 * (timeLeft / duration);
+    window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#a855f7', '#ffffff'] });
+    window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#ff00ff', '#ffffff'] });
+    window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.4, 0.6), y: Math.random() - 0.2 }, colors: ['#3b82f6', '#ffffff'] });
+  }, 250);
 }
 
 window.triggerGrandFinale = function() {
