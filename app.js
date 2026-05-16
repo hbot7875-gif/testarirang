@@ -10027,8 +10027,6 @@ async function render148Protocol() {
 
     }
 
-    // Static Daily Habits
-    html += `
         <div style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--border-light); display:grid; gap:6px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
             <span style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; font-weight:800;">⚡ Daily Habits</span>
@@ -13203,493 +13201,243 @@ function handleSwimRipple(e, container) {
 // SECTION 8: launchTheVoyage()
 // ─────────────────────────────────────────────
 
+// Add these global variables near the top of your file
+let concertPlayer;
+let strobeInterval;
+
 window.launchTheVoyage = function () {
-  const existing = document.getElementById(VOYAGE_OVERLAY_ID);
+  const existing = document.getElementById('voyage-overlay');
   if (existing) existing.remove();
 
   ensureVoyageStyles();
 
   const root = document.createElement('div');
-  root.id = VOYAGE_OVERLAY_ID;
+  root.id = 'voyage-overlay';
   root.className = 'vy-root';
-  root.setAttribute('role', 'dialog');
-  root.setAttribute('aria-modal', 'true');
-  root.setAttribute('aria-label', 'Arirang Voyage — SWIM Concert');
-
-  // Get agent name for personalization
-  const stateRef = (typeof STATE !== 'undefined' ? STATE : (window.STATE || null));
-  const agentName = stateRef?.data?.agent?.profile?.name || stateRef?.data?.agent?.profile?.agentNo || 'ARMY';
-
+  
+  // The HTML structure containing BOTH the Ship (Phase 1) and Concert (Phase 2)
   root.innerHTML = `
-    <!-- ═══ HEADER ═══ -->
-    <div class="vy-header">
-      <div style="font-family:'Orbitron',sans-serif; font-size:10px; color:rgba(0,180,220,0.8); letter-spacing:2px; font-weight:800;">
-        ⚡ ARIRANG WAVE
-      </div>
-      <button class="vy-close" data-action="close-voyage" aria-label="Close voyage">✕</button>
-    </div>
-
-    <!-- ═══ THE ARIRANG SHIP ═══ -->
-    <div class="vy-ship-container">
-      <div class="vy-arirang-ship">
-        <div class="vy-arirang__glow"></div>
-        <div class="vy-arirang__sail vy-arirang__sail--g1"></div>
-        <div class="vy-arirang__sail vy-arirang__sail--g2"></div>
-        <div class="vy-arirang__sail vy-arirang__sail--g3"></div>
-        <div class="vy-arirang__sail vy-arirang__sail--jib1"></div>
-        <div class="vy-arirang__sail vy-arirang__sail--jib2"></div>
-        <div class="vy-arirang__mast vy-arirang__mast--1"><div class="vy-arirang__lantern"></div></div>
-        <div class="vy-arirang__mast vy-arirang__mast--2"><div class="vy-arirang__lantern"></div></div>
-        <div class="vy-arirang__mast vy-arirang__mast--3"><div class="vy-arirang__lantern"></div></div>
-        <div class="vy-arirang__mast vy-arirang__mast--4"><div class="vy-arirang__lantern"></div></div>
-        <div class="vy-arirang__xtree" style="bottom:78%;left:14%;width:18%"></div>
-        <div class="vy-arirang__xtree" style="bottom:84%;left:32%;width:20%"></div>
-        <div class="vy-arirang__xtree" style="bottom:82%;left:53%;width:18%"></div>
-        <div class="vy-arirang__xtree" style="bottom:72%;left:72%;width:16%"></div>
-        <div class="vy-arirang__gaff" style="bottom:84%;left:14%;width:26%;transform:rotate(-30deg)"></div>
-        <div class="vy-arirang__gaff" style="bottom:88%;left:34%;width:28%;transform:rotate(-28deg)"></div>
-        <div class="vy-arirang__gaff" style="bottom:86%;left:56%;width:24%;transform:rotate(-32deg)"></div>
-        <div class="vy-arirang__boom" style="bottom:48%;left:14%;width:28%;transform:rotate(-2deg)"></div>
-        <div class="vy-arirang__boom" style="bottom:52%;left:34%;width:32%;transform:rotate(-1.5deg)"></div>
-        <div class="vy-arirang__boom" style="bottom:50%;left:56%;width:26%;transform:rotate(-2deg)"></div>
-        <div class="vy-arirang__rig" style="bottom:24%;left:16%;height:44%;transform:rotate(-12deg)"></div>
-        <div class="vy-arirang__rig" style="bottom:24%;left:16%;height:56%;transform:rotate(-8deg)"></div>
-        <div class="vy-arirang__rig" style="bottom:24%;left:36%;height:48%;transform:rotate(-10deg)"></div>
-        <div class="vy-arirang__rig" style="bottom:24%;left:36%;height:60%;transform:rotate(-6deg)"></div>
-        <div class="vy-arirang__rig" style="bottom:24%;left:58%;height:46%;transform:rotate(-11deg)"></div>
-        <div class="vy-arirang__rig" style="bottom:24%;left:58%;height:58%;transform:rotate(-7deg)"></div>
-        <div class="vy-arirang__rig" style="bottom:24%;left:76%;height:74%;transform:rotate(22deg)"></div>
-        <div class="vy-arirang__rig" style="bottom:24%;left:76%;height:60%;transform:rotate(28deg)"></div>
-        <div class="vy-arirang__hull">
-          <div class="vy-arirang__hull-stripe" style="top:8%;left:5%;width:80%;height:7%"></div>
-          <div class="vy-arirang__hull-stripe" style="top:40%;left:4%;width:83%;height:3%"></div>
-          <div class="vy-arirang__hull-stripe" style="bottom:15%;left:3%;width:87%;height:6%"></div>
-          <div class="vy-arirang__hull-name">Arirang</div>
-          <div class="vy-arirang__port" style="left:12%"></div>
-          <div class="vy-arirang__port" style="left:22%"></div>
-          <div class="vy-arirang__port" style="left:32%"></div>
-          <div class="vy-arirang__port" style="left:42%"></div>
-          <div class="vy-arirang__port" style="left:52%"></div>
+    <!-- PHASE 1: THE MAGIC SHIP -->
+    <div id="phase-1-ship" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 1s ease;">
+        <div class="vy-arirang-ship" id="sailing-ship">
+            <div class="vy-arirang__hull"><div class="vy-arirang__hull-name">Arirang</div></div>
+            <div class="vy-arirang__sail vy-arirang__sail--g1"></div>
+            <div class="vy-arirang__sail vy-arirang__sail--g2"></div>
+            <div class="vy-arirang__sail vy-arirang__sail--g3"></div>
+            <div class="vy-arirang__glow"></div>
+            <div class="vy-arirang__wake"><div class="vy-arirang__foam"></div></div>
         </div>
-        <div class="vy-arirang__bowsprit"></div>
-        <div class="vy-arirang__deck"></div>
-        <div class="vy-arirang__railing"></div>
-        <div class="vy-arirang__crew">
-          <div class="vy-arirang__person" style="--h:11px"></div>
-          <div class="vy-arirang__person" style="--h:13px"></div>
-          <div class="vy-arirang__person" style="--h:14px"></div>
-          <div class="vy-arirang__person" style="--h:13px"></div>
-          <div class="vy-arirang__person" style="--h:12px"></div>
-          <div class="vy-arirang__person" style="--h:14px"></div>
-          <div class="vy-arirang__person" style="--h:11px"></div>
+        
+        <div id="warp-text" style="margin-top: 40px; font-family: 'Orbitron', sans-serif; font-size: 14px; color: var(--purple-mid); letter-spacing: 4px; text-transform: uppercase; animation: pulse 1s infinite;">
+            Initiating Magic Shop Portal...
         </div>
-        <div class="vy-arirang__wake">
-          <div class="vy-arirang__foam"></div>
-          <div class="vy-arirang__foam"></div>
-          <div class="vy-arirang__foam"></div>
-        </div>
-        <div class="vy-arirang__flag"></div>
-      </div>
     </div>
 
-    <!-- ═══ NARRATIVE (3 lines — during dive) ═══ -->
-    <div class="vy-narrative vy-narrative--hidden">
-      <div class="vy-narrative__line vy-narrative__line--1">
-        <span class="vy-narrative__icon">⚡</span>
-        ALL 7 CREW ABOARD THE ARIRANG
-      </div>
-      <div class="vy-narrative__line vy-narrative__line--2">
-        <span class="vy-narrative__icon">🌊</span>
-        THE ARIRANG DIVES INTO THE DEEP
-      </div>
-      <div class="vy-narrative__line vy-narrative__line--3">
-        <span class="vy-narrative__icon">💫</span>
-        I JUST WANNA DIVE
-      </div>
-    </div>
+    <!-- THE TRANSITION FLASH -->
+    <div id="magic-flash" style="position: absolute; inset: 0; background: radial-gradient(circle, #fff 0%, #a855f7 50%, #000 100%); opacity: 0; pointer-events: none; z-index: 50; transition: opacity 2s ease-in;"></div>
 
-    <!-- ═══ OCEAN SURFACE (initial) ═══ -->
-    <div class="vy-ocean">
-      <div class="vy-ocean-dots"></div>
-    </div>
-
-    <!-- ═══ DIVE TRANSITION ═══ -->
-    <div class="swim-dive swim-dive--hidden">
-      <div class="swim-dive__flash"></div>
-      <div class="swim-dive__bubbles"></div>
-    </div>
-
-    <!-- ═══ UNDERWATER CONCERT ═══ -->
-    <div class="swim-underwater swim-underwater--hidden" id="concertStage">
-
-      <!-- Starfield background -->
-      <div class="cs-stars" id="csStars"></div>
-
-      <!-- Soft ambient glow -->
-      <div class="cs-ambient"></div>
-
-      <!-- Water surface shimmer from ship above -->
-      <div class="swim-surface">
-        <div class="swim-surface__shimmer"></div>
-        <div class="swim-surface__wave"></div>
-        <div class="swim-ship-shadow"></div>
-      </div>
-
-      <!-- Concert Stage Layout -->
-      <div class="cs-layout">
-
-        <!-- Song info -->
-        <div class="cs-song-info">
-          <div class="cs-era-icon">🌸</div>
-          <h2 class="cs-title">Swim</h2>
-          <p class="cs-artist">BTS • Arirang Wave</p>
+    <!-- PHASE 2: THE CONCERT ARENA (Hidden initially) -->
+    <div id="phase-2-concert" style="position: absolute; inset: 0; opacity: 0; pointer-events: none; z-index: 60; transition: opacity 2s ease-out; background: #000;">
+        
+        <!-- YouTube Background -->
+        <div id="video-wrapper" style="position: absolute; inset: 0; pointer-events: none;">
+            <div id="youtube-player"></div>
+            <!-- Dark gradient overlay so the Army Bomb pops -->
+            <div style="position: absolute; inset: 0; background: radial-gradient(circle at center 60%, transparent 20%, rgba(0,0,0,0.9) 100%);"></div>
         </div>
 
-        <!-- Your army bomb (foreground, controllable) -->
-        <div class="cs-stage">
-          <div class="cs-stage-glow"></div>
-          <div class="cs-pulse-ring" id="csPulseRing"></div>
-          <div class="cs-pivot" id="csPivot">
-            <div class="cs-bomb">
-              <div class="cs-sphere">
-                <div class="cs-fill"></div>
-                <span class="cs-logo" id="csBombLogo">⟭⟬</span>
-              </div>
-              <div class="cs-handle"></div>
+        <!-- The Interactive Army Bomb -->
+        <div id="fan-zone" style="position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%); z-index: 10;">
+            <div class="cs-bomb" id="my-army-bomb" style="--glow-color: #a855f7; transition: all 0.3s ease;">
+                <div class="cs-sphere" style="box-shadow: 0 0 50px var(--glow-color), inset 0 0 20px var(--glow-color); background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.2) 40%, rgba(0,0,0,0.6));">
+                    <span class="cs-logo" style="text-shadow: 0 0 15px var(--glow-color);">⟭⟬</span>
+                </div>
+                <div class="cs-handle"></div>
             </div>
-          </div>
         </div>
 
-        <!-- Lyrics area -->
-        <div class="swim-lyrics">
-          <div class="swim-lyrics__main"></div>
-          <div class="swim-lyrics__sub"></div>
+        <!-- Lightstick Controls -->
+        <div id="lightstick-controls" style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20; background: rgba(0,0,0,0.7); padding: 12px 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); display: flex; gap: 15px; align-items: center;">
+            <button onclick="changeBombColor('#a855f7')" style="background:#a855f7; width:24px; height:24px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></button>
+            <button onclick="changeBombColor('#3b82f6')" style="background:#3b82f6; width:24px; height:24px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></button>
+            <button onclick="changeBombColor('#22c55e')" style="background:#22c55e; width:24px; height:24px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></button>
+            <div style="width: 1px; height: 20px; background: rgba(255,255,255,0.2);"></div>
+            <button onclick="toggleStrobe()" style="background:transparent; color:#fff; font-size:11px; font-weight:900; letter-spacing:1px; border:none; cursor:pointer; font-family:'Orbitron', sans-serif;">STROBE</button>
         </div>
 
-        <!-- Crowd army bombs (JS-generated) -->
-        <div class="cs-crowd" id="csCrowd"></div>
-
-      </div><!-- /cs-layout -->
-
-      <!-- ── ENHANCED CONTROLS (direct child of swim-underwater, always visible) ── -->
-      <div class="cs-controls">
-        <div class="cs-tab-bar">
-          <button class="cs-tab active" data-tab="wave">〰 Wave</button>
-          <button class="cs-tab" data-tab="color">🎨 Color</button>
-          <button class="cs-tab" data-tab="style">✦ Style</button>
-        </div>
-        <!-- Wave tab -->
-        <div class="cs-tab-panel active" id="csTabWave">
-          <div class="cs-ctrl-row">
-            <button class="cs-pat-btn active" data-val="slow-sway">〰〰 Sway</button>
-            <button class="cs-pat-btn" data-val="drift">🌊〰 Drift</button>
-            <button class="cs-pat-btn" data-val="ocean">🌊🌊 Ocean</button>
-            <button class="cs-pat-btn" data-val="stars">✦ Stars</button>
-            <button class="cs-pat-btn" data-val="flutter">〰✦ Flutter</button>
-          </div>
-          <div class="cs-ctrl-row" style="margin-top:6px;">
-            <span class="cs-label">Speed:</span>
-            <button class="cs-speed-btn" data-spd="8">〰 Slow</button>
-            <button class="cs-speed-btn active" data-spd="4">〰〰 Mid</button>
-            <button class="cs-speed-btn" data-spd="1.5">〰〰〰 Fast</button>
-          </div>
-        </div>
-        <!-- Color tab -->
-        <div class="cs-tab-panel" id="csTabColor">
-          <div class="cs-ctrl-row cs-color-grid">
-            <button class="cs-col-btn active" data-col="#a855f7" style="background:#a855f7"></button>
-            <button class="cs-col-btn" data-col="#e879f9" style="background:#e879f9"></button>
-            <button class="cs-col-btn" data-col="#6366f1" style="background:#6366f1"></button>
-            <button class="cs-col-btn" data-col="#3b82f6" style="background:#3b82f6"></button>
-            <button class="cs-col-btn" data-col="#22c55e" style="background:#22c55e"></button>
-            <button class="cs-col-btn" data-col="#fbbf24" style="background:#fbbf24"></button>
-            <button class="cs-col-btn" data-col="#ef4444" style="background:#ef4444"></button>
-            <button class="cs-col-btn" data-col="#f97316" style="background:#f97316"></button>
-            <button class="cs-col-btn" data-col="#ffffff" style="background:#fff"></button>
-            <button class="cs-col-btn cs-col-rainbow" data-col="rainbow">🌈</button>
-          </div>
-        </div>
-        <!-- Style tab — emoji logo picker -->
-        <div class="cs-tab-panel" id="csTabStyle">
-          <div class="cs-label" style="margin-bottom:6px;">Bomb Logo:</div>
-          <div class="cs-ctrl-row cs-logo-grid">
-            <button class="cs-logo-btn active" data-logo="⟭⟬">⟭⟬</button>
-            <button class="cs-logo-btn" data-logo="💜">💜</button>
-            <button class="cs-logo-btn" data-logo="🌊">🌊</button>
-            <button class="cs-logo-btn" data-logo="⭐">⭐</button>
-            <button class="cs-logo-btn" data-logo="🌸">🌸</button>
-            <button class="cs-logo-btn" data-logo="⚡">⚡</button>
-            <button class="cs-logo-btn" data-logo="🎵">🎵</button>
-            <button class="cs-logo-btn" data-logo="✨">✨</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- FINALE: ARMY flash overlay (triggered on arrival) -->
-      <div class="cs-finale-overlay" id="csFinaleOverlay">
-        <div class="cs-finale-flash"></div>
-        <div class="cs-finale-text">ARMY</div>
-        <div class="cs-finale-sub">YOU HAVE ARRIVED</div>
-      </div>
-
-      <div class="swim-ripple-area"></div>
-      <!-- Spotify player — pinned inside concert flex column -->
-      <div class="vy-player vy-player--hidden" style="flex-shrink:0;width:100%;z-index:31;">
-        <iframe class="vy-player-iframe" title="Spotify — SWIM"
-          src="https://open.spotify.com/embed/track/68lbSrXDORS51pmyjZv712?utm_source=generator&theme=0"
-          width="100%" height="80" frameBorder="0" allowfullscreen=""
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"></iframe>
-      </div>
-    </div>
-
-    <!-- ═══ EXIT OVERLAY ═══ -->
-    <div class="swim-exit">
-      <div class="swim-exit__light"></div>
+        <!-- Exit Button -->
+        <button onclick="exitConcert()" style="position: absolute; top: 20px; right: 20px; z-index: 50; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-family:'Orbitron', sans-serif; font-size:10px; font-weight:800; backdrop-filter: blur(5px);">EXIT ARENA</button>
     </div>
   `;
 
   document.body.appendChild(root);
 
-  // ── State ──
-  let lyricInterval = null;
-  let colorInterval = null;
-  let colorIndex = 0;
-
-  // ── Close handler ──
-  function closeVoyage() {
-    if (lyricInterval) clearInterval(lyricInterval);
-    if (colorInterval) clearInterval(colorInterval);
-
-    const exit = root.querySelector('.swim-exit');
-    if (exit) exit.classList.add('swim-exit--active');
-
-    const iframe = root.querySelector('iframe');
-    if (iframe) iframe.src = '';
-
-    setTimeout(() => {
-      root.classList.remove('visible');
-      root.addEventListener('transitionend', () => root.remove(), { once: true });
-      setTimeout(() => { if (root.parentNode) root.remove(); }, 1500);
-    }, 800);
-
-    document.removeEventListener('keydown', onEsc);
+  // 2. Load YouTube API
+  if (!window.YT) {
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }
 
-  const closeBtn = root.querySelector('[data-action="close-voyage"]');
-  if (closeBtn) closeBtn.addEventListener('click', closeVoyage);
-
-  function onEsc(e) { if (e.key === 'Escape') closeVoyage(); }
-  document.addEventListener('keydown', onEsc);
-  if (closeBtn) closeBtn.focus();
-
-  // ── Concert Controls ──
-  let _rainbowInterval = null;
-  let _currentBPM = 80;
-  let _currentMultiplier = 4;
-  let _currentPattern = 'slow-sway';
-
-  function updatePivotAnim() {
-    const pivot = root.querySelector('#csPivot');
-    if (!pivot) return;
-    const dur = (60000 / _currentBPM) * _currentMultiplier;
-    pivot.style.animation = `cs-${_currentPattern} ${dur}ms infinite ease-in-out`;
-  }
-
-  function setStageColor(color) {
-    if (_rainbowInterval) { clearInterval(_rainbowInterval); _rainbowInterval = null; }
-    if (color === 'rainbow') {
-      const cols = ['#a855f7', '#e879f9', '#6366f1', '#22c55e', '#fbbf24', '#ef4444', '#3b82f6', '#f97316'];
-      let idx = 0;
-      _rainbowInterval = setInterval(() => {
-        root.style.setProperty('--cs-theme', cols[idx]);
-        idx = (idx + 1) % cols.length;
-      }, 500);
-    } else {
-      root.style.setProperty('--cs-theme', color);
-    }
-  }
-
-  // Tab switching
-  root.querySelectorAll('.cs-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      root.querySelectorAll('.cs-tab').forEach(t => t.classList.remove('active'));
-      root.querySelectorAll('.cs-tab-panel').forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      const panel = root.querySelector(`#csTab${tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1)}`);
-      if (panel) panel.classList.add('active');
-    });
-  });
-
-  // Wave / pattern buttons
-  root.querySelectorAll('.cs-pat-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      root.querySelectorAll('.cs-pat-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      _currentPattern = btn.dataset.val;
-      updatePivotAnim();
-    });
-  });
-
-  // Speed buttons
-  root.querySelectorAll('.cs-speed-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      root.querySelectorAll('.cs-speed-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      _currentMultiplier = parseFloat(btn.dataset.spd);
-      updatePivotAnim();
-    });
-  });
-
-  // Color buttons
-  root.querySelectorAll('.cs-col-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      root.querySelectorAll('.cs-col-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      setStageColor(btn.dataset.col);
-    });
-  });
-
-  // Logo / emoji picker
-  root.querySelectorAll('.cs-logo-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      root.querySelectorAll('.cs-logo-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const logo = root.querySelector('#csBombLogo');
-      if (logo) logo.textContent = btn.dataset.logo;
-    });
-  });
-
-  // Generate star background
-  const starContainer = root.querySelector('#csStars');
-  if (starContainer) {
-    for (let i = 0; i < 60; i++) {
-      const s = document.createElement('div');
-      s.className = 'cs-star';
-      s.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-delay:${Math.random() * 3}s;--star-size:${1 + Math.random() * 2}px;`;
-      starContainer.appendChild(s);
-    }
-  }
-
-  // Generate crowd row (single tight row for impact)
-  const crowd = root.querySelector('#csCrowd');
-  if (crowd) {
-    const crowdRow = document.createElement('div');
-    crowdRow.className = 'cs-crowd-row';
-    for (let i = 0; i < 13; i++) {
-      const bomb = document.createElement('div');
-      bomb.className = 'cs-crowd-bomb cs-crowd-dark'; // start dark for ignition effect
-      const size = 14 + Math.floor(i % 4) * 3;
-      const delay = (i * 0.15).toFixed(2);
-      bomb.style.cssText = `--cb-size:${size}px;animation-duration:${(2.5 + Math.random() * 1.5).toFixed(1)}s;animation-delay:${delay}s;`;
-      bomb.innerHTML = `<div class="cs-cb-sphere"></div><div class="cs-cb-handle"></div>`;
-      crowdRow.appendChild(bomb);
-    }
-    crowd.appendChild(crowdRow);
-  }
-
-  // Initial setup
-  setStageColor('#a855f7');
-  setTimeout(() => updatePivotAnim(), 100);
-
-  // ── Ripple interaction ──
-  const rippleArea = root.querySelector('.swim-ripple-area');
-  if (rippleArea) rippleArea.addEventListener('click', (e) => handleSwimRipple(e, rippleArea));
-
-  // Phase 0: Fade in (0ms)
+  // Fade in the root overlay
   requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add('visible')));
 
-  // Phase 1: Ship starts diving (500ms)
+  // 3. The Cinematic Timeline
   setTimeout(() => {
-    const sc = root.querySelector('.vy-ship-container');
-    if (sc) sc.classList.add('vy-ship-container--diving');
-  }, 500);
+    // A. Ship accelerates
+    const ship = document.getElementById('sailing-ship');
+    const text = document.getElementById('warp-text');
+    if (ship) ship.classList.add('ship-warp-drive');
+    if (text) text.innerText = 'Entering Coordinates...';
+  }, 1000);
 
-  // Phase 2: Narrative appears (1500ms)
   setTimeout(() => {
-    const n = root.querySelector('.vy-narrative');
-    if (n) { n.classList.remove('vy-narrative--hidden'); n.classList.add('vy-narrative--visible'); }
-  }, 1500);
+    // B. The Magic Flash
+    const flash = document.getElementById('magic-flash');
+    if (flash) flash.style.opacity = '1';
+  }, 3500);
 
-  [1500, 2500, 3500].forEach((t, i) => {
-    setTimeout(() => {
-      const line = root.querySelector(`.vy-narrative__line--${i + 1}`);
-      if (line) line.classList.add('vy-narrative__line--visible');
-    }, t);
-  });
-
-  // Phase 3: Dive transition — flash + bubbles (3800ms)
-  setTimeout(() => triggerDiveTransition(root), 3800);
-
-  // Phase 4: Narrative fades, ocean hides (4500ms)
   setTimeout(() => {
-    const n = root.querySelector('.vy-narrative');
-    if (n) { n.classList.remove('vy-narrative--visible'); n.classList.add('vy-narrative--fading'); }
-    const ocean = root.querySelector('.vy-ocean');
-    if (ocean) ocean.style.opacity = '0';
-  }, 4500);
+    // C. Initialize YouTube Player & Switch Phases
+    // ⚠️ REPLACE 'YOUR_CONCERT_VIDEO_ID' WITH A REAL YOUTUBE ID (e.g., 'jH1RpAetXo4')
+    initYouTubePlayer('V-5rR0Q-T-Q'); 
+    
+    const phase1 = document.getElementById('phase-1-ship');
+    if (phase1) phase1.style.display = 'none';
 
-  // ══════════════════════════════════════════════════
-  //  CONCERT FINALE REVEAL SEQUENCE (5000ms → 7500ms)
-  // ══════════════════════════════════════════════════
-
-  // Phase 5A: Concert stage appears (5000ms)
-  setTimeout(() => {
-    const uw = root.querySelector('.swim-underwater');
-    if (uw) uw.classList.add('swim-underwater--visible');
+    const phase2 = document.getElementById('phase-2-concert');
+    if (phase2) {
+      phase2.style.opacity = '1';
+      phase2.style.pointerEvents = 'all';
+    }
   }, 5000);
 
-  // Phase 5B: ARMY flash burst (5200ms) — white explosion
   setTimeout(() => {
-    const overlay = root.querySelector('#csFinaleOverlay');
-    if (overlay) overlay.classList.add('cs-finale-overlay--active');
-  }, 5200);
-
-  // Phase 5C: Crowd ignition — bombs light up left → right wave (5500ms)
-  setTimeout(() => {
-    const crowdBombs = root.querySelectorAll('.cs-crowd-bomb');
-    crowdBombs.forEach((bomb, i) => {
-      setTimeout(() => {
-        bomb.classList.remove('cs-crowd-dark');
-        bomb.classList.add('cs-crowd-ignite');
-      }, i * 100);
-    });
-  }, 5500);
-
-  // Phase 5D: YOUR bomb wakes up — 3 pulse rings (6000ms)
-  setTimeout(() => {
-    const ring = root.querySelector('#csPulseRing');
-    if (ring) ring.classList.add('cs-pulse-ring--active');
-    // Remove ring after 3 pulses
-    setTimeout(() => { if (ring) ring.classList.remove('cs-pulse-ring--active'); }, 2400);
-  }, 6000);
-
-  // Phase 5E: ARMY text fades out (6500ms)
-  setTimeout(() => {
-    const overlay = root.querySelector('#csFinaleOverlay');
-    if (overlay) overlay.classList.add('cs-finale-overlay--done');
+    // D. Fade out flash
+    const flash = document.getElementById('magic-flash');
+    if (flash) {
+        flash.style.transition = 'opacity 3s ease-out';
+        flash.style.opacity = '0';
+    }
   }, 6500);
-
-  // Phase 6: Lyrics start cycling (7000ms)
-  setTimeout(() => { lyricInterval = startLyricCycle(root); }, 7000);
-
-  // Phase 7: Spotify player (8000ms)
-  setTimeout(() => {
-    const pl = root.querySelector('.vy-player');
-    if (pl) pl.classList.remove('vy-player--hidden');
-  }, 8000);
-
-  // Phase 8: Color shift cycle (starts at 12s, shifts every 15s)
-  setTimeout(() => {
-    colorInterval = setInterval(() => {
-      const uw = root.querySelector('.swim-underwater');
-      if (!uw) return;
-      SWIM_PHASES.forEach(p => uw.classList.remove(`swim-phase-${p}`));
-      colorIndex = (colorIndex + 1) % SWIM_PHASES.length;
-      uw.classList.add(`swim-phase-${SWIM_PHASES[colorIndex]}`);
-    }, 15000);
-  }, 12000);
 };
+
+// --- Helper Functions for Phase 2 ---
+
+function initYouTubePlayer(videoId) {
+  if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+      setTimeout(() => initYouTubePlayer(videoId), 500);
+      return;
+  }
+
+  concertPlayer = new YT.Player('youtube-player', {
+    height: '100%',
+    width: '100%',
+    videoId: videoId, 
+    playerVars: {
+      'autoplay': 1,
+      'controls': 0, // Hides YouTube UI
+      'disablekb': 1,
+      'fs': 0,
+      'modestbranding': 1,
+      'rel': 0,
+      'showinfo': 0,
+      'playsinline': 1
+    },
+    events: {
+      'onReady': (event) => { event.target.playVideo(); },
+      'onStateChange': (event) => {
+        // Trigger Fireworks when video ends
+        if (event.data === YT.PlayerState.ENDED) window.triggerGrandFinale();
+      }
+    }
+  });
+}
+
+window.changeBombColor = function(color) {
+  const bomb = document.getElementById('my-army-bomb');
+  if (bomb) {
+    bomb.style.setProperty('--glow-color', color);
+    if(navigator.vibrate) navigator.vibrate(15);
+  }
+};
+
+window.toggleStrobe = function() {
+  const bomb = document.getElementById('my-army-bomb');
+  if (!bomb) return;
+  if(navigator.vibrate) navigator.vibrate(30);
+  
+  if (strobeInterval) {
+    clearInterval(strobeInterval);
+    strobeInterval = null;
+    bomb.style.transform = 'scale(1)';
+    bomb.style.opacity = '1';
+  } else {
+    strobeInterval = setInterval(() => {
+      bomb.style.opacity = bomb.style.opacity === '1' ? '0.3' : '1';
+      bomb.style.transform = bomb.style.transform === 'scale(1)' ? 'scale(1.05)' : 'scale(1)';
+    }, 120);
+  }
+};
+
+window.exitConcert = function() {
+  const arena = document.getElementById('voyage-overlay');
+  if (strobeInterval) clearInterval(strobeInterval);
+  if (concertPlayer && typeof concertPlayer.destroy === 'function') {
+      concertPlayer.destroy();
+  }
+  if (arena) {
+      arena.style.opacity = '0';
+      setTimeout(() => arena.remove(), 1000);
+  }
+};
+
+function fireConfetti() {
+  // Inject canvas-confetti from CDN if not present
+  if (!window.confetti) {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
+    script.onload = () => {
+      var duration = 4 * 1000;
+      var end = Date.now() + duration;
+
+      (function frame() {
+        window.confetti({
+          particleCount: 8,
+          angle: 60,
+          spread: 70,
+          origin: { x: 0, y: 0.8 },
+          colors: ['#a855f7', '#fff', '#3b82f6', '#fbbf24']
+        });
+        window.confetti({
+          particleCount: 8,
+          angle: 120,
+          spread: 70,
+          origin: { x: 1, y: 0.8 },
+          colors: ['#a855f7', '#fff', '#3b82f6', '#fbbf24']
+        });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      }());
+    };
+    document.head.appendChild(script);
+  } else {
+    window.confetti({ particleCount: 150, spread: 100, origin: { y: 0.7 } });
+  }
+}
+
+window.triggerGrandFinale = function() {
+  const wrapper = document.getElementById('video-wrapper');
+  if (wrapper) wrapper.style.opacity = '0';
+  
+  if (typeof fireConfetti === 'function') {
+      fireConfetti();
+      setTimeout(fireConfetti, 1000); 
+  }
+  
+  setTimeout(window.exitConcert, 6000);
+};
+
 
 
 // ─────────────────────────────────────────────
@@ -13708,7 +13456,7 @@ function ensureVoyageStyles() {
   if (document.getElementById('voyage-styles')) return;
   const style = document.createElement('style');
   style.id = 'voyage-styles';
-  style.textContent = VOYAGE_CSS + VOYAGE_SHIP_CSS + VOYAGE_SWIM_CSS;
+  style.textContent = VOYAGE_CSS + VOYAGE_SHIP_CSS + VOYAGE_SWIM_CSS + VOYAGE_ARENA_CSS;
   document.head.appendChild(style);
 }
 
@@ -14771,6 +14519,35 @@ const VOYAGE_SWIM_CSS = `
 `;
 
 
+const VOYAGE_ARENA_CSS = `
+/* Ship Warp Drive Animation */
+.ship-warp-drive {
+  animation: warpSpeed 3s cubic-bezier(0.5, 0, 0.2, 1) forwards !important;
+}
+
+@keyframes warpSpeed {
+  0% { transform: scale(1) translateY(0); filter: blur(0px) brightness(1); }
+  40% { transform: scale(0.9) translateY(10px); filter: blur(1px) brightness(1.5); }
+  100% { transform: scale(4) translateY(-100px); filter: blur(15px) brightness(5); opacity: 0; }
+}
+
+#youtube-player {
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  object-fit: cover;
+}
+
+#my-army-bomb {
+  animation: gentleSway 4s ease-in-out infinite alternate;
+}
+
+@keyframes gentleSway {
+  0% { transform: rotate(-5deg) translateY(0px); }
+  100% { transform: rotate(5deg) translateY(-15px); }
+}
+`;
+
 const VOYAGE_SHIP_CSS = `
 /* ═══ Voyage Arirang Ship (overlay) ═══ */
 .vy-arirang-ship { width: 280px; height: 200px; position: relative; animation: vyShipBob 4s ease-in-out infinite; }
@@ -15714,4 +15491,9 @@ function check100XPPopup() {
 
 if (typeof window !== 'undefined') {
   window.check100XPPopup = check100XPPopup;
+  // Concert Mode Arena Exports
+  window.changeBombColor = window.changeBombColor;
+  window.toggleStrobe = window.toggleStrobe;
+  window.exitConcert = window.exitConcert;
+  window.triggerGrandFinale = window.triggerGrandFinale;
 }
