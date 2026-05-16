@@ -16061,4 +16061,7 @@ if (typeof window !== 'undefined') {
   window.toggleStrobe = window.toggleStrobe;
   window.exitConcert = window.exitConcert;
   window.triggerGrandFinale = window.triggerGrandFinale;
+  window.triggerFeverMode = window.triggerFeverMode;
+  window.initiateOceanWave = window.initiateOceanWave;
+  window.createFireworkBurst = createFireworkBurst;
 }
