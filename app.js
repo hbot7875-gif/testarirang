@@ -5944,26 +5944,8 @@ async function renderHypePage() {
   if (!container) return;
 
   container.innerHTML = `
-    <div style="background: rgba(255, 20, 95, 0.1); border: 1px solid var(--red-core); padding: 16px; border-radius: 12px; margin-bottom: 24px; text-align: center; box-shadow: 0 0 15px rgba(255, 20, 95, 0.15);">
-      <div style="font-family: 'Orbitron', sans-serif; font-size: 16px; color: #fff; margin-bottom: 8px; font-weight: 900; letter-spacing: 1px;">📢 TRANSMISSION INTERCEPTED — ONE ARMY</div>
-      <div style="font-size: 12px; color: #ddd; line-height: 1.5; font-family: 'Inter', sans-serif;">
-        <span style="font-style: italic; color: #aaa;">"We made team insta accounts! We need something to post for each team."</span><br/><br/>
-        <strong>HQ RESPONSE:</strong> Acknowledged. Check the <strong style="color: var(--red-core); cursor: pointer; text-decoration: underline;" onclick="goTo('chat')">HT Wrapped</strong> tab for your team's classified mission report. Screenshot it and deploy it to your new team accounts!
-      </div>
-    </div>
-
-    <div style="margin-bottom:20px;">
-      <button class="btn-ghost" onclick="toggleHypeForm()" style="width:100%; border:1px solid #333;">+ SUBMIT SIGNAL BROADCAST</button>
-    </div>
-    
-    <div id="hypeSubmitForm" style="display:none; background:#111; padding:16px; border-radius:12px; border:1px solid #222; margin-bottom:24px;">
-      <div style="font-size:12px; color:#888; margin-bottom:12px; font-family:var(--font-mono);">NEW BROADCAST</div>
-      
-      <input type="text" id="hypeIgUsername" class="input-field" placeholder="IG Username (e.g. @agent)" style="margin-bottom:10px;">
-      <input type="text" id="hypePostUrl" class="input-field" placeholder="Instagram Post URL" style="margin-bottom:10px;">
     ${renderGuide('hype') || ''}
     
-    <!-- 1. COMPACT GUIDE SECTION -->
     <div style="background: #111; border: 1px solid #1c1c1c; border-radius: 12px; margin-bottom: 24px; overflow: hidden;">
       <div style="padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleHypeGuide()">
         <div style="display: flex; align-items: center; gap: 12px;">
@@ -6003,7 +5985,6 @@ async function renderHypePage() {
       </div>
     </div>
     
-    <!-- 2. MISSION BRIEFING (BANNER) -->
     <div style="background: linear-gradient(135deg, #181818 0%, #111 100%); border: 1px solid #222; border-radius: 12px; margin-bottom: 24px; padding: 24px; position: relative;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
         <div style="font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 18px; color: #fff; letter-spacing: 3px; text-transform: uppercase;">
@@ -6031,7 +6012,6 @@ async function renderHypePage() {
       </div>
     </div>
 
-    <!-- 3. SUBMISSION CONSOLE -->
     <div style="background: #111; border: 1px solid #1c1c1c; border-radius: 12px; margin-bottom: 32px; overflow: hidden;">
       <div style="padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1c1c1c;">
         <div style="display: flex; align-items: center; gap: 12px;">
@@ -6051,7 +6031,7 @@ async function renderHypePage() {
             <div style="font-size: 11px; color: #666; line-height: 1.5;">Daily transmission limit reached. Your dossier has been updated.</div>
           </div>
         ` : `
-        <div style="display: grid; gap: 20px; margin-bottom: 24px;">
+        <div id="hypeSubmitForm" style="display: grid; gap: 20px; margin-bottom: 24px;">
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
             <div class="hype-input-group">
               <label style="color: #666; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; display: block; font-family: var(--font-mono);">Agent Handle</label>
@@ -6093,7 +6073,6 @@ async function renderHypePage() {
       </div>
     </div>
     
-    <!-- 4. LIVE FEED -->
     <div style="margin-bottom: 24px;">
       <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
         <div>
@@ -6115,7 +6094,6 @@ async function renderHypePage() {
       </div>
     </div>
 
-    <!-- 5. PAGINATION -->
     <div id="loadMoreContainer" style="text-align: center; margin-top: 32px; display: none;">
       <button onclick="loadMoreHypePosts()" id="loadMoreBtn" style="background: #111; border: 1px solid #1c1c1c; color: #fff; padding: 14px 32px; border-radius: 8px; font-size: 11px; font-family: 'Orbitron', sans-serif; font-weight: 700; letter-spacing: 2px; cursor: pointer; transition: all 0.2s;">
         LOAD_NEXT_SECTOR
@@ -6123,55 +6101,26 @@ async function renderHypePage() {
     </div>
   `;
 
-  // Refined CSS Styles
   if (!document.getElementById('hype-wall-styles')) {
     const style = document.createElement('style');
     style.id = 'hype-wall-styles';
     style.textContent = `
-      .hype-submit-btn {
-        width: 100%;
-        padding: 16px;
-        background: #e83a5d;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        font-family: 'Orbitron', sans-serif;
-        font-size: 12px;
-        font-weight: 900;
-        letter-spacing: 3px;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-      .hype-submit-btn:hover {
-        background: #ff145f;
-        transform: translateY(-2px);
-      }
-      .hype-type-btn input:checked + .hype-type-inner {
-        background: #e83a5d11 !important;
-        border-color: #e83a5d !important;
-        color: #e83a5d !important;
-      }
-      .hype-type-btn:hover .hype-type-inner {
-        border-color: #333;
-        color: #888;
-      }
-      @media (max-width: 600px) {
-        .hype-submit-btn { padding: 18px; font-size: 13px; }
-        .hype-type-inner { padding: 14px 4px !important; font-size: 11px !important; }
-      }
+      .hype-submit-btn { width: 100%; padding: 16px; background: #e83a5d; color: #fff; border: none; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 900; letter-spacing: 3px; cursor: pointer; transition: all 0.2s; }
+      .hype-submit-btn:hover { background: #ff145f; transform: translateY(-2px); }
+      .hype-type-btn input:checked + .hype-type-inner { background: #e83a5d11 !important; border-color: #e83a5d !important; color: #e83a5d !important; }
+      .hype-type-btn:hover .hype-type-inner { border-color: #333; color: #888; }
+      @media (max-width: 600px) { .hype-submit-btn { padding: 18px; font-size: 13px; } .hype-type-inner { padding: 14px 4px !important; font-size: 11px !important; } }
     `;
     document.head.appendChild(style);
   }
 
   loadHypePosts();
-}
+};
 
-// Toggle Guide
 window.toggleHypeGuide = function () {
   const content = $('hype-guide-content');
   const arrow = $('guide-arrow');
   if (!content || !arrow) return;
-
   if (content.style.display === 'none' || content.style.display === '') {
     content.style.display = 'block';
     arrow.style.transform = 'rotate(180deg)';
@@ -6181,27 +6130,19 @@ window.toggleHypeGuide = function () {
   }
 };
 
-// Show Link Help Modal
-window.showLinkHelp = function () {
-  showToast('On Instagram: Tap "..." on your post → "Copy Link"', 'info', 5000);
-};
-
-// Caption Counter
 window.updateCaptionCount = function () {
   const caption = $('hypeCaption');
   const counter = $('captionCount');
   if (caption && counter) {
     counter.textContent = `${caption.value.length}/500`;
-    counter.style.color = caption.value.length > 450 ? 'var(--fail)' : 'var(--text-ghost)';
+    counter.style.color = caption.value.length > 450 ? 'var(--fail)' : '#444';
   }
 };
 
-// Form Toggle
 window.toggleHypeForm = function () {
   const content = $('hypeFormContent');
   const btn = $('toggleFormBtn');
   if (!content || !btn) return;
-
   if (content.style.display === 'none') {
     content.style.display = 'block';
     btn.textContent = 'COLLAPSE ▲';
@@ -6212,206 +6153,103 @@ window.toggleHypeForm = function () {
 };
 
 let currentHypeFilter = 'all';
-let currentHypePage = 1;
 let allHypePosts = [];
 
 async function loadHypePosts(append = false) {
   const list = $('hypePostsList');
   if (!list) return;
-
-  if (!append) {
-    list.innerHTML = '<div class="page-loading"><div class="spinner"></div></div>';
-  }
+  if (!append) list.innerHTML = '<div class="page-loading"><div class="spinner"></div></div>';
 
   try {
     const res = await Api.call('getHypePosts', { limit: 50 }, { cache: false });
-
     if (!res.success) throw new Error(res.error);
-
     allHypePosts = res.posts || [];
-
-    // Fetch user status if logged in
     if (STATE.agentNo) {
       try {
         const statusRes = await Api.call('getHypeUserStatus', { agentNo: STATE.agentNo });
         if (statusRes.success) {
-          STATE.hype.weeklyLikes = statusRes.weeklyLikes || 0;
           STATE.hype.hasUploadedToday = statusRes.hasUploadedToday;
-
-          // Re-render form part if needed
           const formContent = $('hypeFormContent');
-          if (formContent) {
-            if (STATE.hype.hasUploadedToday) {
-              formContent.style.display = 'none';
-              // Check if we need to show the completion message
-              if (!formContent.parentElement.querySelector('.transmission-complete-msg')) {
-                const msg = document.createElement('div');
-                msg.className = 'transmission-complete-msg';
-                msg.innerHTML = `
-                  <div style="background: rgba(0, 255, 102, 0.1); border: 1px solid rgba(0, 255, 102, 0.3); padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
-                    <div style="font-size: 24px; margin-bottom: 10px;">✅</div>
-                    <div style="font-family: 'Orbitron', sans-serif; font-size: 14px; color: #00ff66; font-weight: 800; margin-bottom: 4px;">POST SHARED</div>
-                    <div style="font-size: 11px; color: var(--text-ghost); font-family: 'Rajdhani', sans-serif;">You have already uploaded today. Come back tomorrow for more XP!</div>
-                  </div>
-                `;
-                formContent.parentElement.insertBefore(msg, formContent);
-              }
-            } else {
-              formContent.style.display = 'block';
-            }
-          }
+          if (formContent) formContent.style.display = STATE.hype.hasUploadedToday ? 'none' : 'block';
         }
       } catch (err) { console.error('Failed to get user hype status', err); }
     }
-
-    // Update Stats
-    updateHypeStats(allHypePosts);
-
-    // Apply filter
     filterHypePosts();
-
-    // Update Load More visibility
     const loadMoreBtn = $('loadMoreContainer');
-    if (loadMoreBtn) {
-      loadMoreBtn.style.display = allHypePosts.length >= 50 ? 'block' : 'none';
-    }
-
-  } catch (e) {
-    list.innerHTML = `<div class="error-msg" style="display:block;">Connection error: ${e.message}</div>`;
-  }
+    if (loadMoreBtn) loadMoreBtn.style.display = allHypePosts.length >= 50 ? 'block' : 'none';
+  } catch (e) { list.innerHTML = `<div class="error-msg" style="display:block;">Connection error: ${e.message}</div>`; }
 }
 
 window.loadMoreHypePosts = async function () {
   const btn = $('loadMoreBtn');
   if (!btn || btn.disabled) return;
-
   btn.disabled = true;
   btn.textContent = 'INTERCEPTING...';
-
   try {
-    const res = await Api.call('getHypePosts', {
-      limit: 30,
-      offset: allHypePosts.length
-    }, { cache: false });
-
+    const res = await Api.call('getHypePosts', { limit: 30, offset: allHypePosts.length }, { cache: false });
     if (res.success && res.posts?.length > 0) {
       allHypePosts = [...allHypePosts, ...res.posts];
       filterHypePosts();
-
-      if (res.posts.length < 30) {
-        $('loadMoreContainer').style.display = 'none';
-      }
-    } else {
-      $('loadMoreContainer').style.display = 'none';
-    }
-  } catch (e) {
-    showToast('Failed to load more posts', 'error');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'LOAD MORE TRANSMISSIONS';
-  }
+      if (res.posts.length < 30) $('loadMoreContainer').style.display = 'none';
+    } else { $('loadMoreContainer').style.display = 'none'; }
+  } catch (e) { showToast('Failed to load more posts', 'error'); } finally { btn.disabled = false; btn.textContent = 'LOAD_NEXT_SECTOR'; }
 };
-
-function updateHypeStats(posts) {
-  const totalPosts = posts.length;
-  const totalLikes = posts.reduce((sum, p) => sum + (p.like_count || 0), 0);
-  const yourPosts = posts.filter(p => p.agent_no === STATE.agentNo).length;
-
-  const totalPostsEl = $('totalPosts');
-  const totalLikesEl = $('totalLikes');
-  const yourPostsEl = $('yourPosts');
-
-  if (totalPostsEl) totalPostsEl.textContent = totalPosts;
-  if (totalLikesEl) totalLikesEl.textContent = totalLikes;
-  if (yourPostsEl) yourPostsEl.textContent = yourPosts;
-}
 
 window.filterHypePosts = function () {
   const filterSelect = $('hypeFilter');
-  if (filterSelect) {
-    currentHypeFilter = filterSelect.value;
-  }
-
+  if (filterSelect) currentHypeFilter = filterSelect.value;
   let filtered = [...allHypePosts];
-
-  if (currentHypeFilter === 'mine') {
-    filtered = filtered.filter(p => p.agent_no === STATE.agentNo);
-  } else if (currentHypeFilter === 'popular') {
-    filtered = filtered.sort((a, b) => (b.like_count || 0) - (a.like_count || 0));
-  }
-
+  if (currentHypeFilter === 'mine') filtered = filtered.filter(p => p.agent_no === STATE.agentNo);
+  else if (currentHypeFilter === 'popular') filtered = filtered.sort((a, b) => (b.like_count || 0) - (a.like_count || 0));
   renderHypePosts(filtered);
 };
 
 function renderHypePosts(posts) {
   const list = $('hypePostsList');
   if (!list) return;
-
   if (posts.length === 0) {
-    list.innerHTML = `
-      <div style="padding: 48px 24px; text-align: center; background: #111; border: 1px dashed #222; border-radius: 12px;">
-        <div style="font-size: 32px; margin-bottom: 16px; opacity: 0.2;">📡</div>
-        <div style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900; color: #555; letter-spacing: 2px;">ZERO_SIGNALS_DETECTED</div>
-        <div style="font-size: 11px; color: #444; margin-top: 8px;">Waiting for agent broadcasts...</div>
-      </div>
-    `;
+    list.innerHTML = `<div style="padding: 48px 24px; text-align: center; background: #111; border: 1px dashed #222; border-radius: 12px;"><div style="font-size: 32px; margin-bottom: 16px; opacity: 0.2;">📡</div><div style="font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900; color: #555; letter-spacing: 2px;">ZERO_SIGNALS_DETECTED</div></div>`;
     return;
   }
-
   list.innerHTML = posts.map((p, i) => {
     const isOwn = p.agent_no === STATE.agentNo;
     const hasLiked = p.liked_by?.includes(STATE.agentNo) || false;
-
     return `
       <div style="background: #111; border: 1px solid #1c1c1c; border-radius: 12px; padding: 20px; position: relative; animation: slideUp 0.4s ease forwards; animation-delay: ${i * 0.05}s; opacity: 0; transform: translateY(10px);">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
           <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 36px; height: 36px; border-radius: 8px; background: #0a0a0a; border: 1px solid #1c1c1c; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">
-              ${isOwn ? '👤' : '🕵️'}
-            </div>
-            <div style="min-width: 0;">
-              <div style="font-weight: 800; font-size: 13px; color: #fff; font-family: 'Rajdhani', sans-serif; letter-spacing: 0.5px;">${p.agent_name}</div>
-              <div style="font-size: 10px; color: #666; font-family: var(--font-mono); margin-top: 2px;">
-                <span style="color: ${teamColor(p.agent_team)};">${p.agent_team.replace('Team ', '')}</span> • ${p.ig_username}
-              </div>
-            </div>
+            <div style="width: 36px; height: 36px; border-radius: 8px; background: #0a0a0a; border: 1px solid #1c1c1c; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">${isOwn ? '👤' : '🕵️'}</div>
+            <div style="min-width: 0;"><div style="font-weight: 800; font-size: 13px; color: #fff; font-family: 'Rajdhani', sans-serif; letter-spacing: 0.5px;">${p.agent_name}</div><div style="font-size: 10px; color: #666; font-family: var(--font-mono); margin-top: 2px;"><span style="color: ${teamColor(p.agent_team)};">${p.agent_team.replace('Team ', '')}</span> • ${p.ig_username}</div></div>
           </div>
-          <div style="text-align: right;">
-             <div style="font-family: var(--font-mono); font-size: 9px; color: #444; text-transform: uppercase;">Logged</div>
-             <div style="font-family: var(--font-mono); font-size: 10px; color: #666; margin-top: 2px;">${new Date(p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
-          </div>
+          <div style="text-align: right;"><div style="font-family: var(--font-mono); font-size: 9px; color: #444; text-transform: uppercase;">Logged</div><div style="font-family: var(--font-mono); font-size: 10px; color: #666; margin-top: 2px;">${new Date(p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div></div>
         </div>
-        
-        <div style="background: #0a0a0a; border: 1px solid #1c1c1c; padding: 14px; border-radius: 8px; font-size: 12px; color: #ccc; line-height: 1.6; margin-bottom: 20px; overflow-wrap: break-word; font-family: 'Inter', sans-serif;">
-          ${p.caption}
-          ${p.content_type ? `<div style="display: inline-block; background: #181818; color: #888; font-size: 8px; padding: 3px 8px; border-radius: 4px; margin-top: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">${p.content_type}</div>` : ''}
-        </div>
-        
+        <div style="background: #0a0a0a; border: 1px solid #1c1c1c; padding: 14px; border-radius: 8px; font-size: 12px; color: #ccc; line-height: 1.6; margin-bottom: 20px; overflow-wrap: break-word; font-family: 'Inter', sans-serif;">${p.caption}${p.content_type ? `<div style="display: inline-block; background: #181818; color: #888; font-size: 8px; padding: 3px 8px; border-radius: 4px; margin-top: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">${p.content_type}</div>` : ''}</div>
         <div style="display: flex; gap: 10px;">
-          <a href="${p.post_url}" target="_blank" rel="noopener noreferrer" 
-             onclick="window.verifyHypeOpen('${p.id}', this)"
-             style="flex: 1; background: #181818; border: 1px solid #222; color: #fff; border-radius: 8px; padding: 12px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px; transition: all 0.2s;">
-            <span>📡</span> OPEN_POST
-          </a>
-          
-          ${isOwn ? `
-            <div style="flex: 1; background: #0a0a0a; border: 1px solid #1c1c1c; color: #444; border-radius: 8px; padding: 12px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px;">
-              OWN_LOG
-            </div>
-          ` : `
-            <button id="boost-btn-${p.id}" class="hype-boost-btn ${hasLiked ? 'liked' : ''}" onclick="likeHypePost('${p.id}', this)" 
-                    style="flex: 1; border-radius: 8px; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px; transition: all 0.2s; ${(hasLiked || !STATE.hype.openedPosts.has(p.id)) ? 'background: #0a0a0a; border: 1px solid #1c1c1c; color: #333; cursor: not-allowed;' : 'background: #e83a5d11; border: 1px solid #e83a5d; color: #e83a5d; cursor: pointer;'}" 
-                    ${(hasLiked || !STATE.hype.openedPosts.has(p.id)) ? 'disabled' : ''}>
-              <span style="font-size: 14px;">${hasLiked ? '⚡' : '❤️'}</span> 
-              <span>${hasLiked ? 'BOOSTED' : 'BOOST'}</span>
-              <span style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; font-size: 9px; margin-left: 4px;">${p.like_count || 0}</span>
-            </button>
-          `}
+          <a href="${p.post_url}" target="_blank" rel="noopener noreferrer" onclick="window.verifyHypeOpen('${p.id}', this)" style="flex: 1; background: #181818; border: 1px solid #222; color: #fff; border-radius: 8px; padding: 12px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px; transition: all 0.2s;"><span>📡</span> OPEN_POST</a>
+          ${isOwn ? `<div style="flex: 1; background: #0a0a0a; border: 1px solid #1c1c1c; color: #444; border-radius: 8px; padding: 12px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px;">OWN_LOG</div>` : `<button id="boost-btn-${p.id}" class="hype-boost-btn ${hasLiked ? 'liked' : ''}" onclick="likeHypePost('${p.id}', this)" style="flex: 1; border-radius: 8px; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px; transition: all 0.2s; ${(hasLiked || !STATE.hype.openedPosts.has(p.id)) ? 'background: #0a0a0a; border: 1px solid #1c1c1c; color: #333; cursor: not-allowed;' : 'background: #e83a5d11; border: 1px solid #e83a5d; color: #e83a5d; cursor: pointer;'}" ${(hasLiked || !STATE.hype.openedPosts.has(p.id)) ? 'disabled' : ''}><span style="font-size: 14px;">${hasLiked ? '⚡' : '❤️'}</span> <span class="btn-text">${hasLiked ? 'BOOSTED' : 'BOOST'}</span> <span class="like-count" style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; font-size: 9px; margin-left: 4px;">${p.like_count || 0}</span></button>`}
         </div>
       </div>
     `;
   }).join('');
 }
+
+window.verifyHypeOpen = function (postId, link) {
+  STATE.hype.openedPosts.add(postId);
+  const btn = document.getElementById(`boost-btn-${postId}`);
+  if (btn && !btn.classList.contains('liked')) {
+    btn.style.background = '#e83a5d11';
+    btn.style.borderColor = '#e83a5d';
+    btn.style.color = '#e83a5d';
+    btn.style.cursor = 'pointer';
+    btn.disabled = false;
+  }
+};
+
+window.submitHypePost = async function() {
+  const username = $('hypeIgUsername').value;
+  const url = $('hypePostUrl').value;
+  const caption = $('hypeCaption').value;
+  const type = document.querySelector('input[name="contentType"]:checked')?.value || 'Post';
 
   if (!username || !url) {
     showToast('IG Username and Post URL required', 'error');
