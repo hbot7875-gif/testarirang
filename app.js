@@ -14865,46 +14865,6 @@ const VOYAGE_ARENA_CSS = `
     #phase-2-concert { pointer-events: all !important; cursor: crosshair; }
 `;
 
-/* Magical floating dust */
-.concert-dust {
-    background-image: 
-        radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.6), transparent),
-        radial-gradient(3px 3px at 60px 80px, rgba(255, 255, 255, 0.4), transparent),
-        radial-gradient(2px 2px at 100px 150px, rgba(255, 255, 255, 0.5), transparent),
-        radial-gradient(4px 4px at 150px 40px, rgba(255, 255, 255, 0.2), transparent);
-    background-repeat: repeat;
-    background-size: 200px 200px;
-    animation: magicDrift 20s linear infinite;
-    mix-blend-mode: overlay;
-}
-
-@keyframes magicDrift {
-    0% { transform: translateY(0px) translateX(0px); }
-    100% { transform: translateY(-200px) translateX(-50px); }
-}
-
-/* Mobile Adjustments */
-@media (max-width: 600px) {
-    #video-wrapper iframe {
-        transform: scale(4.0) !important; /* Forces vertical fill on mobile */
-    }
-    #fan-zone {
-        bottom: 22%; /* Raises the bomb slightly on tall screens */
-    }
-}
-
-/* Ship Warp Drive Animation */
-.ship-warp-drive {
-  animation: warpSpeed 3s cubic-bezier(0.5, 0, 0.2, 1) forwards !important;
-}
-
-@keyframes warpSpeed {
-  0% { transform: scale(1) translateY(0); filter: blur(0px) brightness(1); }
-  40% { transform: scale(0.9) translateY(10px); filter: blur(1px) brightness(1.5); }
-  100% { transform: scale(4) translateY(-100px); filter: blur(15px) brightness(5); opacity: 0; }
-}
-`;
-
 const VOYAGE_SHIP_CSS = `
 /* ═══ Voyage Arirang Ship (overlay) ═══ */
 .vy-arirang-ship { width: 280px; height: 200px; position: relative; animation: vyShipBob 4s ease-in-out infinite; }
