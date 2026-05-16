@@ -13845,16 +13845,25 @@ window.toggleStrobe = function() {
 };
 
 window.exitConcert = function() {
-  const arena = document.getElementById('voyage-overlay');
-  if (strobeInterval) clearInterval(strobeInterval);
-  if (rainbowInterval) clearInterval(rainbowInterval);
-  if (concertPlayer && typeof concertPlayer.destroy === 'function') {
-      concertPlayer.destroy();
-  }
-  if (arena) {
-      arena.style.opacity = '0';
-      setTimeout(() => arena.remove(), 1000);
-  }
+    const arena = document.getElementById('voyage-overlay');
+    if (strobeInterval) clearInterval(strobeInterval);
+    if (rainbowInterval) clearInterval(rainbowInterval);
+    if (concertPlayer && typeof concertPlayer.destroy === 'function') {
+        try { concertPlayer.destroy(); } catch(e) {}
+        concertPlayer = null;
+    }
+    if (arena) {
+        arena.style.opacity = '0';
+        setTimeout(() => arena.remove(), 1000);
+    }
+    
+    // 🚨 CRITICAL FIX: Clean up the canvas
+    if (fwCanvas) {
+        fwCanvas.remove();
+        fwCanvas = null;
+        particles = [];
+        window._finaleTriggered = false; // Reset for next time
+    }
 };
 
 function fireConfetti() {
@@ -13868,56 +13877,58 @@ function fireConfetti() {
   }
 }
 
+window._finaleTriggered = false;
+
 window.triggerGrandFinale = function() {
-  console.log('🎆 REAL FIREWORKS FINALE INITIATED');
-  
-  // Audio Fade-out Block safely wrapped
-  if (concertPlayer && typeof concertPlayer.getVolume === 'function') {
-    let vol = concertPlayer.getVolume();
-    const fadeInterval = setInterval(() => {
-      vol -= 10;
-      if (vol <= 0) {
-        clearInterval(fadeInterval);
-        try {
-          concertPlayer.setVolume(0);
-          concertPlayer.pauseVideo();
-        } catch(e) {}
-      } else {
-        try { concertPlayer.setVolume(vol); } catch(e) {}
-      }
-    }, 150);
-  }
+    // 🚨 CRITICAL FIX: Prevent double execution
+    if (window._finaleTriggered) return;
+    window._finaleTriggered = true;
 
-  // Ensure Canvas is active
-  initFireworkCanvas();
-
-  // High-Fidelity Canvas Fireworks Storm Loop
-  const duration = 7000;
-  const endTime = Date.now() + duration;
-  const colors = ['#a855f7', '#fbbf24', '#ffffff', '#e879f9', '#fcd34d'];
-
-  const fireworkInterval = setInterval(() => {
-    if (Date.now() > endTime) {
-      clearInterval(fireworkInterval);
-      return;
+    if (!concertPlayer || typeof concertPlayer.getVolume !== 'function') {
+        console.warn('⚠️ Player not ready for finale yet!');
+        return;
     }
     
-    // Spawn across top 60% of viewport coordinates
-    const x = Math.random() * window.innerWidth;
-    const y = Math.random() * (window.innerHeight * 0.6);
-    window.createFireworkBurst(x, y, colors[Math.floor(Math.random() * colors.length)]);
-  }, 250); // Increased generation speed for high-density action
+    console.log('🎆 REAL FIREWORKS FINALE INITIATED');
+    
+    let vol = concertPlayer.getVolume();
+    const fadeInterval = setInterval(() => {
+        vol -= 10;
+        if (vol <= 0) {
+            clearInterval(fadeInterval);
+            try {
+                concertPlayer.setVolume(0);
+                concertPlayer.pauseVideo();
+            } catch(e) {}
+        } else {
+            try { concertPlayer.setVolume(vol); } catch(e) {}
+        }
+    }, 150);
 
-  // Smooth Arena Shutdown Transition
-  const phase2 = document.getElementById('phase-2-concert');
-  if (phase2) {
-    setTimeout(() => {
-      phase2.style.transition = 'opacity 4s ease-out';
-      phase2.style.opacity = '0';
-    }, 4000);
-  }
+    // Initialize Canvas IMMEDIATELY
+    initFireworkCanvas();
 
-  setTimeout(window.exitConcert, 8500);
+    const duration = 7 * 1000;
+    const endTime = Date.now() + duration;
+    const colors = ['#a855f7', '#fbbf24', '#ffffff', '#e879f9', '#fcd34d'];
+
+    const fireworkInterval = setInterval(() => {
+        if (Date.now() > endTime) return clearInterval(fireworkInterval);
+        
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * (window.innerHeight * 0.6);
+        createFireworkBurst(x, y, colors[Math.floor(Math.random() * colors.length)]);
+    }, 300);
+
+    const phase2 = document.getElementById('phase-2-concert');
+    if (phase2) {
+        setTimeout(() => {
+            phase2.style.transition = 'opacity 5s ease-out';
+            phase2.style.opacity = '0';
+        }, 3000);
+    }
+
+    setTimeout(window.exitConcert, 9500);
 };
 
 // --- CUSTOM FIREWORK ENGINE ---
@@ -13927,16 +13938,20 @@ function initFireworkCanvas() {
     if (fwCanvas) return;
     fwCanvas = document.createElement('canvas');
     fwCanvas.id = 'firework-engine';
-    fwCanvas.style.cssText = 'position:fixed; inset:0; z-index:5000; pointer-events:none;';
+    
+    // 🚨 CRITICAL FIX: z-index must be higher than vy-root's 9999999
+    fwCanvas.style.cssText = 'position:fixed; inset:0; z-index:10000000; pointer-events:none;';
     document.body.appendChild(fwCanvas);
     fwCtx = fwCanvas.getContext('2d');
     
-    window.addEventListener('resize', () => {
-        fwCanvas.width = window.innerWidth;
-        fwCanvas.height = window.innerHeight;
-    });
-    fwCanvas.width = window.innerWidth;
-    fwCanvas.height = window.innerHeight;
+    const resizeCanvas = () => {
+        if(fwCanvas) {
+            fwCanvas.width = window.innerWidth;
+            fwCanvas.height = window.innerHeight;
+        }
+    };
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas(); // Set initial size
     
     requestAnimationFrame(updateFireworks);
 }
@@ -13957,8 +13972,9 @@ function createFireworkBurst(x, y, color) {
         });
     }
 }
-
 function updateFireworks() {
+    if (!fwCtx || !fwCanvas) return; // Guard clause
+    
     fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
     for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
@@ -13975,7 +13991,6 @@ function updateFireworks() {
             fwCtx.beginPath();
             fwCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
             fwCtx.fill();
-            // Glow effect
             fwCtx.shadowBlur = 10;
             fwCtx.shadowColor = p.color;
         }
