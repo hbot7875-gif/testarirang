@@ -13470,13 +13470,7 @@ window.launchTheVoyage = function () {
   }, 1000);
 
   setTimeout(() => {
-    // C. Transition to Phase 2
-    const phase2 = document.getElementById('phase-2-concert');
-    if (phase2) {
-        phase2.style.opacity = '1';
-        initYouTubePlayer('sj95YLW-7-g'); 
-    }
-  }, 5000);
+    // Transition to Phase 2
     const phase1 = document.getElementById('phase-1-ship');
     if (phase1) phase1.style.display = 'none';
 
@@ -13484,6 +13478,7 @@ window.launchTheVoyage = function () {
     if (phase2) {
       phase2.style.opacity = '1';
       phase2.style.pointerEvents = 'all';
+      initYouTubePlayer('sj95YLW-7-g'); 
 
       // Sparkles Trail
       const handleMove = (e) => {
