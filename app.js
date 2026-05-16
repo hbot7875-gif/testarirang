@@ -3837,24 +3837,44 @@ async function renderTrackGoals() {
         const current = tp.current || 0;
         const goal = info.goal || 0;
         const done = tp.status === 'Completed' || current >= goal;
-        const pct = goal > 0 ? Math.min((current / goal) * 100, 100) : 0;
+
+        // Ensure pct is at least 1% if there are ANY streams, so the bar isn't totally invisible
+        let pct = goal > 0 ? (current / goal) * 100 : 0;
+        if (current > 0 && pct < 1) pct = 1;
+        if (pct > 100) pct = 100;
+
+        const remaining = Math.max(0, goal - current);
 
         html += `
-                    <div style="padding:12px; background:rgba(255,255,255,0.02); border-radius:8px; border-left:2px solid ${done ? 'var(--green)' : 'var(--text-muted)'};">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                            <div style="display:flex; align-items:center; gap:8px;">
-                                <span style="font-size:12px; color:${done ? 'var(--green)' : 'var(--text-muted)'}">${done ? '✓' : '⏳'}</span>
-                                <span style="font-size:12px; font-weight:700; color:${done ? '#fff' : 'var(--text-secondary)'};">${sanitize(track)}</span>
-                            </div>
-                            <span style="font-family:'Share Tech Mono', monospace; font-size:11px; font-weight:800; color:${done ? 'var(--green)' : 'var(--text-muted)'};">
-                                ${fmt(current)} / ${fmt(goal)}
-                            </span>
+            <div style="padding: 16px; background: linear-gradient(90deg, rgba(255,255,255,0.03), transparent); border-radius: 10px; border-left: 3px solid ${done ? 'var(--green)' : tColor}; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px; transition: transform 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                            ${done ? `<span style="color:var(--green); font-size:14px; text-shadow: 0 0 8px var(--green);">✓</span>` : ''}
+                            <div style="font-size: 14px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">${sanitize(track)}</div>
                         </div>
-                        <div class="pbar">
-                            <div class="pfill ${done ? 'green' : ''}" style="width:${pct}%; ${!done ? 'background:' + tColor : ''}"></div>
+                        <div style="font-size: 9px; color: var(--text-muted); font-family: 'Share Tech Mono', monospace; text-transform: uppercase; letter-spacing: 1px;">
+                            ${done ? 'TARGET SECURED' : `${fmt(remaining)} STREAMS REMAINING`}
                         </div>
                     </div>
-                `;
+                    
+                    <div style="text-align: right;">
+                        <div style="font-family: 'Share Tech Mono', monospace; font-size: 16px; font-weight: 900; color: ${done ? 'var(--green)' : tColor}; text-shadow: 0 0 10px ${done ? 'rgba(0,255,102,0.3)' : tColor + '44'};">
+                            ${pct.toFixed(1)}%
+                        </div>
+                        <div style="font-size: 10px; color: var(--text-ghost); font-family: 'Share Tech Mono', monospace; margin-top: 2px;">
+                            ${fmt(current)} / ${fmt(goal)}
+                        </div>
+                    </div>
+                </div>
+
+                <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; position: relative;">
+                    <div style="width: ${pct}%; height: 100%; background: ${done ? 'var(--green)' : tColor}; box-shadow: 0 0 10px ${done ? 'var(--green)' : tColor}; border-radius: 4px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                </div>
+                
+            </div>
+        `;
       }
       html += '</div></div>';
     } else {
@@ -3933,24 +3953,44 @@ async function renderAlbumGoals() {
         const current = ap.current || 0;
         const goal = info.goal || 0;
         const done = ap.status === 'Completed' || current >= goal;
-        const pct = goal > 0 ? Math.min((current / goal) * 100, 100) : 0;
+
+        // Ensure pct is at least 1% if there are ANY streams, so the bar isn't totally invisible
+        let pct = goal > 0 ? (current / goal) * 100 : 0;
+        if (current > 0 && pct < 1) pct = 1;
+        if (pct > 100) pct = 100;
+
+        const remaining = Math.max(0, goal - current);
 
         html += `
-                    <div style="padding:12px; background:rgba(255,255,255,0.02); border-radius:8px; border-left:2px solid ${done ? 'var(--green)' : 'var(--text-muted)'};">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                            <div style="display:flex; align-items:center; gap:8px;">
-                                <span style="font-size:12px; color:${done ? 'var(--green)' : 'var(--text-muted)'}">${done ? '✓' : '⏳'}</span>
-                                <span style="font-size:12px; font-weight:700; color:${done ? '#fff' : 'var(--text-secondary)'};">${sanitize(album)}</span>
-                            </div>
-                            <span style="font-family:'Share Tech Mono', monospace; font-size:11px; font-weight:800; color:${done ? 'var(--green)' : 'var(--text-muted)'};">
-                                ${fmt(current)} / ${fmt(goal)}
-                            </span>
+            <div style="padding: 16px; background: linear-gradient(90deg, rgba(255,255,255,0.03), transparent); border-radius: 10px; border-left: 3px solid ${done ? 'var(--green)' : 'var(--vinyl-gold)'}; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px; transition: transform 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                            ${done ? `<span style="color:var(--green); font-size:14px; text-shadow: 0 0 8px var(--green);">✓</span>` : ''}
+                            <div style="font-size: 14px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">${sanitize(album)}</div>
                         </div>
-                        <div class="pbar">
-                            <div class="pfill ${done ? 'green' : ''}" style="width:${pct}%; ${!done ? 'background:var(--vinyl-gold)' : ''}"></div>
+                        <div style="font-size: 9px; color: var(--text-muted); font-family: 'Share Tech Mono', monospace; text-transform: uppercase; letter-spacing: 1px;">
+                            ${done ? 'TARGET SECURED' : `${fmt(remaining)} STREAMS REMAINING`}
                         </div>
                     </div>
-                `;
+                    
+                    <div style="text-align: right;">
+                        <div style="font-family: 'Share Tech Mono', monospace; font-size: 16px; font-weight: 900; color: ${done ? 'var(--green)' : 'var(--vinyl-gold)'}; text-shadow: 0 0 10px ${done ? 'rgba(0,255,102,0.3)' : 'rgba(215,177,134,0.3)'};">
+                            ${pct.toFixed(1)}%
+                        </div>
+                        <div style="font-size: 10px; color: var(--text-ghost); font-family: 'Share Tech Mono', monospace; margin-top: 2px;">
+                            ${fmt(current)} / ${fmt(goal)}
+                        </div>
+                    </div>
+                </div>
+
+                <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; position: relative;">
+                    <div style="width: ${pct}%; height: 100%; background: ${done ? 'var(--green)' : 'var(--vinyl-gold)'}; box-shadow: 0 0 10px ${done ? 'var(--green)' : 'var(--vinyl-gold)'}; border-radius: 4px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                </div>
+                
+            </div>
+        `;
       }
       html += '</div></div>';
     } else {
