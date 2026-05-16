@@ -10026,7 +10026,8 @@ async function render148Protocol() {
 
 
     }
-
+    
+    html += `
         <div style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--border-light); display:grid; gap:6px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
             <span style="font-size:10px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; font-weight:800;">⚡ Daily Habits</span>
