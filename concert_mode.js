@@ -11,6 +11,55 @@ window.launchTheVoyage = function () {
     ensureVoyageStyles();
   }
 
+  // Inject responsive concert mode styles
+  if (!document.getElementById('concert-mode-extra-css')) {
+    const s = document.createElement('style');
+    s.id = 'concert-mode-extra-css';
+    s.textContent = `
+      .cm-controls-panel {
+          position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); 
+          z-index: 20; background: rgba(0,0,0,0.7); padding: 12px 20px; border-radius: 30px; 
+          border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); 
+          display: flex; gap: 15px; align-items: center; pointer-events: auto;
+          transition: all 0.3s ease;
+      }
+      .cm-color-btn {
+          width: 24px; height: 24px; border-radius: 50%; border: 2px solid #fff; cursor: pointer;
+          transition: transform 0.2s;
+      }
+      .cm-color-btn:hover { transform: scale(1.1); }
+      .cm-divider {
+          width: 1px; height: 20px; background: rgba(255,255,255,0.2);
+      }
+      .cm-strobe-btn {
+          background: transparent; color: #fff; font-size: 11px; font-weight: 900; 
+          letter-spacing: 1px; border: none; cursor: pointer; font-family: 'Orbitron', sans-serif;
+      }
+      @media (max-width: 600px) {
+          .cm-controls-panel {
+              bottom: 12px;
+              padding: 8px 12px;
+              gap: 8px;
+              border-radius: 16px;
+          }
+          .cm-color-btn {
+              width: 18px;
+              height: 18px;
+          }
+          .cm-strobe-btn {
+              font-size: 9px;
+          }
+          .cm-divider {
+              height: 14px;
+          }
+          #fan-zone {
+              bottom: 18% !important;
+          }
+      }
+    `;
+    document.head.appendChild(s);
+  }
+
   const root = document.createElement('div');
   root.id = 'voyage-overlay';
   root.className = 'vy-root';
@@ -52,12 +101,12 @@ window.launchTheVoyage = function () {
             </div>
         </div>
 
-        <div id="lightstick-controls" style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20; background: rgba(0,0,0,0.7); padding: 12px 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); display: flex; gap: 15px; align-items: center; pointer-events: auto;">
-            <button onclick="changeBombColor('#a855f7')" style="background:#a855f7; width:24px; height:24px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></button>
-            <button onclick="changeBombColor('#3b82f6')" style="background:#3b82f6; width:24px; height:24px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></button>
-            <button onclick="changeBombColor('#22c55e')" style="background:#22c55e; width:24px; height:24px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></button>
-            <div style="width: 1px; height: 20px; background: rgba(255,255,255,0.2);"></div>
-            <button onclick="toggleStrobe()" style="background:transparent; color:#fff; font-size:11px; font-weight:900; letter-spacing:1px; border:none; cursor:pointer; font-family:'Orbitron', sans-serif;">STROBE</button>
+        <div id="lightstick-controls" class="cm-controls-panel">
+            <button onclick="changeBombColor('#a855f7')" class="cm-color-btn" style="background:#a855f7;"></button>
+            <button onclick="changeBombColor('#3b82f6')" class="cm-color-btn" style="background:#3b82f6;"></button>
+            <button onclick="changeBombColor('#22c55e')" class="cm-color-btn" style="background:#22c55e;"></button>
+            <div class="cm-divider"></div>
+            <button onclick="toggleStrobe()" class="cm-strobe-btn">STROBE</button>
         </div>
 
         <button onclick="exitConcert()" style="position: absolute; top: 20px; right: 20px; z-index: 50; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-family:'Orbitron', sans-serif; font-size:10px; font-weight:800; backdrop-filter: blur(5px); pointer-events: auto;">EXIT ARENA</button>
