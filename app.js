@@ -4090,9 +4090,32 @@ async function renderAlbum2x() {
   const teamAllComplete = totalMembers > 0 && passedMembers.length === totalMembers;
 
   // ═══════════════════════════════
-  // 1. TODAY'S TARGET (Personal)
+  // 1. TODAY'S TARGET OR WEEK SUMMARY
   // ═══════════════════════════════
-  html += `
+  const isCurrentWeekOver = isWeekCompleted(currentWeek);
+
+  if (isCurrentWeekOver) {
+    // Show a finalized week summary instead of today's target
+    html += `
+        <div class="archive-card" style="padding:30px 24px; text-align:center; margin-bottom:24px; border-top:4px solid ${isWeekComplete ? 'var(--green)' : 'var(--fail)'}; background:linear-gradient(135deg, rgba(255,255,255,0.02), var(--bg-panel));">
+            <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:3px; margin-bottom:16px;">Mission Status: ${currentWeek}</div>
+            
+            <div style="font-size:48px; margin-bottom:16px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));">
+                ${isWeekComplete ? '🏆' : '🔒'}
+            </div>
+            
+            <div style="font-size:32px; font-weight:900; font-family:'Share Tech Mono', monospace; color:${isWeekComplete ? 'var(--green)' : 'var(--fail)'}; line-height:1; text-shadow:0 0 20px ${isWeekComplete ? 'rgba(0,255,102,0.3)' : 'rgba(255,0,0,0.3)'};">
+                ${isWeekComplete ? 'WEEK SECURED' : 'WEEK FAILED'}
+            </div>
+            
+            <p style="color:var(--text-muted); font-size:11px; text-transform:uppercase; letter-spacing:2px; margin:16px 0 0;">
+                This week has concluded. No further actions can be taken.
+            </p>
+        </div>
+    `;
+  } else {
+    // Show the normal daily target for the current active week
+    html += `
         <div class="archive-card" style="padding:24px; text-align:center; margin-bottom:24px; border-top:4px solid ${isUserExempt ? 'var(--text-muted)' : (isTodayComplete ? 'var(--green)' : 'var(--red-core)')};">
             <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:3px; margin-bottom:12px;">Today's Target</div>
 
@@ -4118,6 +4141,8 @@ async function renderAlbum2x() {
             `}
         </div>
     `;
+  }
+
 
   // ═══════════════════════════════
   // 2. WEEKLY HEATMAP (Personal)
@@ -4846,10 +4871,28 @@ function renderSideMissions() {
   const daysElapsed = todayIndex >= 0 ? todayIndex + 1 : weekDates.filter(d => d <= today).length;
   const daysTotal = weekDates.length;
 
+  const isCurrentWeekOver = isWeekCompleted(STATE.week);
+
   // ═══════════════════════════════════
   // 1. HEADER STATUS
   // ═══════════════════════════════════
-  html += `
+  if (isCurrentWeekOver) {
+    html += `
+        <div class="archive-card" style="padding:30px 20px; text-align:center; margin-bottom:24px; border-top:4px solid ${sm.weekFullyPassed ? 'var(--green)' : 'var(--fail)'}; background:linear-gradient(135deg, rgba(255,255,255,0.02), var(--bg-panel));">
+            <div style="font-size:32px; margin-bottom:12px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));">🛡️</div>
+            <div style="font-size:14px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; margin-bottom:16px; font-family:'Orbitron', sans-serif;">Survival Protocol: ${STATE.week}</div>
+            
+            <div style="font-size:28px; font-weight:900; color:${sm.weekFullyPassed ? 'var(--green)' : 'var(--fail)'}; text-shadow:0 0 15px ${sm.weekFullyPassed ? 'rgba(0,255,102,0.3)' : 'rgba(255,0,0,0.3)'};">
+                ${sm.weekFullyPassed ? '✓ WEEK SECURED' : '✗ WEEK FAILED'}
+            </div>
+            
+            <p style="color:var(--text-muted); font-size:11px; margin:16px 0 0; text-transform:uppercase; letter-spacing:1px;">
+                This week has concluded. No further actions can be taken.
+            </p>
+        </div>
+    `;
+  } else {
+    html += `
         <div class="archive-card" style="padding:20px; text-align:center; margin-bottom:24px; border-top:4px solid ${sm.weekFullyPassed ? 'var(--green)' : 'var(--courage-amber)'}; background:linear-gradient(135deg, rgba(255,149,0,0.05), var(--bg-panel));">
             <div style="font-size:32px; margin-bottom:12px; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));">🛡️</div>
             <div style="font-size:14px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; font-family:'Orbitron', sans-serif;">Survival Protocol</div>
@@ -4874,9 +4917,10 @@ function renderSideMissions() {
             </p>
         </div>
     `;
+  }
 
   // ═══════════════════════════════════
-  // 2. TODAY'S CHECKLIST
+  // 2. TODAY'S CHECKLIST (Only show if week is NOT over)
   // ═══════════════════════════════════
   const todayTracks = sm.tracks.map(t => {
     const d = t.daily?.[today];
@@ -4887,7 +4931,7 @@ function renderSideMissions() {
   const todayDoneCount = todayTracks.filter(t => t.passed).length;
   const todayTotal = todayTracks.length;
 
-  if (!isOnLeave) {
+  if (!isOnLeave && !isCurrentWeekOver) {
     html += `
             <div class="glass-card" style="padding:16px; margin-bottom:24px; border-top:3px solid ${todayDoneCount === todayTotal ? 'var(--green)' : 'var(--courage-amber)'};">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
@@ -4933,6 +4977,7 @@ function renderSideMissions() {
             </div>
         `;
   }
+
 
   // ═══════════════════════════════════
   // 3. PER-TRACK CARDS
