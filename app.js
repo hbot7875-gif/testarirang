@@ -15248,17 +15248,17 @@ const VOYAGE_SWIM_CSS = `
 
 
 const VOYAGE_ARENA_CSS = `
-    #my-army-bomb { transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); --wave-speed: 4s; }
+    #my-army-bomb { transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); --wave-speed: 4s; transform-origin: bottom center !important; }
     .anim-sway { animation: moveSway var(--wave-speed) ease-in-out infinite alternate; }
     .anim-drift { animation: moveDrift var(--wave-speed) linear infinite; }
     .anim-ocean { animation: moveOcean var(--wave-speed) ease-in-out infinite alternate; }
     .anim-stars { animation: moveStars var(--wave-speed) ease-in-out infinite alternate; }
     .anim-flutter { animation: moveFlutter var(--wave-speed) linear infinite; }
-    @keyframes moveSway { 0% { transform: rotate(-6deg) translateY(0px) scale(1); } 100% { transform: rotate(5deg) translateY(-12px) scale(1.03); } }
-    @keyframes moveDrift { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(15px, -10px) rotate(3deg); } 50% { transform: translate(-5px, -20px) rotate(-2deg); } 75% { transform: translate(-15px, -5px) rotate(1deg); } }
-    @keyframes moveOcean { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(4deg); } }
-    @keyframes moveStars { 0%, 100% { transform: translateY(0) rotate(0deg) scale(1); } 25% { transform: translateY(-12px) rotate(3deg) scale(1.05); } 75% { transform: translateY(-8px) rotate(-3deg) scale(0.95); } }
-    @keyframes moveFlutter { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-5deg) translate(-3px,-3px); } 50% { transform: rotate(0) translate(0,-5px); } 75% { transform: rotate(5deg) translate(3px,-3px); } }
+    @keyframes moveSway { 0% { transform: rotate(-24deg) scale(1); } 100% { transform: rotate(24deg) scale(1.03); } }
+    @keyframes moveDrift { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(30px, -15px) rotate(10deg); } 50% { transform: translate(-10px, -30px) rotate(-8deg); } 75% { transform: translate(-30px, -10px) rotate(6deg); } }
+    @keyframes moveOcean { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-35px) rotate(12deg); } }
+    @keyframes moveStars { 0%, 100% { transform: translateY(0) rotate(0deg) scale(1); } 25% { transform: translateY(-24px) rotate(8deg) scale(1.06); } 75% { transform: translateY(-16px) rotate(-8deg) scale(0.94); } }
+    @keyframes moveFlutter { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-15deg) translate(-6px,-6px); } 50% { transform: rotate(0) translate(0,-12px); } 75% { transform: rotate(5deg) translate(6px,-6px); } }
     #ambient-glow, #bomb-back-glow { transition: background-color 1s ease; }
 
     .soft-controls-panel {
