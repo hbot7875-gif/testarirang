@@ -44,7 +44,7 @@ window.launchTheVoyage = function () {
         </div>
 
         <div id="fan-zone" style="position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%); z-index: 10;">
-            <div class="cs-bomb" id="my-army-bomb" style="--glow-color: #a855f7; transition: all 0.3s ease;">
+            <div class="cs-bomb anim-sway" id="my-army-bomb" style="--glow-color: #a855f7; --wave-speed: 4s; transition: all 0.3s ease;">
                 <div class="cs-sphere" style="box-shadow: 0 0 50px var(--glow-color), inset 0 0 20px var(--glow-color); background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.2) 40%, rgba(0,0,0,0.6));">
                     <span class="cs-logo" style="text-shadow: 0 0 15px var(--glow-color);">⟭⟬</span>
                 </div>
