@@ -64,28 +64,28 @@ function injectConcertVoyageCSS() {
     .soft-controls-panel {
         position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); 
         z-index: 1000; background: rgba(15, 15, 20, 0.7); backdrop-filter: blur(25px); 
-        border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 30px;
-        display: flex; flex-direction: column; gap: 12px; padding: 18px 24px;
+        border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 16px;
+        display: flex; flex-direction: column; gap: 8px; padding: 10px 16px;
         width: max-content; max-width: 95vw; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         overflow: visible !important; /* Ensure the toggle button is not clipped */
     }
     .soft-controls-panel.minimized {
-        bottom: -165px; opacity: 0.6; filter: blur(2px) grayscale(1);
+        bottom: -95px; opacity: 0.6; filter: blur(2px) grayscale(1);
     }
     .panel-toggle-btn {
-        position: absolute; top: -38px; left: 50%; transform: translateX(-50%);
+        position: absolute; top: -26px; left: 50%; transform: translateX(-50%);
         background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #fff; border-radius: 15px; padding: 5px 18px; font-size: 10px; 
+        color: #fff; border-radius: 10px; padding: 4px 12px; font-size: 8px; 
         font-family: 'Orbitron'; cursor: pointer; backdrop-filter: blur(12px);
         box-shadow: 0 -5px 15px rgba(0,0,0,0.3); transition: all 0.3s;
-        display: flex; align-items: center; gap: 6px;
+        display: flex; align-items: center; gap: 4px;
     }
     .panel-toggle-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateX(-50%) translateY(-2px); }
 
     .soft-pill-btn {
         background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-        color: rgba(255,255,255,0.6); padding: 6px 12px; border-radius: 12px;
-        font-size: 9px; font-family: 'Orbitron', sans-serif; cursor: pointer;
+        color: rgba(255,255,255,0.6); padding: 4px 8px; border-radius: 8px;
+        font-size: 8px; font-family: 'Orbitron', sans-serif; cursor: pointer;
         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .soft-pill-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
@@ -96,7 +96,7 @@ function injectConcertVoyageCSS() {
 
     .soft-btn { border: none; outline: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     .color-btn {
-        width: 28px; height: 28px; border-radius: 50%; background: var(--btn-color);
+        width: 20px; height: 20px; border-radius: 50%; background: var(--btn-color);
         box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.4), 0 4px 10px rgba(0, 0, 0, 0.4);
     }
     .color-btn:hover { transform: translateY(-3px) scale(1.1); box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.6), inset -2px -2px 6px rgba(0, 0, 0, 0.2), 0 8px 15px var(--btn-color); }
@@ -105,19 +105,19 @@ function injectConcertVoyageCSS() {
     .rainbow-btn { background: linear-gradient(135deg, #ef4444, #fbbf24, #22c55e, #3b82f6, #a855f7); }
 
     .text-btn {
-        background: transparent; color: #fff; font-size: 11px; font-weight: 900; 
-        font-family: 'Orbitron'; padding: 6px 12px; border-radius: 20px;
+        background: transparent; color: #fff; font-size: 9px; font-weight: 900; 
+        font-family: 'Orbitron'; padding: 4px 8px; border-radius: 12px;
     }
     .text-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); }
 
     .vy-controls-row {
-        display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap;
+        display: flex; gap: 6px; align-items: center; justify-content: center; flex-wrap: wrap;
     }
     .vy-controls-row.secondary-row {
-        gap: 15px;
+        gap: 8px;
     }
     .vy-controls-divider-v {
-        width: 1px; height: 14px; background: rgba(255,255,255,0.2);
+        width: 1px; height: 10px; background: rgba(255,255,255,0.2);
     }
     .vy-controls-divider-h {
         width: 100%; height: 1px; background: rgba(255,255,255,0.1);
@@ -260,7 +260,7 @@ window.launchTheVoyage = function () {
         <div id="warp-text" style="margin-top: 40px; font-family: 'Orbitron'; font-size: 14px; color: #a855f7; letter-spacing: 4px; text-transform: uppercase; animation: pulse 1s infinite;">Initiating Magic Shop Portal...</div>
     </div>
 
-    <div id="magic-flash" style="position: absolute; inset: 0; background: radial-gradient(circle, #fff 0%, #a855f7 50%, #000 100%); opacity: 0; pointer-events: none; z-index: 50; transition: opacity 2s ease-in;"></div>
+    <div id="magic-flash" style="position: absolute; inset: 0; background: radial-gradient(circle, #fff 0%, #a855f7 50%, #000 100%); opacity: 0; pointer-events: none; z-index: 80; transition: opacity 2s ease-in;"></div>
 
     <div id="phase-2-concert" style="position: absolute; inset: 0; opacity: 0; pointer-events: none; z-index: 60; transition: opacity 2s ease-out; background: #000; overflow: hidden;">
         
