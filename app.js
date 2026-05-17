@@ -4126,7 +4126,11 @@ async function renderAlbum2x() {
             <div style="font-size:40px; font-weight:900; font-family:'Share Tech Mono', monospace; color:${isUserExempt ? 'var(--text-muted)' : (isTodayComplete ? 'var(--green)' : '#fff')}; line-height:1; text-shadow:0 0 20px ${isUserExempt ? 'transparent' : (isTodayComplete ? 'rgba(0,255,102,0.4)' : 'rgba(255,255,255,0.2)')};">
                 ${todayPassedCount}/${teamTracks.length}
             </div>
-            <p style="color:var(--text-muted); font-size:11px; text-transform:uppercase; letter-spacing:2px; margin:8px 0 20px;">Tracks Streamed Today</p>
+            <p style="color:var(--text-muted); font-size:11px; text-transform:uppercase; letter-spacing:2px; margin:8px 0 6px;">Tracks Streamed Today</p>
+            <p style="color:var(--text-ghost); font-size:9px; margin:0 0 20px; line-height: 1.6;">
+                Secure this daily. Your badge unlocks automatically on Sunday.<br>
+                <strong style="color:var(--wave-foam); font-size:10px;">Complete all missions to unlock all badges and board the Magic Ship!</strong>
+            </p>
 
             <div class="pbar" style="height:12px; max-width:260px; margin:0 auto; background:rgba(255,255,255,0.05);">
                 <div class="pfill ${isTodayComplete ? 'green' : ''}" style="width:${todayPct}%; ${!isTodayComplete && !isUserExempt ? 'background:var(--red-core)' : ''}; box-shadow:0 0 10px ${isTodayComplete ? 'var(--green)' : 'var(--red-core)'};"></div>
@@ -4913,7 +4917,9 @@ function renderSideMissions() {
             </div>
             
             <p style="color:var(--text-muted); font-size:10px; margin:16px 0 0; line-height:1.5;">
-                Each track: <strong style="color:#fff;">1+ daily</strong> + <strong style="color:#fff;">${sm.tracks[0]?.weeklyRequired || 20} weekly</strong>. No exceptions.
+                <strong>DIRECTIVE:</strong> Each track requires <strong style="color:#fff;">1+ daily</strong> AND <strong style="color:#fff;">${sm.tracks[0]?.weeklyRequired || 20} weekly</strong>.<br>
+                Maintain the chain to earn Team XP and automatically unlock your badge at week's end.<br>
+                <strong style="color:var(--wave-foam); font-size:11px;">Complete all missions to unlock all badges and board the Magic Ship!</strong>
             </p>
         </div>
     `;
@@ -10573,23 +10579,79 @@ function renderGuidePage() {
   const team = STATE.data?.agent?.profile?.team || 'Your Team';
 
   const sections = [
-    ['🎯', 'What Is This Mission?', `This is a <strong style="color:var(--red-main);">weekly streaming battle</strong> for BTS' ARIRANG comeback. 7 teams compete by streaming on Spotify or Apple Music, tracked via Last.fm.<br><br><strong>Every week you must:</strong><br>• Track & Album Goals (team)<br>• Arirang 2X — every track 2x/day (personal)<br>• Arirang Unit — 2 team tracks, 25x each (personal)<br>• Side Missions — 4 tracks, 20x/week (personal)<br>• Attendance + Police Check`],
+    ['🎯', 'Welcome to the Agency', `
+      This is a <strong style="color:var(--red-main);">weekly streaming battle</strong> for BTS' ARIRANG comeback. 7 teams compete by streaming on Spotify or Apple Music, tracked automatically via Last.fm.<br><br>
+      <strong>Your Ultimate Goal:</strong><br>
+      Stream smart, earn XP to push your team up the Global Leaderboard, and complete the 7 Weekly Checkpoints to collect all your badges and <strong>board the Magic Ship!</strong>
+    `],
 
-    // ── 7 TEAMS, 7 MISSIONS ──
-    ['📊', '7 Teams — 7 Missions', `These are <strong style="color:var(--red-main);">team-wide targets</strong> for specific tracks and the full Arirang album. Unlike personal missions, these require the whole squad to work in sync.<br><br>
-      <strong style="color:var(--red-main);">Intelligence Briefing:</strong><br><br>
-      • <strong>Shared Progress:</strong> Every stream from every agent in your team fills the same progress bar. Once it hits 100%, the mission is secured.<br><br>
-      • <strong>Priority Focus:</strong> Focus your energy <i>only</i> on the tracks listed in your Goals tab.<br><br>
-      • <strong>The 148 Protocol:</strong> Since these are team goals, it can be hard to know how much <i>you</i> should do. Use the <strong style="color:var(--red-main);">148 Protocol</strong> page — it calculates your personal "Fair Share" daily based on the remaining gap and number of active agents.<br><br>
-      • <strong>XP Reward:</strong> These missions provide the <strong style="color:#ffd700;">heaviest XP boost</strong>, which is essential for leveling up your team's rank.`],
-    // ──────────────────────────────────
+    ['📋', 'Your Agent Checklist', `
+      Don't get overwhelmed! Here is exactly what you need to focus on:<br><br>
+      <strong style="color:var(--courage-amber);">EVERY DAY:</strong>
+      <ul style="margin-top:4px; padding-left:20px; line-height:1.6; margin-bottom:12px;">
+        <li><strong>Arirang 2X:</strong> Stream EVERY track on the Arirang album at least twice. (28 streams total).</li>
+        <li><strong>Side Missions:</strong> Stream the 4 survival tracks (Wild Flower, DSYLM, Haegeum, Killin' It Girl) at least 1 time each.</li>
+      </ul>
+      <strong style="color:var(--wave-foam);">THROUGHOUT THE WEEK:</strong>
+      <ul style="margin-top:4px; padding-left:20px; line-height:1.6; margin-bottom:12px;">
+        <li><strong>Arirang Unit:</strong> Stream your team's 2 assigned tracks 25 times each.</li>
+        <li><strong>Side Missions:</strong> Reach a total of 20 streams for each of the 4 survival tracks by Saturday.</li>
+        <li><strong>Team Goals:</strong> Help your squad hit massive target numbers for specific tracks and albums.</li>
+      </ul>
+      <strong style="color:var(--green);">THE WEEKEND:</strong>
+      <ul style="margin-top:4px; padding-left:20px; line-height:1.6;">
+        <li><strong>Attendance:</strong> Submit a screenshot of your Spotify/Apple Music Recents to your Team GC.</li>
+      </ul>
+    `],
 
     ['⚔️', 'The 7 Teams', Object.entries(CONFIG.TEAMS).map(([name, info]) =>
       `<span style="color:${info.color}">${info.emoji} ${name.replace('Team ', '')}</span> — ${info.ref}`
     ).join('<br>') + `<br><br>Your team: <strong style="color:${teamColor(team)}">${team}</strong>`],
-    ['📋', 'All Missions Explained', `<strong style="color:var(--red-main);">💿 Arirang 2X (DAILY)</strong><br>Stream EVERY ARIRANG track 2x per day. 14 × 2 = 28 streams/day minimum.<br><br><strong style="color:#ffd700;">⚡ Arirang Unit (WEEKLY)</strong><br>Your team gets 2 tracks each week. 25x each. All complete = +25 XP bonus.<br><br><strong style="color:var(--red-main);">🛡️ Side Missions (SURVIVAL)</strong><br>4 tracks: Wild Flower, DSYLM, Haegeum, Killing It Girl. 20x/week each, must stream every day. Fail = WARNING → DISSOLVED.<br><br><strong>📋 Attendance & 👮 Police</strong><br>Share Spotify Recents weekly. Police check for looping. Max 3 reports.`],
-    ['🏆', 'How to Win', `Pass ALL 7 missions + have the highest XP:<br>✅ Track Goals<br>✅ Album Goals<br>✅ Arirang 2X (every member, every day)<br>✅ Arirang Unit (every member)<br>✅ Side Missions (every member, every day)<br>✅ 100% Attendance<br>✅ Police check (≤3 reports)<br><br>🎖️ Winner gets <strong style="color:#ffd700;">Champion Badge</strong> + team levels up!`],
-    ['📜', 'Rules & Leave', `• Use ONLY given playlists<br>• No looping the same playlist<br>• Volume 50%+ (muted may not count)<br>• Leave: max 1 week/month, 0 XP, team unaffected<br>• Warning system: fail side missions once = warning, twice = dissolved<br>• Dissolved team → members randomly redistributed<br><br>💜 <strong>Have fun!</strong> We're ONE ARMY streaming together! 🚀`],
+
+    ['🧠', 'The 148 Protocol (Your Best Friend)', `
+      Feeling lost on what to stream? <strong>Check the 148 Protocol page daily.</strong><br><br>
+      It acts as your personal AI assistant. It looks at your team's massive goals, divides them by how many active agents you have, and tells you EXACTLY how many times you personally need to stream each song today to pull your "Fair Share".
+    `],
+
+    ['⛵', 'The Magic Ship & Badges', `
+      The Hangar page contains the <strong>Magic Ship</strong>. To make the ship set sail on Sunday, your team must collect all <strong>7 Badges</strong>.<br><br>
+      How do you get the 7 Badges? By passing the 7 Weekly Checkpoints:<br>
+      <ol style="margin-top:4px; padding-left:24px; line-height:1.6; color:var(--text-secondary);">
+        <li>Hit the Team Track Goals</li>
+        <li>Hit the Team Album Goals</li>
+        <li>Every member finishes Arirang 2X daily</li>
+        <li>Every member finishes Arirang Unit</li>
+        <li>Every member finishes Side Missions</li>
+        <li>100% Team Attendance</li>
+        <li>Pass the Police Check (No cheating/looping)</li>
+      </ol>
+      <em style="color:var(--text-ghost); font-size:10px;">Badges unlock automatically at the end of the week if secured!</em>
+    `],
+
+    ['💎', 'How Is XP Earned?', `
+      XP (Experience Points) decides who wins the Live Battlefield!<br><br>
+      <strong>Personal XP:</strong><br>
+      <ul style="margin-top:4px; padding-left:20px; line-height:1.6; margin-bottom:12px;">
+        <li>Every <strong>10 streams</strong> you do generates <strong>1 XP</strong>.</li>
+        <li>Use the Hype Wall to post and like content for bonus XP.</li>
+      </ul>
+      <strong>Team XP Bonuses:</strong><br>
+      <ul style="margin-top:4px; padding-left:20px; line-height:1.6;">
+        <li>If your whole team clears the Arirang Unit, you get a <strong>+25 XP</strong> boost.</li>
+        <li>If your whole team survives the Side Missions, you get a <strong>+15 XP</strong> boost.</li>
+        <li>Admins grant massive XP drops when your team clears the main Track and Album goals!</li>
+      </ul>
+    `],
+
+    ['📜', 'Rules, Rescues & Leave', `
+      <ul style="margin-top:0; padding-left:20px; line-height:1.6;">
+        <li><strong>Playlists:</strong> Use ONLY official playlists provided in the GC. No looping the same playlist.</li>
+        <li><strong>Volume:</strong> Keep volume at 50%+ (muted streams are rejected by Last.fm).</li>
+        <li><strong>Ghost Protocol (Leave):</strong> Busy week? Apply for leave (max 1 week/month). You earn 0 XP, but you are exempt from daily missions so you don't hurt your team's win rate.</li>
+        <li><strong>Emergency Save:</strong> Did a teammate miss a day? Someone on your team can sacrifice a 100XP "Classified Merit" badge to trigger the Rescue Squad and save their streak!</li>
+      </ul>
+      <br><div style="text-align:center; font-weight:800; color:var(--purple-mid);">💜 Have fun! We're ONE ARMY streaming together! 🚀</div>
+    `]
   ];
 
   const quickLinks = [
@@ -12891,9 +12953,9 @@ function renderArmyBombSection(badgeStates, chargePercent, isAwakened) {
     const statusText = badge.passed
       ? '✓ ABOARD THE ARIRANG'
       : `🔒 Keep streaming to unlock`;
-    const descText = badge.passed
+    const descText = badge.passed 
       ? `<span style="color:var(--green); font-weight:800;">MISSION SECURED:</span> ${escHtml(badge.importance)}`
-      : `<span style="color:var(--red-core); font-weight:800;">REQUIRED:</span> ${escHtml(badge.req)}`;
+      : `<span style="color:var(--courage-amber); font-weight:800;">REQUIREMENT:</span> ${escHtml(badge.req)}<br><span style="color:var(--text-ghost); font-size:8px; display:block; margin-top:4px;">* Complete all missions to unlock all badges and board the Magic Ship.</span>`;
 
     return `
       <div class="ab-badge" style="left:${pos.left};top:${pos.top}" tabindex="0">
@@ -12918,10 +12980,10 @@ function renderArmyBombSection(badgeStates, chargePercent, isAwakened) {
   return `
     <div class="ab-wrap">
       <div class="ab-head">
-        <div class="ab-progress">ARIRANG CREW: ${collected}/${total} ABOARD</div>
-        <div class="ab-sub">Complete milestones to unlock each member and set sail</div>
+        <div class="ab-progress">BADGE COLLECTION: ${collected}/${total} UNLOCKED</div>
+        <div class="ab-sub">Complete milestones to unlock all badges and board the Magic Ship!</div>
         <div class="ab-feature-row">
-          <span class="ab-feature ab-feature--purple">⛵ Ship Voyage</span>
+          <span class="ab-feature ab-feature--purple">⛵ Magic Ship</span>
         </div>
       </div>
 
@@ -13151,27 +13213,27 @@ function renderActionSection(collected, total, isAwakened) {
 
   return `
     <div class="ms-card ms-status-card">
-      <div class="ms-status-label">Voyage Status</div>
+      <div class="ms-status-label">Collection Status</div>
       <div class="ms-status-value ${isAwakened ? '' : 'ms-status-value--muted'}">
-        ${isAwakened
-      ? '⛵ ALL 7 CREW ABOARD'
-      : `⏳ ${remaining} MEMBER${remaining !== 1 ? 'S' : ''} REMAINING`
-    }
+        ${isAwakened 
+          ? '✨ THE MAGIC SHIP IS READY' 
+          : `⏳ ${remaining} BADGE${remaining !== 1 ? 'S' : ''} REMAINING`
+        }
       </div>
     </div>
 
     <div class="ms-action-section">
       <div class="ms-status-msg ${isAwakened ? 'ms-status-msg--on' : 'ms-status-msg--off'}">
-        ${isAwakened
-      ? '✦ The Arirang awaits your command, Captain ARMY ✦'
-      : `${collected}/${total} crew aboard · Stream Arirang to unlock all members`
-    }
+        ${isAwakened 
+          ? '✦ The Magic Ship awaits your command, Captain ARMY ✦' 
+          : `${collected}/${total} badges collected · Complete all missions to unlock all badges and board the Magic Ship.`
+        }
       </div>
       <button class="ms-launch-btn"
               data-action="launch-voyage"
               ${isAwakened ? '' : 'disabled'}
               ${isAwakened ? '' : 'style="opacity:0.35;cursor:not-allowed;box-shadow:none;"'}>
-        ${isAwakened ? '⛵ SET SAIL TO SWIM CONCERT' : `🔒 COLLECT ALL ${total} CREW`}
+        ${isAwakened ? '⛵ BOARD THE MAGIC SHIP' : `🔒 COLLECT ALL ${total} BADGES`}
       </button>
     </div>
   `;
@@ -13452,7 +13514,7 @@ let concertPlayer;
 let strobeInterval;
 
 window.launchTheVoyage = function () {
-  console.log("Magic Shop Portal Opening...");
+  console.log("Magic Ship Portal Opening...");
   const existing = document.getElementById('voyage-overlay');
   if (existing) existing.remove();
 
@@ -13473,7 +13535,7 @@ window.launchTheVoyage = function () {
             <div class="vy-arirang__wake"><div class="vy-arirang__foam"></div></div>
         </div>
         <div id="warp-text" style="margin-top: 40px; font-family: 'Orbitron'; font-size: 14px; color: #a855f7; letter-spacing: 4px; text-transform: uppercase; animation: pulse 1s infinite;">
-            Initiating Magic Shop Portal...
+            Boarding the Magic Ship...
         </div>
     </div>
 
