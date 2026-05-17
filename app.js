@@ -12992,7 +12992,7 @@ function renderArmyBombSection(badgeStates, chargePercent, isAwakened) {
         <div class="ab-energy" style="--charge:${chargePercent}"></div>
 
         <!-- Army Bomb Lightstick -->
-        <div class="ab-lightstick ${isAwakened ? 'ab-lightstick--active' : ''}">
+        <div class="ab-lightstick army-bomb-vessel ${isAwakened ? 'ab-lightstick--active' : ''}">
           <div class="ab-globe">
             <div class="ab-logo"></div>
           </div>
@@ -13515,6 +13515,13 @@ let strobeInterval;
 
 window.launchTheVoyage = function () {
   console.log("Magic Ship Portal Opening...");
+
+  // 1. ✅ TARGET THE LIGHTSTICK AND TRIGGER FULL WAVE
+  const lightstick = document.querySelector('.army-bomb-vessel') || document.querySelector('.ab-lightstick') || document.querySelector('.main-bomb');
+  if (lightstick) {
+    lightstick.classList.add('army-bomb-launch-wave');
+  }
+
   const existing = document.getElementById('voyage-overlay');
   if (existing) existing.remove();
 
