@@ -18,21 +18,21 @@ window.launchTheVoyage = function () {
     s.textContent = `
       .cm-controls-panel {
           position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); 
-          z-index: 20; background: rgba(0,0,0,0.7); padding: 12px 20px; border-radius: 30px; 
+          z-index: 20; background: rgba(0,0,0,0.7); padding: 8px 12px; border-radius: 16px; 
           border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); 
-          display: flex; gap: 15px; align-items: center; pointer-events: auto;
+          display: flex; gap: 10px; align-items: center; pointer-events: auto;
           transition: all 0.3s ease;
       }
       .cm-color-btn {
-          width: 24px; height: 24px; border-radius: 50%; border: 2px solid #fff; cursor: pointer;
+          width: 20px; height: 20px; border-radius: 50%; border: 2px solid #fff; cursor: pointer;
           transition: transform 0.2s;
       }
       .cm-color-btn:hover { transform: scale(1.1); }
       .cm-divider {
-          width: 1px; height: 20px; background: rgba(255,255,255,0.2);
+          width: 1px; height: 14px; background: rgba(255,255,255,0.2);
       }
       .cm-strobe-btn {
-          background: transparent; color: #fff; font-size: 11px; font-weight: 900; 
+          background: transparent; color: #fff; font-size: 9px; font-weight: 900; 
           letter-spacing: 1px; border: none; cursor: pointer; font-family: 'Orbitron', sans-serif;
       }
       @media (max-width: 600px) {
@@ -82,7 +82,7 @@ window.launchTheVoyage = function () {
     </div>
 
     <!-- THE TRANSITION FLASH -->
-    <div id="magic-flash" style="position: absolute; inset: 0; background: radial-gradient(circle, #fff 0%, #a855f7 50%, #000 100%); opacity: 0; pointer-events: none; z-index: 50; transition: opacity 2s ease-in;"></div>
+    <div id="magic-flash" style="position: absolute; inset: 0; background: radial-gradient(circle, #fff 0%, #a855f7 50%, #000 100%); opacity: 0; pointer-events: none; z-index: 80; transition: opacity 2s ease-in;"></div>
 
     <!-- PHASE 2: THE CONCERT ARENA -->
     <div id="phase-2-concert" style="position: absolute; inset: 0; opacity: 0; pointer-events: none; z-index: 60; transition: opacity 2s ease-out; background: #000;">
