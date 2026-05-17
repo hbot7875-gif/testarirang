@@ -7019,3 +7019,25 @@ img {
   50% { transform: translateY(-5px); }
   100% { transform: translateY(0px); }
 }
+
+/* Ensure the lightstick pivots from the base of the handle, not the center! */
+.army-bomb-vessel {
+  transform-origin: bottom center !important;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* High-energy swinging animation triggered during launch */
+.army-bomb-launch-wave {
+  animation: launchVoyageSwing 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes launchVoyageSwing {
+  0% {
+    transform: rotate(-35deg) scale(1.05);
+    filter: drop-shadow(0 0 25px rgba(168, 85, 247, 0.8));
+  }
+  100% {
+    transform: rotate(35deg) scale(1.05);
+    filter: drop-shadow(0 0 45px rgba(232, 58, 93, 0.9));
+  }
+}
