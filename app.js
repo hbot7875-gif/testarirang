@@ -13210,13 +13210,26 @@ function renderMagicShip() {
   // Find my team's data
   const myTeamData = tc.find(t => t.team === myTeamName) || {};
 
+  // Check if the currently viewed week is officially over
+  const isWeekOver = isWeekCompleted(STATE.week);
+
   // Build badge states from team data
-  const badgeStates = ARMY_BOMB_BADGES.map((badge, i) => ({
-    ...badge,
-    passed: !!myTeamData[badge.key],
-    position: AB_POSITIONS[i] || {},
-    index: i,
-  }));
+  const badgeStates = ARMY_BOMB_BADGES.map((badge, i) => {
+    // These two missions span 7 days. Even if the DB says true ("On Track"), 
+    // the badge stays locked until the week concludes.
+    const requiresFullWeek = badge.key === 'album2xPassed' || badge.key === 'sideMissionPassed';
+    
+    const isUnlocked = requiresFullWeek 
+        ? (!!myTeamData[badge.key] && isWeekOver) 
+        : !!myTeamData[badge.key];
+
+    return {
+      ...badge,
+      passed: isUnlocked,
+      position: AB_POSITIONS[i] || {},
+      index: i,
+    };
+  });
 
   const collected = badgeStates.filter(b => b.passed).length;
   const total = badgeStates.length;
