@@ -13549,8 +13549,9 @@ window.launchTheVoyage = function () {
     <div id="magic-flash" style="position: absolute; inset: 0; background: radial-gradient(circle, #fff 0%, #a855f7 50%, #000 100%); opacity: 0; pointer-events: none; z-index: 80; transition: opacity 2s ease-in;"></div>
 
     <div id="phase-2-concert" style="position: absolute; inset: 0; opacity: 0; pointer-events: all !important; z-index: 60; transition: opacity 2s ease-out; background: #020202; overflow: hidden; cursor: crosshair;">
-        <div id="video-wrapper" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none !important; z-index: 1;">
-            <div id="youtube-player" style="width: 100vw; height: 100vh; object-fit: cover; opacity: 1 !important; filter: none !important;"></div>
+        <div id="video-wrapper" class="vy-sky-bg" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none !important; z-index: 1;">
+            <div class="vy-stars-container" style="position: absolute; inset: 0; z-index: 0; pointer-events: none;"></div>
+            <div id="youtube-player" style="opacity: 1 !important; filter: none !important;"></div>
         </div>
         <div style="position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(circle at 50% 60%, transparent 35%, rgba(0,0,0,0.3) 70%, #000 100%);"></div>
         <div id="ambient-glow" style="position: absolute; inset: 0; z-index: 3; background: #a855f7 !important; opacity: 0.15; mix-blend-mode: screen; pointer-events: none; transition: background 0.8s ease;"></div>
@@ -13614,6 +13615,21 @@ window.launchTheVoyage = function () {
   `;
 
   document.body.appendChild(root);
+
+  // Generate magical background stars dynamically
+  const starsContainer = root.querySelector('.vy-stars-container');
+  if (starsContainer) {
+    let starsHtml = '';
+    for (let i = 0; i < 45; i++) {
+      const top = Math.random() * 100;
+      const left = Math.random() * 100;
+      const size = Math.random() * 2.5 + 1;
+      const delay = Math.random() * 4;
+      const dur = Math.random() * 3 + 2;
+      starsHtml += `<div class="vy-star" style="top: ${top}%; left: ${left}%; width: ${size}px; height: ${size}px; --blink-dur: ${dur}s; animation-delay: ${delay}s;"></div>`;
+    }
+    starsContainer.innerHTML = starsHtml;
+  }
 
   // 2. Load External APIs
   if (!window.YT) {
@@ -14032,6 +14048,12 @@ window.exitConcert = function() {
         setTimeout(() => arena.remove(), 1000);
     }
     
+    // Stop the high-intensity waving animation of the main page lightstick
+    const mainVessel = document.querySelector('.army-bomb-vessel');
+    if (mainVessel) {
+        mainVessel.classList.remove('army-bomb-launch-wave');
+    }
+
     // 🚨 CRITICAL FIX: Clean up the canvas
     if (fwCanvas) {
         fwCanvas.remove();
@@ -15292,7 +15314,10 @@ const VOYAGE_ARENA_CSS = `
     .rainbow-btn { background: linear-gradient(135deg, #ef4444, #fbbf24, #22c55e, #3b82f6, #a855f7); }
     .text-btn { background: transparent; color: #fff; font-size: 9px; font-weight: 900; font-family: 'Orbitron'; padding: 4px 8px; border-radius: 12px; }
 
-    #youtube-player { width: 100vw !important; height: 100vh !important; object-fit: cover; opacity: 1 !important; pointer-events: none; filter: none !important; }
+    #youtube-player { aspect-ratio: 16 / 9; width: 100vw !important; height: auto !important; max-height: 100vh !important; object-fit: contain !important; opacity: 1 !important; pointer-events: none; filter: none !important; z-index: 2; }
+    .vy-sky-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at center, #0c0824 0%, #030308 70%, #000 100%) !important; z-index: 1; pointer-events: none; overflow: hidden; }
+    .vy-star { position: absolute; background: #fff; border-radius: 50%; box-shadow: 0 0 6px #fff, 0 0 12px rgba(168, 85, 247, 0.6); opacity: 0.3; pointer-events: none; animation: vyStarBlink var(--blink-dur, 3s) ease-in-out infinite; }
+    @keyframes vyStarBlink { 0%, 100% { opacity: 0.1; transform: scale(0.6); } 50% { opacity: 1; transform: scale(1.3); } }
     .concert-dust { position: absolute; inset: 0; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-repeat: repeat; background-size: 200px 200px; animation: magicDrift 20s linear infinite; mix-blend-mode: overlay; opacity: 0.2; }
     @keyframes magicDrift { 0% { transform: translateY(0px) translateX(0px); } 100% { transform: translateY(-200px) translateX(-50px); } }
 
@@ -15306,7 +15331,7 @@ const VOYAGE_ARENA_CSS = `
     @keyframes whaleSwim { 0% { transform: translateX(0vw) rotate(-10deg); } 100% { transform: translateX(125vw) rotate(-15deg); } }
 
     @media (max-width: 600px) {
-        #video-wrapper iframe { transform: scale(4.0) !important; }
+        #video-wrapper iframe { transform: none !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; }
         #fan-zone { bottom: 18% !important; }
         
         .soft-controls-panel {
