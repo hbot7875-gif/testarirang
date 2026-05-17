@@ -13546,7 +13546,7 @@ window.launchTheVoyage = function () {
         </div>
     </div>
 
-    <div id="magic-flash" style="position: absolute; inset: 0; background: radial-gradient(circle, #fff 0%, #a855f7 50%, #000 100%); opacity: 0; pointer-events: none; z-index: 50; transition: opacity 2s ease-in;"></div>
+    <div id="magic-flash" style="position: absolute; inset: 0; background: radial-gradient(circle, #fff 0%, #a855f7 50%, #000 100%); opacity: 0; pointer-events: none; z-index: 80; transition: opacity 2s ease-in;"></div>
 
     <div id="phase-2-concert" style="position: absolute; inset: 0; opacity: 0; pointer-events: all !important; z-index: 60; transition: opacity 2s ease-out; background: #020202; overflow: hidden; cursor: crosshair;">
         <div id="video-wrapper" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none !important; z-index: 1;">
@@ -13636,8 +13636,16 @@ window.launchTheVoyage = function () {
     if (text) text.innerText = 'Entering Coordinates...';
   }, 1000);
 
+
   setTimeout(() => {
-    // Transition to Phase 2
+    // 🌌 Trigger the cinematic portal transition flash 1s before Phase 2 starts
+    const flash = document.getElementById('magic-flash');
+    if (flash) {
+      flash.style.opacity = '1';
+    }
+  }, 4000);
+
+  setTimeout(() => {
     const phase1 = document.getElementById('phase-1-ship');
     if (phase1) phase1.style.display = 'none';
 
@@ -15264,25 +15272,25 @@ const VOYAGE_ARENA_CSS = `
     .soft-controls-panel {
         position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); 
         z-index: 1000; background: rgba(15, 15, 20, 0.75); backdrop-filter: blur(25px); 
-        border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 30px;
-        display: flex; flex-direction: column; gap: 12px; padding: 18px 24px;
+        border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 16px;
+        display: flex; flex-direction: column; gap: 8px; padding: 10px 16px;
         width: max-content; max-width: 95vw; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .soft-controls-panel.minimized { bottom: -165px; opacity: 0.6; filter: blur(2px) grayscale(1); }
+    .soft-controls-panel.minimized { bottom: -95px; opacity: 0.6; filter: blur(2px) grayscale(1); }
     .panel-toggle-btn {
-        position: absolute; top: -38px; left: 50%; transform: translateX(-50%);
+        position: absolute; top: -26px; left: 50%; transform: translateX(-50%);
         background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #fff; border-radius: 15px; padding: 5px 18px; font-size: 10px; font-family: 'Orbitron';
+        color: #fff; border-radius: 10px; padding: 4px 12px; font-size: 8px; font-family: 'Orbitron';
         cursor: pointer; backdrop-filter: blur(12px); box-shadow: 0 -5px 15px rgba(0,0,0,0.3); transition: all 0.3s;
     }
     .panel-toggle-btn:hover { background: rgba(255, 255, 255, 0.4); transform: translateX(-50%) translateY(-2px); }
 
-    .soft-pill-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); padding: 6px 12px; border-radius: 12px; font-size: 9px; font-family: 'Orbitron'; cursor: pointer; transition: all 0.2s; }
+    .soft-pill-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); padding: 4px 8px; border-radius: 8px; font-size: 8px; font-family: 'Orbitron'; cursor: pointer; transition: all 0.2s; }
     .soft-pill-btn.active { background: rgba(255,255,255,0.25); color: #fff; border-color: rgba(255,255,255,0.5); }
     .soft-btn { border: none; outline: none; cursor: pointer; transition: 0.3s; }
-    .color-btn { width: 28px; height: 28px; border-radius: 50%; background: var(--btn-color); box-shadow: inset 2px 2px 4px rgba(255,255,255,0.4), 0 4px 10px rgba(0,0,0,0.4); }
+    .color-btn { width: 20px; height: 20px; border-radius: 50%; background: var(--btn-color); box-shadow: inset 2px 2px 4px rgba(255,255,255,0.4), 0 4px 10px rgba(0,0,0,0.4); }
     .rainbow-btn { background: linear-gradient(135deg, #ef4444, #fbbf24, #22c55e, #3b82f6, #a855f7); }
-    .text-btn { background: transparent; color: #fff; font-size: 11px; font-weight: 900; font-family: 'Orbitron'; padding: 6px 12px; border-radius: 20px; }
+    .text-btn { background: transparent; color: #fff; font-size: 9px; font-weight: 900; font-family: 'Orbitron'; padding: 4px 8px; border-radius: 12px; }
 
     #youtube-player { width: 100vw !important; height: 100vh !important; object-fit: cover; opacity: 1 !important; pointer-events: none; filter: none !important; }
     .concert-dust { position: absolute; inset: 0; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-repeat: repeat; background-size: 200px 200px; animation: magicDrift 20s linear infinite; mix-blend-mode: overlay; opacity: 0.2; }
@@ -15297,7 +15305,57 @@ const VOYAGE_ARENA_CSS = `
     .magic-whale { position: absolute; left: -20%; font-size: clamp(100px, 15vw, 200px); opacity: 0.08; filter: blur(5px) drop-shadow(0 0 40px #a855f7); z-index: 2; animation: whaleSwim 28s linear forwards; pointer-events: none; }
     @keyframes whaleSwim { 0% { transform: translateX(0vw) rotate(-10deg); } 100% { transform: translateX(125vw) rotate(-15deg); } }
 
-    @media (max-width: 600px) { #video-wrapper iframe { transform: scale(1.5) !important; } #fan-zone { bottom: 15%; } }
+    @media (max-width: 600px) {
+        #video-wrapper iframe { transform: scale(4.0) !important; }
+        #fan-zone { bottom: 18% !important; }
+        
+        .soft-controls-panel {
+            bottom: 12px !important;
+            padding: 8px 12px !important;
+            gap: 6px !important;
+            border-radius: 16px !important;
+            max-width: 98vw !important;
+        }
+        .soft-controls-panel.minimized {
+            bottom: -64px !important;
+            opacity: 0.5 !important;
+        }
+        .panel-toggle-btn {
+            top: -24px !important;
+            padding: 3px 10px !important;
+            font-size: 8px !important;
+            border-radius: 8px !important;
+        }
+        .soft-pill-btn {
+            padding: 4px 6px !important;
+            font-size: 8px !important;
+            border-radius: 6px !important;
+        }
+        .color-btn {
+            width: 20px !important;
+            height: 20px !important;
+        }
+        .text-btn {
+            font-size: 9px !important;
+            padding: 4px 6px !important;
+        }
+        
+        /* Flex row and divider adjustments */
+        .soft-controls-panel > div {
+            gap: 6px !important;
+        }
+        .soft-controls-panel > div > div {
+            gap: 4px !important;
+        }
+        /* Vertical divider */
+        .soft-controls-panel div[style*="width: 1px"] {
+            height: 10px !important;
+        }
+        /* Horizontal divider */
+        .soft-controls-panel div[style*="width: 100%"] {
+            margin: 2px 0 !important;
+        }
+    }
     .vy-finale { position:absolute; inset:0; z-index:70; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none; opacity:0; transition:opacity 1s; }
     .vy-finale--on { opacity:1; }
     .vy-finale__army { font-family:Orbitron; font-size:64px; font-weight:900; color:#fff; text-shadow:0 0 40px #a855f7; }
