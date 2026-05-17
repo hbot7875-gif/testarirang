@@ -55,6 +55,40 @@ window.launchTheVoyage = function () {
           #fan-zone {
               bottom: 18% !important;
           }
+          #youtube-player {
+              aspect-ratio: 16 / 9;
+              width: 100vw !important;
+              height: auto !important;
+              max-height: 100vh !important;
+              object-fit: contain !important;
+              opacity: 1 !important;
+              pointer-events: none;
+              z-index: 2;
+          }
+          .vy-sky-bg {
+              position: absolute;
+              inset: 0;
+              background: radial-gradient(ellipse at center, #0c0824 0%, #030308 70%, #000 100%) !important;
+              z-index: 1;
+              pointer-events: none;
+              overflow: hidden;
+          }
+          .vy-star {
+              position: absolute;
+              background: #fff;
+              border-radius: 50%;
+              box-shadow: 0 0 6px #fff, 0 0 12px rgba(168, 85, 247, 0.6);
+              opacity: 0.3;
+              pointer-events: none;
+              animation: vyStarBlink var(--blink-dur, 3s) ease-in-out infinite;
+          }
+          @keyframes vyStarBlink {
+              0%, 100% { opacity: 0.1; transform: scale(0.6); }
+              50% { opacity: 1; transform: scale(1.3); }
+          }
+          @media (max-width: 600px) {
+              #video-wrapper iframe { transform: none !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; }
+          }
       }
     `;
     document.head.appendChild(s);
@@ -87,9 +121,10 @@ window.launchTheVoyage = function () {
     <!-- PHASE 2: THE CONCERT ARENA -->
     <div id="phase-2-concert" style="position: absolute; inset: 0; opacity: 0; pointer-events: none; z-index: 60; transition: opacity 2s ease-out; background: #000;">
         
-        <div id="video-wrapper" style="position: absolute; inset: 0; pointer-events: none;">
-            <div id="youtube-player"></div>
-            <div style="position: absolute; inset: 0; background: radial-gradient(circle at center 60%, transparent 20%, rgba(0,0,0,0.9) 100%);"></div>
+        <div id="video-wrapper" class="vy-sky-bg" style="position: absolute; inset: 0; pointer-events: none;">
+            <div class="vy-stars-container" style="position: absolute; inset: 0; z-index: 0; pointer-events: none;"></div>
+            <div id="youtube-player" style="position: relative; z-index: 1;"></div>
+            <div style="position: absolute; inset: 0; background: radial-gradient(circle at center 60%, transparent 20%, rgba(0,0,0,0.9) 100%); z-index: 2;"></div>
         </div>
 
         <div id="fan-zone" style="position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%); z-index: 10;">
@@ -114,6 +149,21 @@ window.launchTheVoyage = function () {
   `;
 
   document.body.appendChild(root);
+
+  // Generate magical background stars dynamically
+  const starsContainer = root.querySelector('.vy-stars-container');
+  if (starsContainer) {
+    let starsHtml = '';
+    for (let i = 0; i < 45; i++) {
+      const top = Math.random() * 100;
+      const left = Math.random() * 100;
+      const size = Math.random() * 2.5 + 1;
+      const delay = Math.random() * 4;
+      const dur = Math.random() * 3 + 2;
+      starsHtml += `<div class="vy-star" style="top: ${top}%; left: ${left}%; width: ${size}px; height: ${size}px; --blink-dur: ${dur}s; animation-delay: ${delay}s;"></div>`;
+    }
+    starsContainer.innerHTML = starsHtml;
+  }
 
   if (!window.YT) {
     const tag = document.createElement('script');
@@ -215,6 +265,12 @@ window.exitConcert = function() {
   if (arena) {
       arena.style.opacity = '0';
       setTimeout(() => arena.remove(), 1000);
+  }
+  
+  // Stop the high-intensity waving animation of the main page lightstick
+  const mainVessel = document.querySelector('.army-bomb-vessel');
+  if (mainVessel) {
+    mainVessel.classList.remove('army-bomb-launch-wave');
   }
 };
 
