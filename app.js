@@ -13889,6 +13889,11 @@ function initYouTubePlayer(videoId) {
     concertPlayer = null;
   }
 
+  if (window._vyProgressInterval) {
+    clearInterval(window._vyProgressInterval);
+    window._vyProgressInterval = null;
+  }
+
   if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
     setTimeout(() => initYouTubePlayer(videoId), 500);
     return;
@@ -13921,6 +13926,21 @@ function initYouTubePlayer(videoId) {
         if (typeof event.target.setPlaybackQuality === 'function') {
           event.target.setPlaybackQuality('highres');
         }
+
+        // Monitor play duration to trigger Grand Finale early to preempt creator's End Screen cards (usually last 20 seconds)
+        window._vyProgressInterval = setInterval(() => {
+            if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function' && typeof concertPlayer.getDuration === 'function') {
+                const currentTime = concertPlayer.getCurrentTime();
+                const duration = concertPlayer.getDuration();
+                if (duration > 0 && (duration - currentTime <= 22)) {
+                    clearInterval(window._vyProgressInterval);
+                    window._vyProgressInterval = null;
+                    if (typeof window.triggerGrandFinale === 'function') {
+                        window.triggerGrandFinale();
+                    }
+                }
+            }
+        }, 1000);
       },
       'onStateChange': (event) => {
         // Explicitly route to window context to handle API isolation
@@ -14039,6 +14059,10 @@ window.exitConcert = function() {
     const arena = document.getElementById('voyage-overlay');
     if (strobeInterval) clearInterval(strobeInterval);
     if (rainbowInterval) clearInterval(rainbowInterval);
+    if (window._vyProgressInterval) {
+        clearInterval(window._vyProgressInterval);
+        window._vyProgressInterval = null;
+    }
     if (concertPlayer && typeof concertPlayer.destroy === 'function') {
         try { concertPlayer.destroy(); } catch(e) {}
         concertPlayer = null;
@@ -15314,8 +15338,8 @@ const VOYAGE_ARENA_CSS = `
     .rainbow-btn { background: linear-gradient(135deg, #ef4444, #fbbf24, #22c55e, #3b82f6, #a855f7); }
     .text-btn { background: transparent; color: #fff; font-size: 9px; font-weight: 900; font-family: 'Orbitron'; padding: 4px 8px; border-radius: 12px; }
 
-    #youtube-player { aspect-ratio: 16 / 9; width: 100vw !important; height: auto !important; max-height: 100vh !important; object-fit: contain !important; opacity: 1 !important; pointer-events: none; filter: none !important; z-index: 2; }
-    .vy-sky-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at center, #0c0824 0%, #030308 70%, #000 100%) !important; z-index: 1; pointer-events: none; overflow: hidden; }
+    #youtube-player { aspect-ratio: 16 / 9; width: 100vw !important; height: auto !important; max-height: 100vh !important; object-fit: contain !important; opacity: 1 !important; pointer-events: none; filter: none !important; z-index: 2; transform: scale(1.15) !important; transform-origin: center center !important; }
+    .vy-sky-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at center, #0c0824 0%, #030308 70%, #000 100%) !important; z-index: 1; pointer-events: none; overflow: hidden !important; }
     .vy-star { position: absolute; background: #fff; border-radius: 50%; box-shadow: 0 0 6px #fff, 0 0 12px rgba(168, 85, 247, 0.6); opacity: 0.3; pointer-events: none; animation: vyStarBlink var(--blink-dur, 3s) ease-in-out infinite; }
     @keyframes vyStarBlink { 0%, 100% { opacity: 0.1; transform: scale(0.6); } 50% { opacity: 1; transform: scale(1.3); } }
     .concert-dust { position: absolute; inset: 0; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-repeat: repeat; background-size: 200px 200px; animation: magicDrift 20s linear infinite; mix-blend-mode: overlay; opacity: 0.2; }
@@ -15331,7 +15355,7 @@ const VOYAGE_ARENA_CSS = `
     @keyframes whaleSwim { 0% { transform: translateX(0vw) rotate(-10deg); } 100% { transform: translateX(125vw) rotate(-15deg); } }
 
     @media (max-width: 600px) {
-        #video-wrapper iframe { transform: none !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; }
+        #video-wrapper iframe { transform: scale(1.15) !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; }
         #fan-zone { bottom: 18% !important; }
         
         .soft-controls-panel {
