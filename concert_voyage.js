@@ -1,10 +1,7 @@
 // Concert Voyage — overrides launchTheVoyage (load after app.js)
+// NOTE: concertPlayer, strobeInterval, waveInterval, progressInterval
+// are already declared in app.js — do NOT re-declare them here.
 const CONCERT_VIDEO_ID = 'sj95YLW-7-g';
-
-let concertPlayer;
-let strobeInterval;
-let waveInterval;
-let progressInterval;
 
 function injectConcertVoyageCSS() {
   if (document.getElementById('concert-voyage-extra-css')) return;
