@@ -89,6 +89,91 @@ window.launchTheVoyage = function () {
               0%, 100% { opacity: 0.1; transform: scale(0.6); }
               50% { opacity: 1; transform: scale(1.3); }
           }
+          /* Custom BTS Concert-style Fireworks */
+          .firework {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: white;
+            pointer-events: none;
+            box-shadow:
+              0 0 6px #fff,
+              0 0 12px var(--glow-color, #8cf),
+              0 0 20px var(--glow-color-2, #6ff);
+            animation: explode 1.4s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+            z-index: 90;
+          }
+
+          @keyframes explode {
+            0% { transform: scale(0.2); opacity: 1; }
+            60% { transform: scale(8); opacity: 1; }
+            100% { transform: scale(14); opacity: 0; }
+          }
+
+          .spark {
+            position: absolute;
+            width: 2px;
+            height: 40px;
+            pointer-events: none;
+            background: linear-gradient(
+              to bottom,
+              var(--spark-color, rgba(255,255,255,0.9)),
+              rgba(255,255,255,0)
+            );
+            transform-origin: top center;
+            animation: sparkFade 1.2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+            filter: blur(0.5px);
+            z-index: 89;
+          }
+
+          @keyframes sparkFade {
+            0% { opacity: 1; transform: rotate(var(--angle)) translateY(0) scaleY(1); }
+            100% { opacity: 0; transform: rotate(var(--angle)) translateY(var(--spread, 100px)) scaleY(0.2); }
+          }
+
+          .vy-screen-flash {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.12);
+            pointer-events: none;
+            z-index: 99;
+            animation: flashFade 0.4s ease-out forwards;
+          }
+
+          @keyframes flashFade {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+          }
+
+          .vy-camera-shake {
+            animation: cameraShake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+          }
+
+          @keyframes cameraShake {
+            10%, 90% { transform: translate3d(-1px, 1px, 0); }
+            20%, 80% { transform: translate3d(2px, -1px, 0); }
+            30%, 50%, 70% { transform: translate3d(-3px, 2px, 0); }
+            40%, 60% { transform: translate3d(3px, -2px, 0); }
+          }
+
+          .vy-ember {
+            position: absolute;
+            width: var(--size, 3px);
+            height: var(--size, 3px);
+            border-radius: 50%;
+            background: var(--color, #fff);
+            box-shadow: 0 0 4px var(--color, #fff);
+            pointer-events: none;
+            animation: emberFall var(--dur, 3s) linear forwards;
+            z-index: 88;
+          }
+
+          @keyframes emberFall {
+            0% { opacity: 1; transform: translate(0, 0); }
+            100% { opacity: 0; transform: translate(var(--drift, 20px), var(--fall, 80px)); }
+          }
+
           @media (max-width: 600px) {
               #video-wrapper iframe { transform: scale(1.15) !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; }
           }
@@ -127,6 +212,7 @@ window.launchTheVoyage = function () {
         <div id="video-wrapper" class="vy-sky-bg" style="position: absolute; inset: 0; pointer-events: none;">
             <div class="vy-stars-container" style="position: absolute; inset: 0; z-index: 0; pointer-events: none;"></div>
             <div id="youtube-player" style="position: relative; z-index: 1;"></div>
+            <div class="vy-video-shield" style="position: absolute; inset: 0; z-index: 5; pointer-events: auto; background: transparent;"></div>
             <div style="position: absolute; inset: 0; background: radial-gradient(circle at center 60%, transparent 20%, rgba(0,0,0,0.9) 100%); z-index: 2;"></div>
         </div>
 
@@ -229,12 +315,12 @@ function initYouTubePlayer(videoId) {
       'onReady': (event) => { 
         event.target.playVideo(); 
 
-        // Monitor play duration to trigger Grand Finale early to preempt creator's End Screen cards (usually last 20 seconds)
+        // Monitor play duration to trigger Grand Finale early to preempt creator's End Screen cards (usually last 10-20 seconds)
         progressInterval = setInterval(() => {
             if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function' && typeof concertPlayer.getDuration === 'function') {
                 const currentTime = concertPlayer.getCurrentTime();
                 const duration = concertPlayer.getDuration();
-                if (duration > 0 && (duration - currentTime <= 22)) {
+                if (duration > 0 && (duration - currentTime <= 10)) {
                     clearInterval(progressInterval);
                     if (typeof triggerGrandFinale === 'function') {
                         triggerGrandFinale();
@@ -315,19 +401,91 @@ window.triggerGrandFinale = function() {
 };
 
 function launchFireworksFallback() {
-  if (!window.confetti) {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
-    script.onload = () => {
-      var end = Date.now() + 4000;
-      (function frame() {
-        window.confetti({ particleCount: 8, angle: 60, spread: 70, origin: { x: 0, y: 0.8 }, colors: ['#a855f7', '#fff'] });
-        window.confetti({ particleCount: 8, angle: 120, spread: 70, origin: { x: 1, y: 0.8 }, colors: ['#a855f7', '#fff'] });
-        if (Date.now() < end) requestAnimationFrame(frame);
-      }());
-    };
-    document.head.appendChild(script);
-  } else {
-    window.confetti({ particleCount: 150, spread: 100, origin: { y: 0.7 } });
-  }
+  const arena = document.getElementById('phase-2-concert');
+  if (!arena) return;
+
+  const duration = 5.5 * 1000;
+  const animationEnd = Date.now() + duration;
+
+  // Staggered timing for explosions - every 450ms for a majestic rhythm
+  const interval = setInterval(() => {
+    if (Date.now() > animationEnd) return clearInterval(interval);
+    
+    // Pick random location in the top 55% of the screen
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * (window.innerHeight * 0.55);
+    window.triggerCSSFirework(x, y);
+  }, 450);
 }
+
+window.triggerCSSFirework = function(x, y) {
+  const arena = document.getElementById('phase-2-concert');
+  if (!arena) return;
+
+  // 1. Create a soft screen flash
+  const flash = document.createElement('div');
+  flash.className = 'vy-screen-flash';
+  arena.appendChild(flash);
+  setTimeout(() => flash.remove(), 400);
+
+  // 2. Trigger a cinematic camera shake
+  arena.classList.add('vy-camera-shake');
+  setTimeout(() => arena.classList.remove('vy-camera-shake'), 400);
+
+  // 3. Elegant Concert Palette (icy blue, cyan, white, soft purple)
+  const palettes = [
+    { glow: '#8cf', glow2: '#6ff', spark: 'rgba(136, 204, 255, 0.95)' }, // Icy Blue
+    { glow: '#c084fc', glow2: '#e879f9', spark: 'rgba(192, 132, 252, 0.95)' }, // Soft Purple
+    { glow: '#ffffff', glow2: '#8cf', spark: 'rgba(255, 255, 255, 0.95)' }, // Pure White
+    { glow: '#6ff', glow2: '#c084fc', spark: 'rgba(102, 255, 255, 0.95)' } // Cyan/Violet
+  ];
+  const palette = palettes[Math.floor(Math.random() * palettes.length)];
+
+  // 4. Create Firework Core
+  const fw = document.createElement('div');
+  fw.className = 'firework';
+  fw.style.left = x + 'px';
+  fw.style.top = y + 'px';
+  fw.style.setProperty('--glow-color', palette.glow);
+  fw.style.setProperty('--glow-color-2', palette.glow2);
+  arena.appendChild(fw);
+  setTimeout(() => fw.remove(), 1500);
+
+  // 5. Create Spark Trails (Staggered 16-direction Radial Spread)
+  const numSparks = 16;
+  for (let i = 0; i < numSparks; i++) {
+    const angle = (360 / numSparks) * i + (Math.random() * 15 - 7.5);
+    const spread = 70 + Math.random() * 60;
+
+    const spark = document.createElement('div');
+    spark.className = 'spark';
+    spark.style.left = x + 'px';
+    spark.style.top = y + 'px';
+    spark.style.setProperty('--angle', angle + 'deg');
+    spark.style.setProperty('--spread', spread + 'px');
+    spark.style.setProperty('--spark-color', palette.spark);
+    arena.appendChild(spark);
+    setTimeout(() => spark.remove(), 1200);
+  }
+
+  // 6. Generate Slow Falling Embers
+  const numEmbers = 12;
+  for (let i = 0; i < numEmbers; i++) {
+    const delay = 300 + Math.random() * 400;
+    setTimeout(() => {
+      const activeArena = document.getElementById('phase-2-concert');
+      if (!activeArena) return;
+      const ember = document.createElement('div');
+      ember.className = 'vy-ember';
+      ember.style.left = (x + (Math.random() * 40 - 20)) + 'px';
+      ember.style.top = (y + (Math.random() * 40 - 20)) + 'px';
+      ember.style.setProperty('--color', palette.glow);
+      ember.style.setProperty('--size', (2 + Math.random() * 2) + 'px');
+      ember.style.setProperty('--dur', (2.5 + Math.random() * 2.5) + 's');
+      ember.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
+      ember.style.setProperty('--fall', (60 + Math.random() * 90) + 'px');
+      activeArena.appendChild(ember);
+      setTimeout(() => ember.remove(), 4500);
+    }, delay);
+  }
+};
