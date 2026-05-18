@@ -209,7 +209,7 @@ window.launchTheVoyage = function () {
         flash.style.transition = 'opacity 3s ease-out';
         flash.style.opacity = '0';
     }
-  }, 6500);
+  }, 8500);
 };
 
 function initYouTubePlayer(videoId) {
@@ -236,7 +236,7 @@ function initYouTubePlayer(videoId) {
             if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function' && typeof concertPlayer.getDuration === 'function') {
                 const currentTime = concertPlayer.getCurrentTime();
                 const duration = concertPlayer.getDuration();
-                if (duration > 0 && (duration - currentTime <= 10)) {
+                if (duration > 0 && (duration - currentTime <= 11)) {
                     clearInterval(progressInterval);
                     if (typeof triggerGrandFinale === 'function') {
                         triggerGrandFinale();
