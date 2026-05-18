@@ -124,7 +124,6 @@ function injectConcertVoyageCSS() {
         width: 100%; height: 1px; background: rgba(255,255,255,0.1);
     }
 
-    /* Natural Video Aspect Ratio (Prevents weird cropping, with a small 15% zoom to hide YouTube overlay buttons at edges) */
     #youtube-player {
         aspect-ratio: 16 / 9;
         width: 100vw !important;
@@ -134,8 +133,12 @@ function injectConcertVoyageCSS() {
         opacity: 1 !important; /* CRITICAL: Full quality */
         pointer-events: none;
         z-index: 2;
-        transform: scale(1.15) !important;
+        transform: scale(1.35) !important; /* Start cropped! */
         transform-origin: center center !important;
+        transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    #youtube-player.vy-player-normal {
+        transform: scale(1.0) !important;
     }
 
     .vy-sky-bg {
@@ -173,9 +176,9 @@ function injectConcertVoyageCSS() {
         0% { transform: translateY(0px) translateX(0px); }
         100% { transform: translateY(-200px) translateX(-50px); }
     }
-    /* Mobile Adjustments */
     @media (max-width: 600px) {
-        #video-wrapper iframe { transform: scale(1.15) !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; }
+        #video-wrapper iframe { transform: scale(1.35) !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1) !important; }
+        #video-wrapper iframe.vy-player-normal { transform: scale(1.0) !important; }
         #fan-zone { bottom: 18%; }
         
         .soft-controls-panel {
@@ -297,7 +300,7 @@ window.launchTheVoyage = function () {
         
         <div id="video-wrapper" class="vy-sky-bg" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 1;">
             <div class="vy-stars-container" style="position: absolute; inset: 0; z-index: 0; pointer-events: none;"></div>
-            <div id="youtube-player" style="position: relative; z-index: 1;"></div>
+            <div id="youtube-player" class="vy-player-cropped" style="position: relative; z-index: 1;"></div>
             <div class="vy-video-shield" style="position: absolute; inset: 0; z-index: 5; pointer-events: auto; background: transparent;"></div>
         </div>
 
@@ -502,6 +505,16 @@ function initYouTubePlayer(videoId) {
               if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function' && typeof concertPlayer.getDuration === 'function') {
                   const currentTime = concertPlayer.getCurrentTime();
                   const duration = concertPlayer.getDuration();
+                  
+                  // If playing for 10 seconds or more, transition back to normal widescreen
+                  if (currentTime >= 10) {
+                      const iframe = document.getElementById('youtube-player');
+                      if (iframe && !iframe.classList.contains('vy-player-normal')) {
+                          console.log("🌊 Crop sequence complete: transitioning YouTube player smoothly to full widescreen width...");
+                          iframe.classList.add('vy-player-normal');
+                      }
+                  }
+
                   console.log(`[CONCERT TIME] Current: ${currentTime.toFixed(2)}s | Total: ${duration.toFixed(2)}s | Remaining: ${(duration - currentTime).toFixed(2)}s`);
                   if (duration > 0 && (duration - currentTime <= 13)) {
                       clearInterval(progressInterval);
