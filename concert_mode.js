@@ -236,6 +236,7 @@ function initYouTubePlayer(videoId) {
             if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function' && typeof concertPlayer.getDuration === 'function') {
                 const currentTime = concertPlayer.getCurrentTime();
                 const duration = concertPlayer.getDuration();
+                console.log(`[CONCERT TIME] Current: ${currentTime.toFixed(2)}s | Total: ${duration.toFixed(2)}s | Remaining: ${(duration - currentTime).toFixed(2)}s`);
                 if (duration > 0 && (duration - currentTime <= 11)) {
                     clearInterval(progressInterval);
                     if (typeof triggerGrandFinale === 'function') {
@@ -243,7 +244,7 @@ function initYouTubePlayer(videoId) {
                     }
                 }
             }
-        }, 1000);
+        }, 500);
       },
       'onStateChange': (event) => {
         if (event.data === YT.PlayerState.ENDED) {
