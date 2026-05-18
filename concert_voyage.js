@@ -447,7 +447,7 @@ window.launchTheVoyage = function () {
   setTimeout(() => {
     const flash = document.getElementById('magic-flash');
     if (flash) { flash.style.transition = 'opacity 3s'; flash.style.opacity = '0'; }
-  }, 6500);
+  }, 8500);
 };
 
 window.toggleControlPanel = function() {
@@ -490,7 +490,7 @@ function initYouTubePlayer(videoId) {
               if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function' && typeof concertPlayer.getDuration === 'function') {
                   const currentTime = concertPlayer.getCurrentTime();
                   const duration = concertPlayer.getDuration();
-                  if (duration > 0 && (duration - currentTime <= 10)) {
+                  if (duration > 0 && (duration - currentTime <= 13)) {
                       clearInterval(progressInterval);
                       if (typeof triggerGrandFinale === 'function') {
                           triggerGrandFinale();
