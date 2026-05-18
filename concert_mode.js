@@ -213,10 +213,21 @@ window.launchTheVoyage = function () {
 };
 
 function initYouTubePlayer(videoId) {
+  console.log("📺 initYouTubePlayer: Initiating load sequence for Video ID:", videoId);
+
   if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+      console.log("⏳ initYouTubePlayer: YouTube Iframe API not ready yet. Retrying in 500ms...");
       setTimeout(() => initYouTubePlayer(videoId), 500);
       return;
   }
+
+  const target = document.getElementById('youtube-player');
+  if (!target) {
+    console.warn("⚠️ initYouTubePlayer: Target element '#youtube-player' not found in DOM!");
+    return;
+  }
+
+  console.log("🚀 initYouTubePlayer: YouTube Iframe API IS READY! Creating new YT.Player instance...");
 
   if (progressInterval) clearInterval(progressInterval);
 
@@ -229,6 +240,7 @@ function initYouTubePlayer(videoId) {
     },
     events: {
       'onReady': (event) => { 
+        console.log("🎉 initYouTubePlayer: YT Player successfully loaded & onReady event fired! Playing video...");
         event.target.playVideo(); 
 
         // Monitor play duration to trigger Grand Finale early to preempt creator's End Screen cards (usually last 10-20 seconds)
@@ -247,6 +259,7 @@ function initYouTubePlayer(videoId) {
         }, 500);
       },
       'onStateChange': (event) => {
+        console.log("📺 initYouTubePlayer: YT Player state changed to:", event.data);
         if (event.data === YT.PlayerState.ENDED) {
           if (typeof triggerGrandFinale === 'function') triggerGrandFinale();
         }
