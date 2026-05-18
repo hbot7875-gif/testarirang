@@ -13779,12 +13779,12 @@ window.launchTheVoyage = function () {
           setTimeout(() => guide.classList.remove('visible'), 10000);
       }
 
-      // 7. Predictive Finale Check (8s before end)
+      // 7. Predictive Finale Check (13s before end)
       const finaleCheck = setInterval(() => {
           if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function') {
               const time = concertPlayer.getCurrentTime();
               const duration = concertPlayer.getDuration();
-              if (duration > 0 && (duration - time) < 8) {
+              if (duration > 0 && (duration - time) < 13) {
                   clearInterval(finaleCheck);
                   window.triggerGrandFinale();
               }
@@ -13796,7 +13796,7 @@ window.launchTheVoyage = function () {
   setTimeout(() => {
     const flash = document.getElementById('magic-flash');
     if (flash) { flash.style.transition = 'opacity 3s ease-out'; flash.style.opacity = '0'; }
-  }, 6500);
+  }, 8500);
 };
 
 window.triggerFanchant = function() {
@@ -14151,7 +14151,7 @@ window.triggerGrandFinale = function() {
         }, 3000);
     }
 
-    setTimeout(window.exitConcert, 9500);
+    setTimeout(window.exitConcert, 8000);
 };
 
 // --- CUSTOM FIREWORK ENGINE ---
