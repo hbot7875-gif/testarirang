@@ -13552,6 +13552,7 @@ window.launchTheVoyage = function () {
         <div id="video-wrapper" class="vy-sky-bg" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none !important; z-index: 1;">
             <div class="vy-stars-container" style="position: absolute; inset: 0; z-index: 0; pointer-events: none;"></div>
             <div id="youtube-player" style="opacity: 1 !important; filter: none !important;"></div>
+            <div class="vy-video-shield" style="position: absolute; inset: 0; z-index: 5; pointer-events: auto; background: transparent;"></div>
         </div>
         <div style="position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(circle at 50% 60%, transparent 35%, rgba(0,0,0,0.3) 70%, #000 100%);"></div>
         <div id="ambient-glow" style="position: absolute; inset: 0; z-index: 3; background: #a855f7 !important; opacity: 0.15; mix-blend-mode: screen; pointer-events: none; transition: background 0.8s ease;"></div>
@@ -13927,12 +13928,12 @@ function initYouTubePlayer(videoId) {
           event.target.setPlaybackQuality('highres');
         }
 
-        // Monitor play duration to trigger Grand Finale early to preempt creator's End Screen cards (usually last 20 seconds)
+        // Monitor play duration to trigger Grand Finale early to preempt creator's End Screen cards (usually last 10-20 seconds)
         window._vyProgressInterval = setInterval(() => {
             if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function' && typeof concertPlayer.getDuration === 'function') {
                 const currentTime = concertPlayer.getCurrentTime();
                 const duration = concertPlayer.getDuration();
-                if (duration > 0 && (duration - currentTime <= 22)) {
+                if (duration > 0 && (duration - currentTime <= 10)) {
                     clearInterval(window._vyProgressInterval);
                     window._vyProgressInterval = null;
                     if (typeof window.triggerGrandFinale === 'function') {
@@ -14177,20 +14178,96 @@ function initFireworkCanvas() {
     requestAnimationFrame(updateFireworks);
 }
 
+window.triggerCSSFirework = function(x, y) {
+  const arena = document.getElementById('phase-2-concert');
+  if (!arena) return;
+
+  // 1. Create a soft screen flash
+  const flash = document.createElement('div');
+  flash.className = 'vy-screen-flash';
+  arena.appendChild(flash);
+  setTimeout(() => flash.remove(), 400);
+
+  // 2. Trigger a cinematic camera shake
+  arena.classList.add('vy-camera-shake');
+  setTimeout(() => arena.classList.remove('vy-camera-shake'), 400);
+
+  // 3. Elegant Concert Palette (icy blue, cyan, white, soft purple)
+  const palettes = [
+    { glow: '#8cf', glow2: '#6ff', spark: 'rgba(136, 204, 255, 0.95)' }, // Icy Blue
+    { glow: '#c084fc', glow2: '#e879f9', spark: 'rgba(192, 132, 252, 0.95)' }, // Soft Purple
+    { glow: '#ffffff', glow2: '#8cf', spark: 'rgba(255, 255, 255, 0.95)' }, // Pure White
+    { glow: '#6ff', glow2: '#c084fc', spark: 'rgba(102, 255, 255, 0.95)' } // Cyan/Violet
+  ];
+  const palette = palettes[Math.floor(Math.random() * palettes.length)];
+
+  // 4. Create Firework Core
+  const fw = document.createElement('div');
+  fw.className = 'firework';
+  fw.style.left = x + 'px';
+  fw.style.top = y + 'px';
+  fw.style.setProperty('--glow-color', palette.glow);
+  fw.style.setProperty('--glow-color-2', palette.glow2);
+  arena.appendChild(fw);
+  setTimeout(() => fw.remove(), 1500);
+
+  // 5. Create Spark Trails (Staggered 16-direction Radial Spread)
+  const numSparks = 16;
+  for (let i = 0; i < numSparks; i++) {
+    const angle = (360 / numSparks) * i + (Math.random() * 15 - 7.5);
+    const spread = 70 + Math.random() * 60;
+
+    const spark = document.createElement('div');
+    spark.className = 'spark';
+    spark.style.left = x + 'px';
+    spark.style.top = y + 'px';
+    spark.style.setProperty('--angle', angle + 'deg');
+    spark.style.setProperty('--spread', spread + 'px');
+    spark.style.setProperty('--spark-color', palette.spark);
+    arena.appendChild(spark);
+    setTimeout(() => spark.remove(), 1200);
+  }
+
+  // 6. Generate Slow Falling Embers
+  const numEmbers = 12;
+  for (let i = 0; i < numEmbers; i++) {
+    const delay = 300 + Math.random() * 400;
+    setTimeout(() => {
+      const activeArena = document.getElementById('phase-2-concert');
+      if (!activeArena) return;
+      const ember = document.createElement('div');
+      ember.className = 'vy-ember';
+      ember.style.left = (x + (Math.random() * 40 - 20)) + 'px';
+      ember.style.top = (y + (Math.random() * 40 - 20)) + 'px';
+      ember.style.setProperty('--color', palette.glow);
+      ember.style.setProperty('--size', (2 + Math.random() * 2) + 'px');
+      ember.style.setProperty('--dur', (2.5 + Math.random() * 2.5) + 's');
+      ember.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
+      ember.style.setProperty('--fall', (60 + Math.random() * 90) + 'px');
+      activeArena.appendChild(ember);
+      setTimeout(() => ember.remove(), 4500);
+    }, delay);
+  }
+};
+
 function createFireworkBurst(x, y, color) {
-    if (!fwCanvas) initFireworkCanvas();
-    const count = 40;
-    for (let i = 0; i < count; i++) {
-        const angle = (Math.PI * 2 / count) * i;
-        const velocity = 2 + Math.random() * 4;
-        particles.push({
-            x, y,
-            vx: Math.cos(angle) * velocity,
-            vy: Math.sin(angle) * velocity,
-            alpha: 1,
-            color,
-            size: 1 + Math.random() * 2
-        });
+    if (document.getElementById('phase-2-concert')) {
+        window.triggerCSSFirework(x, y);
+    } else {
+        if (!fwCanvas) initFireworkCanvas();
+        const count = 40;
+        for (let i = 0; i < count; i++) {
+            const angle = (Math.PI * 2 / count) * i;
+            const velocity = 2 + Math.random() * 4;
+            particles.push({
+                x, y,
+                vx: Math.cos(angle) * velocity,
+                vy: Math.sin(angle) * velocity,
+                alpha: 1,
+                color,
+                size: 1 + Math.random() * 2
+            });
+        }
     }
 }
 function updateFireworks() {
@@ -15412,6 +15489,91 @@ const VOYAGE_ARENA_CSS = `
     /* Fix for video wrapper covering interactions */
     #video-wrapper { pointer-events: none !important; }
     #phase-2-concert { pointer-events: all !important; cursor: crosshair; }
+
+    /* Custom BTS Concert-style Fireworks */
+    .firework {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: white;
+      pointer-events: none;
+      box-shadow:
+        0 0 6px #fff,
+        0 0 12px var(--glow-color, #8cf),
+        0 0 20px var(--glow-color-2, #6ff);
+      animation: explode 1.4s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+      z-index: 90;
+    }
+
+    @keyframes explode {
+      0% { transform: scale(0.2); opacity: 1; }
+      60% { transform: scale(8); opacity: 1; }
+      100% { transform: scale(14); opacity: 0; }
+    }
+
+    .spark {
+      position: absolute;
+      width: 2px;
+      height: 40px;
+      pointer-events: none;
+      background: linear-gradient(
+        to bottom,
+        var(--spark-color, rgba(255,255,255,0.9)),
+        rgba(255,255,255,0)
+      );
+      transform-origin: top center;
+      animation: sparkFade 1.2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+      filter: blur(0.5px);
+      z-index: 89;
+    }
+
+    @keyframes sparkFade {
+      0% { opacity: 1; transform: rotate(var(--angle)) translateY(0) scaleY(1); }
+      100% { opacity: 0; transform: rotate(var(--angle)) translateY(var(--spread, 100px)) scaleY(0.2); }
+    }
+
+    .vy-screen-flash {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.12);
+      pointer-events: none;
+      z-index: 99;
+      animation: flashFade 0.4s ease-out forwards;
+    }
+
+    @keyframes flashFade {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .vy-camera-shake {
+      animation: cameraShake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes cameraShake {
+      10%, 90% { transform: translate3d(-1px, 1px, 0); }
+      20%, 80% { transform: translate3d(2px, -1px, 0); }
+      30%, 50%, 70% { transform: translate3d(-3px, 2px, 0); }
+      40%, 60% { transform: translate3d(3px, -2px, 0); }
+    }
+
+    .vy-ember {
+      position: absolute;
+      width: var(--size, 3px);
+      height: var(--size, 3px);
+      border-radius: 50%;
+      background: var(--color, #fff);
+      box-shadow: 0 0 4px var(--color, #fff);
+      pointer-events: none;
+      animation: emberFall var(--dur, 3s) linear forwards;
+      z-index: 88;
+    }
+
+    @keyframes emberFall {
+      0% { opacity: 1; transform: translate(0, 0); }
+      100% { opacity: 0; transform: translate(var(--drift, 20px), var(--fall, 80px)); }
+    }
 
     /* VIP Lasers */
     .vy-laser { position: absolute; bottom: 0; width: 2px; height: 150vh; background: linear-gradient(to top, var(--glow-color, #a855f7), transparent); transform-origin: bottom center; mix-blend-mode: screen; opacity: 0; z-index: 5; pointer-events: none; }
