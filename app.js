@@ -1090,7 +1090,7 @@ async function showEmergencySaveModal() {
   `;
 
   document.body.insertAdjacentHTML('beforeend', modalHtml);
-  
+
   // Dynamic Suggestions logic
   const dateInput = $('rescueDate');
   const agentInput = $('rescueAgentNo');
@@ -1101,7 +1101,7 @@ async function showEmergencySaveModal() {
   const updateSuggestions = async () => {
     const date = dateInput.value;
     if (!date) return;
-    
+
     // Don't show suggestions for Today (too early to judge failures)
     if (date === todayStr) {
       suggBox.style.display = 'none';
@@ -2246,10 +2246,10 @@ async function renderHome() {
           </div>
           <div style="font-size:9px; color:var(--text-ghost); flex-shrink:0; text-align:right;">
             ${nextSyncMin !== null
-              ? nextSyncMin <= 5
-                ? `<span style="color:var(--green);">Next sync soon</span>`
-                : `Next: ~${nextSyncMin}m`
-              : ''}
+          ? nextSyncMin <= 5
+            ? `<span style="color:var(--green);">Next sync soon</span>`
+            : `Next: ~${nextSyncMin}m`
+          : ''}
             &nbsp;·&nbsp;
             <span onclick="syncData()" style="color:var(--purple-mid); cursor:pointer; font-weight:700;">Manual Sync ↗</span>
           </div>
@@ -2551,20 +2551,20 @@ async function renderHome() {
         <div onclick="goTo('sidemissions')" class="glass-card" style="
           padding:16px 12px; border-top:3px solid var(--courage-amber); cursor:pointer;
           ${(() => {
-            const smT = a.sideMissions?.tracks || [];
-            const minT = smT.length > 0 ? Math.min(...smT.map(t => t.weeklyTotal || 0)) : 0;
-            return minT >= 20 ? 'box-shadow:0 0 16px rgba(255,149,0,0.2);' : '';
-          })()} text-align:center;">
+        const smT = a.sideMissions?.tracks || [];
+        const minT = smT.length > 0 ? Math.min(...smT.map(t => t.weeklyTotal || 0)) : 0;
+        return minT >= 20 ? 'box-shadow:0 0 16px rgba(255,149,0,0.2);' : '';
+      })()} text-align:center;">
           <div style="font-size:11px; font-weight:800; color:#fff; margin-bottom:10px; text-align:left;">SURVIVAL</div>
           ${(() => {
-            const smTracks = a.sideMissions?.tracks || [];
-            const smMinTotal = smTracks.length > 0 ? Math.min(...smTracks.map(t => t.weeklyTotal || 0)) : 0;
-            const smReq = 20;
-            const smPct = Math.min(100, Math.round((smMinTotal / smReq) * 100));
-            const smDone = smMinTotal >= smReq;
-            const smTodayOk = isSideMissionPassedToday(a.sideMissions);
-            const smColor = smDone ? 'var(--green)' : 'var(--courage-amber)';
-            return `
+        const smTracks = a.sideMissions?.tracks || [];
+        const smMinTotal = smTracks.length > 0 ? Math.min(...smTracks.map(t => t.weeklyTotal || 0)) : 0;
+        const smReq = 20;
+        const smPct = Math.min(100, Math.round((smMinTotal / smReq) * 100));
+        const smDone = smMinTotal >= smReq;
+        const smTodayOk = isSideMissionPassedToday(a.sideMissions);
+        const smColor = smDone ? 'var(--green)' : 'var(--courage-amber)';
+        return `
               <div style="position:relative; width:56px; height:56px; margin:0 auto 8px;">
                 ${ring(smPct, smColor, smDone)}
               </div>
@@ -2574,7 +2574,7 @@ async function renderHome() {
                 <span style="color:var(--text-ghost); font-size:9px;">· today: ${smTodayOk ? '<span style="color:var(--green)">✓</span>' : '<span style="color:var(--courage-amber)">1x</span>'}</span>
               </div>
             `;
-          })()}
+      })()}
         </div>
       </div>
       <!-- 148 Protocol Quick Link -->
@@ -5685,15 +5685,15 @@ async function renderWrappedPage() {
   }));
 
   let cardsHtml = '';
-  
+
   wrappedProfiles.forEach((profile, idx) => {
     const isMyTeam = profile.team === myTeamName;
     const realData = teamsData.find(t => t.team && t.team.toLowerCase() === profile.team.toLowerCase()) || {};
-    
+
     // Base Team Stats (Cumulative Scale)
-    const xp = realData.teamXP || (85000 + idx * 12500); 
+    const xp = realData.teamXP || (85000 + idx * 12500);
     const activeCount = realData.agentCount || (20 + idx * 5);
-    
+
     // Real mission data
     const teamAlbumMissions = Object.entries(albumGoals).map(([name, data]) => ({
       name, current: (data.teams?.[profile.team]?.current || 0)
@@ -5709,7 +5709,7 @@ async function renderWrappedPage() {
     const seasonAlbumStreams = weeklyAlbumTotal > 0 ? weeklyAlbumTotal * 8.2 : Math.floor(xp * 8.5);
     const seasonTrackStreams = weeklyTrackTotal > 0 ? weeklyTrackTotal * 8.2 : Math.floor(xp * 5.5);
     const seasonTotalStreams = seasonAlbumStreams + seasonTrackStreams;
-    
+
     // Personal Stats
     const myStreams = myStats.trackScrobbles || 0;
     const contributionPercent = seasonTotalStreams > 0 ? ((myStreams / seasonTotalStreams) * 100).toFixed(2) : '0.00';
@@ -5742,7 +5742,7 @@ async function renderWrappedPage() {
         squadAchievement = `${teamSpecificFlair[profile.team] || 'Elite coordination.'} Your impact on <strong>${topAlbum?.name || 'Golden'}</strong> is legendary.`;
       }
     } else {
-       squadAchievement = `${teamSpecificFlair[profile.team] || 'Elite coordination.'} Your squad's impact is officially classified as 'Unstoppable'.`;
+      squadAchievement = `${teamSpecificFlair[profile.team] || 'Elite coordination.'} Your squad's impact is officially classified as 'Unstoppable'.`;
     }
 
     let personalArchetype = "";
@@ -5755,7 +5755,7 @@ async function renderWrappedPage() {
       ];
       let pick = archetypes[STATE.agentNo ? (STATE.agentNo.charCodeAt(0) % archetypes.length) : 0];
       if (parseFloat(contributionPercent) > 10) pick = archetypes[1];
-      
+
       personalArchetype = `
         <div class="bento-box full-width personal-persona" style="background: color-mix(in srgb, var(--team-color) 10%, transparent); border-color: var(--team-color); margin-bottom: 12px;">
             <div class="bento-label" style="color: var(--team-color); font-weight: 900;">YOUR OPERATIVE SPECIALTY</div>
@@ -5769,7 +5769,7 @@ async function renderWrappedPage() {
       `;
     }
 
-    const trackStats = teamTrackMissions.length > 0 
+    const trackStats = teamTrackMissions.length > 0
       ? teamTrackMissions.slice(0, 5).map((t, i) => ({ name: t.name, count: Math.floor(t.current * 8.2), variation: Math.max(10, 100 - (i * 15)) }))
       : CONFIG.ARIRANG_TRACKS.map((track, tIdx) => ({ name: track, count: Math.floor((seasonTrackStreams / 14) * ((Math.sin((idx * 7) + tIdx) * 0.4) + 1)), variation: 70 })).sort((a, b) => b.count - a.count).slice(0, 5);
 
@@ -5986,24 +5986,24 @@ async function renderWrappedPage() {
 
     const cards = document.querySelectorAll('.wrapped-story-card');
     const navDots = document.querySelectorAll('.squad-nav-dot');
-    
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-active');
           const teamName = entry.target.getAttribute('data-team');
-          
+
           navDots.forEach(dot => {
             if (dot.getAttribute('title') === teamName) dot.classList.add('active');
             else dot.classList.remove('active');
           });
-          
+
           const counter = entry.target.querySelector('.smart-counter');
           if (counter && !counter.dataset.animated) {
             const target = parseInt(counter.getAttribute('data-target'), 10);
             if (typeof animateValue === 'function') {
-                counter.id = 'counter-' + Math.random().toString(36).substr(2, 9);
-                animateValue(counter.id, 0, target, 1500);
+              counter.id = 'counter-' + Math.random().toString(36).substr(2, 9);
+              animateValue(counter.id, 0, target, 1500);
             } else { counter.innerText = target.toLocaleString(); }
             counter.dataset.animated = "true";
           }
@@ -6015,7 +6015,7 @@ async function renderWrappedPage() {
           const bars = entry.target.querySelectorAll('.animated-bar');
           bars.forEach(bar => { bar.style.width = '0%'; });
           const counter = entry.target.querySelector('.smart-counter');
-          if(counter) counter.dataset.animated = "";
+          if (counter) counter.dataset.animated = "";
         }
       });
     }, {
@@ -6336,7 +6336,7 @@ window.verifyHypeOpen = function (postId, link) {
   }
 };
 
-window.submitHypePost = async function() {
+window.submitHypePost = async function () {
   const username = $('hypeIgUsername').value;
   const url = $('hypePostUrl').value;
   const caption = $('hypeCaption').value;
@@ -6356,12 +6356,12 @@ window.submitHypePost = async function() {
       caption: caption,
       content_type: type
     }, { dedupe: false, cache: false });
-    
+
     if (res.success) {
       showToast('Broadcast Sent!', 'success');
       $('hypeSubmitForm').style.display = 'none';
       loadHypePosts(true); // reload
-      
+
       if (res.xpAwarded) {
         showXpPopup(res.xpAwarded, 'Broadcast Initiated');
       }
@@ -6377,19 +6377,19 @@ window.submitHypePost = async function() {
 
 async function likeHypePost(postId, btn) {
   if (btn.classList.contains('liked')) return;
-  
+
   try {
     const res = await Api.call('likeHypePost', {
       agentNo: STATE.agentNo,
       postId: postId
     }, { dedupe: false, cache: false });
-    
+
     if (res.success) {
       btn.classList.add('liked');
       btn.querySelector('.btn-text').textContent = 'BOOSTED';
       const cnt = btn.querySelector('.like-count');
       if (cnt) cnt.textContent = parseInt(cnt.textContent || '0') + 1;
-      
+
       if (res.xpAwarded) {
         showXpPopup(res.xpAwarded, 'Signal Boosted');
       }
@@ -8571,7 +8571,7 @@ function renderAdminArmyTab(container) {
 }
 window.renderAdminArmyTab = renderAdminArmyTab;
 
-window.adminApproveDailyVote = async function(teamName) {
+window.adminApproveDailyVote = async function (teamName) {
   if (!confirm(`Award 30 XP to ${teamName} for today's voting mission?`)) return;
   Loading.show();
   try {
@@ -10129,12 +10129,12 @@ async function render148Protocol() {
               <div style="flex:1; min-width:0;">
                 <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">⚡ Today's Pace</div>
                 ${streamsStillNeeded <= 0
-                  ? `<div style="font-size:11px; color:var(--green); font-weight:700;">✓ Daily target secured!</div>`
-                  : requiredPacePerHr !== null
-                    ? `<div style="font-size:11px; color:#fff; font-weight:700;">${requiredPacePerHr} streams/hr needed</div>
+              ? `<div style="font-size:11px; color:var(--green); font-weight:700;">✓ Daily target secured!</div>`
+              : requiredPacePerHr !== null
+                ? `<div style="font-size:11px; color:#fff; font-weight:700;">${requiredPacePerHr} streams/hr needed</div>
                        <div style="font-size:9px; color:var(--text-muted); margin-top:2px;">${todayStreamsAll} done${currentPacePerHr ? ` · pace: ~${Math.round(currentPacePerHr)}/hr` : ''} · ${streamsStillNeeded} left today</div>`
-                    : `<div style="font-size:11px; color:var(--text-muted);">Start streaming to track your pace</div>`
-                }
+                : `<div style="font-size:11px; color:var(--text-muted);">Start streaming to track your pace</div>`
+            }
               </div>
               ${etaStr ? `
               <div style="text-align:right; flex-shrink:0; padding-left:8px; border-left:1px solid rgba(255,255,255,0.05);">
@@ -10182,26 +10182,26 @@ async function render148Protocol() {
           <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; font-weight:800; margin-bottom:10px;">📅 Inspect Past Days</div>
           <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none;">
             ${pastDates.map(d => {
-              const isToday = d === today;
-              const dayLabel = DAY_NAMES[new Date(d + 'T00:00:00').getDay()];
-              const dateNum = new Date(d + 'T00:00:00').getDate();
-              const a2xOnDay = Object.values(STATE.data?.agent?.album2xStatus?.dailyGrid?.[d] || {}).filter(c => c?.passed).length >= 14;
-              const smOnDay = (sm?.tracks || []).length > 0 && (sm.tracks || []).every(t => t.daily?.[d]?.passed === true);
-              const dayDone = a2xOnDay && smOnDay;
-              return `<button onclick="show148DaySnapshot('${d}')" style="
+        const isToday = d === today;
+        const dayLabel = DAY_NAMES[new Date(d + 'T00:00:00').getDay()];
+        const dateNum = new Date(d + 'T00:00:00').getDate();
+        const a2xOnDay = Object.values(STATE.data?.agent?.album2xStatus?.dailyGrid?.[d] || {}).filter(c => c?.passed).length >= 14;
+        const smOnDay = (sm?.tracks || []).length > 0 && (sm.tracks || []).every(t => t.daily?.[d]?.passed === true);
+        const dayDone = a2xOnDay && smOnDay;
+        return `<button onclick="show148DaySnapshot('${d}')" style="
                 flex-shrink:0; min-width:48px; padding:8px 6px; border-radius:10px; cursor:pointer; text-align:center;
                 ${isToday
-                  ? 'background:var(--purple-core); border:1.5px solid var(--purple-core); color:#fff;'
-                  : dayDone
-                    ? 'background:rgba(0,255,102,0.08); border:1.5px solid var(--green-border); color:var(--green);'
-                    : 'background:rgba(255,255,255,0.03); border:1.5px solid var(--border-subtle); color:var(--text-muted);'
-                }
+            ? 'background:var(--purple-core); border:1.5px solid var(--purple-core); color:#fff;'
+            : dayDone
+              ? 'background:rgba(0,255,102,0.08); border:1.5px solid var(--green-border); color:var(--green);'
+              : 'background:rgba(255,255,255,0.03); border:1.5px solid var(--border-subtle); color:var(--text-muted);'
+          }
               ">
                 <div style="font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:1px; font-family:'Orbitron',sans-serif;">${dayLabel}</div>
                 <div style="font-size:11px; font-weight:800; margin-top:2px;">${dateNum}</div>
                 <div style="font-size:8px; margin-top:2px;">${isToday ? '★ now' : dayDone ? '✓' : '·'}</div>
               </button>`;
-            }).join('')}
+      }).join('')}
           </div>
         </div>
       `;
@@ -10264,7 +10264,7 @@ async function render148Protocol() {
 
 
     }
-    
+
     html += `
         <div style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--border-light); display:grid; gap:6px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
@@ -10286,58 +10286,58 @@ async function render148Protocol() {
     showPageError(container, 'render148Protocol');
   }
 
-// =============================================
-// HELPER: Day Snapshot Modal (148 Protocol)
-// =============================================
-function show148DaySnapshot(date) {
-  if (!STATE.data) return showToast('Data not loaded yet', 'error');
+  // =============================================
+  // HELPER: Day Snapshot Modal (148 Protocol)
+  // =============================================
+  function show148DaySnapshot(date) {
+    if (!STATE.data) return showToast('Data not loaded yet', 'error');
 
-  const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const DAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const DAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  const d = new Date(date + 'T00:00:00');
-  const dayFull  = DAY_NAMES[d.getDay()];
-  const dateFmt  = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  const kstToday = getKSTDateString();
-  const isToday  = date === kstToday;
+    const d = new Date(date + 'T00:00:00');
+    const dayFull = DAY_NAMES[d.getDay()];
+    const dateFmt = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const kstToday = getKSTDateString();
+    const isToday = date === kstToday;
 
-  // ── Data for selected date ──────────────────────────────────
-  const weeklyGoalScrobbles = STATE.data?.agent?.weeklyGoalScrobbles || {};
-  const dayGoalScrobbles    = weeklyGoalScrobbles[date] || {};
+    // ── Data for selected date ──────────────────────────────────
+    const weeklyGoalScrobbles = STATE.data?.agent?.weeklyGoalScrobbles || {};
+    const dayGoalScrobbles = weeklyGoalScrobbles[date] || {};
 
-  const a2xGrid          = STATE.data?.agent?.album2xStatus?.dailyGrid?.[date] || {};
-  const a2xTracksCount   = Object.values(a2xGrid).filter(c => c?.passed).length;
-  const a2xPassedOnDay   = a2xTracksCount >= 14;
+    const a2xGrid = STATE.data?.agent?.album2xStatus?.dailyGrid?.[date] || {};
+    const a2xTracksCount = Object.values(a2xGrid).filter(c => c?.passed).length;
+    const a2xPassedOnDay = a2xTracksCount >= 14;
 
-  const sm = STATE.data?.agent?.sideMissions;
-  const smTracks = sm?.tracks || [];
-  const smPassedOnDay = smTracks.length > 0 && smTracks.every(t => t.daily?.[date]?.passed === true);
-  const smTodayItems = smTracks.map(t => ({
-    name: t.name,
-    count: t.daily?.[date]?.count ?? 0,
-    passed: t.daily?.[date]?.passed ?? false
-  }));
+    const sm = STATE.data?.agent?.sideMissions;
+    const smTracks = sm?.tracks || [];
+    const smPassedOnDay = smTracks.length > 0 && smTracks.every(t => t.daily?.[date]?.passed === true);
+    const smTodayItems = smTracks.map(t => ({
+      name: t.name,
+      count: t.daily?.[date]?.count ?? 0,
+      passed: t.daily?.[date]?.passed ?? false
+    }));
 
-  // Goal tasks — use allTasks cache (includes ALL tracks, complete or not)
-  const goalsData = STATE._cached148AllTasks || STATE._cached148Tasks || [];
-  const daysTotal = sm?.weekDates?.length || 7;
-  const simpleDaily = (task) => Math.max(1, task.daily || Math.ceil((task.total || 1) / daysTotal));
+    // Goal tasks — use allTasks cache (includes ALL tracks, complete or not)
+    const goalsData = STATE._cached148AllTasks || STATE._cached148Tasks || [];
+    const daysTotal = sm?.weekDates?.length || 7;
+    const simpleDaily = (task) => Math.max(1, task.daily || Math.ceil((task.total || 1) / daysTotal));
 
-  // ── Build HTML ──────────────────────────────────────────────
-  let body = '';
+    // ── Build HTML ──────────────────────────────────────────────
+    let body = '';
 
-  // --- Goal Track Tasks ---
-  if (goalsData.length > 0) {
-    body += `<div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; font-weight:800; margin-bottom:10px;">📋 Goal Tracks</div>`;
-    goalsData.forEach(task => {
-      const streamed = Object.entries(dayGoalScrobbles).reduce((sum, [trk, cnt]) => {
-        const match = trk.toLowerCase().includes(task.name.toLowerCase()) || task.name.toLowerCase().includes(trk.toLowerCase());
-        return match ? sum + Number(cnt) : sum;
-      }, 0);
-      const dailyTarget = simpleDaily(task);
-      const pct  = dailyTarget > 0 ? Math.min(100, (streamed / dailyTarget) * 100) : 0;
-      const done = pct >= 100;
-      body += `
+    // --- Goal Track Tasks ---
+    if (goalsData.length > 0) {
+      body += `<div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; font-weight:800; margin-bottom:10px;">📋 Goal Tracks</div>`;
+      goalsData.forEach(task => {
+        const streamed = Object.entries(dayGoalScrobbles).reduce((sum, [trk, cnt]) => {
+          const match = trk.toLowerCase().includes(task.name.toLowerCase()) || task.name.toLowerCase().includes(trk.toLowerCase());
+          return match ? sum + Number(cnt) : sum;
+        }, 0);
+        const dailyTarget = simpleDaily(task);
+        const pct = dailyTarget > 0 ? Math.min(100, (streamed / dailyTarget) * 100) : 0;
+        const done = pct >= 100;
+        body += `
         <div style="display:flex; align-items:center; gap:10px; padding:10px; background:${done ? 'rgba(0,255,102,0.03)' : 'rgba(255,255,255,0.02)'}; border:1px solid ${done ? 'var(--green-border)' : 'var(--border-subtle)'}; border-radius:8px; margin-bottom:6px;">
           <div style="width:18px; height:18px; border:2px solid ${done ? 'var(--purple-core)' : 'var(--border-light)'}; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:${done ? 'var(--purple-core)' : 'transparent'};">
             ${done ? '<span style="color:#fff; font-size:12px;">✓</span>' : ''}
@@ -10357,21 +10357,21 @@ function show148DaySnapshot(date) {
             </div>
           </div>
         </div>`;
-    });
-  } else {
-    body += `<div style="padding:16px; text-align:center; color:var(--green); font-size:12px; font-weight:800;">🎉 All Team Targets Cleared</div>`;
-  }
+      });
+    } else {
+      body += `<div style="padding:16px; text-align:center; color:var(--green); font-size:12px; font-weight:800;">🎉 All Team Targets Cleared</div>`;
+    }
 
-  // --- Daily Habits ---
-  body += `<div style="margin-top:16px; padding-top:12px; border-top:1px dashed var(--border-light); display:grid; gap:6px;">
+    // --- Daily Habits ---
+    body += `<div style="margin-top:16px; padding-top:12px; border-top:1px dashed var(--border-light); display:grid; gap:6px;">
     <div style="font-size:9px; color:var(--text-ghost); text-transform:uppercase; letter-spacing:2px; font-weight:800; margin-bottom:4px;">⚡ Daily Habits · SURVIVAL PROTOCOL</div>`;
 
-  // 2X Habit
-  const pct2x = Math.min(100, (a2xTracksCount / 14) * 100);
-  body += render148Task('snap_2x', '💿 Complete Arirang 2X (28 streams)', a2xPassedOnDay, pct2x, `${a2xTracksCount}/14 tracks`, false);
+    // 2X Habit
+    const pct2x = Math.min(100, (a2xTracksCount / 14) * 100);
+    body += render148Task('snap_2x', '💿 Complete Arirang 2X (28 streams)', a2xPassedOnDay, pct2x, `${a2xTracksCount}/14 tracks`, false);
 
-  // Side missions
-  body += `<div style="display:flex; align-items:center; gap:10px; padding:10px; background:${smPassedOnDay ? 'rgba(0,255,102,0.03)' : 'rgba(255,255,255,0.02)'}; border:1px solid ${smPassedOnDay ? 'var(--green-border)' : 'var(--border-subtle)'}; border-radius:8px;">
+    // Side missions
+    body += `<div style="display:flex; align-items:center; gap:10px; padding:10px; background:${smPassedOnDay ? 'rgba(0,255,102,0.03)' : 'rgba(255,255,255,0.02)'}; border:1px solid ${smPassedOnDay ? 'var(--green-border)' : 'var(--border-subtle)'}; border-radius:8px;">
     <div style="width:18px; height:18px; border:2px solid ${smPassedOnDay ? 'var(--purple-core)' : 'var(--border-light)'}; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:${smPassedOnDay ? 'var(--purple-core)' : 'transparent'};">
       ${smPassedOnDay ? '<span style="color:#fff; font-size:12px;">✓</span>' : ''}
     </div>
@@ -10384,12 +10384,12 @@ function show148DaySnapshot(date) {
     </div>
   </div>`;
 
-  body += '</div>';
+    body += '</div>';
 
-  // ── Modal ─────────────────────────────────────────────────
-  const modal = document.createElement('div');
-  modal.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.88); backdrop-filter:blur(10px); z-index:100000; display:flex; align-items:flex-end; justify-content:center; animation:fadeIn 0.2s;';
-  modal.innerHTML = `
+    // ── Modal ─────────────────────────────────────────────────
+    const modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.88); backdrop-filter:blur(10px); z-index:100000; display:flex; align-items:flex-end; justify-content:center; animation:fadeIn 0.2s;';
+    modal.innerHTML = `
     <div style="width:100%; max-width:480px; background:#0d0d0d; border:1px solid #1c1c1c; border-radius:20px 20px 0 0; padding:0; max-height:88vh; overflow-y:auto;">
       <!-- Drag Handle -->
       <div style="text-align:center; padding:12px 0 4px;">
@@ -10416,11 +10416,11 @@ function show148DaySnapshot(date) {
       </div>
     </div>
   `;
-  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
-  document.body.appendChild(modal);
-}
+    modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+    document.body.appendChild(modal);
+  }
 
-window.show148DaySnapshot = show148DaySnapshot;
+  window.show148DaySnapshot = show148DaySnapshot;
 }
 
 function schedule148DailyAutoRefresh() {
@@ -10489,7 +10489,7 @@ function show148Info() {
   const modal = document.createElement('div');
   modal.className = 'spy-modal-overlay';
   modal.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:100000; display:flex; align-items:center; justify-content:center; animation: fadeIn 0.3s ease;';
-  
+
   modal.innerHTML = `
     <div style="background:#111; border:1px solid #1c1c1c; border-radius:16px; width:90%; max-width:450px; padding:32px; box-shadow:0 20px 50px rgba(0,0,0,0.5); position:relative; max-height:85vh; overflow-y:auto;">
       <div style="text-align:center; margin-bottom:24px;">
@@ -10562,7 +10562,7 @@ function show148Info() {
       <button onclick="this.closest('.spy-modal-overlay').remove()" style="margin-top:32px; width:100%; background:#1c1c1c; border:1px solid #333; color:#fff; padding:14px; border-radius:8px; font-family:'Orbitron', sans-serif; font-size:10px; font-weight:800; cursor:pointer; transition:all 0.2s;">DISMISS_INTEL</button>
     </div>
   `;
-  
+
   document.body.appendChild(modal);
 }
 
@@ -12953,7 +12953,7 @@ function renderArmyBombSection(badgeStates, chargePercent, isAwakened) {
     const statusText = badge.passed
       ? '✓ ABOARD THE ARIRANG'
       : `🔒 Keep streaming to unlock`;
-    const descText = badge.passed 
+    const descText = badge.passed
       ? `<span style="color:var(--green); font-weight:800;">MISSION SECURED:</span> ${escHtml(badge.importance)}`
       : `<span style="color:var(--courage-amber); font-weight:800;">REQUIREMENT:</span> ${escHtml(badge.req)}<br><span style="color:var(--text-ghost); font-size:8px; display:block; margin-top:4px;">* Complete all missions to unlock all badges and board the Magic Ship.</span>`;
 
@@ -13215,19 +13215,19 @@ function renderActionSection(collected, total, isAwakened) {
     <div class="ms-card ms-status-card">
       <div class="ms-status-label">Collection Status</div>
       <div class="ms-status-value ${isAwakened ? '' : 'ms-status-value--muted'}">
-        ${isAwakened 
-          ? '✨ THE MAGIC SHIP IS READY' 
-          : `⏳ ${remaining} BADGE${remaining !== 1 ? 'S' : ''} REMAINING`
-        }
+        ${isAwakened
+      ? '✨ THE MAGIC SHIP IS READY'
+      : `⏳ ${remaining} BADGE${remaining !== 1 ? 'S' : ''} REMAINING`
+    }
       </div>
     </div>
 
     <div class="ms-action-section">
       <div class="ms-status-msg ${isAwakened ? 'ms-status-msg--on' : 'ms-status-msg--off'}">
-        ${isAwakened 
-          ? '✦ The Magic Ship awaits your command, Captain ARMY ✦' 
-          : `${collected}/${total} badges collected · Complete all missions to unlock all badges and board the Magic Ship.`
-        }
+        ${isAwakened
+      ? '✦ The Magic Ship awaits your command, Captain ARMY ✦'
+      : `${collected}/${total} badges collected · Complete all missions to unlock all badges and board the Magic Ship.`
+    }
       </div>
       <button class="ms-launch-btn"
               data-action="launch-voyage"
@@ -13280,10 +13280,10 @@ function renderMagicShip() {
     // These two missions span 7 days. Even if the DB says true ("On Track"), 
     // the badge stays locked until the week concludes.
     const requiresFullWeek = badge.key === 'album2xPassed' || badge.key === 'sideMissionPassed';
-    
-    const isUnlocked = requiresFullWeek 
-        ? (!!myTeamData[badge.key] && isWeekOver) 
-        : !!myTeamData[badge.key];
+
+    const isUnlocked = requiresFullWeek
+      ? (!!myTeamData[badge.key] && isWeekOver)
+      : !!myTeamData[badge.key];
 
     return {
       ...badge,
@@ -13530,7 +13530,7 @@ window.launchTheVoyage = function () {
   const root = document.createElement('div');
   root.id = 'voyage-overlay';
   root.className = 'vy-root';
-  
+
   root.innerHTML = `
     <div id="phase-1-ship" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 1s ease;">
         <div class="vy-arirang-ship" id="sailing-ship">
@@ -13671,124 +13671,124 @@ window.launchTheVoyage = function () {
     const phase2 = document.getElementById('phase-2-concert');
     if (phase2) {
       phase2.style.opacity = '1';
-      phase2.style.pointerEvents = 'all'; 
+      phase2.style.pointerEvents = 'all';
 
       // Sparkles Trail
       const handleMove = (e) => {
-          if (Math.random() > 0.4) return;
-          const x = e.clientX || (e.touches && e.touches[0].clientX);
-          const y = e.clientY || (e.touches && e.touches[0].clientY);
-          if (!x || !y) return;
-          const bomb = document.getElementById('my-army-bomb');
-          const color = bomb ? getComputedStyle(bomb).getPropertyValue('--glow-color').trim() : '#a855f7';
-          const spark = document.createElement('div');
-          spark.className = 'bomb-sparkle';
-          spark.style.left = x + 'px'; spark.style.top = y + 'px';
-          spark.style.boxShadow = `0 0 15px ${color}, 0 0 30px ${color}`;
-          phase2.appendChild(spark);
-          setTimeout(() => spark.remove(), 1000);
+        if (Math.random() > 0.4) return;
+        const x = e.clientX || (e.touches && e.touches[0].clientX);
+        const y = e.clientY || (e.touches && e.touches[0].clientY);
+        if (!x || !y) return;
+        const bomb = document.getElementById('my-army-bomb');
+        const color = bomb ? getComputedStyle(bomb).getPropertyValue('--glow-color').trim() : '#a855f7';
+        const spark = document.createElement('div');
+        spark.className = 'bomb-sparkle';
+        spark.style.left = x + 'px'; spark.style.top = y + 'px';
+        spark.style.boxShadow = `0 0 15px ${color}, 0 0 30px ${color}`;
+        phase2.appendChild(spark);
+        setTimeout(() => spark.remove(), 1000);
       };
       phase2.addEventListener('mousemove', handleMove);
       phase2.addEventListener('touchmove', handleMove);
 
       // Whalien 52
       setInterval(() => {
-          const whale = document.createElement('div');
-          whale.className = 'magic-whale';
-          whale.innerText = '🐋';
-          whale.style.top = (20 + Math.random() * 40) + '%';
-          phase2.appendChild(whale);
-          setTimeout(() => whale.remove(), 28000);
+        const whale = document.createElement('div');
+        whale.className = 'magic-whale';
+        whale.innerText = '🐋';
+        whale.style.top = (20 + Math.random() * 40) + '%';
+        phase2.appendChild(whale);
+        setTimeout(() => whale.remove(), 28000);
       }, 35000);
 
       // --- NEW: VIP INTERACTIVE FEATURES ---
-      
+
       // 1. Generate Crowd
       const crowd = document.getElementById('crowd-container');
-      for(let i=0; i<150; i++) {
-          const dot = document.createElement('div');
-          dot.className = 'vy-crowd-dot';
-          dot.style.left = Math.random() * 100 + '%';
-          dot.style.top = (60 + Math.random() * 40) + '%';
-          dot.style.opacity = 0.1 + Math.random() * 0.3;
-          crowd.appendChild(dot);
+      for (let i = 0; i < 150; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'vy-crowd-dot';
+        dot.style.left = Math.random() * 100 + '%';
+        dot.style.top = (60 + Math.random() * 40) + '%';
+        dot.style.opacity = 0.1 + Math.random() * 0.3;
+        crowd.appendChild(dot);
       }
 
       // 2. Generate Lasers
       const laserCont = document.getElementById('laser-container');
       const colors = ['#a855f7', '#3b82f6', '#ec4899'];
-      for(let i=0; i<6; i++) {
-          const laser = document.createElement('div');
-          laser.className = 'vy-laser vy-laser--active';
-          laser.style.left = (20 + i * 12) + '%';
-          laser.style.setProperty('--glow-color', colors[i % 3]);
-          laser.style.animationDelay = (i * 0.4) + 's';
-          laserCont.appendChild(laser);
+      for (let i = 0; i < 6; i++) {
+        const laser = document.createElement('div');
+        laser.className = 'vy-laser vy-laser--active';
+        laser.style.left = (20 + i * 12) + '%';
+        laser.style.setProperty('--glow-color', colors[i % 3]);
+        laser.style.animationDelay = (i * 0.4) + 's';
+        laserCont.appendChild(laser);
       }
 
       // 3. Tap to Cheer & Fever Mode
       let tapCount = 0;
       let lastTap = 0;
       phase2.addEventListener('click', (e) => {
-          if (e.target.closest('#lightstick-controls')) return;
-          
-          // Real Firework Burst on Click
-          const colors = ['#a855f7', '#fbbf24', '#ffffff'];
-          createFireworkBurst(e.clientX, e.clientY, colors[Math.floor(Math.random()*colors.length)]);
+        if (e.target.closest('#lightstick-controls')) return;
 
-          // Fever Logic
-          const now = Date.now();
-          if (now - lastTap < 400) tapCount++; else tapCount = 1;
-          lastTap = now;
+        // Real Firework Burst on Click
+        const colors = ['#a855f7', '#fbbf24', '#ffffff'];
+        createFireworkBurst(e.clientX, e.clientY, colors[Math.floor(Math.random() * colors.length)]);
 
-          if (tapCount >= 10) {
-              triggerFeverMode();
-              tapCount = 0;
-          }
+        // Fever Logic
+        const now = Date.now();
+        if (now - lastTap < 400) tapCount++; else tapCount = 1;
+        lastTap = now;
+
+        if (tapCount >= 10) {
+          triggerFeverMode();
+          tapCount = 0;
+        }
       });
 
       // 4. Falling Petals
       const magicLayer = document.getElementById('magic-elements-layer');
       setInterval(() => {
-          const petal = document.createElement('div');
-          petal.className = 'magic-petal';
-          petal.style.left = Math.random() * 100 + '%';
-          petal.style.width = (5 + Math.random() * 10) + 'px';
-          petal.style.height = petal.style.width;
-          petal.style.animationDuration = (5 + Math.random() * 5) + 's';
-          petal.style.setProperty('--rot', (Math.random() * 360) + 'deg');
-          magicLayer.appendChild(petal);
-          setTimeout(() => petal.remove(), 10000);
+        const petal = document.createElement('div');
+        petal.className = 'magic-petal';
+        petal.style.left = Math.random() * 100 + '%';
+        petal.style.width = (5 + Math.random() * 10) + 'px';
+        petal.style.height = petal.style.width;
+        petal.style.animationDuration = (5 + Math.random() * 5) + 's';
+        petal.style.setProperty('--rot', (Math.random() * 360) + 'deg');
+        magicLayer.appendChild(petal);
+        setTimeout(() => petal.remove(), 10000);
       }, 400);
 
       // 5. Ripple Effect on click
       phase2.addEventListener('click', (e) => {
-          if (e.target.closest('#lightstick-controls')) return;
-          const ripple = document.createElement('div');
-          ripple.className = 'magic-ripple';
-          ripple.style.left = e.clientX + 'px';
-          ripple.style.top = e.clientY + 'px';
-          phase2.appendChild(ripple);
-          setTimeout(() => ripple.remove(), 2000);
+        if (e.target.closest('#lightstick-controls')) return;
+        const ripple = document.createElement('div');
+        ripple.className = 'magic-ripple';
+        ripple.style.left = e.clientX + 'px';
+        ripple.style.top = e.clientY + 'px';
+        phase2.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 2000);
       });
 
       // 6. Show VIP Guide
       const guide = document.getElementById('vip-guide');
       if (guide) {
-          setTimeout(() => guide.classList.add('visible'), 2000);
-          setTimeout(() => guide.classList.remove('visible'), 10000);
+        setTimeout(() => guide.classList.add('visible'), 2000);
+        setTimeout(() => guide.classList.remove('visible'), 10000);
       }
 
       // 7. Predictive Finale Check (13s before end)
       const finaleCheck = setInterval(() => {
-          if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function') {
-              const time = concertPlayer.getCurrentTime();
-              const duration = concertPlayer.getDuration();
-              if (duration > 0 && (duration - time) < 13) {
-                  clearInterval(finaleCheck);
-                  window.triggerGrandFinale();
-              }
+        if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function') {
+          const time = concertPlayer.getCurrentTime();
+          const duration = concertPlayer.getDuration();
+          if (duration > 0 && (duration - time) < 13) {
+            clearInterval(finaleCheck);
+            window.triggerGrandFinale();
           }
+        }
       }, 1000);
     }
   }, 5000);
@@ -13799,95 +13799,95 @@ window.launchTheVoyage = function () {
   }, 8500);
 };
 
-window.triggerFanchant = function() {
-    const names = ["KIM NAMJOON", "KIM SEOKJIN", "MIN YOONGI", "JUNG HOSEOK", "PARK JIMIN", "KIM TAEHYUNG", "JEON JUNGKOOK", "BTS!"];
-    const arena = document.getElementById('phase-2-concert');
-    if (!arena) return;
-    if (navigator.vibrate) navigator.vibrate([40, 80, 40]);
-    names.forEach((name, i) => {
-        setTimeout(() => {
-            const word = document.createElement('div');
-            word.className = 'fanchant-word';
-            word.innerText = name;
-            arena.appendChild(word);
-            setTimeout(() => word.remove(), 3500);
-        }, i * 850);
-    });
-};
-
-window.toggleControlPanel = function() {
-    const panel = document.getElementById('lightstick-controls');
-    const btn = panel.querySelector('.panel-toggle-btn');
-    if (panel.classList.contains('minimized')) {
-        panel.classList.remove('minimized');
-        btn.innerHTML = 'HIDE CONTROLS ▽';
-    } else {
-        panel.classList.add('minimized');
-        btn.innerHTML = 'SHOW CONTROLS △';
-    }
-};
-
-window.triggerFeverMode = function() {
-    const overlay = document.getElementById('fever-overlay');
-    const bomb = document.getElementById('my-army-bomb');
-    const lasers = document.querySelectorAll('.vy-laser');
-    if (!overlay || !bomb) return;
-
-    console.log('🌊 FEVER MODE: SWIM VIBE (93 BPM)');
-    overlay.classList.add('active');
-    
-    // 93 BPM = ~0.645s per beat. Let's set pulses to match the beat
-    bomb.style.setProperty('--wave-speed', '0.64s');
-    document.body.style.animation = 'oceanBreathe 1.29s infinite ease-in-out';
-    
-    lasers.forEach(l => {
-        l.style.animationDuration = '4s, 1.29s'; // Slower, flowing lasers
-        l.style.setProperty('--glow-color', '#3b82f6'); // Deep Sea Blue
-    });
-
-    if (navigator.vibrate) navigator.vibrate([200, 400, 200, 400]);
-
+window.triggerFanchant = function () {
+  const names = ["KIM NAMJOON", "KIM SEOKJIN", "MIN YOONGI", "JUNG HOSEOK", "PARK JIMIN", "KIM TAEHYUNG", "JEON JUNGKOOK", "BTS!"];
+  const arena = document.getElementById('phase-2-concert');
+  if (!arena) return;
+  if (navigator.vibrate) navigator.vibrate([40, 80, 40]);
+  names.forEach((name, i) => {
     setTimeout(() => {
-        overlay.classList.remove('active');
-        bomb.style.setProperty('--wave-speed', '4s');
-        document.body.style.animation = 'none';
-        lasers.forEach((l, i) => {
-            l.style.animationDuration = '5.1s, 0.64s';
-            const colors = ['#a855f7', '#3b82f6', '#ec4899'];
-            l.style.setProperty('--glow-color', colors[i % 3]);
-        });
-    }, 6000);
+      const word = document.createElement('div');
+      word.className = 'fanchant-word';
+      word.innerText = name;
+      arena.appendChild(word);
+      setTimeout(() => word.remove(), 3500);
+    }, i * 850);
+  });
 };
 
-window.initiateOceanWave = function() {
-    const dots = document.querySelectorAll('.vy-crowd-dot');
-    const bomb = document.getElementById('my-army-bomb');
-    const color = bomb ? getComputedStyle(bomb).getPropertyValue('--glow-color').trim() : '#a855f7';
-    
-    dots.forEach((dot, i) => {
-        const xPos = parseFloat(dot.style.left);
-        setTimeout(() => {
-            dot.style.transition = 'all 0.5s ease';
-            dot.style.background = color;
-            dot.style.opacity = '1';
-            dot.style.transform = 'translateY(-15px) scale(2)';
-            dot.style.boxShadow = `0 0 15px ${color}`;
-            
-            setTimeout(() => {
-                dot.style.background = 'rgba(255,255,255,0.1)';
-                dot.style.opacity = '0.3';
-                dot.style.transform = 'translateY(0) scale(1)';
-                dot.style.boxShadow = 'none';
-            }, 1000);
-        }, xPos * 30);
+window.toggleControlPanel = function () {
+  const panel = document.getElementById('lightstick-controls');
+  const btn = panel.querySelector('.panel-toggle-btn');
+  if (panel.classList.contains('minimized')) {
+    panel.classList.remove('minimized');
+    btn.innerHTML = 'HIDE CONTROLS ▽';
+  } else {
+    panel.classList.add('minimized');
+    btn.innerHTML = 'SHOW CONTROLS △';
+  }
+};
+
+window.triggerFeverMode = function () {
+  const overlay = document.getElementById('fever-overlay');
+  const bomb = document.getElementById('my-army-bomb');
+  const lasers = document.querySelectorAll('.vy-laser');
+  if (!overlay || !bomb) return;
+
+  console.log('🌊 FEVER MODE: SWIM VIBE (93 BPM)');
+  overlay.classList.add('active');
+
+  // 93 BPM = ~0.645s per beat. Let's set pulses to match the beat
+  bomb.style.setProperty('--wave-speed', '0.64s');
+  document.body.style.animation = 'oceanBreathe 1.29s infinite ease-in-out';
+
+  lasers.forEach(l => {
+    l.style.animationDuration = '4s, 1.29s'; // Slower, flowing lasers
+    l.style.setProperty('--glow-color', '#3b82f6'); // Deep Sea Blue
+  });
+
+  if (navigator.vibrate) navigator.vibrate([200, 400, 200, 400]);
+
+  setTimeout(() => {
+    overlay.classList.remove('active');
+    bomb.style.setProperty('--wave-speed', '4s');
+    document.body.style.animation = 'none';
+    lasers.forEach((l, i) => {
+      l.style.animationDuration = '5.1s, 0.64s';
+      const colors = ['#a855f7', '#3b82f6', '#ec4899'];
+      l.style.setProperty('--glow-color', colors[i % 3]);
     });
+  }, 6000);
+};
+
+window.initiateOceanWave = function () {
+  const dots = document.querySelectorAll('.vy-crowd-dot');
+  const bomb = document.getElementById('my-army-bomb');
+  const color = bomb ? getComputedStyle(bomb).getPropertyValue('--glow-color').trim() : '#a855f7';
+
+  dots.forEach((dot, i) => {
+    const xPos = parseFloat(dot.style.left);
+    setTimeout(() => {
+      dot.style.transition = 'all 0.5s ease';
+      dot.style.background = color;
+      dot.style.opacity = '1';
+      dot.style.transform = 'translateY(-15px) scale(2)';
+      dot.style.boxShadow = `0 0 15px ${color}`;
+
+      setTimeout(() => {
+        dot.style.background = 'rgba(255,255,255,0.1)';
+        dot.style.opacity = '0.3';
+        dot.style.transform = 'translateY(0) scale(1)';
+        dot.style.boxShadow = 'none';
+      }, 1000);
+    }, xPos * 30);
+  });
 };
 
 // --- Helper Functions for Phase 2 ---
 
 function initYouTubePlayer(videoId) {
   if (concertPlayer && typeof concertPlayer.destroy === 'function') {
-    try { concertPlayer.destroy(); } catch(e) {}
+    try { concertPlayer.destroy(); } catch (e) { }
     concertPlayer = null;
   }
 
@@ -13910,7 +13910,7 @@ function initYouTubePlayer(videoId) {
   concertPlayer = new YT.Player('youtube-player', {
     height: '100%',
     width: '100%',
-    videoId: videoId, 
+    videoId: videoId,
     playerVars: {
       'autoplay': 1,
       'controls': 0,
@@ -13923,25 +13923,25 @@ function initYouTubePlayer(videoId) {
       'playsinline': 1
     },
     events: {
-      'onReady': (event) => { 
-        event.target.playVideo(); 
+      'onReady': (event) => {
+        event.target.playVideo();
         if (typeof event.target.setPlaybackQuality === 'function') {
           event.target.setPlaybackQuality('highres');
         }
 
         // Monitor play duration to trigger Grand Finale early to preempt creator's End Screen cards (usually last 10-20 seconds)
         window._vyProgressInterval = setInterval(() => {
-            if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function' && typeof concertPlayer.getDuration === 'function') {
-                const currentTime = concertPlayer.getCurrentTime();
-                const duration = concertPlayer.getDuration();
-                if (duration > 0 && (duration - currentTime <= 10)) {
-                    clearInterval(window._vyProgressInterval);
-                    window._vyProgressInterval = null;
-                    if (typeof window.triggerGrandFinale === 'function') {
-                        window.triggerGrandFinale();
-                    }
-                }
+          if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function' && typeof concertPlayer.getDuration === 'function') {
+            const currentTime = concertPlayer.getCurrentTime();
+            const duration = concertPlayer.getDuration();
+            if (duration > 0 && (duration - currentTime <= 10)) {
+              clearInterval(window._vyProgressInterval);
+              window._vyProgressInterval = null;
+              if (typeof window.triggerGrandFinale === 'function') {
+                window.triggerGrandFinale();
+              }
             }
+          }
         }, 1000);
       },
       'onStateChange': (event) => {
@@ -13959,134 +13959,134 @@ function initYouTubePlayer(videoId) {
 let rainbowInterval = null;
 
 // 1. Smooth Color Transition (Now with Rainbow Mode!)
-window.changeBombColor = function(color) {
-    const bomb = document.getElementById('my-army-bomb');
-    const ambient = document.getElementById('ambient-glow');
-    const backGlow = document.getElementById('bomb-back-glow');
-    const crowd = document.querySelector('.virtual-crowd');
-    
-    // Stop the strobe or existing rainbow if running
-    if (strobeInterval) { clearInterval(strobeInterval); strobeInterval = null; if (bomb) bomb.style.opacity = '1'; }
-    if (rainbowInterval) { clearInterval(rainbowInterval); rainbowInterval = null; }
+window.changeBombColor = function (color) {
+  const bomb = document.getElementById('my-army-bomb');
+  const ambient = document.getElementById('ambient-glow');
+  const backGlow = document.getElementById('bomb-back-glow');
+  const crowd = document.querySelector('.virtual-crowd');
 
-    const applyColor = (c) => {
-        if (bomb) bomb.style.setProperty('--glow-color', c);
-        if (ambient) ambient.style.backgroundColor = c;
-        if (backGlow) backGlow.style.backgroundColor = c;
-        if (crowd) crowd.style.setProperty('--ambient-color', c);
-    };
+  // Stop the strobe or existing rainbow if running
+  if (strobeInterval) { clearInterval(strobeInterval); strobeInterval = null; if (bomb) bomb.style.opacity = '1'; }
+  if (rainbowInterval) { clearInterval(rainbowInterval); rainbowInterval = null; }
 
-    if (color === 'rainbow') {
-        const colors = ['#a855f7','#e879f9','#6366f1','#22c55e','#fbbf24','#ef4444','#3b82f6'];
-        let idx = 0;
-        rainbowInterval = setInterval(() => {
-            applyColor(colors[idx]);
-            idx = (idx + 1) % colors.length;
-        }, 1000); // 1-second smooth fade between colors
-    } else {
-        applyColor(color);
-    }
-    
-    // Satisfying bump animation
-    if (bomb) {
-        bomb.style.transform = 'scale(1.1)';
-        setTimeout(() => { bomb.style.transform = 'scale(1)'; }, 150);
-        if (navigator.vibrate) navigator.vibrate(15);
-    }
-    
-    // Auto-unmute the video on the first interaction
-    if (concertPlayer && typeof concertPlayer.unMute === 'function') {
-        concertPlayer.unMute();
-        concertPlayer.setVolume(100);
-    }
+  const applyColor = (c) => {
+    if (bomb) bomb.style.setProperty('--glow-color', c);
+    if (ambient) ambient.style.backgroundColor = c;
+    if (backGlow) backGlow.style.backgroundColor = c;
+    if (crowd) crowd.style.setProperty('--ambient-color', c);
+  };
+
+  if (color === 'rainbow') {
+    const colors = ['#a855f7', '#e879f9', '#6366f1', '#22c55e', '#fbbf24', '#ef4444', '#3b82f6'];
+    let idx = 0;
+    rainbowInterval = setInterval(() => {
+      applyColor(colors[idx]);
+      idx = (idx + 1) % colors.length;
+    }, 1000); // 1-second smooth fade between colors
+  } else {
+    applyColor(color);
+  }
+
+  // Satisfying bump animation
+  if (bomb) {
+    bomb.style.transform = 'scale(1.1)';
+    setTimeout(() => { bomb.style.transform = 'scale(1)'; }, 150);
+    if (navigator.vibrate) navigator.vibrate(15);
+  }
+
+  // Auto-unmute the video on the first interaction
+  if (concertPlayer && typeof concertPlayer.unMute === 'function') {
+    concertPlayer.unMute();
+    concertPlayer.setVolume(100);
+  }
 };
 
-window.setWavePattern = function(pattern, btn) {
-    const bomb = document.getElementById('my-army-bomb');
-    if (bomb) {
-        bomb.classList.remove('anim-sway', 'anim-drift', 'anim-ocean', 'anim-stars', 'anim-flutter');
-        bomb.classList.add('anim-' + pattern);
+window.setWavePattern = function (pattern, btn) {
+  const bomb = document.getElementById('my-army-bomb');
+  if (bomb) {
+    bomb.classList.remove('anim-sway', 'anim-drift', 'anim-ocean', 'anim-stars', 'anim-flutter');
+    bomb.classList.add('anim-' + pattern);
+  }
+
+  // UI Toggle
+  document.querySelectorAll('.soft-pill-btn').forEach(b => {
+    if (['〰️ SWAY', '🪐 DRIFT', '🌊 OCEAN', '✨ STARS', '🦋 FLUTTER'].includes(b.innerText)) {
+      b.classList.remove('active');
     }
-    
-    // UI Toggle
-    document.querySelectorAll('.soft-pill-btn').forEach(b => {
-        if (['〰️ SWAY', '🪐 DRIFT', '🌊 OCEAN', '✨ STARS', '🦋 FLUTTER'].includes(b.innerText)) {
-            b.classList.remove('active');
-        }
-    });
-    if (btn) btn.classList.add('active');
-    if (navigator.vibrate) navigator.vibrate(10);
+  });
+  if (btn) btn.classList.add('active');
+  if (navigator.vibrate) navigator.vibrate(10);
 };
 
-window.setWaveSpeed = function(seconds, btn) {
-    const bomb = document.getElementById('my-army-bomb');
-    if (bomb) {
-        bomb.style.setProperty('--wave-speed', seconds + 's');
-    }
-    
-    // UI Toggle
-    document.querySelectorAll('.soft-pill-btn').forEach(b => {
-        if (['1X', '2X', '3X'].includes(b.innerText)) b.classList.remove('active');
-    });
-    if (btn) btn.classList.add('active');
-    if (navigator.vibrate) navigator.vibrate(10);
+window.setWaveSpeed = function (seconds, btn) {
+  const bomb = document.getElementById('my-army-bomb');
+  if (bomb) {
+    bomb.style.setProperty('--wave-speed', seconds + 's');
+  }
+
+  // UI Toggle
+  document.querySelectorAll('.soft-pill-btn').forEach(b => {
+    if (['1X', '2X', '3X'].includes(b.innerText)) b.classList.remove('active');
+  });
+  if (btn) btn.classList.add('active');
+  if (navigator.vibrate) navigator.vibrate(10);
 };
 
 // 2. The Strobe Effect
-window.toggleStrobe = function() {
-    const bomb = document.getElementById('my-army-bomb');
-    if (!bomb) return;
-    if (navigator.vibrate) navigator.vibrate(30);
-    
-    // Auto-unmute the video on the first interaction
-    if (concertPlayer && typeof concertPlayer.unMute === 'function') {
-        concertPlayer.unMute();
-        concertPlayer.setVolume(100);
-    }
-    
-    if (strobeInterval) {
-        // Turn Strobe OFF
-        clearInterval(strobeInterval);
-        strobeInterval = null;
-        bomb.style.opacity = '1';
-    } else {
-        // Turn Strobe ON
-        strobeInterval = setInterval(() => {
-            bomb.style.opacity = bomb.style.opacity === '1' ? '0.1' : '1';
-        }, 100); // 100ms creates a fast, rave-like flash
-    }
+window.toggleStrobe = function () {
+  const bomb = document.getElementById('my-army-bomb');
+  if (!bomb) return;
+  if (navigator.vibrate) navigator.vibrate(30);
+
+  // Auto-unmute the video on the first interaction
+  if (concertPlayer && typeof concertPlayer.unMute === 'function') {
+    concertPlayer.unMute();
+    concertPlayer.setVolume(100);
+  }
+
+  if (strobeInterval) {
+    // Turn Strobe OFF
+    clearInterval(strobeInterval);
+    strobeInterval = null;
+    bomb.style.opacity = '1';
+  } else {
+    // Turn Strobe ON
+    strobeInterval = setInterval(() => {
+      bomb.style.opacity = bomb.style.opacity === '1' ? '0.1' : '1';
+    }, 100); // 100ms creates a fast, rave-like flash
+  }
 };
 
-window.exitConcert = function() {
-    const arena = document.getElementById('voyage-overlay');
-    if (strobeInterval) clearInterval(strobeInterval);
-    if (rainbowInterval) clearInterval(rainbowInterval);
-    if (window._vyProgressInterval) {
-        clearInterval(window._vyProgressInterval);
-        window._vyProgressInterval = null;
-    }
-    if (concertPlayer && typeof concertPlayer.destroy === 'function') {
-        try { concertPlayer.destroy(); } catch(e) {}
-        concertPlayer = null;
-    }
-    if (arena) {
-        arena.style.opacity = '0';
-        setTimeout(() => arena.remove(), 1000);
-    }
-    
-    // Stop the high-intensity waving animation of the main page lightstick
-    const mainVessel = document.querySelector('.army-bomb-vessel');
-    if (mainVessel) {
-        mainVessel.classList.remove('army-bomb-launch-wave');
-    }
+window.exitConcert = function () {
+  const arena = document.getElementById('voyage-overlay');
+  if (strobeInterval) clearInterval(strobeInterval);
+  if (rainbowInterval) clearInterval(rainbowInterval);
+  if (window._vyProgressInterval) {
+    clearInterval(window._vyProgressInterval);
+    window._vyProgressInterval = null;
+  }
+  if (concertPlayer && typeof concertPlayer.destroy === 'function') {
+    try { concertPlayer.destroy(); } catch (e) { }
+    concertPlayer = null;
+  }
+  if (arena) {
+    arena.style.opacity = '0';
+    setTimeout(() => arena.remove(), 1000);
+  }
 
-    // 🚨 CRITICAL FIX: Clean up the canvas
-    if (fwCanvas) {
-        fwCanvas.remove();
-        fwCanvas = null;
-        particles = [];
-        window._finaleTriggered = false; // Reset for next time
-    }
+  // Stop the high-intensity waving animation of the main page lightstick
+  const mainVessel = document.querySelector('.army-bomb-vessel');
+  if (mainVessel) {
+    mainVessel.classList.remove('army-bomb-launch-wave');
+  }
+
+  // 🚨 CRITICAL FIX: Clean up the canvas
+  if (fwCanvas) {
+    fwCanvas.remove();
+    fwCanvas = null;
+    particles = [];
+    window._finaleTriggered = false; // Reset for next time
+  }
 };
 
 function fireConfetti() {
@@ -14102,124 +14102,124 @@ function fireConfetti() {
 
 window._finaleTriggered = false;
 
-window.triggerGrandFinale = function() {
-    // 🚨 CRITICAL FIX: Prevent double execution
-    if (window._finaleTriggered) return;
-    window._finaleTriggered = true;
+window.triggerGrandFinale = function () {
+  // 🚨 CRITICAL FIX: Prevent double execution
+  if (window._finaleTriggered) return;
+  window._finaleTriggered = true;
 
-    if (!concertPlayer || typeof concertPlayer.getVolume !== 'function') {
-        console.warn('⚠️ Player not ready for finale yet!');
-        return;
+  if (!concertPlayer || typeof concertPlayer.getVolume !== 'function') {
+    console.warn('⚠️ Player not ready for finale yet!');
+    return;
+  }
+
+  console.log('🎆 REAL FIREWORKS FINALE INITIATED');
+
+  let vol = concertPlayer.getVolume();
+  const fadeInterval = setInterval(() => {
+    vol -= 10;
+    if (vol <= 0) {
+      clearInterval(fadeInterval);
+      try {
+        concertPlayer.setVolume(0);
+        concertPlayer.pauseVideo();
+      } catch (e) { }
+    } else {
+      try { concertPlayer.setVolume(vol); } catch (e) { }
     }
-    
-    console.log('🎆 REAL FIREWORKS FINALE INITIATED');
-    
-    let vol = concertPlayer.getVolume();
-    const fadeInterval = setInterval(() => {
-        vol -= 10;
-        if (vol <= 0) {
-            clearInterval(fadeInterval);
-            try {
-                concertPlayer.setVolume(0);
-                concertPlayer.pauseVideo();
-            } catch(e) {}
-        } else {
-            try { concertPlayer.setVolume(vol); } catch(e) {}
-        }
-    }, 150);
+  }, 150);
 
-    // Initialize Canvas IMMEDIATELY
-    initFireworkCanvas();
+  // Initialize Canvas IMMEDIATELY
+  initFireworkCanvas();
 
-    const duration = 7 * 1000;
-    const endTime = Date.now() + duration;
-    const colors = ['#a855f7', '#fbbf24', '#ffffff', '#e879f9', '#fcd34d'];
+  const duration = 7 * 1000;
+  const endTime = Date.now() + duration;
+  const colors = ['#a855f7', '#fbbf24', '#ffffff', '#e879f9', '#fcd34d'];
 
-    const fireworkInterval = setInterval(() => {
-        if (Date.now() > endTime) return clearInterval(fireworkInterval);
-        
-        const x = Math.random() * window.innerWidth;
-        const y = Math.random() * (window.innerHeight * 0.6);
-        createFireworkBurst(x, y, colors[Math.floor(Math.random() * colors.length)]);
-    }, 300);
+  const fireworkInterval = setInterval(() => {
+    if (Date.now() > endTime) return clearInterval(fireworkInterval);
 
-    const phase2 = document.getElementById('phase-2-concert');
-    if (phase2) {
-        setTimeout(() => {
-            phase2.style.transition = 'opacity 5s ease-out';
-            phase2.style.opacity = '0';
-        }, 3000);
-    }
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * (window.innerHeight * 0.6);
+    createFireworkBurst(x, y, colors[Math.floor(Math.random() * colors.length)]);
+  }, 300);
 
-    setTimeout(window.exitConcert, 8000);
+  const phase2 = document.getElementById('phase-2-concert');
+  if (phase2) {
+    setTimeout(() => {
+      phase2.style.transition = 'opacity 5s ease-out';
+      phase2.style.opacity = '0';
+    }, 3000);
+  }
+
+  setTimeout(window.exitConcert, 8000);
 };
 
 // --- CUSTOM FIREWORK ENGINE ---
 let fwCanvas, fwCtx, particles = [];
 
 function initFireworkCanvas() {
-    if (fwCanvas) return;
-    fwCanvas = document.createElement('canvas');
-    fwCanvas.id = 'firework-engine';
-    
-    // 🚨 CRITICAL FIX: z-index must be higher than vy-root's 9999999
-    fwCanvas.style.cssText = 'position:fixed; inset:0; z-index:10000000; pointer-events:none;';
-    document.body.appendChild(fwCanvas);
-    fwCtx = fwCanvas.getContext('2d');
-    
-    const resizeCanvas = () => {
-        if(fwCanvas) {
-            fwCanvas.width = window.innerWidth;
-            fwCanvas.height = window.innerHeight;
-        }
-    };
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas(); // Set initial size
-    
-    requestAnimationFrame(updateFireworks);
+  if (fwCanvas) return;
+  fwCanvas = document.createElement('canvas');
+  fwCanvas.id = 'firework-engine';
+
+  // 🚨 CRITICAL FIX: z-index must be higher than vy-root's 9999999
+  fwCanvas.style.cssText = 'position:fixed; inset:0; z-index:10000000; pointer-events:none;';
+  document.body.appendChild(fwCanvas);
+  fwCtx = fwCanvas.getContext('2d');
+
+  const resizeCanvas = () => {
+    if (fwCanvas) {
+      fwCanvas.width = window.innerWidth;
+      fwCanvas.height = window.innerHeight;
+    }
+  };
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas(); // Set initial size
+
+  requestAnimationFrame(updateFireworks);
 }
 
 function createFireworkBurst(x, y, color) {
-    if (!fwCanvas) initFireworkCanvas();
-    const count = 40;
-    for (let i = 0; i < count; i++) {
-        const angle = (Math.PI * 2 / count) * i;
-        const velocity = 2 + Math.random() * 4;
-        particles.push({
-            x, y,
-            vx: Math.cos(angle) * velocity,
-            vy: Math.sin(angle) * velocity,
-            alpha: 1,
-            color,
-            size: 1 + Math.random() * 2
-        });
-    }
+  if (!fwCanvas) initFireworkCanvas();
+  const count = 40;
+  for (let i = 0; i < count; i++) {
+    const angle = (Math.PI * 2 / count) * i;
+    const velocity = 2 + Math.random() * 4;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * velocity,
+      vy: Math.sin(angle) * velocity,
+      alpha: 1,
+      color,
+      size: 1 + Math.random() * 2
+    });
+  }
 }
 function updateFireworks() {
-    if (!fwCtx || !fwCanvas) return; // Guard clause
-    
-    fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
-    for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy += 0.05; // gravity
-        p.alpha -= 0.015;
-        
-        if (p.alpha <= 0) {
-            particles.splice(i, 1);
-        } else {
-            fwCtx.globalAlpha = p.alpha;
-            fwCtx.fillStyle = p.color;
-            fwCtx.beginPath();
-            fwCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            fwCtx.fill();
-            fwCtx.shadowBlur = 10;
-            fwCtx.shadowColor = p.color;
-        }
+  if (!fwCtx || !fwCanvas) return; // Guard clause
+
+  fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.05; // gravity
+    p.alpha -= 0.015;
+
+    if (p.alpha <= 0) {
+      particles.splice(i, 1);
+    } else {
+      fwCtx.globalAlpha = p.alpha;
+      fwCtx.fillStyle = p.color;
+      fwCtx.beginPath();
+      fwCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      fwCtx.fill();
+      fwCtx.shadowBlur = 10;
+      fwCtx.shadowColor = p.color;
     }
-    fwCtx.shadowBlur = 0;
-    requestAnimationFrame(updateFireworks);
+  }
+  fwCtx.shadowBlur = 0;
+  requestAnimationFrame(updateFireworks);
 }
 
 
