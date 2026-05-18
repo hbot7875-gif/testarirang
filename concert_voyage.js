@@ -133,12 +133,13 @@ function injectConcertVoyageCSS() {
         opacity: 1 !important; /* CRITICAL: Full quality */
         pointer-events: none;
         z-index: 2;
-        transform: scale(1.35) !important; /* Start cropped! */
+        transform: scale(1.5) !important; /* Start cropped! */
         transform-origin: center center !important;
         transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
     #youtube-player.vy-player-normal {
-        transform: scale(1.0) !important;
+        transform: scale(1.12) !important;
+        transform-origin: center center !important;
     }
 
     .vy-sky-bg {
@@ -177,8 +178,8 @@ function injectConcertVoyageCSS() {
         100% { transform: translateY(-200px) translateX(-50px); }
     }
     @media (max-width: 600px) {
-        #video-wrapper iframe { transform: scale(1.35) !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1) !important; }
-        #video-wrapper iframe.vy-player-normal { transform: scale(1.0) !important; }
+        #video-wrapper iframe { transform: scale(1.5) !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1) !important; }
+        #video-wrapper iframe.vy-player-normal { transform: scale(1.12) !important; }
         #fan-zone { bottom: 18%; }
         
         .soft-controls-panel {
@@ -298,13 +299,15 @@ window.launchTheVoyage = function () {
 
     <div id="phase-2-concert" style="position: absolute; inset: 0; opacity: 0; pointer-events: none; z-index: 60; transition: opacity 2s ease-out; background: #000; overflow: hidden;">
         
-        <div id="video-wrapper" class="vy-sky-bg" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 1;">
+        <div id="video-wrapper" class="vy-sky-bg" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 1; overflow: hidden !important;">
             <div class="vy-stars-container" style="position: absolute; inset: 0; z-index: 0; pointer-events: none;"></div>
             <div id="youtube-player" class="vy-player-cropped" style="position: relative; z-index: 1;"></div>
             <div class="vy-video-shield" style="position: absolute; inset: 0; z-index: 5; pointer-events: auto; background: transparent;"></div>
         </div>
 
         <div style="position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,0.4) 80%, #000 100%);"></div>
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 90px; z-index: 9; pointer-events: none; background: linear-gradient(to top, #000 0%, rgba(0,0,0,0.6) 50%, transparent 100%);"></div>
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 70px; z-index: 9; pointer-events: none; background: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.5) 50%, transparent 100%);"></div>
         <div id="ambient-glow" style="position: absolute; inset: 0; z-index: 3; background: #a855f7; opacity: 0.1; mix-blend-mode: lighten; pointer-events: none;"></div>
         <div class="concert-dust"></div>
 
