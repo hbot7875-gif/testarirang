@@ -4,6 +4,7 @@ const CONCERT_VIDEO_ID = 'sj95YLW-7-g';
 let concertPlayer;
 let strobeInterval;
 let waveInterval;
+let progressInterval;
 
 function injectConcertVoyageCSS() {
   if (document.getElementById('concert-voyage-extra-css')) return;
@@ -123,7 +124,7 @@ function injectConcertVoyageCSS() {
         width: 100%; height: 1px; background: rgba(255,255,255,0.1);
     }
 
-    /* Natural Video Aspect Ratio (Prevents weird cropping) */
+    /* Natural Video Aspect Ratio (Prevents weird cropping, with a small 15% zoom to hide YouTube overlay buttons at edges) */
     #youtube-player {
         aspect-ratio: 16 / 9;
         width: 100vw !important;
@@ -133,6 +134,8 @@ function injectConcertVoyageCSS() {
         opacity: 1 !important; /* CRITICAL: Full quality */
         pointer-events: none;
         z-index: 2;
+        transform: scale(1.15) !important;
+        transform-origin: center center !important;
     }
 
     .vy-sky-bg {
@@ -141,7 +144,7 @@ function injectConcertVoyageCSS() {
         background: radial-gradient(ellipse at center, #0c0824 0%, #030308 70%, #000 100%) !important;
         z-index: 1;
         pointer-events: none;
-        overflow: hidden;
+        overflow: hidden !important;
     }
 
     .vy-star {
@@ -173,7 +176,7 @@ function injectConcertVoyageCSS() {
 
     /* Mobile Adjustments */
     @media (max-width: 600px) {
-        #video-wrapper iframe { transform: none !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; }
+        #video-wrapper iframe { transform: scale(1.15) !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; }
         #fan-zone { bottom: 18%; }
         
         .soft-controls-panel {
@@ -463,12 +466,15 @@ function initYouTubePlayer(videoId) {
       setTimeout(() => initYouTubePlayer(videoId), 500);
       return;
   }
+
+  if (progressInterval) clearInterval(progressInterval);
+
   concertPlayer = new YT.Player('youtube-player', {
     height: '100%',
     width: '100%',
     videoId: videoId, 
     playerVars: {
-      'autoplay': 1, 'controls': 0, 'disablekb': 1, 'fs': 0, 'modestbranding': 1, 'rel': 0, 'showinfo': 0, 'playsinline': 1
+      'autoplay': 1, 'controls': 0, 'disablekb': 1, 'fs': 0, 'modestbranding': 1, 'rel': 0, 'showinfo': 0, 'playsinline': 1, 'iv_load_policy': 3
     },
     events: {
       'onReady': (event) => { 
@@ -477,6 +483,20 @@ function initYouTubePlayer(videoId) {
           if (typeof event.target.setPlaybackQuality === 'function') {
               event.target.setPlaybackQuality('highres'); 
           }
+
+          // Monitor play duration to trigger Grand Finale early to preempt creator's End Screen cards (usually last 20 seconds)
+          progressInterval = setInterval(() => {
+              if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function' && typeof concertPlayer.getDuration === 'function') {
+                  const currentTime = concertPlayer.getCurrentTime();
+                  const duration = concertPlayer.getDuration();
+                  if (duration > 0 && (duration - currentTime <= 22)) {
+                      clearInterval(progressInterval);
+                      if (typeof triggerGrandFinale === 'function') {
+                          triggerGrandFinale();
+                      }
+                  }
+              }
+          }, 1000);
       },
       'onStateChange': (event) => {
         if (event.data === YT.PlayerState.ENDED) {
@@ -593,6 +613,10 @@ window.exitConcert = function() {
   const arena = document.getElementById('voyage-overlay');
   if (strobeInterval) clearInterval(strobeInterval);
   if (rainbowInterval) clearInterval(rainbowInterval);
+  if (progressInterval) {
+      clearInterval(progressInterval);
+      progressInterval = null;
+  }
   if (concertPlayer && typeof concertPlayer.destroy === 'function') {
       concertPlayer.destroy();
   }
