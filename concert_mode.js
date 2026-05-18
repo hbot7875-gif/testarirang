@@ -65,8 +65,12 @@ window.launchTheVoyage = function () {
               opacity: 1 !important;
               pointer-events: none;
               z-index: 2;
-              transform: scale(1.15) !important;
+              transform: scale(1.35) !important; /* Start cropped! */
               transform-origin: center center !important;
+              transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+          }
+          #youtube-player.vy-player-normal {
+              transform: scale(1.0) !important;
           }
           .vy-sky-bg {
               position: absolute;
@@ -90,7 +94,8 @@ window.launchTheVoyage = function () {
               50% { opacity: 1; transform: scale(1.3); }
           }
           @media (max-width: 600px) {
-              #video-wrapper iframe { transform: scale(1.15) !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; }
+              #video-wrapper iframe { transform: scale(1.35) !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1) !important; }
+              #video-wrapper iframe.vy-player-normal { transform: scale(1.0) !important; }
           }
       }
     `;
@@ -126,7 +131,7 @@ window.launchTheVoyage = function () {
         
         <div id="video-wrapper" class="vy-sky-bg" style="position: absolute; inset: 0; pointer-events: none;">
             <div class="vy-stars-container" style="position: absolute; inset: 0; z-index: 0; pointer-events: none;"></div>
-            <div id="youtube-player" style="position: relative; z-index: 1;"></div>
+            <div id="youtube-player" class="vy-player-cropped" style="position: relative; z-index: 1;"></div>
             <div class="vy-video-shield" style="position: absolute; inset: 0; z-index: 5; pointer-events: auto; background: transparent;"></div>
             <div style="position: absolute; inset: 0; background: radial-gradient(circle at center 60%, transparent 20%, rgba(0,0,0,0.9) 100%); z-index: 2;"></div>
         </div>
@@ -248,6 +253,16 @@ function initYouTubePlayer(videoId) {
             if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function' && typeof concertPlayer.getDuration === 'function') {
                 const currentTime = concertPlayer.getCurrentTime();
                 const duration = concertPlayer.getDuration();
+                
+                // If playing for 10 seconds or more, transition back to normal widescreen
+                if (currentTime >= 10) {
+                    const iframe = document.getElementById('youtube-player');
+                    if (iframe && !iframe.classList.contains('vy-player-normal')) {
+                        console.log("🌊 Crop sequence complete: transitioning YouTube player smoothly to full widescreen width...");
+                        iframe.classList.add('vy-player-normal');
+                    }
+                }
+
                 console.log(`[CONCERT TIME] Current: ${currentTime.toFixed(2)}s | Total: ${duration.toFixed(2)}s | Remaining: ${(duration - currentTime).toFixed(2)}s`);
                 if (duration > 0 && (duration - currentTime <= 11)) {
                     clearInterval(progressInterval);
