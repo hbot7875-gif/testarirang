@@ -626,7 +626,6 @@ function initYouTubePlayer(videoId) {
   });
 }
 
-let strobeInterval = null;
 let rainbowInterval = null;
 
 // ══════════════════════════════════════════════
