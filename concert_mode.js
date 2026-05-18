@@ -2,6 +2,7 @@
 
 let concertPlayer;
 let strobeInterval;
+let progressInterval;
 
 window.launchTheVoyage = function () {
   const existing = document.getElementById('voyage-overlay');
@@ -64,6 +65,8 @@ window.launchTheVoyage = function () {
               opacity: 1 !important;
               pointer-events: none;
               z-index: 2;
+              transform: scale(1.15) !important;
+              transform-origin: center center !important;
           }
           .vy-sky-bg {
               position: absolute;
@@ -71,7 +74,7 @@ window.launchTheVoyage = function () {
               background: radial-gradient(ellipse at center, #0c0824 0%, #030308 70%, #000 100%) !important;
               z-index: 1;
               pointer-events: none;
-              overflow: hidden;
+              overflow: hidden !important;
           }
           .vy-star {
               position: absolute;
@@ -87,7 +90,7 @@ window.launchTheVoyage = function () {
               50% { opacity: 1; transform: scale(1.3); }
           }
           @media (max-width: 600px) {
-              #video-wrapper iframe { transform: none !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; }
+              #video-wrapper iframe { transform: scale(1.15) !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; }
           }
       }
     `;
@@ -212,15 +215,34 @@ function initYouTubePlayer(videoId) {
       setTimeout(() => initYouTubePlayer(videoId), 500);
       return;
   }
+
+  if (progressInterval) clearInterval(progressInterval);
+
   concertPlayer = new YT.Player('youtube-player', {
     height: '100%',
     width: '100%',
     videoId: videoId, 
     playerVars: {
-      'autoplay': 1, 'controls': 0, 'disablekb': 1, 'fs': 0, 'modestbranding': 1, 'rel': 0, 'showinfo': 0, 'playsinline': 1
+      'autoplay': 1, 'controls': 0, 'disablekb': 1, 'fs': 0, 'modestbranding': 1, 'rel': 0, 'showinfo': 0, 'playsinline': 1, 'iv_load_policy': 3
     },
     events: {
-      'onReady': (event) => { event.target.playVideo(); },
+      'onReady': (event) => { 
+        event.target.playVideo(); 
+
+        // Monitor play duration to trigger Grand Finale early to preempt creator's End Screen cards (usually last 20 seconds)
+        progressInterval = setInterval(() => {
+            if (concertPlayer && typeof concertPlayer.getCurrentTime === 'function' && typeof concertPlayer.getDuration === 'function') {
+                const currentTime = concertPlayer.getCurrentTime();
+                const duration = concertPlayer.getDuration();
+                if (duration > 0 && (duration - currentTime <= 22)) {
+                    clearInterval(progressInterval);
+                    if (typeof triggerGrandFinale === 'function') {
+                        triggerGrandFinale();
+                    }
+                }
+            }
+        }, 1000);
+      },
       'onStateChange': (event) => {
         if (event.data === YT.PlayerState.ENDED) {
           if (typeof triggerGrandFinale === 'function') triggerGrandFinale();
@@ -259,6 +281,10 @@ window.toggleStrobe = function() {
 window.exitConcert = function() {
   const arena = document.getElementById('voyage-overlay');
   if (strobeInterval) clearInterval(strobeInterval);
+  if (progressInterval) {
+      clearInterval(progressInterval);
+      progressInterval = null;
+  }
   if (concertPlayer && typeof concertPlayer.destroy === 'function') {
       concertPlayer.destroy();
   }
