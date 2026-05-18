@@ -138,7 +138,7 @@ function injectConcertVoyageCSS() {
         transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
     #youtube-player.vy-player-normal {
-        transform: scale(1.12) !important;
+        transform: scale(1.4) !important;
         transform-origin: center center !important;
     }
 
@@ -179,7 +179,7 @@ function injectConcertVoyageCSS() {
     }
     @media (max-width: 600px) {
         #video-wrapper iframe { transform: scale(1.5) !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1) !important; }
-        #video-wrapper iframe.vy-player-normal { transform: scale(1.12) !important; }
+        #video-wrapper iframe.vy-player-normal { transform: scale(1.4) !important; }
         #fan-zone { bottom: 18%; }
         
         .soft-controls-panel {
@@ -306,8 +306,8 @@ window.launchTheVoyage = function () {
         </div>
 
         <div style="position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,0.4) 80%, #000 100%);"></div>
-        <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 90px; z-index: 9; pointer-events: none; background: linear-gradient(to top, #000 0%, rgba(0,0,0,0.6) 50%, transparent 100%);"></div>
-        <div style="position: absolute; top: 0; left: 0; right: 0; height: 70px; z-index: 9; pointer-events: none; background: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.5) 50%, transparent 100%);"></div>
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 120px; z-index: 9; pointer-events: none; background: linear-gradient(to top, #000 30%, rgba(0,0,0,0.7) 70%, transparent 100%);"></div>
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 100px; z-index: 9; pointer-events: none; background: linear-gradient(to bottom, #000 30%, rgba(0,0,0,0.7) 70%, transparent 100%);"></div>
         <div id="ambient-glow" style="position: absolute; inset: 0; z-index: 3; background: #a855f7; opacity: 0.1; mix-blend-mode: lighten; pointer-events: none;"></div>
         <div class="concert-dust"></div>
 
@@ -532,6 +532,15 @@ function initYouTubePlayer(videoId) {
         console.log("📺 initYouTubePlayer: YT Player state changed to:", event.data);
         if (event.data === YT.PlayerState.ENDED) {
           if (typeof triggerGrandFinale === 'function') triggerGrandFinale();
+        }
+        // Auto-resume any pause so YouTube's info/pause overlay never stays visible
+        if (event.data === YT.PlayerState.PAUSED) {
+          setTimeout(() => {
+            if (concertPlayer && typeof concertPlayer.getPlayerState === 'function' &&
+                concertPlayer.getPlayerState() === YT.PlayerState.PAUSED) {
+              concertPlayer.playVideo();
+            }
+          }, 200);
         }
       }
     }
