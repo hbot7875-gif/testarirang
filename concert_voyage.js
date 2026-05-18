@@ -305,6 +305,7 @@ window.launchTheVoyage = function () {
             <div class="vy-video-shield" style="position: absolute; inset: 0; z-index: 5; pointer-events: auto; background: transparent;"></div>
         </div>
 
+        <div id="yt-chrome-cover" style="position: absolute; inset: 0; z-index: 8; pointer-events: none; background: #000; opacity: 1; transition: opacity 0.6s ease;"></div>
         <div style="position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,0.4) 80%, #000 100%);"></div>
         <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 120px; z-index: 9; pointer-events: none; background: linear-gradient(to top, #000 30%, rgba(0,0,0,0.7) 70%, transparent 100%);"></div>
         <div style="position: absolute; top: 0; left: 0; right: 0; height: 100px; z-index: 9; pointer-events: none; background: linear-gradient(to bottom, #000 30%, rgba(0,0,0,0.7) 70%, transparent 100%);"></div>
@@ -495,12 +496,17 @@ function initYouTubePlayer(videoId) {
       'autoplay': 1, 'controls': 0, 'disablekb': 1, 'fs': 0, 'modestbranding': 1, 'rel': 0, 'showinfo': 0, 'playsinline': 1, 'iv_load_policy': 3
     },
     events: {
-      'onReady': (event) => { 
+      'onReady': (event) => {
           console.log("🎉 initYouTubePlayer: YT Player successfully loaded & onReady event fired! Playing video...");
-          event.target.playVideo(); 
+          event.target.playVideo();
+          // Fallback: if PLAYING state fires slowly, reveal after 3s max
+          setTimeout(() => {
+            const cover = document.getElementById('yt-chrome-cover');
+            if (cover && cover.style.opacity !== '0') cover.style.opacity = '0';
+          }, 3000);
           // Suggest maximum quality (Best effort as YT often ignores this on modern browsers)
           if (typeof event.target.setPlaybackQuality === 'function') {
-              event.target.setPlaybackQuality('highres'); 
+              event.target.setPlaybackQuality('highres');
           }
 
           // Monitor play duration to trigger Grand Finale early to preempt creator's End Screen cards (usually last 10-20 seconds)
@@ -530,17 +536,22 @@ function initYouTubePlayer(videoId) {
       },
       'onStateChange': (event) => {
         console.log("📺 initYouTubePlayer: YT Player state changed to:", event.data);
-        if (event.data === YT.PlayerState.ENDED) {
+        const cover = document.getElementById('yt-chrome-cover');
+        if (event.data === YT.PlayerState.PLAYING) {
+          // Video confirmed playing — reveal the concert
+          if (cover) cover.style.opacity = '0';
+        } else if (event.data === YT.PlayerState.PAUSED) {
+          // Snap cover back immediately so YouTube UI is never visible
+          if (cover) cover.style.opacity = '1';
+          // Resume playback right away
+          if (concertPlayer && typeof concertPlayer.playVideo === 'function') {
+            concertPlayer.playVideo();
+          }
+        } else if (event.data === YT.PlayerState.BUFFERING) {
+          // Keep cover while buffering so spinner doesn't show
+          if (cover) cover.style.opacity = '1';
+        } else if (event.data === YT.PlayerState.ENDED) {
           if (typeof triggerGrandFinale === 'function') triggerGrandFinale();
-        }
-        // Auto-resume any pause so YouTube's info/pause overlay never stays visible
-        if (event.data === YT.PlayerState.PAUSED) {
-          setTimeout(() => {
-            if (concertPlayer && typeof concertPlayer.getPlayerState === 'function' &&
-                concertPlayer.getPlayerState() === YT.PlayerState.PAUSED) {
-              concertPlayer.playVideo();
-            }
-          }, 200);
         }
       }
     }
