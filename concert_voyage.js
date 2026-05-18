@@ -177,6 +177,28 @@ function injectConcertVoyageCSS() {
         0% { transform: translateY(0px) translateX(0px); }
         100% { transform: translateY(-200px) translateX(-50px); }
     }
+
+    /* ── MAGICAL OVERLAY LAYER ── */
+    @keyframes waveBarAnim {
+        0%   { transform: scaleY(0.35); opacity: 0.4; }
+        100% { transform: scaleY(1.2);  opacity: 0.9; }
+    }
+    @keyframes liveBlip {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.2; }
+    }
+    @keyframes heartFloat {
+        0%   { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-120px) scale(0.5); opacity: 0; }
+    }
+    @keyframes lyricDrift {
+        0%   { opacity: 0; transform: translateX(0); }
+        8%   { opacity: 1; }
+        90%  { opacity: 0.8; }
+        100% { opacity: 0; transform: translateX(110vw); }
+    }
+    #vy-love-btn:active { transform: scale(0.9) !important; }
+
     @media (max-width: 600px) {
         #video-wrapper iframe { transform: scale(1.5) !important; width: 100vw !important; height: auto !important; aspect-ratio: 16 / 9 !important; transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1) !important; }
         #video-wrapper iframe.vy-player-normal { transform: scale(1.4) !important; }
@@ -345,6 +367,41 @@ window.launchTheVoyage = function () {
             </div>
         </div>
 
+        <!-- ══ MAGICAL OVERLAY LAYER ══ -->
+
+        <!-- ① LIVE BROADCAST TOP BAND — covers YouTube title & channel name -->
+        <div id="vy-live-band" style="position:absolute;top:0;left:0;right:0;z-index:25;padding:10px 14px 32px;background:linear-gradient(to bottom,rgba(0,0,0,0.93) 0%,rgba(0,0,0,0.65) 55%,transparent 100%);pointer-events:none;">
+          <div style="display:flex;align-items:center;gap:8px;overflow:hidden;">
+            <div style="width:7px;height:7px;border-radius:50%;background:#ff3b3b;box-shadow:0 0 12px #ff3b3b;animation:liveBlip 1s ease-in-out infinite;flex-shrink:0;"></div>
+            <span style="font-family:Orbitron;font-size:7px;color:#ff3b3b;letter-spacing:3px;font-weight:700;flex-shrink:0;">LIVE</span>
+            <span style="font-family:Orbitron;font-size:7px;color:rgba(255,255,255,0.25);flex-shrink:0;">|</span>
+            <span style="font-family:Orbitron;font-size:7px;color:rgba(255,255,255,0.7);letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">BTS — PERMISSION TO DANCE ON STAGE · MEXICO CITY</span>
+            <span id="vy-live-time" style="margin-left:auto;font-family:Orbitron;font-size:7px;color:rgba(168,85,247,0.85);letter-spacing:2px;flex-shrink:0;">00:00</span>
+          </div>
+        </div>
+
+        <!-- ② FLOATING BTS LYRICS — drifts across center covering pause button area -->
+        <div id="vy-lyrics-stage" style="position:absolute;inset:0;z-index:22;pointer-events:none;overflow:hidden;"></div>
+
+        <!-- ③ FIREWORKS CANVAS -->
+        <canvas id="vy-fireworks" style="position:absolute;inset:0;z-index:21;pointer-events:none;"></canvas>
+
+        <!-- ④ FLOATING HEARTS STAGE -->
+        <div id="vy-hearts-stage" style="position:absolute;inset:0;z-index:24;pointer-events:none;overflow:hidden;"></div>
+
+        <!-- ⑤ ARMY COUNTER — sits above YouTube logo zone -->
+        <div id="vy-army-bond" style="position:absolute;bottom:115px;left:0;right:0;z-index:25;display:flex;justify-content:center;align-items:center;gap:7px;pointer-events:none;">
+          <span style="font-size:11px;filter:drop-shadow(0 0 6px #a855f7);">💜</span>
+          <span id="vy-army-count" style="font-family:Orbitron;font-size:7px;color:rgba(255,255,255,0.45);letter-spacing:2px;">connecting to arena…</span>
+          <span style="font-size:11px;filter:drop-shadow(0 0 6px #a855f7);">💜</span>
+        </div>
+
+        <!-- ⑥ EQUALIZER WAVE — covers YouTube logo/button strip -->
+        <div id="vy-bomb-wave" style="position:absolute;bottom:76px;left:0;right:0;z-index:25;display:flex;justify-content:center;align-items:flex-end;gap:3px;height:32px;pointer-events:none;overflow:hidden;padding:0 6px;"></div>
+
+        <!-- ⑦ SEND LOVE BUTTON -->
+        <button id="vy-love-btn" onclick="sendLoveBurst(event)" style="position:absolute;bottom:195px;right:14px;z-index:30;background:rgba(168,85,247,0.18);border:1px solid rgba(168,85,247,0.55);color:#fff;border-radius:50%;width:46px;height:46px;font-size:20px;cursor:pointer;backdrop-filter:blur(12px);box-shadow:0 0 22px rgba(168,85,247,0.35);transition:transform 0.15s;pointer-events:auto;" title="Send Love 💜">💜</button>
+
         <div id="concert-finale" class="vy-finale"><div class="vy-finale__army">ARMY</div></div>
         <button onclick="exitConcert()" style="position: absolute; top: 30px; right: 30px; z-index: 50; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-family:'Orbitron'; font-size:10px;">EXIT ARENA ✕</button>
     </div>
@@ -398,6 +455,17 @@ window.launchTheVoyage = function () {
     if (phase2) {
       phase2.style.opacity = '1';
       phase2.style.pointerEvents = 'all';
+
+      // Boot magical overlay system
+      if (typeof bootConcertMagic === 'function') bootConcertMagic();
+      // Welcome fireworks burst when you arrive at the concert
+      setTimeout(() => {
+        if (typeof launchFirework === 'function') {
+          launchFirework(window.innerWidth * 0.25, window.innerHeight * 0.3);
+          setTimeout(() => launchFirework(window.innerWidth * 0.75, window.innerHeight * 0.25), 300);
+          setTimeout(() => launchFirework(window.innerWidth * 0.5,  window.innerHeight * 0.2),  600);
+        }
+      }, 800);
 
       // 1. Interactive Magic: Stardust Trail (Mouse + Touch)
       const handleMove = (e) => {
@@ -560,6 +628,207 @@ function initYouTubePlayer(videoId) {
 
 let strobeInterval = null;
 let rainbowInterval = null;
+
+// ══════════════════════════════════════════════
+//  MAGICAL CONCERT OVERLAY SYSTEM
+// ══════════════════════════════════════════════
+
+const BTS_LYRICS = [
+  "I'm the one I should love in this world 💜",
+  "Life goes on — like an arrow in the blue sky",
+  "We are bulletproof — the eternal",
+  "Boy With Luv — oh my my my",
+  "We don't need permission to dance ✨",
+  "Mikrokosmos — you shine in this universe",
+  "Spring Day — I miss you",
+  "Euphoria — you are my hope, my angel",
+  "Black Swan — art of survival",
+  "ON — thunder, let it rain on us",
+  "Butter — smooth like summer",
+  "Dynamite — shining through the city",
+  "ARMY — we are one 💜",
+  "Dream Glow — with every heartbeat",
+  "Moon — you're beautiful tonight",
+  "Your galaxy — I live in it",
+  "Magic Shop — a door in your heart",
+  "Find your map of the soul 💜",
+];
+
+// ① FLOATING LYRICS
+window.startLyricsLoop = function() {
+  function spawnLyric() {
+    const stage = document.getElementById('vy-lyrics-stage');
+    if (!stage) return;
+    const lyric = BTS_LYRICS[Math.floor(Math.random() * BTS_LYRICS.length)];
+    const el = document.createElement('div');
+    const topPct = 18 + Math.random() * 58;
+    const dur = 11 + Math.random() * 7;
+    const size = 7 + Math.random() * 4;
+    const alpha = 0.13 + Math.random() * 0.18;
+    el.style.cssText = `
+      position:absolute;
+      left:-120%;
+      top:${topPct}%;
+      font-family:Orbitron,sans-serif;
+      font-size:${size}px;
+      color:rgba(255,255,255,${alpha});
+      letter-spacing:2px;
+      white-space:nowrap;
+      text-transform:uppercase;
+      text-shadow:0 0 12px rgba(168,85,247,0.6);
+      animation:lyricDrift ${dur}s linear forwards;
+    `;
+    el.textContent = lyric;
+    stage.appendChild(el);
+    setTimeout(() => el.remove(), (dur + 0.5) * 1000);
+  }
+  spawnLyric();
+  setInterval(spawnLyric, 5000 + Math.random() * 3000);
+};
+
+// ② SEND LOVE BURST
+window.sendLoveBurst = function(e) {
+  const stage = document.getElementById('vy-hearts-stage');
+  if (!stage) return;
+  const rect = stage.getBoundingClientRect();
+  const cx = e?.clientX ?? rect.width * 0.85;
+  const cy = e?.clientY ?? rect.height * 0.6;
+  const icons = ['💜','💜','💜','✨','⭐','💜','🌟','💜'];
+  for (let i = 0; i < 9; i++) {
+    const h = document.createElement('div');
+    const angle = (Math.PI * 2 * i) / 9 - Math.PI / 2;
+    const dist = 50 + Math.random() * 70;
+    const dx = Math.cos(angle) * dist;
+    const dy = Math.sin(angle) * dist - 30;
+    const dur = 0.7 + Math.random() * 0.5;
+    h.style.cssText = `
+      position:absolute;
+      left:${cx - rect.left}px;
+      top:${cy - rect.top}px;
+      font-size:${14 + Math.random() * 12}px;
+      transform:translate(-50%,-50%);
+      transition:all ${dur}s cubic-bezier(0.25,0.46,0.45,0.94);
+      pointer-events:none;
+    `;
+    h.textContent = icons[Math.floor(Math.random() * icons.length)];
+    stage.appendChild(h);
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      h.style.transform = `translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(0.3)`;
+      h.style.opacity = '0';
+    }));
+    setTimeout(() => h.remove(), (dur + 0.1) * 1000);
+  }
+};
+
+// ③ ARMY COUNTER (feels live)
+window.startArmyCounter = function() {
+  const el = document.getElementById('vy-army-count');
+  if (!el) return;
+  let count = 11800 + Math.floor(Math.random() * 3200);
+  function tick() {
+    count += Math.floor(Math.random() * 7) - 3;
+    if (count < 11000) count = 11000;
+    el.textContent = count.toLocaleString() + ' ARMY IN THIS ARENA';
+    setTimeout(tick, 2500 + Math.random() * 2000);
+  }
+  tick();
+};
+
+// ④ EQUALIZER WAVE (covers YouTube logo strip)
+window.buildBombWave = function() {
+  const wave = document.getElementById('vy-bomb-wave');
+  if (!wave) return;
+  const palette = ['#a855f7','#3b82f6','#a855f7','#e879f9','#a855f7','#7c3aed','#a855f7','#6366f1'];
+  let html = '';
+  for (let i = 0; i < 36; i++) {
+    const color = palette[i % palette.length];
+    const delay = (i * 0.09).toFixed(2);
+    const h = 10 + Math.random() * 18;
+    html += `<div style="width:5px;min-height:${h}px;background:${color};border-radius:3px 3px 0 0;opacity:0.55;box-shadow:0 0 6px ${color};animation:waveBarAnim ${0.9 + Math.random() * 0.7}s ease-in-out ${delay}s infinite alternate;flex-shrink:0;"></div>`;
+  }
+  wave.innerHTML = html;
+};
+
+// ⑤ LIVE TIMER
+window.startLiveTimer = function() {
+  let s = 0;
+  const el = document.getElementById('vy-live-time');
+  setInterval(() => {
+    s++;
+    const mm = String(Math.floor(s / 60)).padStart(2,'0');
+    const ss = String(s % 60).padStart(2,'0');
+    if (el) el.textContent = mm + ':' + ss;
+  }, 1000);
+};
+
+// ⑥ FIREWORKS ENGINE
+let _fwCanvas, _fwCtx;
+function _ensureFireworkCanvas() {
+  _fwCanvas = document.getElementById('vy-fireworks');
+  if (!_fwCanvas) return false;
+  _fwCanvas.width  = window.innerWidth;
+  _fwCanvas.height = window.innerHeight;
+  _fwCtx = _fwCanvas.getContext('2d');
+  return true;
+}
+
+window.launchFirework = function(x, y) {
+  if (!_ensureFireworkCanvas()) return;
+  const ctx = _fwCtx;
+  const colors = ['#a855f7','#ffffff','#e879f9','#f59e0b','#3b82f6','#ec4899','#22c55e'];
+  const parts = [];
+  for (let i = 0; i < 38; i++) {
+    const a = (Math.PI * 2 * i) / 38;
+    const spd = 2.5 + Math.random() * 4;
+    parts.push({
+      x, y, vx: Math.cos(a) * spd, vy: Math.sin(a) * spd,
+      alpha: 1, color: colors[Math.floor(Math.random() * colors.length)],
+      r: 1.5 + Math.random() * 2.5
+    });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, _fwCanvas.width, _fwCanvas.height);
+    let alive = false;
+    parts.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      p.vy += 0.07; p.alpha -= 0.022;
+      if (p.alpha > 0) {
+        alive = true;
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    });
+    if (alive) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, _fwCanvas.width, _fwCanvas.height);
+  }
+  draw();
+};
+
+window.startRandomFireworks = function() {
+  function fire() {
+    const x = window.innerWidth  * (0.15 + Math.random() * 0.7);
+    const y = window.innerHeight * (0.08 + Math.random() * 0.45);
+    launchFirework(x, y);
+    setTimeout(fire, 9000 + Math.random() * 14000);
+  }
+  setTimeout(fire, 4000);
+};
+
+// ── BOOT ALL MAGIC ON CONCERT REVEAL ──
+window.bootConcertMagic = function() {
+  startLyricsLoop();
+  startArmyCounter();
+  buildBombWave();
+  startLiveTimer();
+  startRandomFireworks();
+};
 
 // 1. Smooth Color Transition (Now with Rainbow Mode!)
 window.changeBombColor = function(color) {
