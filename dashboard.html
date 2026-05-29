@@ -397,11 +397,7 @@
                 <!-- NAV: OPS ROOM -->
                 <div class="nav-section">
                     <div class="nav-section-title">Ops Room</div>
-                    <div class="nav-item" onclick="goTo('flashbounties')" style="border-left:2px solid var(--fail);"><span class="nav-icon">🚨</span> Flash Bounties</div>
-                    <div class="nav-item" onclick="goTo('deadrop')"><span class="nav-icon">📦</span> Dead Drop</div>
-                    <div class="nav-item" onclick="goTo('vault')"><span class="nav-icon">🔒</span> Clearance Protocol</div>
-                    <div class="nav-item" onclick="goTo('echolocation')"><span class="nav-icon">📡</span> Echolocation</div>
-                    <div class="nav-item" onclick="goTo('agentx')"><span class="nav-icon">🕵️</span> Agent X</div>
+                    <div class="nav-item" onclick="goTo('games')"><span class="nav-icon">🎮</span> Games</div>
                 </div>
 
                 <!-- NAV: REPORTS -->
@@ -827,77 +823,110 @@
                     <div id="hofContent" style="padding:16px;"></div>
                 </div>
 
-                <!-- ══ FLASH BOUNTIES ══ -->
-                <div class="page" id="page-flashbounties">
-                    <div class="page-header mission-header" style="--mission-accent:var(--fail);">
+                <!-- ══ GAMES (ALL IN ONE) ══ -->
+                <div class="page" id="page-games">
+                    <div class="page-header mission-header" style="--mission-accent:#bf5af2;">
                         <div class="mission-header-top">
-                            <div class="mission-header-icon">🚨</div>
+                            <div class="mission-header-icon">🎮</div>
                             <div class="mission-header-text">
-                                <div class="page-title">Flash Bounties</div>
-                                <div class="page-subtitle">Emergency ops — limited time only</div>
+                                <div class="page-title">Games</div>
+                                <div class="page-subtitle">Daily missions for the whole squad</div>
                             </div>
                         </div>
                     </div>
-                    <div id="flashBountiesContent" style="padding:16px;"></div>
-                </div>
+                    <div style="padding:16px; display:flex; flex-direction:column; gap:0;">
 
-                <!-- ══ DEAD DROP ══ -->
-                <div class="page" id="page-deadrop">
-                    <div class="page-header mission-header" style="--mission-accent:var(--wave-foam);">
-                        <div class="mission-header-top">
-                            <div class="mission-header-icon">📦</div>
-                            <div class="mission-header-text">
-                                <div class="page-title">Dead Drop</div>
-                                <div class="page-subtitle">Handlers hold the code — find yours in the GC</div>
+                        <!-- ─── GAME 1: FLASH BOUNTY ─── -->
+                        <div style="padding-bottom:20px;">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                <span style="font-size:22px;">🚨</span>
+                                <div>
+                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Flash Bounty</div>
+                                    <div style="font-size:10px;color:var(--text-muted);">Squad emergency — limited time streaming push</div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div id="deadDropContent" style="padding:16px;"></div>
-                </div>
-
-                <!-- ══ CLEARANCE PROTOCOL ══ -->
-                <div class="page" id="page-vault">
-                    <div class="page-header mission-header" style="--mission-accent:var(--courage-amber);">
-                        <div class="mission-header-top">
-                            <div class="mission-header-icon">🔒</div>
-                            <div class="mission-header-text">
-                                <div class="page-title">Clearance Protocol</div>
-                                <div class="page-subtitle">4 agents. 4 nodes. One vault.</div>
+                            <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid var(--fail);background:rgba(232,58,93,0.05);border-radius:0 6px 6px 0;">
+                                <div style="font-size:9px;font-weight:800;color:var(--fail);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
+                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">HQ drops a Flash Bounty when a BTS track needs an emergency boost. Hit <strong style="color:#fff;">Join</strong> and stream the track before the timer runs out. The whole squad works together to hit the stream target — everyone who joins earns XP when it succeeds! 🎯</div>
                             </div>
+                            <div id="flashBountiesContent"></div>
                         </div>
-                    </div>
-                    <div id="vaultContent" style="padding:16px;"></div>
-                </div>
 
-                <!-- ══ ECHOLOCATION ══ -->
-                <div class="page" id="page-echolocation">
-                    <div class="page-header mission-header" style="--mission-accent:var(--wave-foam);">
-                        <div class="mission-header-top">
-                            <div class="mission-header-icon">📡</div>
-                            <div class="mission-header-text">
-                                <div class="page-title">Echolocation</div>
-                                <div class="page-subtitle">Does your squad share one brain?</div>
+                        <div style="border-top:1px solid var(--border-subtle);margin-bottom:20px;"></div>
+
+                        <!-- ─── GAME 2: DEAD DROP ─── -->
+                        <div style="padding-bottom:20px;">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                <span style="font-size:22px;">📦</span>
+                                <div>
+                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Dead Drop</div>
+                                    <div style="font-size:10px;color:var(--text-muted);">One teammate holds the code — can you find them?</div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div id="echoContent" style="padding:16px;"></div>
-                </div>
-
-                <!-- ══ AGENT X ══ -->
-                <div class="page" id="page-agentx">
-                    <div class="page-header mission-header" style="--mission-accent:var(--courage-amber);">
-                        <div class="mission-header-top">
-                            <div class="mission-header-icon">🕵️</div>
-                            <div class="mission-header-text">
-                                <div class="page-title">Agent X</div>
-                                <div class="page-subtitle">Can you guess who is hiding in plain sight?</div>
+                            <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid var(--wave-foam);background:rgba(90,200,250,0.05);border-radius:0 6px 6px 0;">
+                                <div style="font-size:9px;font-weight:800;color:var(--wave-foam);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
+                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">Every day your team gets a secret prompt and passcode. A few teammates are <strong style="color:var(--courage-amber);">Handlers</strong> — they can see the passcode. Everyone else is a <strong style="color:var(--wave-foam);">Field Agent</strong>. Message your Handler in the group chat, get the code, then enter it here to crack today's drop! 🔓</div>
                             </div>
+                            <div id="deadDropContent"></div>
                         </div>
-                    </div>
-                    <div id="agentXContent" style="padding:16px;"></div>
-                </div>
 
-                <!-- ══ END OPS ROOM ══ -->
+                        <div style="border-top:1px solid var(--border-subtle);margin-bottom:20px;"></div>
+
+                        <!-- ─── GAME 3: VAULT BREAK ─── -->
+                        <div style="padding-bottom:20px;">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                <span style="font-size:22px;">🔒</span>
+                                <div>
+                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Vault Break</div>
+                                    <div style="font-size:10px;color:var(--text-muted);">4 agents. 4 locks. One vault to crack together.</div>
+                                </div>
+                            </div>
+                            <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid var(--courage-amber);background:rgba(255,149,0,0.05);border-radius:0 6px 6px 0;">
+                                <div style="font-size:9px;font-weight:800;color:var(--courage-amber);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
+                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">The vault has 4 locks, each needs a different type of agent to open it. Find the node that fits you (Level 2+, streaks, badges, etc.), tap <strong style="color:#fff;">Authenticate</strong> to claim your spot. Your team needs 4 different agents on 4 different nodes — coordinate in the GC and crack it together for <strong style="color:var(--courage-amber);">+1,000 XP each!</strong> 💜</div>
+                            </div>
+                            <div id="vaultContent"></div>
+                        </div>
+
+                        <div style="border-top:1px solid var(--border-subtle);margin-bottom:20px;"></div>
+
+                        <!-- ─── GAME 4: SQUAD SYNC ─── -->
+                        <div style="padding-bottom:20px;">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                <span style="font-size:22px;">📡</span>
+                                <div>
+                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Squad Sync</div>
+                                    <div style="font-size:10px;color:var(--text-muted);">Does your squad share one brain?</div>
+                                </div>
+                            </div>
+                            <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid var(--wave-foam);background:rgba(90,200,250,0.05);border-radius:0 6px 6px 0;">
+                                <div style="font-size:9px;font-weight:800;color:var(--wave-foam);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
+                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">A BTS question drops every day — answer it <strong style="color:#fff;">completely alone</strong>, no peeking at the GC! Answers stay hidden until midnight KST. If <strong style="color:var(--wave-foam);">70%+</strong> of your squad picks the same answer, you all sync up and earn <strong style="color:var(--wave-foam);">+30 XP</strong>. The fun is finding out if your squad's brains work the same way 💜</div>
+                            </div>
+                            <div id="echoContent"></div>
+                        </div>
+
+                        <div style="border-top:1px solid var(--border-subtle);margin-bottom:20px;"></div>
+
+                        <!-- ─── GAME 5: WHO IS AGENT X? ─── -->
+                        <div style="padding-bottom:20px;">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                <span style="font-size:22px;">🕵️</span>
+                                <div>
+                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Who Is Agent X?</div>
+                                    <div style="font-size:10px;color:var(--text-muted);">Guess the mystery squad member from 3 clues</div>
+                                </div>
+                            </div>
+                            <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid #bf5af2;background:rgba(191,90,242,0.05);border-radius:0 6px 6px 0;">
+                                <div style="font-size:9px;font-weight:800;color:#bf5af2;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
+                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">First, <strong style="color:#fff;">file your dossier</strong> — share 3 fun facts about yourself (the BTS song that made you an ARMY, a random hobby, a weird fact). Each day, one squad member is secretly chosen as <strong style="color:#bf5af2;">Agent X</strong>. Your team gets their 3 facts as clues and must guess who it is before midnight. Guess right and earn <strong style="color:#bf5af2;">+20 XP</strong>! 🕵️</div>
+                            </div>
+                            <div id="agentXContent"></div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ══ END GAMES ══ -->
 
             </div>
         </div>
