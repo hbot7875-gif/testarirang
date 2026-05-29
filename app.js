@@ -18135,7 +18135,7 @@ async function renderFlashBounties() {
   if (!container) return;
   container.innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted);font-size:12px;">⏳ Scanning for active operations…</div>`;
   try {
-    const d = await Api.call('getActiveBounty', { agentNo: window.currentAgentNo }, { cache: false });
+    const d = await Api.call('getActiveBounty', { agentNo: STATE.agentNo }, { cache: false });
     if (_bountyTimer) { clearInterval(_bountyTimer); _bountyTimer = null; }
     if (!d.success) { container.innerHTML = `<div style="color:var(--fail);font-size:12px;text-align:center;padding:40px;">${sanitize(d.error)}</div>`; return; }
     if (!d.bounty) {
@@ -18196,8 +18196,8 @@ async function renderFlashBounties() {
 window.renderFlashBounties = renderFlashBounties;
 
 async function joinBounty(bountyId) {
-  if (!window.currentAgentNo) { showToast('Log in first', 'error'); return; }
-  const res = await Api.call('joinFlashBounty', { agentNo: window.currentAgentNo, bountyId }, { cache: false });
+  if (!STATE.agentNo) { showToast('Log in first', 'error'); return; }
+  const res = await Api.call('joinFlashBounty', { agentNo: STATE.agentNo, bountyId }, { cache: false });
   if (res.success) { showToast(res.message, 'success'); renderFlashBounties(); }
   else showToast(res.error, 'error');
 }
@@ -18212,10 +18212,9 @@ async function renderDeadDrop() {
   if (!container) return;
   container.innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted);font-size:12px;">⏳ Retrieving today's drop…</div>`;
   try {
-    const agentData = window._cachedProfile || {};
-    const team = agentData.team || window.currentTeam;
+    const team = STATE.data?.agent?.profile?.team;
     if (!team) { container.innerHTML = `<div style="color:var(--fail);font-size:12px;text-align:center;padding:40px;">Log in to access Dead Drop.</div>`; return; }
-    const d = await Api.call('getDeadDrop', { agentNo: window.currentAgentNo, team }, { cache: false });
+    const d = await Api.call('getDeadDrop', { agentNo: STATE.agentNo, team }, { cache: false });
     if (!d.success) { container.innerHTML = `<div style="color:var(--fail);font-size:12px;text-align:center;padding:40px;">${sanitize(d.error)}</div>`; return; }
     const isHandler = d.role === 'handler';
     const isSolved  = d.status === 'solved';
@@ -18281,7 +18280,7 @@ async function submitDropCode() {
   if (!window._currentDropId) { showToast('Reload the page first', 'error'); return; }
   const btn = input?.nextElementSibling;
   if (btn) btn.disabled = true;
-  const res = await Api.call('submitDeadDropCode', { agentNo: window.currentAgentNo, dropId: window._currentDropId, code }, { cache: false });
+  const res = await Api.call('submitDeadDropCode', { agentNo: STATE.agentNo, dropId: window._currentDropId, code }, { cache: false });
   if (res.success) { showToast(res.message, 'success'); renderDeadDrop(); }
   else { showToast(res.error, 'error'); if (btn) btn.disabled = false; }
 }
@@ -18296,9 +18295,9 @@ async function renderClearanceProtocol() {
   if (!container) return;
   container.innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted);font-size:12px;">⏳ Connecting to Black Site…</div>`;
   try {
-    const team = window._cachedProfile?.team || window.currentTeam;
+    const team = STATE.data?.agent?.profile?.team;
     if (!team) { container.innerHTML = `<div style="color:var(--fail);font-size:12px;text-align:center;padding:40px;">Log in to access the Vault.</div>`; return; }
-    const d = await Api.call('getVaultStatus', { agentNo: window.currentAgentNo, team }, { cache: false });
+    const d = await Api.call('getVaultStatus', { agentNo: STATE.agentNo, team }, { cache: false });
     if (!d.success) { container.innerHTML = `<div style="color:var(--fail);font-size:12px;text-align:center;padding:40px;">${sanitize(d.error)}</div>`; return; }
     const isBreached = d.status === 'breached';
     const securedCount = d.nodes.filter(n => n.securedBy).length;
@@ -18315,7 +18314,7 @@ async function renderClearanceProtocol() {
     for (const node of d.nodes) {
       const secured = !!node.securedBy;
       const nodeColor = secured ? 'var(--green)' : 'var(--border-subtle)';
-      const isMyNode = node.securedBy === window.currentAgentNo;
+      const isMyNode = node.securedBy === STATE.agentNo;
       html += `
         <div class="glass-card" style="padding:12px 14px;border-left:3px solid ${nodeColor};${secured ? `background:rgba(52,199,89,0.05);` : ''}">
           <div style="display:flex;align-items:center;gap:10px;">
@@ -18342,8 +18341,8 @@ async function renderClearanceProtocol() {
 window.renderClearanceProtocol = renderClearanceProtocol;
 
 async function claimNode(nodeNumber) {
-  if (!window.currentAgentNo) { showToast('Log in first', 'error'); return; }
-  const res = await Api.call('secureVaultNode', { agentNo: window.currentAgentNo, nodeNumber }, { cache: false });
+  if (!STATE.agentNo) { showToast('Log in first', 'error'); return; }
+  const res = await Api.call('secureVaultNode', { agentNo: STATE.agentNo, nodeNumber }, { cache: false });
   if (res.success) { showToast(res.message, res.vaultBreached ? 'success' : 'success'); renderClearanceProtocol(); }
   else showToast(res.error, 'error');
 }
@@ -18358,9 +18357,9 @@ async function renderEcholocation() {
   if (!container) return;
   container.innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted);font-size:12px;">⏳ Tuning frequency…</div>`;
   try {
-    const team = window._cachedProfile?.team || window.currentTeam;
+    const team = STATE.data?.agent?.profile?.team;
     if (!team) { container.innerHTML = `<div style="color:var(--fail);font-size:12px;text-align:center;padding:40px;">Log in to access Echolocation.</div>`; return; }
-    const d = await Api.call('getEcholocationStatus', { agentNo: window.currentAgentNo, team }, { cache: false });
+    const d = await Api.call('getEcholocationStatus', { agentNo: STATE.agentNo, team }, { cache: false });
     if (!d.success) { container.innerHTML = `<div style="color:var(--fail);font-size:12px;text-align:center;padding:40px;">${sanitize(d.error)}</div>`; return; }
     const isRevealed = d.status === 'revealed';
     let html = `
@@ -18418,8 +18417,8 @@ async function submitEchoAnswer(promptId) {
   const input = document.getElementById('echoAnswerInput');
   const answer = input?.value?.trim();
   if (!answer) { showToast('Type your answer first', 'error'); return; }
-  const team = window._cachedProfile?.team || window.currentTeam;
-  const res = await Api.call('submitEcholocationAnswer', { agentNo: window.currentAgentNo, team, promptId, answer }, { cache: false });
+  const team = STATE.data?.agent?.profile?.team;
+  const res = await Api.call('submitEcholocationAnswer', { agentNo: STATE.agentNo, team, promptId, answer }, { cache: false });
   if (res.success) { showToast(res.message, 'success'); renderEcholocation(); }
   else showToast(res.error, 'error');
 }
@@ -18434,9 +18433,9 @@ async function renderAgentX() {
   if (!container) return;
   container.innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted);font-size:12px;">⏳ Retrieving operative file…</div>`;
   try {
-    const team = window._cachedProfile?.team || window.currentTeam;
+    const team = STATE.data?.agent?.profile?.team;
     if (!team) { container.innerHTML = `<div style="color:var(--fail);font-size:12px;text-align:center;padding:40px;">Log in to access Agent X.</div>`; return; }
-    const d = await Api.call('getAgentXStatus', { agentNo: window.currentAgentNo, team }, { cache: false });
+    const d = await Api.call('getAgentXStatus', { agentNo: STATE.agentNo, team }, { cache: false });
     if (!d.success) { container.innerHTML = `<div style="color:var(--fail);font-size:12px;text-align:center;padding:40px;">${sanitize(d.error)}</div>`; return; }
     let html = '';
     // Dossier status card
@@ -18529,15 +18528,15 @@ async function submitMyDossier() {
   const f2 = document.getElementById('dossierFact2')?.value?.trim();
   const f3 = document.getElementById('dossierFact3')?.value?.trim();
   if (!f1 || !f2 || !f3) { showToast('Fill in all 3 facts', 'error'); return; }
-  const res = await Api.call('submitDossier', { agentNo: window.currentAgentNo, fact1: f1, fact2: f2, fact3: f3 }, { cache: false });
+  const res = await Api.call('submitDossier', { agentNo: STATE.agentNo, fact1: f1, fact2: f2, fact3: f3 }, { cache: false });
   if (res.success) { showToast(res.message, 'success'); renderAgentX(); }
   else showToast(res.error, 'error');
 }
 window.submitMyDossier = submitMyDossier;
 
 async function submitXGuess(sessionId, guessedAgentNo) {
-  if (!window.currentAgentNo) { showToast('Log in first', 'error'); return; }
-  const res = await Api.call('submitAgentXGuess', { agentNo: window.currentAgentNo, sessionId, guessedAgentNo }, { cache: false });
+  if (!STATE.agentNo) { showToast('Log in first', 'error'); return; }
+  const res = await Api.call('submitAgentXGuess', { agentNo: STATE.agentNo, sessionId, guessedAgentNo }, { cache: false });
   if (res.success) { showToast(res.message, 'success'); renderAgentX(); }
   else showToast(res.error, 'error');
 }
@@ -18547,7 +18546,7 @@ function openDossierEdit() {
   // Simple: reload with edit form — hasDossier is true so we swap to edit view
   const container = $('agentXContent');
   if (!container) return;
-  const myDossier = window._cachedProfile?.dossier || {};
+  const myDossier = STATE.data?.agent?.profile?.dossier || {};
   container.insertAdjacentHTML('afterbegin', `
     <div class="glass-card" id="dossierEditCard" style="padding:16px;margin-bottom:16px;border:1px solid var(--courage-amber)55;background:rgba(255,149,0,0.04);">
       <div style="font-size:9px;font-weight:900;color:var(--courage-amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">✏️ Update Dossier</div>
@@ -18563,6 +18562,19 @@ function openDossierEdit() {
     </div>`);
 }
 window.openDossierEdit = openDossierEdit;
+
+// ══════════════════════════════════════════════════════════════════════
+// GAMES HUB — renders all 5 games on the single Games page
+// ══════════════════════════════════════════════════════════════════════
+
+function renderGames() {
+  renderFlashBounties();
+  renderDeadDrop();
+  renderClearanceProtocol();
+  renderEcholocation();
+  renderAgentX();
+}
+window.renderGames = renderGames;
 
 const ROUTER_MAP = {
   'home': renderHome,
@@ -18592,13 +18604,8 @@ const ROUTER_MAP = {
   'gclinks': renderGCLinks,
   'hype': renderHypePage,
   'halloffame': renderHallOfFame,
-  // ── Interactive Games ──
-  'flashbounties': renderFlashBounties,
-  'deadrop': renderDeadDrop,
-  'vault': renderClearanceProtocol,
-  'echolocation': renderEcholocation,
-  'agentx': renderAgentX,
-  // 'games': renderGames,  // not live yet
+  // ── Interactive Games (all on one page) ──
+  'games': renderGames,
 };
 Object.assign(PAGE_RENDERERS, ROUTER_MAP);
 
