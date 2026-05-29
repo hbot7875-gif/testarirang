@@ -5,7 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#06060A">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HopeTracker">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <link rel="icon" type="image/png" href="/icons/icon-192.png">
     <title>ARIRANG MISSION</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -316,7 +322,10 @@
                     </div>
                     <div class="nav-item" onclick="goTo('guide')"><span class="nav-icon">📚</span> Agent Manual</div>
                     <div class="nav-item" onclick="goTo('profile')"><span class="nav-icon">📋</span> My Profile</div>
-                    <div class="nav-item" onclick="goTo('badges')"><span class="nav-icon">🎖️</span> Badge Drawer</div>
+                    <div class="nav-item" onclick="goTo('badges')" style="position:relative;">
+                        <span class="nav-icon">🎖️</span> Badge Drawer
+                        <span id="badgeDrawerNewDot" style="display:none; position:absolute; right:10px; top:50%; transform:translateY(-50%); background:var(--red-core); color:#fff; font-size:8px; font-weight:900; letter-spacing:0.5px; padding:2px 6px; border-radius:10px; animation:pulseBorder 1.5s infinite; pointer-events:none;">NEW</span>
+                    </div>
                 </div>
 
                 <!-- NAV: MISSIONS -->
@@ -379,6 +388,9 @@
                     <div class="nav-item" onclick="goTo('chat')"><span class="nav-icon">🎬</span> HT Wrapped</div>
                     <div class="nav-item" onclick="goTo('gclinks')"><span class="nav-icon">👥</span> Group Chats</div>
                     <div class="nav-item" onclick="goTo('playlists')"><span class="nav-icon">🎵</span> Playlists</div>
+                    <!-- BTS GAMES — not live yet
+                    <div class="nav-item" onclick="goTo('games')" style="border-left:2px solid var(--vinyl-gold);"><span class="nav-icon">🎮</span> BTS Games</div>
+                    -->
                     <div class="nav-item" onclick="goTo('summary')"><span class="nav-icon">📊</span> Weekly Results
                     </div>
                     <div class="nav-item" onclick="goTo('feed')"><span class="nav-icon">📡</span> Activity Feed</div>
@@ -391,6 +403,25 @@
                         Panel</div>
                 </div>
 
+            </div>
+
+            <!-- Push Alerts CTA -->
+            <div id="pushAlertsCTA" style="padding:8px 14px 4px;">
+                <button id="pushEnableBtn" onclick="handlePushToggle()" style="
+                    width:100%;
+                    background:linear-gradient(135deg,rgba(232,58,93,0.14) 0%,rgba(232,58,93,0.04) 100%);
+                    border:1px solid rgba(232,58,93,0.45);
+                    color:#e83a5d;
+                    padding:9px 12px;
+                    border-radius:8px;
+                    cursor:pointer;
+                    font-size:0.68rem;
+                    letter-spacing:0.08em;
+                    font-weight:600;
+                    text-align:center;
+                    transition:all 0.25s;
+                    display:block;
+                ">🔔 Enable Alerts</button>
             </div>
 
             <!-- Footer -->
@@ -753,6 +784,21 @@
                     <div id="guideContent"></div>
                 </div>
 
+                <!-- ══ BTS GAMES — not live yet ══
+                <div class="page" id="page-games">
+                    <div class="page-header mission-header" style="--mission-accent:var(--vinyl-gold);">
+                        <div class="mission-header-top">
+                            <div class="mission-header-icon">🎮</div>
+                            <div class="mission-header-text">
+                                <div class="page-title">BTS Games</div>
+                                <div class="page-subtitle">Real BTS data • Real fun</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="gamesContent"></div>
+                </div>
+                ══ END BTS GAMES ══ -->
+
             </div>
         </div>
     </div>
@@ -793,8 +839,13 @@
        ══════════════════════════════════════════ -->
     <div id="toast-container"></div>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=2"></script>
     <script src="concert_voyage.js?v=2025060103"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
+    </script>
 </body>
 
 </html>
