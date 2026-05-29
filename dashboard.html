@@ -370,6 +370,7 @@
                 <div class="nav-section">
                     <div class="nav-section-title">Intel</div>
                     <div class="nav-item" onclick="goTo('rankings')"><span class="nav-icon">🏆</span> Rankings</div>
+                    <div class="nav-item" onclick="goTo('halloffame')"><span class="nav-icon">🥇</span> Hall of Fame</div>
                     <div class="nav-item" onclick="goTo('teams')"><span class="nav-icon">⚔️</span> Squad Standings</div>
                     <div class="nav-item" onclick="goTo('hangar')"><span class="nav-icon">⛵</span> Magic Ship</div>
                     <div class="nav-item" onclick="goTo('protocol148')"><span class="nav-icon">🧠</span> 148 Protocol
@@ -391,8 +392,22 @@
                     <!-- BTS GAMES — not live yet
                     <div class="nav-item" onclick="goTo('games')" style="border-left:2px solid var(--vinyl-gold);"><span class="nav-icon">🎮</span> BTS Games</div>
                     -->
-                    <div class="nav-item" onclick="goTo('summary')"><span class="nav-icon">📊</span> Weekly Results
-                    </div>
+                </div>
+
+                <!-- NAV: OPS ROOM -->
+                <div class="nav-section">
+                    <div class="nav-section-title">Ops Room</div>
+                    <div class="nav-item" onclick="goTo('flashbounties')" style="border-left:2px solid var(--fail);"><span class="nav-icon">🚨</span> Flash Bounties</div>
+                    <div class="nav-item" onclick="goTo('deadrop')"><span class="nav-icon">📦</span> Dead Drop</div>
+                    <div class="nav-item" onclick="goTo('vault')"><span class="nav-icon">🔒</span> Clearance Protocol</div>
+                    <div class="nav-item" onclick="goTo('echolocation')"><span class="nav-icon">📡</span> Echolocation</div>
+                    <div class="nav-item" onclick="goTo('agentx')"><span class="nav-icon">🕵️</span> Agent X</div>
+                </div>
+
+                <!-- NAV: REPORTS -->
+                <div class="nav-section">
+                    <div class="nav-section-title">Reports</div>
+                    <div class="nav-item" onclick="goTo('summary')"><span class="nav-icon">📊</span> Weekly Results</div>
                     <div class="nav-item" onclick="goTo('feed')"><span class="nav-icon">📡</span> Activity Feed</div>
                 </div>
 
@@ -797,7 +812,92 @@
                     </div>
                     <div id="gamesContent"></div>
                 </div>
-                ══ END BTS GAMES ══ -->
+
+                <!-- ══ HALL OF FAME ══ -->
+                <div class="page" id="page-halloffame">
+                    <div class="page-header mission-header" style="--mission-accent:var(--vinyl-gold);">
+                        <div class="mission-header-top">
+                            <div class="mission-header-icon">🏆</div>
+                            <div class="mission-header-text">
+                                <div class="page-title">Hall of Fame</div>
+                                <div class="page-subtitle">Weekly Battle Champions</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="hofContent" style="padding:16px;"></div>
+                </div>
+
+                <!-- ══ FLASH BOUNTIES ══ -->
+                <div class="page" id="page-flashbounties">
+                    <div class="page-header mission-header" style="--mission-accent:var(--fail);">
+                        <div class="mission-header-top">
+                            <div class="mission-header-icon">🚨</div>
+                            <div class="mission-header-text">
+                                <div class="page-title">Flash Bounties</div>
+                                <div class="page-subtitle">Emergency ops — limited time only</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="flashBountiesContent" style="padding:16px;"></div>
+                </div>
+
+                <!-- ══ DEAD DROP ══ -->
+                <div class="page" id="page-deadrop">
+                    <div class="page-header mission-header" style="--mission-accent:var(--wave-foam);">
+                        <div class="mission-header-top">
+                            <div class="mission-header-icon">📦</div>
+                            <div class="mission-header-text">
+                                <div class="page-title">Dead Drop</div>
+                                <div class="page-subtitle">Handlers hold the code — find yours in the GC</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="deadDropContent" style="padding:16px;"></div>
+                </div>
+
+                <!-- ══ CLEARANCE PROTOCOL ══ -->
+                <div class="page" id="page-vault">
+                    <div class="page-header mission-header" style="--mission-accent:var(--courage-amber);">
+                        <div class="mission-header-top">
+                            <div class="mission-header-icon">🔒</div>
+                            <div class="mission-header-text">
+                                <div class="page-title">Clearance Protocol</div>
+                                <div class="page-subtitle">4 agents. 4 nodes. One vault.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="vaultContent" style="padding:16px;"></div>
+                </div>
+
+                <!-- ══ ECHOLOCATION ══ -->
+                <div class="page" id="page-echolocation">
+                    <div class="page-header mission-header" style="--mission-accent:var(--wave-foam);">
+                        <div class="mission-header-top">
+                            <div class="mission-header-icon">📡</div>
+                            <div class="mission-header-text">
+                                <div class="page-title">Echolocation</div>
+                                <div class="page-subtitle">Does your squad share one brain?</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="echoContent" style="padding:16px;"></div>
+                </div>
+
+                <!-- ══ AGENT X ══ -->
+                <div class="page" id="page-agentx">
+                    <div class="page-header mission-header" style="--mission-accent:var(--courage-amber);">
+                        <div class="mission-header-top">
+                            <div class="mission-header-icon">🕵️</div>
+                            <div class="mission-header-text">
+                                <div class="page-title">Agent X</div>
+                                <div class="page-subtitle">Can you guess who is hiding in plain sight?</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="agentXContent" style="padding:16px;"></div>
+                </div>
+
+                <!-- ══ END OPS ROOM ══ -->
 
             </div>
         </div>
