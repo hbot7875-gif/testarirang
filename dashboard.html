@@ -397,7 +397,7 @@
                 <!-- NAV: OPS ROOM -->
                 <div class="nav-section">
                     <div class="nav-section-title">Ops Room</div>
-                    <div class="nav-item" onclick="goTo('games')"><span class="nav-icon">🎮</span> Games</div>
+                    <div class="nav-item" onclick="goTo('games')"><span class="nav-icon">🎮</span> AriGames</div>
                 </div>
 
                 <!-- NAV: REPORTS -->
@@ -829,99 +829,114 @@
                         <div class="mission-header-top">
                             <div class="mission-header-icon">🎮</div>
                             <div class="mission-header-text">
-                                <div class="page-title">Games</div>
-                                <div class="page-subtitle">Daily missions for the whole squad</div>
+                                <div class="page-title">AriGames</div>
+                                <div class="page-subtitle">Every track tells a story. Every game brings it to life.</div>
                             </div>
                         </div>
                     </div>
                     <div style="padding:16px; display:flex; flex-direction:column; gap:0;">
 
-                        <!-- ─── GAME 1: FLASH BOUNTY ─── -->
+                        <!-- ─── GAME 1: ARIRANG SOS ─── -->
                         <div style="padding-bottom:20px;">
                             <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
                                 <span style="font-size:22px;">🚨</span>
                                 <div>
-                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Flash Bounty</div>
-                                    <div style="font-size:10px;color:var(--text-muted);">Squad emergency — limited time streaming push</div>
+                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Pop Out</div>
+                                    <div style="font-size:10px;color:var(--text-muted);">Emergency stream mission — every scrobble counts</div>
                                 </div>
                             </div>
                             <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid var(--fail);background:rgba(232,58,93,0.05);border-radius:0 6px 6px 0;">
                                 <div style="font-size:9px;font-weight:800;color:var(--fail);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
-                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">HQ drops a Flash Bounty when a BTS track needs an emergency boost. Hit <strong style="color:#fff;">Join</strong> and stream the track before the timer runs out. The whole squad works together to hit the stream target — everyone who joins earns XP when it succeeds! 🎯</div>
+                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">When a team's track goal needs a push, HQ drops a Pop Out. Hit <strong style="color:#fff;">Join</strong> and stream the track — targets are bite-sized: <strong style="color:#fff;">50, 100, 150, or 200 streams</strong> within 1–2 hours. The <strong style="color:var(--vinyl-gold);">500 XP pool</strong> is shared by everyone who joined — and your scrobbles count toward your team's weekly track goal too. Win-win! 🎯💜</div>
                             </div>
                             <div id="flashBountiesContent"></div>
                         </div>
 
                         <div style="border-top:1px solid var(--border-subtle);margin-bottom:20px;"></div>
 
-                        <!-- ─── GAME 2: DEAD DROP ─── -->
+                        <!-- ─── GAME 2: ALIENS (Friday Mafia Game) ─── -->
+                        <div id="aliensSection" style="padding-bottom:20px;">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                <span style="font-size:22px;">🛸</span>
+                                <div style="flex:1;">
+                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Aliens <span style="font-size:8px;color:#bf5af2;background:rgba(191,90,242,0.2);padding:2px 6px;border-radius:8px;margin-left:4px;">FRI 6PM IST</span></div>
+                                    <div style="font-size:10px;color:var(--text-muted);">Outsiders hidden among the squad — mafia game</div>
+                                </div>
+                                <button onclick="showAliensHowToPlay()" style="background:rgba(191,90,242,0.15);border:1px solid #bf5af255;border-radius:14px;padding:5px 12px;color:#bf5af2;font-size:9px;font-weight:800;cursor:pointer;letter-spacing:0.5px;white-space:nowrap;">📖 How to Play</button>
+                            </div>
+                            <div id="aliensContent"></div>
+                        </div>
+
+                        <div id="aliensDivider" style="border-top:1px solid var(--border-subtle);margin-bottom:20px;"></div>
+
+                        <!-- ─── GAME 3: ARARIYO CODE ─── -->
                         <div style="padding-bottom:20px;">
                             <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-                                <span style="font-size:22px;">📦</span>
+                                <span style="font-size:22px;">🔐</span>
                                 <div>
-                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Dead Drop</div>
-                                    <div style="font-size:10px;color:var(--text-muted);">One teammate holds the code — can you find them?</div>
+                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Just Dive</div>
+                                    <div style="font-size:10px;color:var(--text-muted);">Decode the BTS song from its initials — one shot per day</div>
                                 </div>
                             </div>
-                            <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid var(--wave-foam);background:rgba(90,200,250,0.05);border-radius:0 6px 6px 0;">
-                                <div style="font-size:9px;font-weight:800;color:var(--wave-foam);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
-                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">Every day your team gets a secret prompt and passcode. A few teammates are <strong style="color:var(--courage-amber);">Handlers</strong> — they can see the passcode. Everyone else is a <strong style="color:var(--wave-foam);">Field Agent</strong>. Message your Handler in the group chat, get the code, then enter it here to crack today's drop! 🔓</div>
+                            <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid #34c759;background:rgba(52,199,89,0.05);border-radius:0 6px 6px 0;">
+                                <div style="font-size:9px;font-weight:800;color:#34c759;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
+                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">A BTS song title is scrambled into just its initials — like <strong style="color:#fff;">S D</strong> for <em>Spring Day</em>. You get <strong style="color:#34c759;">one chance</strong> to type the full song title. Get it right and earn <strong style="color:#34c759;">+8 XP</strong>. Runs daily — a new song drops every midnight KST! 🎵</div>
                             </div>
-                            <div id="deadDropContent"></div>
+                            <div id="cipherContent"></div>
                         </div>
 
                         <div style="border-top:1px solid var(--border-subtle);margin-bottom:20px;"></div>
 
-                        <!-- ─── GAME 3: VAULT BREAK ─── -->
+                        <!-- ─── GAME 6: TWO ROADS ─── -->
                         <div style="padding-bottom:20px;">
                             <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-                                <span style="font-size:22px;">🔒</span>
+                                <span style="font-size:22px;">⚖️</span>
                                 <div>
-                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Vault Break</div>
-                                    <div style="font-size:10px;color:var(--text-muted);">4 agents. 4 locks. One vault to crack together.</div>
+                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Still Spinning</div>
+                                    <div style="font-size:10px;color:var(--text-muted);">Pick a side — the carousel never stops</div>
                                 </div>
                             </div>
-                            <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid var(--courage-amber);background:rgba(255,149,0,0.05);border-radius:0 6px 6px 0;">
-                                <div style="font-size:9px;font-weight:800;color:var(--courage-amber);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
-                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">The vault has 4 locks, each needs a different type of agent to open it. Find the node that fits you (Level 2+, streaks, badges, etc.), tap <strong style="color:#fff;">Authenticate</strong> to claim your spot. Your team needs 4 different agents on 4 different nodes — coordinate in the GC and crack it together for <strong style="color:var(--courage-amber);">+1,000 XP each!</strong> 💜</div>
+                            <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid #ff9f0a;background:rgba(255,159,10,0.05);border-radius:0 6px 6px 0;">
+                                <div style="font-size:9px;font-weight:800;color:#ff9f0a;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
+                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">A spicy BTS dilemma drops every day — two options, pick one. There's no right answer! After you vote, see immediately how everyone else in the app voted. The real fun starts in the GC once everyone has picked a side 👀</div>
                             </div>
-                            <div id="vaultContent"></div>
+                            <div id="balanceContent"></div>
                         </div>
 
                         <div style="border-top:1px solid var(--border-subtle);margin-bottom:20px;"></div>
 
-                        <!-- ─── GAME 4: SQUAD SYNC ─── -->
+                        <!-- ─── GAME 7: STAR RELAY ─── -->
                         <div style="padding-bottom:20px;">
                             <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-                                <span style="font-size:22px;">📡</span>
+                                <span style="font-size:22px;">🔗</span>
                                 <div>
-                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Squad Sync</div>
-                                    <div style="font-size:10px;color:var(--text-muted);">Does your squad share one brain?</div>
+                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Eat This Life</div>
+                                    <div style="font-size:10px;color:var(--text-muted);">Instinctive word relay — pass it on, one word per day</div>
                                 </div>
                             </div>
-                            <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid var(--wave-foam);background:rgba(90,200,250,0.05);border-radius:0 6px 6px 0;">
-                                <div style="font-size:9px;font-weight:800;color:var(--wave-foam);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
-                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">A BTS question drops every day — answer it <strong style="color:#fff;">completely alone</strong>, no peeking at the GC! Answers stay hidden until midnight KST. If <strong style="color:var(--wave-foam);">70%+</strong> of your squad picks the same answer, you all sync up and earn <strong style="color:var(--wave-foam);">+30 XP</strong>. The fun is finding out if your squad's brains work the same way 💜</div>
+                            <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid #5ac8fa;background:rgba(90,200,250,0.05);border-radius:0 6px 6px 0;">
+                                <div style="font-size:9px;font-weight:800;color:#5ac8fa;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
+                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">Your team builds a word chain together — each word must start with the <strong style="color:#fff;">last letter</strong> of the previous word. You get one word per day. Longer chains = more team XP! Coordinate with your squad so no one runs out of ideas 🔗</div>
                             </div>
-                            <div id="echoContent"></div>
+                            <div id="signalContent"></div>
                         </div>
 
                         <div style="border-top:1px solid var(--border-subtle);margin-bottom:20px;"></div>
 
-                        <!-- ─── GAME 5: WHO IS AGENT X? ─── -->
+                        <!-- ─── GAME 5: FYA (Rapid Fire) ─── -->
                         <div style="padding-bottom:20px;">
                             <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-                                <span style="font-size:22px;">🕵️</span>
+                                <span style="font-size:22px;">⚡</span>
                                 <div>
-                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Who Is Agent X?</div>
-                                    <div style="font-size:10px;color:var(--text-muted);">Guess the mystery squad member from 3 clues</div>
+                                    <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">That's Fire</div>
+                                    <div style="font-size:10px;color:var(--text-muted);">5 BTS questions — 7 seconds each, answer before it burns out</div>
                                 </div>
                             </div>
-                            <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid #bf5af2;background:rgba(191,90,242,0.05);border-radius:0 6px 6px 0;">
-                                <div style="font-size:9px;font-weight:800;color:#bf5af2;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
-                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">First, <strong style="color:#fff;">file your dossier</strong> — share 3 fun facts about yourself (the BTS song that made you an ARMY, a random hobby, a weird fact). Each day, one squad member is secretly chosen as <strong style="color:#bf5af2;">Agent X</strong>. Your team gets their 3 facts as clues and must guess who it is before midnight. Guess right and earn <strong style="color:#bf5af2;">+20 XP</strong>! 🕵️</div>
+                            <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid var(--fail);background:rgba(232,58,93,0.05);border-radius:0 6px 6px 0;">
+                                <div style="font-size:9px;font-weight:800;color:var(--fail);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
+                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">5 BTS trivia questions back to back. The moment a question appears, a <strong style="color:var(--fail);">7-second countdown</strong> starts. Type your answer and press Enter — or time runs out and you skip it. Results and XP revealed at the end. One round per day, new questions every midnight! ⚡</div>
                             </div>
-                            <div id="agentXContent"></div>
+                            <div id="rapidFireContent"></div>
                         </div>
 
                     </div>
