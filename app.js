@@ -2161,13 +2161,28 @@ const FESTA_POSITIONS = [
 
 let _festaItemEl = null;
 let _festaCurrentRelic = null;
+let _festaFirstFoundPage = null;   // page where agent found their first relic today
+let _festaFirstFoundAt  = null;    // timestamp when first relic was claimed
+const FESTA_SECOND_COOLDOWN_MS = 10 * 60 * 1000; // 10 minutes before second relic can appear
+
+function isFestaLive() {
+  const kst = new Date(Date.now() + 9 * 3600000);
+  if (kst.getUTCFullYear() !== 2026) return false;
+  const m = kst.getUTCMonth(), d = kst.getUTCDate();
+  return (m === 5 && d >= 2) || (m === 6 && d === 1); // June 2 – July 1
+}
 
 async function initFestaRelic() {
   if (!STATE.agentNo || !STATE.data) return;
-  // Only June 2026
-  const now = new Date(Date.now() + 9 * 3600000); // KST
-  if (now.getUTCFullYear() !== 2026 || now.getUTCMonth() !== 5) return;
-  // Remove existing item
+  if (!isFestaLive()) return;
+  // If first relic already found today, enforce harder rules for the second:
+  //   • must be on a DIFFERENT page than where first was found
+  //   • must have waited at least FESTA_SECOND_COOLDOWN_MS
+  if (_festaFirstFoundAt !== null) {
+    const cooldownDone = (Date.now() - _festaFirstFoundAt) >= FESTA_SECOND_COOLDOWN_MS;
+    const differentPage = STATE.page !== _festaFirstFoundPage;
+    if (!cooldownDone || !differentPage) return;
+  }
   if (_festaItemEl) { _festaItemEl.remove(); _festaItemEl = null; }
   try {
     const res = await Api.call('getFestaRelic', { agentNo: STATE.agentNo }, { dedupe: false, cache: false });
@@ -2220,10 +2235,15 @@ async function handleFestaClick(relic) {
     const res = await Api.call('claimFestaRelic', { agentNo: STATE.agentNo, relicId: relic.id }, { dedupe: false, cache: false });
     if (_festaItemEl) { _festaItemEl.remove(); _festaItemEl = null; }
     if (res?.success) {
+      // Record where/when this relic was found for second-relic gating
+      if (_festaFirstFoundAt === null) {
+        _festaFirstFoundAt  = Date.now();
+        _festaFirstFoundPage = STATE.page;
+      }
       showFestaClaimPopup(res.relic || relic, res.xp, res.isTopClaimer, res.claimNumber);
       Api.invalidate();
-      // Check for a second relic after a short delay
-      Timers.setTimeout('festa-relic-second', initFestaRelic, 4000);
+      // Second relic is NOT auto-triggered — agent must navigate to a different page
+      // and wait 10 minutes before it can appear (handled in initFestaRelic)
     } else {
       showToast(res?.error || 'Already claimed!', 'info');
       if (_festaItemEl) { _festaItemEl.remove(); _festaItemEl = null; }
@@ -2251,7 +2271,7 @@ function showFestaClaimPopup(relic, xp, isTopClaimer, claimNumber) {
         <div style="font-size:22px;font-weight:900;color:${isTopClaimer ? '#fbbf24' : '#a78bfa'};">${isTopClaimer ? '⭐' : '✅'} +${xp} XP</div>
         <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">${isTopClaimer ? `🏆 You were #${claimNumber} to find this relic!` : 'Relic claimed — added to your contraband'}</div>
       </div>
-      <div style="font-size:9px;color:var(--text-ghost);font-style:italic;margin-bottom:20px;">"${relic.toast.split(': ')[1]?.replace(/"/g,'') || relic.toast}"</div>
+      ${relic.lore ? `<div style="font-size:10px;color:rgba(196,181,253,0.8);font-style:italic;line-height:1.6;margin-bottom:20px;padding:10px 14px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:2px solid rgba(139,92,246,0.4);">${relic.lore}</div>` : ''}
       <button onclick="document.getElementById('festa-claim-popup')?.remove()" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;padding:12px 32px;border-radius:12px;font-size:12px;font-weight:900;cursor:pointer;letter-spacing:1px;text-transform:uppercase;">SECURED 💜</button>
     </div>`;
   document.body.appendChild(overlay);
@@ -2265,7 +2285,8 @@ function showFestaHuntPopup() {
   overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
 
   const kst = new Date(Date.now() + 9 * 3600000);
-  const day = kst.getUTCDate();
+  const FESTA_START_POP = Date.UTC(2026, 5, 2);
+  const day = Math.min(30, Math.max(1, Math.floor((kst.getTime() - FESTA_START_POP) / 86400000) + 1));
   const daysLeft = 30 - day + 1;
 
   overlay.innerHTML = `
@@ -2620,10 +2641,14 @@ async function renderHome() {
 
     // ─── Festa Hunt card (June 2026 only) ───
     const _festaKST = new Date(Date.now() + 9 * 3600000);
-    const _festaOn  = _festaKST.getUTCFullYear() === 2026 && _festaKST.getUTCMonth() === 5;
+    const _festaOn  = (_festaKST.getUTCFullYear() === 2026) &&
+                      ((_festaKST.getUTCMonth() === 5 && _festaKST.getUTCDate() >= 2) ||
+                       (_festaKST.getUTCMonth() === 6 && _festaKST.getUTCDate() === 1));
     let festaCardHtml = '';
     if (_festaOn) {
-      const _festaDay    = _festaKST.getUTCDate(); // 1–30
+      // Day 1 = June 2, Day 30 = July 1
+      const FESTA_START_MS = Date.UTC(2026, 5, 2); // June 2 UTC midnight ≈ June 2 KST
+      const _festaDay  = Math.min(30, Math.max(1, Math.floor((_festaKST.getTime() - FESTA_START_MS) / 86400000) + 1));
       const _festaDismissKey = `festa_dismissed_${getKSTDateString()}`;
       const _festaDismissed  = localStorage.getItem(_festaDismissKey) === '1';
       if (!_festaDismissed) {
@@ -4287,7 +4312,7 @@ function renderProfile() {
     `;
 
     // --- 5. FESTA CONTRABAND INVENTORY ---
-    const _festaActive = (() => { const k = new Date(Date.now() + 9*3600000); return k.getUTCFullYear() === 2026 && k.getUTCMonth() === 5; })();
+    const _festaActive = (() => { const k = new Date(Date.now() + 9*3600000); return k.getUTCFullYear() === 2026 && ((k.getUTCMonth() === 5 && k.getUTCDate() >= 2) || (k.getUTCMonth() === 6 && k.getUTCDate() === 1)); })();
     if (_festaActive) {
       html += `
       <div class="glass-card" style="padding:20px; margin-bottom:16px; border-top:3px solid #7c3aed; background:linear-gradient(135deg,rgba(124,58,237,0.05),transparent);">
