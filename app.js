@@ -1851,7 +1851,7 @@ function goTo(page) {
   // Call the page's render function if one exists
   const renderer = PAGE_RENDERERS[page];
   if (renderer) {
-    // Optimization: Use requestAnimationFrame to ensure the class change (active) 
+    // Optimization: Use requestAnimationFrame to ensure the class change (active)
     // triggers the CSS transition before the heavy JS rendering starts.
     requestAnimationFrame(() => {
       try {
@@ -1862,6 +1862,11 @@ function goTo(page) {
         console.error(`Render error [${page}]:`, e);
       }
     });
+  }
+
+  // Festa relic check on every page change (5s delay so it doesn't compete with render)
+  if (typeof initFestaRelic === 'function') {
+    Timers.setTimeout('festa-relic-check', initFestaRelic, 5000);
   }
 }
 
@@ -2144,6 +2149,202 @@ function handleManualSync() { syncData(); }
 
 
 // =============================================
+// ██████  FESTA HIDDEN GIFTS (June 2026)
+// =============================================
+
+const FESTA_POSITIONS = [
+  'top:12%; left:8%', 'top:12%; right:8%',
+  'top:50%; left:4%', 'top:50%; right:4%',
+  'top:75%; left:10%', 'top:75%; right:10%',
+  'top:30%; left:6%', 'top:30%; right:6%',
+];
+
+let _festaItemEl = null;
+let _festaCurrentRelic = null;
+
+async function initFestaRelic() {
+  if (!STATE.agentNo || !STATE.data) return;
+  // Only June 2026
+  const now = new Date(Date.now() + 9 * 3600000); // KST
+  if (now.getUTCFullYear() !== 2026 || now.getUTCMonth() !== 5) return;
+  // Remove existing item
+  if (_festaItemEl) { _festaItemEl.remove(); _festaItemEl = null; }
+  try {
+    const res = await Api.call('getFestaRelic', { agentNo: STATE.agentNo }, { dedupe: false, cache: false });
+    if (res?.relic) {
+      _festaCurrentRelic = res.relic;
+      showFestaItem(res.relic);
+    }
+  } catch (e) { /* silent */ }
+}
+
+function showFestaItem(relic) {
+  if (_festaItemEl) { _festaItemEl.remove(); _festaItemEl = null; }
+  const pos = FESTA_POSITIONS[Math.floor(Math.random() * FESTA_POSITIONS.length)];
+  const el = document.createElement('div');
+  el.id = 'festa-relic-item';
+  el.title = 'Something hidden... 💜';
+  el.style.cssText = `
+    position: fixed; ${pos}; z-index: 9000;
+    font-size: 26px; cursor: pointer;
+    animation: festaFloat 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 6px rgba(139,92,246,0.6));
+    transform: translateY(0);
+    user-select: none;
+    transition: transform 0.15s ease;
+  `;
+  el.textContent = relic.emoji;
+  el.onclick = () => handleFestaClick(relic);
+  el.onmouseenter = () => { el.style.transform = 'scale(1.25)'; };
+  el.onmouseleave = () => { el.style.transform = 'scale(1)'; };
+
+  if (!document.getElementById('festa-float-style')) {
+    const s = document.createElement('style');
+    s.id = 'festa-float-style';
+    s.textContent = `
+      @keyframes festaFloat {
+        0%,100% { transform:translateY(0) rotate(-3deg); }
+        50%      { transform:translateY(-8px) rotate(3deg); }
+      }
+    `;
+    document.head.appendChild(s);
+  }
+  document.body.appendChild(el);
+  _festaItemEl = el;
+}
+
+async function handleFestaClick(relic) {
+  if (!relic) return;
+  if (_festaItemEl) { _festaItemEl.style.pointerEvents = 'none'; _festaItemEl.style.opacity = '0.4'; }
+  try {
+    const res = await Api.call('claimFestaRelic', { agentNo: STATE.agentNo, relicId: relic.id }, { dedupe: false, cache: false });
+    if (_festaItemEl) { _festaItemEl.remove(); _festaItemEl = null; }
+    if (res?.success) {
+      showFestaClaimPopup(res.relic || relic, res.xp, res.isTopClaimer, res.claimNumber);
+      Api.invalidate();
+      // Check for a second relic after a short delay
+      Timers.setTimeout('festa-relic-second', initFestaRelic, 4000);
+    } else {
+      showToast(res?.error || 'Already claimed!', 'info');
+      if (_festaItemEl) { _festaItemEl.remove(); _festaItemEl = null; }
+    }
+  } catch (e) {
+    showToast('Could not claim relic', 'error');
+    if (_festaItemEl) { _festaItemEl.style.pointerEvents = ''; _festaItemEl.style.opacity = '1'; }
+  }
+}
+
+function showFestaClaimPopup(relic, xp, isTopClaimer, claimNumber) {
+  document.querySelectorAll('#festa-claim-popup').forEach(e => e.remove());
+  const overlay = document.createElement('div');
+  overlay.id = 'festa-claim-popup';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;animation:fadeIn 0.3s ease;`;
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+
+  overlay.innerHTML = `
+    <div style="background:linear-gradient(135deg,#1a0a2e,#0d1b2a);border:1px solid rgba(139,92,246,0.4);border-radius:20px;padding:32px 28px;max-width:340px;width:90%;text-align:center;box-shadow:0 0 60px rgba(139,92,246,0.3);animation:promoSlideUp 0.4s ease;">
+      <div style="font-size:14px;font-weight:900;color:#a78bfa;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">🎁 Festa Relic Secured</div>
+      <div style="font-size:64px;margin:16px 0;filter:drop-shadow(0 0 16px rgba(139,92,246,0.8));">${relic.emoji}</div>
+      <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px;">${relic.name}</div>
+      <div style="font-size:10px;color:#a78bfa;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">${relic.era}</div>
+      <div style="background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.3);border-radius:12px;padding:12px 16px;margin-bottom:16px;">
+        <div style="font-size:22px;font-weight:900;color:${isTopClaimer ? '#fbbf24' : '#a78bfa'};">${isTopClaimer ? '⭐' : '✅'} +${xp} XP</div>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">${isTopClaimer ? `🏆 You were #${claimNumber} to find this relic!` : 'Relic claimed — added to your contraband'}</div>
+      </div>
+      <div style="font-size:9px;color:var(--text-ghost);font-style:italic;margin-bottom:20px;">"${relic.toast.split(': ')[1]?.replace(/"/g,'') || relic.toast}"</div>
+      <button onclick="document.getElementById('festa-claim-popup')?.remove()" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;padding:12px 32px;border-radius:12px;font-size:12px;font-weight:900;cursor:pointer;letter-spacing:1px;text-transform:uppercase;">SECURED 💜</button>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+
+function showFestaHuntPopup() {
+  document.querySelectorAll('#festa-hunt-popup').forEach(e => e.remove());
+  const overlay = document.createElement('div');
+  overlay.id = 'festa-hunt-popup';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,0.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s ease;`;
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+
+  const kst = new Date(Date.now() + 9 * 3600000);
+  const day = kst.getUTCDate();
+  const daysLeft = 30 - day + 1;
+
+  overlay.innerHTML = `
+    <div style="background:linear-gradient(160deg,#0f0a1e,#0a1628);border:1px solid rgba(139,92,246,0.4);border-radius:22px;width:100%;max-width:380px;overflow:hidden;box-shadow:0 0 80px rgba(124,58,237,0.25);animation:promoSlideUp 0.4s ease;">
+
+      <!-- Header -->
+      <div style="background:linear-gradient(135deg,rgba(124,58,237,0.3),rgba(79,70,229,0.2));padding:24px 24px 20px;border-bottom:1px solid rgba(139,92,246,0.2);position:relative;">
+        <button onclick="document.getElementById('festa-hunt-popup')?.remove()" style="position:absolute;top:14px;right:16px;background:transparent;border:none;color:rgba(167,139,250,0.5);font-size:18px;cursor:pointer;line-height:1;">✕</button>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:44px;filter:drop-shadow(0 0 12px rgba(167,139,250,0.8));animation:festaFloat 2.5s ease-in-out infinite;">🎁</div>
+          <div>
+            <div style="font-size:9px;color:#a78bfa;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;">BTS × HopeTracker</div>
+            <div style="font-size:20px;font-weight:900;color:#fff;font-family:'Orbitron',sans-serif;letter-spacing:1px;">FESTA HUNT</div>
+            <div style="font-size:10px;color:rgba(196,181,253,0.7);margin-top:3px;">Day ${day} of 30 · ${daysLeft} day${daysLeft !== 1 ? 's' : ''} remaining 💜</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div style="padding:22px 24px;display:flex;flex-direction:column;gap:16px;">
+
+        <!-- What is it -->
+        <div style="background:rgba(124,58,237,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:14px 16px;">
+          <div style="font-size:10px;font-weight:900;color:#a78bfa;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">What is it?</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.8);line-height:1.7;">
+            45 hidden BTS relics from <strong style="color:#c4b5fd;">2013 → 2026</strong> have been scattered across HQ — from debut era props to fresh Arirang 2026 artifacts. Every agent gets different ones, so share what you find in the GC 💜
+          </div>
+        </div>
+
+        <!-- How to find -->
+        <div style="background:rgba(124,58,237,0.06);border:1px solid rgba(139,92,246,0.15);border-radius:12px;padding:14px 16px;">
+          <div style="font-size:10px;font-weight:900;color:#a78bfa;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">How to find</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="font-size:16px;flex-shrink:0;">🔍</span>
+              <span style="font-size:11px;color:rgba(255,255,255,0.75);line-height:1.6;">Navigate any page in HT. A small floating emoji will appear somewhere on screen — look around the edges.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="font-size:16px;flex-shrink:0;">👆</span>
+              <span style="font-size:11px;color:rgba(255,255,255,0.75);line-height:1.6;">Tap it to secure the relic and earn XP. It gently bobs and glows — subtle but visible.</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="font-size:16px;flex-shrink:0;">📦</span>
+              <span style="font-size:11px;color:rgba(255,255,255,0.75);line-height:1.6;">Up to <strong style="color:#fbbf24;">2 relics per day</strong> — each one different from your teammates'.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- XP rewards -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);border-radius:12px;padding:12px;text-align:center;">
+            <div style="font-size:22px;font-weight:900;color:#fbbf24;">⭐ +10 XP</div>
+            <div style="font-size:9px;color:rgba(251,191,36,0.7);margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">First 20 agents<br>to claim each relic</div>
+          </div>
+          <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.25);border-radius:12px;padding:12px;text-align:center;">
+            <div style="font-size:22px;font-weight:900;color:#a78bfa;">✅ +5 XP</div>
+            <div style="font-size:9px;color:rgba(167,139,250,0.7);margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">After the first<br>20 agents</div>
+          </div>
+        </div>
+
+        <!-- Contraband tip -->
+        <div style="display:flex;gap:10px;align-items:center;padding:10px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
+          <span style="font-size:18px;">📁</span>
+          <span style="font-size:10px;color:var(--text-muted);line-height:1.5;">Every relic you find is saved forever in your <strong style="color:#a78bfa;">Festa Contraband</strong> — check your Profile to see your collection.</span>
+        </div>
+
+        <button onclick="document.getElementById('festa-hunt-popup')?.remove()" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;padding:14px;border-radius:12px;font-size:12px;font-weight:900;cursor:pointer;letter-spacing:1px;text-transform:uppercase;width:100%;">
+          START HUNTING 💜
+        </button>
+      </div>
+    </div>`;
+
+  document.body.appendChild(overlay);
+}
+
+window.showFestaHuntPopup = showFestaHuntPopup;
+window.initFestaRelic = initFestaRelic;
+
+// =============================================
 // END OF PART 1
 // =============================================
 // Part 2 will define all render/page functions
@@ -2417,6 +2618,50 @@ async function renderHome() {
     const D = STATE.data;
     if (!D) return;
 
+    // ─── Festa Hunt card (June 2026 only) ───
+    const _festaKST = new Date(Date.now() + 9 * 3600000);
+    const _festaOn  = _festaKST.getUTCFullYear() === 2026 && _festaKST.getUTCMonth() === 5;
+    let festaCardHtml = '';
+    if (_festaOn) {
+      const _festaDay    = _festaKST.getUTCDate(); // 1–30
+      const _festaDismissKey = `festa_dismissed_${getKSTDateString()}`;
+      const _festaDismissed  = localStorage.getItem(_festaDismissKey) === '1';
+      if (!_festaDismissed) {
+        // Fetch today's relic status for live progress (non-blocking, filled async)
+        festaCardHtml = `
+          <div id="festa-home-card" onclick="window.showFestaHuntPopup()" style="
+            position:relative; cursor:pointer; margin-bottom:16px; padding:14px 16px;
+            background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(79,70,229,0.08));
+            border:1px solid rgba(139,92,246,0.35); border-radius:14px;
+            box-shadow:0 0 18px rgba(124,58,237,0.15);
+            animation:festaCardPulse 3s ease-in-out infinite;
+            transition:transform 0.15s ease, box-shadow 0.15s ease;"
+            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 28px rgba(124,58,237,0.3)'"
+            onmouseout="this.style.transform='';this.style.boxShadow='0 0 18px rgba(124,58,237,0.15)'">
+
+            <button onclick="event.stopPropagation(); localStorage.setItem('${_festaDismissKey}','1'); document.getElementById('festa-home-card')?.remove();"
+              style="position:absolute; top:8px; right:10px; background:transparent; border:none;
+              color:rgba(167,139,250,0.5); font-size:14px; cursor:pointer; padding:2px 6px; line-height:1;"
+              title="Dismiss for today">✕</button>
+
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div style="font-size:32px; filter:drop-shadow(0 0 8px rgba(167,139,250,0.7)); flex-shrink:0; animation:festaFloat 2.5s ease-in-out infinite;">🎁</div>
+              <div style="flex:1; min-width:0;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:3px;">
+                  <span style="font-size:12px; font-weight:900; color:#a78bfa; letter-spacing:2px; text-transform:uppercase;">Festa Hunt</span>
+                  <span style="background:rgba(124,58,237,0.2); border:1px solid rgba(139,92,246,0.4); color:#c4b5fd; font-size:8px; font-weight:800; padding:2px 7px; border-radius:20px; letter-spacing:1px;">DAY ${_festaDay} / 30</span>
+                  <span style="background:rgba(0,255,102,0.1); border:1px solid rgba(0,255,102,0.3); color:var(--green); font-size:8px; font-weight:800; padding:2px 7px; border-radius:20px; letter-spacing:1px;">● LIVE</span>
+                </div>
+                <div style="font-size:10px; color:rgba(196,181,253,0.7); line-height:1.4;">
+                  45 BTS relics hidden across HQ · <span id="festa-daily-progress" style="color:#fbbf24; font-weight:700;">finding...</span>
+                </div>
+              </div>
+              <div style="font-size:11px; color:#a78bfa; flex-shrink:0; opacity:0.7;">→</div>
+            </div>
+          </div>`;
+      }
+    }
+
     // ─── Fetch detailed goals for the bars ───
     let trackGoals = {};
     let albumGoals = {};
@@ -2443,6 +2688,18 @@ async function renderHome() {
     if ($('homeLoading')) $('homeLoading').style.display = 'none';
 
     let html = '';
+
+    // ── Inject Festa card CSS once ──
+    if (_festaOn && !document.getElementById('festa-card-style')) {
+      const _fs = document.createElement('style');
+      _fs.id = 'festa-card-style';
+      _fs.textContent = `
+        @keyframes festaCardPulse {
+          0%,100% { border-color: rgba(139,92,246,0.35); box-shadow: 0 0 18px rgba(124,58,237,0.15); }
+          50%      { border-color: rgba(167,139,250,0.6);  box-shadow: 0 0 28px rgba(124,58,237,0.28); }
+        }`;
+      document.head.appendChild(_fs);
+    }
 
     // ═══════════════════════════════════════
     // 1. WELCOME IDENTITY CARD
@@ -2489,6 +2746,9 @@ async function renderHome() {
         </div>
       `;
     }
+
+    // ── Festa Hunt card ──
+    if (festaCardHtml) html += festaCardHtml;
 
     // ═══════════════════════════════════════
     // 2. LIVE TICKER
@@ -3172,6 +3432,27 @@ async function renderHome() {
     renderHomeStreakWidget(stats);
     loadHomeActivityWidget();
     updateTickerWithActivity();
+
+    // Async: fill Festa daily progress pill
+    if (_festaOn && document.getElementById('festa-daily-progress')) {
+      Api.call('getFestaRelic', { agentNo: STATE.agentNo }, { dedupe: false, cache: false }).then(res => {
+        const el = document.getElementById('festa-daily-progress');
+        if (!el) return;
+        if (res?.reason === 'all_found_today') {
+          el.textContent = '✅ 2/2 relics found today';
+          el.style.color = 'var(--green)';
+        } else if (res?.relic) {
+          // One relic waiting
+          const found = res?.reason === 'all_found_today' ? 2 : 1;
+          el.textContent = `1/2 found — ${res.relic.emoji} relic awaiting`;
+        } else {
+          el.textContent = '0/2 found — explore to discover';
+        }
+      }).catch(() => {
+        const el = document.getElementById('festa-daily-progress');
+        if (el) el.textContent = 'explore any page to find yours';
+      });
+    }
 
   } catch (error) {
     console.error("Home render failed:", error);
@@ -4005,7 +4286,25 @@ function renderProfile() {
       </div>
     `;
 
-    // --- 5. RETIREMENT ---
+    // --- 5. FESTA CONTRABAND INVENTORY ---
+    const _festaActive = (() => { const k = new Date(Date.now() + 9*3600000); return k.getUTCFullYear() === 2026 && k.getUTCMonth() === 5; })();
+    if (_festaActive) {
+      html += `
+      <div class="glass-card" style="padding:20px; margin-bottom:16px; border-top:3px solid #7c3aed; background:linear-gradient(135deg,rgba(124,58,237,0.05),transparent);">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+          <span style="font-size:22px;">🎁</span>
+          <div>
+            <div style="font-size:12px; font-weight:900; color:#a78bfa; text-transform:uppercase; letter-spacing:2px;">Festa 2026 Contraband</div>
+            <div style="font-size:10px; color:var(--text-ghost); margin-top:2px;">Hidden relics recovered this Festa month</div>
+          </div>
+        </div>
+        <div id="festa-inventory-body" style="min-height:40px;">
+          <div style="font-size:11px; color:var(--text-muted); text-align:center; padding:12px;">Loading contraband...</div>
+        </div>
+      </div>`;
+    }
+
+    // --- 6. RETIREMENT ---
     html += `
       <div style="text-align:center; padding-top:20px; border-top:1px dashed rgba(255,59,92,0.3);">
         <p style="font-size:10px; color:var(--text-muted); margin-bottom:12px;">Leaving permanently? This action cannot be undone.</p>
@@ -4021,6 +4320,31 @@ function renderProfile() {
 
     if (typeof loadCareerHistory === 'function') loadCareerHistory();
     if (typeof loadProfileStreak === 'function') loadProfileStreak();
+
+    // Load Festa inventory asynchronously
+    if (_festaActive) {
+      Api.call('getFestaInventory', { agentNo: STATE.agentNo }, { dedupe: false, cache: false }).then(inv => {
+        const body = document.getElementById('festa-inventory-body');
+        if (!body) return;
+        if (!inv?.success || !inv.finds?.length) {
+          body.innerHTML = `<div style="text-align:center; padding:16px; color:var(--text-ghost); font-size:11px;">No relics found yet — explore the app to discover hidden Festa gifts 💜</div>`;
+          return;
+        }
+        body.innerHTML = `
+          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+            ${inv.finds.map(f => `
+              <div title="${f.name} · ${f.era}" style="display:flex; flex-direction:column; align-items:center; gap:4px; padding:8px 10px; background:rgba(124,58,237,0.08); border:1px solid rgba(124,58,237,0.2); border-radius:10px; min-width:56px; cursor:default;">
+                <span style="font-size:24px;">${f.emoji}</span>
+                <span style="font-size:7px; color:#a78bfa; font-weight:800; text-align:center; max-width:54px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${f.name.split(' ').slice(0,2).join(' ')}</span>
+              </div>
+            `).join('')}
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); padding-top:8px; border-top:1px solid var(--border-subtle);">
+            <span>${inv.total} relic${inv.total !== 1 ? 's' : ''} recovered</span>
+            <span style="color:#fbbf24; font-weight:800;">+${inv.totalFestaXP} Festa XP</span>
+          </div>`;
+      }).catch(() => {});
+    }
 
   } catch (err) {
     console.error('renderProfile crashed:', err);
