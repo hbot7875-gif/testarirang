@@ -2160,10 +2160,25 @@ const FESTA_POSITIONS = [
 ];
 
 let _festaItemEl = null;
-let _festaCurrentRelic = null;
 let _festaFirstFoundPage = null;   // page where agent found their first relic today
-let _festaFirstFoundAt  = null;    // timestamp when first relic was claimed
+let _festaFirstFoundAt   = null;   // timestamp when first relic was claimed (persisted in localStorage)
 const FESTA_SECOND_COOLDOWN_MS = 10 * 60 * 1000; // 10 minutes before second relic can appear
+
+// Restore cooldown state from localStorage on load (survives page refresh)
+function _festaRestoreCooldown() {
+  const stored = localStorage.getItem('festa_first_found');
+  if (!stored) return;
+  try {
+    const { at, page, date } = JSON.parse(stored);
+    if (date === getKSTDateString()) {
+      _festaFirstFoundAt   = at;
+      _festaFirstFoundPage = page;
+    } else {
+      localStorage.removeItem('festa_first_found'); // stale — different day
+    }
+  } catch (_) { localStorage.removeItem('festa_first_found'); }
+}
+_festaRestoreCooldown();
 
 function isFestaLive() {
   const kst = new Date(Date.now() + 9 * 3600000);
@@ -2187,7 +2202,6 @@ async function initFestaRelic() {
   try {
     const res = await Api.call('getFestaRelic', { agentNo: STATE.agentNo }, { dedupe: false, cache: false });
     if (res?.relic) {
-      _festaCurrentRelic = res.relic;
       showFestaItem(res.relic);
     }
   } catch (e) { /* silent */ }
@@ -2221,6 +2235,11 @@ function showFestaItem(relic) {
         0%,100% { transform:translateY(0) rotate(-3deg); }
         50%      { transform:translateY(-8px) rotate(3deg); }
       }
+      @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+      @keyframes promoSlideUp {
+        from { opacity:0; transform:translateY(40px) scale(0.95); }
+        to   { opacity:1; transform:translateY(0)    scale(1); }
+      }
     `;
     document.head.appendChild(s);
   }
@@ -2235,10 +2254,15 @@ async function handleFestaClick(relic) {
     const res = await Api.call('claimFestaRelic', { agentNo: STATE.agentNo, relicId: relic.id }, { dedupe: false, cache: false });
     if (_festaItemEl) { _festaItemEl.remove(); _festaItemEl = null; }
     if (res?.success) {
-      // Record where/when this relic was found for second-relic gating
+      // Record where/when this relic was found for second-relic gating (persists across refresh)
       if (_festaFirstFoundAt === null) {
-        _festaFirstFoundAt  = Date.now();
+        _festaFirstFoundAt   = Date.now();
         _festaFirstFoundPage = STATE.page;
+        localStorage.setItem('festa_first_found', JSON.stringify({
+          at: _festaFirstFoundAt,
+          page: _festaFirstFoundPage,
+          date: getKSTDateString(),
+        }));
       }
       showFestaClaimPopup(res.relic || relic, res.xp, res.isTopClaimer, res.claimNumber);
       Api.invalidate();
@@ -2678,7 +2702,7 @@ async function renderHome() {
                   <span style="background:rgba(0,255,102,0.1); border:1px solid rgba(0,255,102,0.3); color:var(--green); font-size:8px; font-weight:800; padding:2px 7px; border-radius:20px; letter-spacing:1px;">● LIVE</span>
                 </div>
                 <div style="font-size:10px; color:rgba(196,181,253,0.7); line-height:1.4;">
-                  45 BTS relics hidden across HQ · <span id="festa-daily-progress" style="color:#fbbf24; font-weight:700;">finding...</span>
+                  50+ BTS relics hidden across HQ · <span id="festa-daily-progress" style="color:#fbbf24; font-weight:700;">finding...</span>
                 </div>
               </div>
               <div style="font-size:11px; color:#a78bfa; flex-shrink:0; opacity:0.7;">→</div>
@@ -3463,15 +3487,14 @@ async function renderHome() {
       Api.call('getFestaRelic', { agentNo: STATE.agentNo }, { dedupe: false, cache: false }).then(res => {
         const el = document.getElementById('festa-daily-progress');
         if (!el) return;
-        if (res?.reason === 'all_found_today') {
+        const foundToday = res?.foundToday ?? 0;
+        if (res?.reason === 'all_found_today' || foundToday >= 2) {
           el.textContent = '✅ 2/2 relics found today';
           el.style.color = 'var(--green)';
-        } else if (res?.relic) {
-          // One relic waiting
-          const found = res?.reason === 'all_found_today' ? 2 : 1;
-          el.textContent = `1/2 found — ${res.relic.emoji} relic awaiting`;
+        } else if (foundToday === 1) {
+          el.textContent = `1/2 found — ${res.relic?.emoji || '🎁'} second relic awaiting`;
         } else {
-          el.textContent = '0/2 found — explore to discover';
+          el.textContent = '0/2 found — explore any page to discover';
         }
       }).catch(() => {
         const el = document.getElementById('festa-daily-progress');
