@@ -17,6 +17,12 @@
   <meta name="twitter:title" content="Join — The Arirang Mission">
   <meta name="twitter:image" content="bts-og.jpg">
 
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="icon" type="image/png" href="/icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="HopeTracker">
   <link rel="preload" href="bts-bg.jpg" as="image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,6 +61,34 @@
       height: 100vh;
       overflow: hidden;
       display: flex;
+    }
+
+    /* ==================== SCAN LINE EFFECT ==================== */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(0deg,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 1px,
+          transparent 1px,
+          transparent 2px);
+      pointer-events: none;
+      z-index: 1;
+      animation: scanLines 8s linear infinite;
+    }
+
+    @keyframes scanLines {
+      0% {
+        transform: translateY(0);
+      }
+
+      100% {
+        transform: translateY(10px);
+      }
     }
 
     /* ==================== LEFT PANEL ==================== */
@@ -185,6 +219,8 @@
       flex-direction: column;
       scrollbar-width: thin;
       scrollbar-color: var(--crimson) transparent;
+      position: relative;
+      z-index: 2;
     }
 
     .ui-panel::-webkit-scrollbar {
@@ -548,6 +584,23 @@
       text-align: center;
       cursor: pointer;
       transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .team-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(232, 58, 93, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .team-btn:hover::before {
+      left: 100%;
     }
 
     .team-btn:hover {
@@ -562,6 +615,28 @@
       box-shadow: inset 0 0 20px rgba(232, 58, 93, 0.08);
     }
 
+    .team-btn.dissolved {
+      opacity: 0.35;
+      filter: blur(1px) grayscale(0.6);
+      pointer-events: none;
+      position: relative;
+      cursor: not-allowed;
+    }
+    .team-btn.dissolved::after {
+      content: 'DISSOLVED';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 7px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.55);
+      background: rgba(0,0,0,0.55);
+      padding: 3px 7px;
+      border-radius: 4px;
+      filter: blur(0);
+    }
     .team-btn.full-width {
       grid-column: 1 / -1;
       border-style: dashed;
@@ -904,6 +979,159 @@
       font-weight: 600;
     }
 
+    /* ==================== GROUP CHAT MODAL ==================== */
+    .gc-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 8, 16, 0.96);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .gc-card {
+      background: linear-gradient(135deg, #0a0a12 0%, #12121a 100%);
+      border: 2px solid var(--crimson);
+      border-radius: 16px;
+      padding: 35px;
+      max-width: 460px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(232, 58, 93, 0.2);
+      animation: cardSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    @keyframes cardSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .gc-card h2 {
+      font-size: 22px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--green);
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(74, 222, 128, 0.3);
+    }
+
+    .gc-agent-info {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .gc-agent-id {
+      font-family: 'Space Mono', monospace;
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .gc-team {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--crimson);
+      font-weight: 700;
+    }
+
+    .gc-warning {
+      background: rgba(232, 58, 93, 0.08);
+      border-left: 3px solid var(--crimson);
+      border-radius: 6px;
+      padding: 18px;
+      margin: 20px 0;
+      text-align: left;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-main);
+    }
+
+    .gc-warning strong {
+      color: var(--crimson);
+      font-weight: 700;
+    }
+
+    .gc-warning .friendly {
+      display: block;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(232, 58, 93, 0.15);
+      color: var(--purple);
+      font-size: 12px;
+      font-style: italic;
+    }
+
+    .gc-btn {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, var(--crimson), #c93058);
+      color: white;
+      text-decoration: none;
+      padding: 16px;
+      border-radius: 8px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 13px;
+      transition: all 0.3s;
+      box-shadow: 0 6px 20px rgba(232, 58, 93, 0.3);
+      margin-top: 15px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .gc-btn:hover {
+      background: linear-gradient(135deg, #f04070, var(--crimson));
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(232, 58, 93, 0.4);
+    }
+
+    .gc-btn:active {
+      transform: translateY(0);
+    }
+
+    .gc-reminder {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 15px;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .gc-reminder span {
+      color: var(--gold);
+    }
+
     /* ==================== FOOTER CREDIT ==================== */
     .form-footer {
       text-align: center;
@@ -937,6 +1165,10 @@
       }
 
       .particle {
+        display: none;
+      }
+
+      body::before {
         display: none;
       }
     }
@@ -986,6 +1218,24 @@
 
       .form-section {
         padding: 20px;
+      }
+
+      .gc-card {
+        padding: 25px 20px;
+      }
+
+      .gc-card h2 {
+        font-size: 18px;
+        letter-spacing: 2px;
+      }
+
+      .gc-agent-id {
+        font-size: 22px;
+      }
+
+      .gc-warning {
+        font-size: 12px;
+        padding: 15px;
       }
     }
   </style>
@@ -1042,7 +1292,8 @@
 
           <div class="form-section">
             <span class="section-num">01 // YOUR IDENTITY</span>
-            <div class="section-hint">Use your Instagram username. This will be your display name on leaderboards so
+            <div class="section-hint">Use your valid Instagram username. This will be your display name on leaderboards
+              so
               team leads can contact you.</div>
 
             <div class="form-group">
@@ -1122,12 +1373,12 @@
                 <div class="t-ref">J-Hope</div>
                 <div class="t-count"></div>
               </div>
-              <div class="team-btn" onclick="setTeam('Team Muse', this)">
+              <div class="team-btn dissolved">
                 <div class="t-name">MUSE</div>
                 <div class="t-ref">Jimin</div>
                 <div class="t-count"></div>
               </div>
-              <div class="team-btn" onclick="setTeam('Team Layover', this)">
+              <div class="team-btn dissolved">
                 <div class="t-name">LAYOVER</div>
                 <div class="t-ref">V</div>
                 <div class="t-count"></div>
@@ -1135,6 +1386,11 @@
               <div class="team-btn" onclick="setTeam('Team Golden', this)">
                 <div class="t-name">GOLDEN</div>
                 <div class="t-ref">Jungkook</div>
+                <div class="t-count"></div>
+              </div>
+              <div class="team-btn" onclick="setTeam('Friends', this)">
+                <div class="t-name">FRIENDS</div>
+                <div class="t-ref">Vmin</div>
                 <div class="t-count"></div>
               </div>
             </div>
@@ -1224,10 +1480,21 @@
   </div>
 
   <script>
-    // 1. FIXED: Added the missing CONFIG object
     const CONFIG = {
       API: 'https://xyivyebbafqwthvlwzlm.supabase.co/functions/v1/arirang-btsbackend',
       ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh5aXZ5ZWJiYWZxd3Rodmx3emxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NDY0MTUsImV4cCI6MjA4ODUyMjQxNX0.K-ysUclHXprTAtsW6bp6HoVcq4tSr1m-4xiZXkrIpn4'
+    };
+
+    // Team Group Chat Links
+    const GC_MAP = {
+      'Team MONO': 'https://ig.me/j/Abb_PCXJ-2nX7TEl/',
+      'Team Happy': 'https://ig.me/j/Aba2IYzGYrnUS4fG/',
+      'Team D-Day': 'https://ig.me/j/AbYVGQ1IqPRxWTfh/',
+      'Team Hopeworld': 'https://ig.me/j/Aba0JfNTWjVLymch/',
+      'Team Muse': 'https://ig.me/j/AbZPkazSbkvRaRED/',
+      'Team Layover': 'https://ig.me/j/Abb-9beEsolxN9u3/',
+      'Team Golden': 'https://ig.me/j/AbZeh2wCVARX3oVt/',
+      'Friends': 'https://ig.me/j/Abbw5hoNK0ElIG52/'
     };
 
     let igTimer = null;
@@ -1253,7 +1520,7 @@
     createParticles();
 
     async function api(params) {
-      const controller = new AbortController();                        // ← from v1
+      const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 12000);
 
       try {
@@ -1261,24 +1528,24 @@
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'apikey': CONFIG.ANON_KEY,                                 // ← from v2 (centralized)
+            'apikey': CONFIG.ANON_KEY,
             'Authorization': `Bearer ${CONFIG.ANON_KEY}`,
           },
           body: JSON.stringify(params),
-          signal: controller.signal,                                   // ← from v1
+          signal: controller.signal,
         });
         clearTimeout(timeoutId);
 
-        if (!r.ok) {                                                   // ← NEW: catch HTTP errors
+        if (!r.ok) {
           return { success: false, error: `Server error (${r.status})` };
         }
 
         return await r.json();
       } catch (e) {
-        clearTimeout(timeoutId);                                       // ← from v1
+        clearTimeout(timeoutId);
         return {
           success: false,
-          error: e.name === 'AbortError' ? 'Request timed out' : 'Network error'  // ← from v1
+          error: e.name === 'AbortError' ? 'Request timed out' : 'Network error'
         };
       }
     }
@@ -1289,7 +1556,16 @@
         const d = await api({ action: 'getTeamSizes' });
         if (!d.success) return;
         let total = 0;
-        const teamMap = { 'Team MONO': 'MONO', 'Team Happy': 'HAPPY', 'Team D-Day': 'D-DAY', 'Team Hopeworld': 'HOPEWORLD', 'Team Muse': 'MUSE', 'Team Layover': 'LAYOVER', 'Team Golden': 'GOLDEN' };
+        const teamMap = {
+          'Team MONO': 'MONO',
+          'Team Happy': 'HAPPY',
+          'Team D-Day': 'D-DAY',
+          'Team Hopeworld': 'HOPEWORLD',
+          'Team Muse': 'MUSE',
+          'Team Layover': 'LAYOVER',
+          'Team Golden': 'GOLDEN',
+          'Friends': 'FRIENDS'
+        };
         d.teams.forEach(t => {
           total += t.count;
           const shortName = teamMap[t.team];
@@ -1303,8 +1579,11 @@
           });
         });
         if (totalEl) totalEl.textContent = total;
-      } catch (e) { console.log('Team sizes not loaded:', e); }
-      finally { if (totalEl) totalEl.classList.remove('loading'); }
+      } catch (e) {
+        console.log('Team sizes not loaded:', e);
+      } finally {
+        if (totalEl) totalEl.classList.remove('loading');
+      }
     }
     init();
 
@@ -1319,39 +1598,63 @@
       const input = document.getElementById('instagram');
       const status = document.getElementById('igStatus');
       const val = input.value.trim().replace(/@/g, '');
-      if (!val) { status.className = 'status-msg'; input.className = ''; return; }
+      if (!val) {
+        status.className = 'status-msg';
+        input.className = '';
+        return;
+      }
       clearTimeout(igTimer);
       igTimer = setTimeout(async () => {
-        status.textContent = 'CHECKING...'; status.className = 'status-msg show';
+        status.textContent = 'CHECKING...';
+        status.className = 'status-msg show';
         const d = await api({ action: 'checkInstagramAvailable', instagram: val });
-        if (d.available) { status.textContent = '✓ AVAILABLE'; status.className = 'status-msg show ok'; input.className = 'valid'; }
-        else { status.textContent = '✗ ALREADY REGISTERED'; status.className = 'status-msg show err'; input.className = 'invalid'; }
+        if (d.available) {
+          status.textContent = '✓ AVAILABLE';
+          status.className = 'status-msg show ok';
+          input.className = 'valid';
+        } else {
+          status.textContent = '✗ ALREADY REGISTERED';
+          status.className = 'status-msg show err';
+          input.className = 'invalid';
+        }
       }, 600);
     }
 
     function checkLFM(input) {
       const status = document.getElementById('lfmStatus');
       const val = input.value.trim();
-      if (!val) { status.className = 'status-msg'; input.classList.remove('valid', 'invalid'); return; }
+      if (!val) {
+        status.className = 'status-msg';
+        input.classList.remove('valid', 'invalid');
+        return;
+      }
       clearTimeout(lfmTimer);
       lfmTimer = setTimeout(async () => {
-        status.textContent = 'VERIFYING...'; status.className = 'status-msg show';
+        status.textContent = 'VERIFYING...';
+        status.className = 'status-msg show';
         const d = await api({ action: 'checkLastFmValid', username: val });
         if (d.valid) {
           const n = d.displayName || d.username;
           const p = d.playcount ? ` — ${Number(d.playcount).toLocaleString()} streams` : '';
-          status.textContent = `✓ VERIFIED: ${n}${p}`; status.className = 'status-msg show ok';
-          input.classList.remove('invalid'); input.classList.add('valid');
+          status.textContent = `✓ VERIFIED: ${n}${p}`;
+          status.className = 'status-msg show ok';
+          input.classList.remove('invalid');
+          input.classList.add('valid');
         } else {
-          status.textContent = '✗ USER NOT FOUND'; status.className = 'status-msg show err';
-          input.classList.remove('valid'); input.classList.add('invalid');
+          status.textContent = '✗ USER NOT FOUND';
+          status.className = 'status-msg show err';
+          input.classList.remove('valid');
+          input.classList.add('invalid');
         }
       }, 800);
     }
 
     function addLFM() {
       const list = document.getElementById('lfmList');
-      if (list.querySelectorAll('.lfm-row').length >= 3) { toast('Maximum 3 accounts allowed'); return; }
+      if (list.querySelectorAll('.lfm-row').length >= 3) {
+        toast('Maximum 3 accounts allowed');
+        return;
+      }
       const row = document.createElement('div');
       row.className = 'lfm-row';
       row.innerHTML = `<input type="text" class="lfm-input" placeholder="Additional username" oninput="checkLFM(this)"><button type="button" class="remove-btn" onclick="this.parentElement.remove()">−</button>`;
@@ -1362,16 +1665,28 @@
       const pw = document.getElementById('password');
       const cpw = document.getElementById('confirmPw');
       const t = pw.type === 'password' ? 'text' : 'password';
-      pw.type = t; cpw.type = t;
+      pw.type = t;
+      cpw.type = t;
     }
 
     function checkPwMatch() {
       const pw = document.getElementById('password').value;
       const cpw = document.getElementById('confirmPw');
       const status = document.getElementById('pwStatus');
-      if (!cpw.value) { status.className = 'status-msg'; cpw.className = ''; return; }
-      if (pw === cpw.value) { status.textContent = '✓ MATCH CONFIRMED'; status.className = 'status-msg show ok'; cpw.className = 'valid'; }
-      else { status.textContent = '✗ DOES NOT MATCH'; status.className = 'status-msg show err'; cpw.className = 'invalid'; }
+      if (!cpw.value) {
+        status.className = 'status-msg';
+        cpw.className = '';
+        return;
+      }
+      if (pw === cpw.value) {
+        status.textContent = '✓ MATCH CONFIRMED';
+        status.className = 'status-msg show ok';
+        cpw.className = 'valid';
+      } else {
+        status.textContent = '✗ DOES NOT MATCH';
+        status.className = 'status-msg show err';
+        cpw.className = 'invalid';
+      }
     }
 
     function updateBtn() {
@@ -1382,7 +1697,6 @@
       const btn = document.getElementById('submitBtn');
       if (btn.disabled) return;
 
-      // 1. Get the IG handle
       const ig = document.getElementById('instagram').value.trim().replace(/@/g, '').toLowerCase();
       const pw = document.getElementById('password').value;
       const cpw = document.getElementById('confirmPw').value;
@@ -1394,20 +1708,35 @@
         if (v) lfms.push(v);
       });
 
-      // 2. Validation
-      if (!ig || ig.length < 2) { toast('Enter your Instagram username'); return; }
-      if (document.getElementById('instagram').classList.contains('invalid')) { toast('This Instagram is already registered'); return; }
-      if (pw.length < 4) { toast('Security Key needs 4+ characters'); return; }
-      if (pw !== cpw) { toast('Security Keys do not match'); return; }
-      if (lfms.length === 0) { toast('Link at least one Last.fm account'); return; }
+      // Validation
+      if (!ig || ig.length < 2) {
+        toast('Enter your Instagram username');
+        return;
+      }
+      if (document.getElementById('instagram').classList.contains('invalid')) {
+        toast('This Instagram is already registered');
+        return;
+      }
+      if (pw.length < 4) {
+        toast('Security Key needs 4+ characters');
+        return;
+      }
+      if (pw !== cpw) {
+        toast('Security Keys do not match');
+        return;
+      }
+      if (lfms.length === 0) {
+        toast('Link at least one Last.fm account');
+        return;
+      }
 
-      btn.classList.add('loading'); btn.disabled = true;
+      btn.classList.add('loading');
+      btn.disabled = true;
 
-      // 3. Send to Backend
       const d = await api({
         action: 'registerAgent',
-        name: ig,          // We now send the IG handle as the 'name' (display name)
-        instagram: ig,     // And as the lookup handle
+        name: ig,
+        instagram: ig,
         password: pw,
         lastFmUsernames: lfms,
         teamPreference: team === 'auto' ? null : team,
@@ -1416,21 +1745,58 @@
       btn.classList.remove('loading');
 
       if (d.success) {
-        document.getElementById('formSection').style.display = 'none';
-        document.getElementById('agentId').textContent = d.agent.agentNo;
-        document.getElementById('credId').textContent = d.agent.agentNo;
-        document.getElementById('teamResult').textContent = 'UNIT: ' + d.agent.team.toUpperCase();
-        document.getElementById('successScreen').style.display = 'block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const assignedTeam = d.agent.team;
+        const gcLink = GC_MAP[assignedTeam] || '#';
+
+        // Show friendly popup
+        const modal = document.createElement('div');
+        modal.className = 'gc-modal';
+        modal.innerHTML = `
+          <div class="gc-card">
+            <h2>✓ Registration Complete</h2>
+            
+            <div class="gc-agent-info">
+              <div class="gc-agent-id">${d.agent.agentNo}</div>
+              <div class="gc-team">Unit: ${assignedTeam}</div>
+            </div>
+            
+            <div class="gc-warning">
+              <strong>📱 Next Step: Join Your Team</strong><br>
+              Click below to join your team's group chat. This is where you'll coordinate missions, get support, and connect with your unit.
+              
+              <span class="friendly">
+                💜 Note: To keep the mission organized, profiles must use valid instagram usernames and join within 24 hours. Inactive accounts may be removed to make room for active agents.
+              </span>
+            </div>
+            
+            <a href="${gcLink}" target="_blank" rel="noopener noreferrer" class="gc-btn" 
+               onclick="setTimeout(() => { document.querySelector('.gc-modal').remove(); location.reload(); }, 500);">
+              Join ${assignedTeam} Group Chat →
+            </a>
+            
+            <p class="gc-reminder">
+              <span>💾 Screenshot your Agent ID above</span><br>
+              You'll need it to log in later
+            </p>
+          </div>
+        `;
+        document.body.appendChild(modal);
       } else {
         toast(d.error || 'Registration failed');
         btn.disabled = false;
       }
     }
+
     function toast(msg) {
       const t = document.getElementById('toast');
-      t.textContent = msg; t.classList.add('show');
+      t.textContent = msg;
+      t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 4000);
+    }
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
     }
   </script>
 </body>
