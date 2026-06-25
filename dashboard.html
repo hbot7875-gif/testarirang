@@ -19,7 +19,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&family=Inter:wght@400;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=2026060212">
 </head>
 
 <body>
@@ -194,7 +194,7 @@
 
             <div class="logo-section">
                 <div class="arirang-logo-container">
-                    <img src="https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/34ce34f2c0e92bb95741d400a72a3935fb43a641/arirang%20logo.jpg"
+                    <img src="https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/main/arirang%20logo.jpg"
                         alt="Logo" class="arirang-logo-img">
                 </div>
 
@@ -377,6 +377,7 @@
                     </div>
                     <div class="nav-item" onclick="goTo('operatives')"><span class="nav-icon">📂</span> Operative
                         Database</div>
+                    <div class="nav-item" onclick="goTo('trainees')"><span class="nav-icon">🎓</span> Trainees</div>
                     <div class="nav-item" onclick="goTo('comparison')"><span class="nav-icon">📈</span> Team Comparison
                     </div>
                 </div>
@@ -653,6 +654,15 @@
                     <div id="operativesContent"></div>
                 </div>
 
+                <!-- ══ TRAINEES ══ -->
+                <div class="page" id="page-trainees">
+                    <div class="page-header">
+                        <div class="page-title">🎓 Trainees</div>
+                        <div class="page-subtitle">Agents currently in training</div>
+                    </div>
+                    <div id="traineesContent"></div>
+                </div>
+
                 <!-- ══ COMPARISON ══ -->
                 <div class="page" id="page-comparison">
                     <div class="page-header">
@@ -842,14 +852,20 @@
                                 <span style="font-size:22px;">🚨</span>
                                 <div>
                                     <div style="font-size:14px;font-weight:900;color:#fff;letter-spacing:0.5px;">Pop Out</div>
-                                    <div style="font-size:10px;color:var(--text-muted);">Emergency stream mission — every scrobble counts</div>
+                                    <div style="font-size:10px;color:var(--text-muted);">All-teams stream mission — every scrobble counts</div>
                                 </div>
                             </div>
                             <div style="padding:10px 14px;margin-bottom:10px;border-left:3px solid var(--fail);background:rgba(232,58,93,0.05);border-radius:0 6px 6px 0;">
                                 <div style="font-size:9px;font-weight:800;color:var(--fail);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">How to Play</div>
-                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">When a team's track goal needs a push, HQ drops a Pop Out. Hit <strong style="color:#fff;">Join</strong> and stream the track — targets are bite-sized: <strong style="color:#fff;">50, 100, 150, or 200 streams</strong> within 1–2 hours. The <strong style="color:var(--vinyl-gold);">500 XP pool</strong> is shared by everyone who joined — and your scrobbles count toward your team's weekly track goal too. Win-win! 🎯💜</div>
+                                <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">HQ drops a Pop Out — one song or album to spin, on the clock (usually 6h). Hit <strong style="color:#fff;">Join</strong> and stream it with every other team. The moment the squad smashes the goal, a <strong style="color:var(--vinyl-gold);">🔮 Magic Box</strong> bursts open for everyone who joined — <strong style="color:#fff;">surprise rewards inside!</strong> 🎁 Get <strong style="color:#fff;">at least 7 streams</strong> in to claim yours. Beat the clock! 🎯💜</div>
                             </div>
                             <div id="flashBountiesContent"></div>
+                            <button type="button" onclick="showPopOutHallOfFame()"
+                                style="width:100%;margin-top:10px;padding:9px;background:rgba(231,197,96,0.06);
+                                border:1px solid rgba(231,197,96,0.3);border-radius:10px;color:var(--vinyl-gold);
+                                font-size:11px;font-weight:800;letter-spacing:0.5px;cursor:pointer;">
+                                🏆 Golden Vinyl — Hall of Fame
+                            </button>
                         </div>
 
                         <div style="border-top:1px solid var(--border-subtle);margin-bottom:20px;"></div>
@@ -979,12 +995,89 @@
     </div>
 
     <!-- ══════════════════════════════════════════
+       FRIENDS WELCOME MODAL
+       Shown once to agents who were hand-picked for the Friends team.
+       ══════════════════════════════════════════ -->
+    <div id="friendsWelcomeModal" class="modal-overlay" hidden style="z-index:9999;">
+      <div class="modal-card" onclick="event.stopPropagation()" style="max-width:380px;width:92%;">
+        <div class="modal-header" style="flex-direction:column;align-items:flex-start;gap:4px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08);">
+          <span style="font-size:0.65rem;font-weight:800;letter-spacing:2px;color:#7C5CBF;text-transform:uppercase;">Team Update</span>
+          <span style="font-weight:900;font-size:1rem;color:#fff;line-height:1.3;">Welcome to Friends 💜</span>
+        </div>
+        <div class="modal-body" style="padding-top:14px;">
+          <div style="text-align:center;font-size:2rem;margin-bottom:12px;">🤝</div>
+          <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.8;margin-bottom:14px;">
+            Team Muse and Team Layover had a leadership gap and some inactive members, so we decided to combine the active core from both teams into one strong, manageable unit.
+          </p>
+          <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.8;margin-bottom:16px;">
+            We reviewed every member's individual streaming progress — and
+            <strong style="color:#fff;">based on your individual progress, we decided to keep you in Team Friends.</strong>
+            Your XP, badges and stream history from all previous weeks are fully preserved 💜
+          </p>
+          <div style="background:rgba(124,92,191,0.12);border:1px solid rgba(124,92,191,0.3);
+            border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:0.7rem;
+            color:rgba(255,255,255,0.7);line-height:1.7;">
+            🎵 Team name: <strong style="color:#7C5CBF;">Friends</strong> — a collab between Muse &amp; Layover, just like the Vmin bond.<br>
+            Same game rules, same goals, fresh start together.
+          </div>
+          <a href="https://ig.me/j/Abbw5hoNK0ElIG52/" target="_blank" rel="noopener"
+            style="display:block;width:100%;padding:13px;background:rgba(124,92,191,0.15);
+              border:1px solid rgba(124,92,191,0.4);border-radius:10px;color:#7C5CBF;
+              font-size:0.8125rem;font-weight:900;letter-spacing:1px;cursor:pointer;
+              text-transform:uppercase;text-align:center;text-decoration:none;
+              margin-bottom:10px;box-sizing:border-box;">
+            📲 Join Friends Group Chat
+          </a>
+          <button onclick="dismissFriendsWelcome()"
+            style="width:100%;padding:13px;background:linear-gradient(135deg,#7C5CBF,#4f46e5);border:none;
+              border-radius:10px;color:#fff;font-size:0.8125rem;font-weight:900;letter-spacing:1px;
+              cursor:pointer;text-transform:uppercase;">
+            Let's Go 💜
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+       TEAM CHOICE MODAL
+       Shown once to agents whose old team (Muse/Layover) was dissolved.
+       Cannot be dismissed — agent must pick a team.
+       ══════════════════════════════════════════ -->
+    <div id="teamChoiceModal" class="modal-overlay" hidden style="z-index:9999;">
+      <div class="modal-card" onclick="event.stopPropagation()" style="max-width:380px;width:92%;">
+        <div class="modal-header" style="flex-direction:column;align-items:flex-start;gap:4px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08);">
+          <span style="font-size:0.65rem;font-weight:800;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;">Team Update</span>
+          <span style="font-weight:900;font-size:1rem;color:#fff;line-height:1.3;">Choose Your New Team 💜</span>
+        </div>
+        <div class="modal-body" style="padding-top:14px;">
+          <p style="font-size:0.75rem;color:var(--text-muted);line-height:1.8;margin-bottom:16px;">
+            Team Muse and Team Layover have merged into <strong style="color:#7C5CBF;">Friends</strong>
+            — combining the most active members from both teams.<br><br>
+            <strong style="color:#fff;">Friends is now full.</strong>
+            You can join any of the 5 teams below. Your XP, badges and stream history from all previous weeks are fully preserved 💜
+          </p>
+          <div id="teamChoiceDeadline" style="font-size:0.68rem;color:var(--fail);font-weight:700;margin-bottom:16px;"></div>
+          <div id="teamChoiceGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+            <!-- filled by JS -->
+          </div>
+          <button id="teamChoiceConfirmBtn" onclick="confirmTeamChoice()"
+            style="width:100%;padding:13px;background:linear-gradient(135deg,#7C5CBF,#4f46e5);border:none;
+              border-radius:10px;color:#fff;font-size:0.8125rem;font-weight:900;letter-spacing:1px;
+              cursor:pointer;text-transform:uppercase;opacity:0.4;pointer-events:none;"
+            disabled>
+            Confirm Team
+          </button>
+          <div id="teamChoiceError" style="text-align:center;font-size:0.6875rem;color:var(--fail);margin-top:8px;min-height:14px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
        TOAST CONTAINER
        ══════════════════════════════════════════ -->
     <div id="toast-container"></div>
 
-    <script src="app.js?v=2"></script>
-    <script src="concert_voyage.js?v=2025060103"></script>
+    <script src="app.js?v=2026062101"></script>
     <script>
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js');
