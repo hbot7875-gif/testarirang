@@ -8853,6 +8853,7 @@ async function renderSpotifyBetaCard() { // kept name so existing call in render
       <div id="lb-status-area"></div>
       <div style="font-size:9px; color:var(--text-ghost); margin-top:8px; line-height:1.5;">
         Don't have ListenBrainz? It's free at <strong style="color:${LB_COLOR};">listenbrainz.org</strong> — same scrobbler apps work for both Last.fm and ListenBrainz simultaneously.
+        <a href="listenbrainz-guide.html" target="_blank" style="color:${LB_COLOR}; text-decoration:underline; margin-left:4px;">Setup Guide →</a>
       </div>
     </div>`;
 }
@@ -8876,8 +8877,8 @@ async function previewLB() {
     }
 
     const rows = Object.entries(d.counts || {})
-      .sort(([, a]: any, [, b]: any) => b.lbCount - a.lbCount)
-      .map(([name, info]: any) => `
+      .sort(([, a], [, b]) => b.lbCount - a.lbCount)
+      .map(([name, info]) => `
         <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
           <span style="font-size:10px; color:var(--text-secondary);">${sanitize(name)}</span>
           <span style="font-size:10px; font-weight:900; font-family:var(--font-mono); color:${info.lbCount > 0 ? LB_COLOR : 'var(--text-ghost)'};">
