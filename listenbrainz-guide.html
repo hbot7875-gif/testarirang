@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ListenBrainz Setup Guide — Arirang Mission</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg-card: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.09);
+      --text: #e8e8e8;
+      --muted: rgba(255,255,255,0.45);
+      --ghost: rgba(255,255,255,0.25);
+      --lb: #eb743b;
+      --lb-dim: rgba(235,116,59,0.15);
+      --lb-border: rgba(235,116,59,0.35);
+      --green: #22c55e;
+      --red: #ef4444;
+      --purple: #a78bfa;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      padding: 0 0 60px;
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    .hero {
+      background: linear-gradient(180deg, rgba(235,116,59,0.12) 0%, transparent 100%);
+      border-bottom: 1px solid var(--lb-border);
+      padding: 40px 20px 36px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--lb-dim);
+      border: 1px solid var(--lb-border);
+      color: var(--lb);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(22px, 5vw, 34px);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    .hero p {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+
+    /* ── NOTICE BOX ── */
+    .notice {
+      background: rgba(167,139,250,0.07);
+      border: 1px solid rgba(167,139,250,0.25);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 28px 0;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .notice-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+    .notice-title { font-size: 12px; font-weight: 800; color: var(--purple); letter-spacing: 0.5px; margin-bottom: 5px; }
+    .notice-body { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .notice-body strong { color: var(--text); }
+
+    /* ── SECTION HEADERS ── */
+    .section-label {
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: var(--lb);
+      text-transform: uppercase;
+      margin: 36px 0 12px;
+    }
+    h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .section-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* ── STEP CARDS ── */
+    .steps { display: flex; flex-direction: column; gap: 12px; }
+    .step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--lb-dim); border: 1px solid var(--lb-border);
+      color: var(--lb); font-size: 12px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .step-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .step-body { font-size: 12px; color: var(--muted); line-height: 1.7; }
+    .step-body a { color: var(--lb); text-decoration: none; }
+    .step-body a:hover { text-decoration: underline; }
+    .step-body code {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 11px;
+      color: #fff;
+      font-family: monospace;
+    }
+    .step-tag {
+      display: inline-block;
+      font-size: 9px; font-weight: 800; letter-spacing: 1px;
+      padding: 2px 7px; border-radius: 4px; margin-left: 6px;
+      vertical-align: middle; text-transform: uppercase;
+    }
+    .tag-ios { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+    .tag-android { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
+    .tag-all { background: rgba(235,116,59,0.15); color: var(--lb); border: 1px solid var(--lb-border); }
+    .tag-free { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
+
+    /* ── APP CARDS ── */
+    .app-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+    .app-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .app-name { font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .app-desc { font-size: 11px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+    .app-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+
+    /* ── WHY SECTION ── */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .compare-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .compare-card.lb { border-color: var(--lb-border); background: var(--lb-dim); }
+    .compare-title { font-size: 11px; font-weight: 900; letter-spacing: 1px; margin-bottom: 12px; }
+    .compare-row { display: flex; gap: 8px; font-size: 11px; color: var(--muted); margin-bottom: 6px; align-items: flex-start; }
+    .compare-row .icon { flex-shrink: 0; }
+
+    /* ── FAQ ── */
+    .faq { display: flex; flex-direction: column; gap: 10px; }
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .faq-q { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .faq-a { font-size: 11px; color: var(--muted); line-height: 1.7; }
+    .faq-a strong { color: var(--text); }
+
+    /* ── CTA ── */
+    .cta-box {
+      background: var(--lb-dim);
+      border: 1px solid var(--lb-border);
+      border-radius: 14px;
+      padding: 24px 20px;
+      text-align: center;
+      margin-top: 36px;
+    }
+    .cta-title { font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 8px; }
+    .cta-sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; line-height: 1.6; }
+    .cta-btn {
+      display: inline-block;
+      background: var(--lb);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      margin: 0 6px 8px;
+    }
+    .cta-btn.secondary {
+      background: transparent;
+      border: 1px solid var(--lb-border);
+      color: var(--lb);
+    }
+
+    /* ── DIVIDER ── */
+    .divider { height: 1px; background: var(--border); margin: 32px 0; }
+
+    @media (max-width: 480px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">📻 Mission Broadcast</div>
+    <h1>We're Adding ListenBrainz Support</h1>
+    <p>Last.fm isn't going anywhere — but we're building a better backup. Here's everything you need to know and how to get set up in 5 minutes.</p>
+  </div>
+
+  <div class="container">
+
+    <!-- WHY NOTICE -->
+    <div class="notice">
+      <div class="notice-icon">⚡</div>
+      <div>
+        <div class="notice-title">Why we're doing this</div>
+        <div class="notice-body">
+          A lot of you have raised concerns about Last.fm lately — the recent scrobbling changes, how the official account has responded, and a growing sense that the platform doesn't feel like it respects this community the way it used to. <strong>We hear you.</strong><br><br>
+          So we're adding ListenBrainz as a backup option — a non-profit, open alternative that isn't tied to the same priorities. You're not required to switch, but if you'd rather have your streams recorded somewhere that isn't commercially run, <strong>this is for you.</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHAT IS LB -->
+    <div class="section-label">Who built this?</div>
+    <h2>Meet ListenBrainz</h2>
+    <p class="section-sub">ListenBrainz was created by the <strong>MetaBrainz Foundation</strong> — a non-profit best known for MusicBrainz, the open music database used across the industry. It was built as a free, open-source alternative to scrobbling, designed to never go behind a paywall or shut down. It isn't run by the same team as Last.fm, but it exists because its creators wanted to preserve what Last.fm used to feel like before it became fully commercial.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-title" style="color:var(--muted);">🎵 Last.fm</div>
+        <div class="compare-row"><span class="icon">💰</span> Commercial, for-profit</div>
+        <div class="compare-row"><span class="icon">🔒</span> Your data belongs to them</div>
+        <div class="compare-row"><span class="icon">⚡</span> API rate limits apply</div>
+        <div class="compare-row"><span class="icon">✅</span> Still works, still supported</div>
+      </div>
+      <div class="compare-card lb">
+        <div class="compare-title" style="color:var(--lb);">📻 ListenBrainz</div>
+        <div class="compare-row"><span class="icon">💚</span> Non-profit, free forever</div>
+        <div class="compare-row"><span class="icon">🌍</span> Your data is yours (CC0)</div>
+        <div class="compare-row"><span class="icon">🚀</span> Open API, generous limits</div>
+        <div class="compare-row"><span class="icon">✅</span> Built by ex-Last.fm team</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- IMPORTANT NOTE -->
+    <div class="notice" style="border-color:rgba(34,197,94,0.3); background:rgba(34,197,94,0.05);">
+      <div class="notice-icon">✅</div>
+      <div>
+        <div class="notice-title" style="color:#4ade80;">Last.fm is NOT going away</div>
+        <div class="notice-body">
+          <strong>You do not have to switch.</strong> Last.fm remains your official scrobble source. ListenBrainz is being added as an <strong>optional alternative</strong> — especially useful if you already use ListenBrainz, or want a backup. Most scrobbler apps can send to <strong>both simultaneously</strong> with zero extra effort.
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- SETUP GUIDE -->
+    <div class="section-label">Setup Guide</div>
+    <h2>Get ListenBrainz in 5 Minutes</h2>
+    <p class="section-sub">Follow the steps for your device. The scrobbler apps below can send plays to both Last.fm and ListenBrainz at the same time — so you don't have to choose.</p>
+
+    <!-- STEP 1 -->
+    <div class="steps" style="margin-bottom:28px;">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Create your ListenBrainz account <span class="step-tag tag-all">All devices</span></div>
+          <div class="step-body">
+            Go to <a href="https://listenbrainz.org" target="_blank" rel="noopener">listenbrainz.org</a> → click <strong>Sign Up</strong> → create your account (it uses MusicBrainz login — same non-profit family).<br><br>
+            Then go to <strong>Settings → Music Services</strong> and grab your <strong>User Token</strong> — you'll need it for the scrobbler app.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Install a scrobbler app <span class="step-tag tag-ios">iOS</span></div>
+          <div class="step-body">
+            <strong>Scrobbles for Last.fm</strong> (App Store) — supports both Last.fm + ListenBrainz. Go to Settings → add ListenBrainz with your username + token.<br><br>
+            <strong>OpenScrobbler</strong> — browser-based, works on any device at <a href="https://openscrobbler.com" target="_blank" rel="noopener">openscrobbler.com</a>.<br><br>
+            <strong>Apple Music users on iOS:</strong> Use the free Shortcuts automation on the ListenBrainz website → <a href="https://listenbrainz.org/add-data/" target="_blank" rel="noopener">listenbrainz.org/add-data</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Install a scrobbler app <span class="step-tag tag-android">Android</span></div>
+          <div class="step-body">
+            <strong>Pano Scrobbler</strong> (Play Store, free) — the best Android option. Supports Spotify, YouTube Music, and most streaming apps. Add ListenBrainz in Settings → Services → ListenBrainz → enter your token.<br><br>
+            <strong>Simple Scrobbler</strong> (Play Store, free) — lightweight alternative that also supports both Last.fm + ListenBrainz.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Connect Spotify directly <span class="step-tag tag-all">Optional — All devices</span></div>
+          <div class="step-body">
+            ListenBrainz has a <strong>built-in Spotify import</strong> — no separate scrobbler app needed.<br><br>
+            Go to <a href="https://listenbrainz.org" target="_blank" rel="noopener">listenbrainz.org</a> → <strong>Settings → Music Services → Connect Spotify</strong>. ListenBrainz will pull your Spotify listening history automatically every few minutes.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">Add your ListenBrainz username to HopeTracker <span class="step-tag tag-all">All devices</span></div>
+          <div class="step-body">
+            Once you're scrobbling to ListenBrainz, go to your <strong>HopeTracker Dashboard → Profile page</strong> → scroll to the <strong>ListenBrainz Preview</strong> section → enter your ListenBrainz username → click <strong>Check →</strong><br><br>
+            You'll see a preview of your streams matched against this week's targets. Your official record is still Last.fm — this is a verification tool for now.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APP RECOMMENDATIONS -->
+    <div class="section-label">Recommended Apps</div>
+    <h2>Scrobbler Apps</h2>
+    <p class="section-sub">All of these are free and support sending plays to both Last.fm and ListenBrainz at the same time.</p>
+
+    <div class="app-grid">
+      <div class="app-card">
+        <div class="app-name">Pano Scrobbler</div>
+        <div class="app-desc">Best for Android. Supports Spotify, YouTube Music, SoundCloud and most streaming apps. Very reliable, actively updated.</div>
+        <div class="app-tags">
+          <span class="step-tag tag-android">Android</span>
+          <span class="step-tag tag-free">Free</span>
+        </div>
+      </div>
+      <div class="app-card">
+        <div class="app-name">Scrobbles for Last.fm</div>
+        <div class="app-desc">Best for iPhone. Supports both Last.fm + ListenBrainz from one app. Works with Spotify, Apple Music, and more.</div>
+        <div class="app-tags">
+          <span class="step-tag tag-ios">iOS</span>
+          <span class="step-tag tag-free">Free</span>
+        </div>
+      </div>
+      <div class="app-card">
+        <div class="app-name">ListenBrainz Spotify Import</div>
+        <div class="app-desc">Built-in to ListenBrainz — connect your Spotify account once and it syncs automatically. No separate app needed.</div>
+        <div class="app-tags">
+          <span class="step-tag tag-all">All devices</span>
+          <span class="step-tag tag-free">Free</span>
+        </div>
+      </div>
+      <div class="app-card">
+        <div class="app-name">Web Scrobbler</div>
+        <div class="app-desc">Browser extension for Chrome/Firefox. Scrobbles from YouTube, SoundCloud, any web player. Great for desktop streamers.</div>
+        <div class="app-tags">
+          <span class="step-tag tag-all">Browser</span>
+          <span class="step-tag tag-free">Free</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- FAQ -->
+    <div class="section-label">FAQs</div>
+    <h2>Common Questions</h2>
+    <br>
+    <div class="faq">
+      <div class="faq-item">
+        <div class="faq-q">Do I have to switch to ListenBrainz?</div>
+        <div class="faq-a"><strong>No.</strong> Last.fm is still the official source for your streams and XP. ListenBrainz is being added as an alternative for agents who want it or already use it. Nothing changes for you unless you choose to set it up.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I use both Last.fm and ListenBrainz at the same time?</div>
+        <div class="faq-a"><strong>Yes — and this is the recommended setup.</strong> Apps like Pano Scrobbler and Scrobbles for Last.fm can send every play to both services simultaneously. You don't lose anything from Last.fm by adding ListenBrainz.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is ListenBrainz available in India?</div>
+        <div class="faq-a"><strong>Yes, fully.</strong> ListenBrainz has no geo-restrictions anywhere in the world. It's run by a non-profit (MetaBrainz Foundation) — not a commercial company — so there are no regional blocks.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Why not Spotify direct integration?</div>
+        <div class="faq-a">Spotify's API changed in <strong>February 2026</strong> — developer apps in "dev mode" are now capped at only <strong>5 users</strong>. With 200+ agents, Spotify direct integration is not possible without a commercial approval that they almost certainly won't grant to a fan project. ListenBrainz has no such restrictions.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Will my old stream history transfer?</div>
+        <div class="faq-a">Your XP and history from Last.fm are already saved in HopeTracker. If you want your full listening history on ListenBrainz too, you can import it from Last.fm at <strong>listenbrainz.org/settings</strong> → Import.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">I set it up — now what?</div>
+        <div class="faq-a">Go to your <strong>Profile page</strong> in the dashboard → scroll to the <strong>ListenBrainz Preview</strong> card → enter your username → hit Check. If the numbers look right, you're all set. We'll let everyone know when ListenBrainz becomes an official sync source.</div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <div class="cta-title">Ready to set up?</div>
+      <div class="cta-sub">Takes about 5 minutes. Your Last.fm setup is completely unaffected.<br>Start at listenbrainz.org and follow the steps above.</div>
+      <a href="https://listenbrainz.org" target="_blank" rel="noopener" class="cta-btn">Create ListenBrainz Account →</a>
+      <a href="dashboard.html" class="cta-btn secondary">Back to Dashboard</a>
+    </div>
+
+  </div>
+
+</body>
+</html>
