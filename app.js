@@ -45,16 +45,18 @@ window.CONFIG = {
     'Team Muse': { color: '#d946a8', emoji: '', ref: 'Jimin — MUSE' },
     'Team Layover': { color: '#42a5f5', emoji: '', ref: 'V — Layover' },
     'Team Golden': { color: '#e5a528', emoji: '', ref: 'Jungkook — GOLDEN' },
+    'Friends': { color: '#7C5CBF', emoji: '', ref: 'Vmin — Friends' },
   },
 
   TEAM_PFPS: {
-    'Team MONO': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teammono.jpeg',
-    'Team Happy': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamhappy.jpg',
-    'Team D-Day': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamdday.jpg',
-    'Team Hopeworld': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamhopeworld.jpg',
-    'Team Muse': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teammuse.jpg',
-    'Team Layover': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamlayover.jpg',
-    'Team Golden': 'https://raw.githubusercontent.com/hbot7875-gif/bts-arirang-site/2cb644455395a199506344a5fb1a94bb1ff71604/7team%20pfps/teamgolden.jpg',
+    'Team MONO': 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/b5e7d380d9c1af45332259f9279ea0d3fc329731/team%20pfps/teammono.jpeg',
+    'Team Happy': 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/b5e7d380d9c1af45332259f9279ea0d3fc329731/team%20pfps/teamhappy.jpg',
+    'Team D-Day': 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/b5e7d380d9c1af45332259f9279ea0d3fc329731/team%20pfps/teamdday.jpg',
+    'Team Hopeworld': 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/b5e7d380d9c1af45332259f9279ea0d3fc329731/team%20pfps/teamhopeworld.jpg',
+    'Team Muse': 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/b5e7d380d9c1af45332259f9279ea0d3fc329731/team%20pfps/teammuse.jpg',
+    'Team Layover': 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/b5e7d380d9c1af45332259f9279ea0d3fc329731/team%20pfps/teamlayover.jpg',
+    'Team Golden': 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/b5e7d380d9c1af45332259f9279ea0d3fc329731/team%20pfps/teamgolden.jpg',
+    'Friends': 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/798e33436f8111f3ae38472fba3ae46a9155a0a8/team%20pfps/teamfriends.jpg',
   },
 
   GC_LINKS: {
@@ -68,6 +70,7 @@ window.CONFIG = {
       'Team Muse': 'https://ig.me/j/AbZPkazSbkvRaRED/',
       'Team Layover': 'https://ig.me/j/Abb-9beEsolxN9u3/',
       'Team Golden': 'https://ig.me/j/AbZeh2wCVARX3oVt/',
+      'Friends': 'https://ig.me/j/Abbw5hoNK0ElIG52/',
     }
   },
 
@@ -129,12 +132,34 @@ window.CONFIG = {
   MAX_POLICE_REPORTS: 3,
 
   // Badge system
+  // ─────────────────────────────────────────────────────────────────────────
+  // AUTO-DISCOVERY: badge images are read straight from the GitHub folders via
+  // the GitHub API (see refreshBadgePools()). Just drop ANY images into the
+  // folder — any filename — and they appear automatically. No code edits, no
+  // sequential renaming, no count to update. The TOTAL_* numbers below are only
+  // a fallback used if the GitHub API is ever unreachable.
+  // ─────────────────────────────────────────────────────────────────────────
   BADGE_REPO_URL: 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/main/lvl1badges/',
-  TOTAL_BADGE_IMAGES: 64,
+  BADGE_REPO_API: 'https://api.github.com/repos/hbot7875-gif/btscomebackmission/contents/lvl1badges',
+  TOTAL_BADGE_IMAGES: 64,   // fallback count only
   EXCLUDE_BADGES: [],
+  BADGE_POOL_CACHE_KEY: 'badge_pools_v1',
+
+  // Read a previously auto-discovered list from localStorage (synchronous)
+  _discoveredPool(which) {
+    try {
+      const c = JSON.parse(localStorage.getItem(this.BADGE_POOL_CACHE_KEY) || 'null');
+      const arr = c && c[which];
+      if (Array.isArray(arr) && arr.length) return arr;
+    } catch (_) {}
+    return null;
+  },
 
   get BADGE_POOL() {
     if (this._badgePoolCache) return this._badgePoolCache;
+    const discovered = this._discoveredPool('lvl1');
+    if (discovered) { this._badgePoolCache = discovered; return discovered; }
+    // Sequential fallback
     const pool = [];
     for (let i = 1; i <= this.TOTAL_BADGE_IMAGES; i++) {
       if (!this.EXCLUDE_BADGES.includes(i)) {
@@ -146,14 +171,16 @@ window.CONFIG = {
   },
   // Tactical Badge System (BTS 2.0 Set)
   TACTICAL_BADGE_REPO: 'https://raw.githubusercontent.com/hbot7875-gif/btscomebackmission/main/2.0badges/',
-  TOTAL_TACTICAL_IMAGES: 155,
+  TACTICAL_REPO_API: 'https://api.github.com/repos/hbot7875-gif/btscomebackmission/contents/2.0badges',
+  TOTAL_TACTICAL_IMAGES: 155,   // fallback count only
 
   get TACTICAL_POOL() {
     if (this._tacticalPoolCache) return this._tacticalPoolCache;
+    const discovered = this._discoveredPool('tactical');
+    if (discovered) { this._tacticalPoolCache = discovered; return discovered; }
+    // Sequential fallback
     const pool = [];
     for (let i = 1; i <= this.TOTAL_TACTICAL_IMAGES; i++) {
-      // Matches: BTS2.0- (1).jpg, BTS2.0- (2).jpg, etc.
-      // We use %20 to represent the space in the filename for the URL
       pool.push(`${this.TACTICAL_BADGE_REPO}BTS2.0-%20(${i}).jpg`);
     }
     this._tacticalPoolCache = pool;
@@ -190,8 +217,30 @@ window.CONFIG = {
     'Week 7':  'sj95YLW-7-g',
     'Week 8':  'sj95YLW-7-g',
     'Week 9':  'UVRIT1nFLcA',  // Las Vegas Allegiant Stadium D1 — Body to Body + IDOL
-    'Week 10': 'UVRIT1nFLcA',  // same video until Week 10 gets its own
-    // Add future weeks below ↓
+    'Week 10': 'hFd6N7_4R8s',  // Las Vegas D2 — Hooligan / Aliens / Run BTS (cut at 11:15)
+    'Week 11': 'b0942Rl6CX0',  // 2.0 + NORMAL (starts 45:37, the songs are deep in the concert)
+    // Week 12 uses CONCERT_PLAYLIST below (two videos play sequentially)
+    // Add future single-video weeks below ↓
+  },
+
+  // ── CONCERT PLAYLIST — sequential videos for a single week ───
+  // When a week is listed here it overrides CONCERT_VIDEOS.
+  // Videos play in order; grand finale fires only after the last one ends.
+  CONCERT_PLAYLIST: {
+    'Week 12': ['Kakq7u8WgZo', 'Jg2g4Fh4JDA'],  // One More Night → Into the Sun
+  },
+
+  // ── CONCERT STARTS — begin the video partway in (seconds) ────
+  // Use when the songs you want are deep inside a long concert video.
+  CONCERT_STARTS: {
+    'b0942Rl6CX0': 2737,  // 45:37 — jump straight to "2.0"
+  },
+
+  // ── CONCERT CUTOFFS — stop the video early (seconds) ─────────
+  // Use when a video has extra footage after the songs you want.
+  CONCERT_CUTOFFS: {
+    'hFd6N7_4R8s': 675,   // 11:15 — stop before the "Ment #1" talking section
+    'b0942Rl6CX0': 3101,  // 51:41 — end of NORMAL
   },
 
   // ── CONCERT TIMELINE — BPM map per video ─────────────────────
@@ -210,6 +259,36 @@ window.CONFIG = {
     ],
     'sj95YLW-7-g': [
       { startSec: 0, song: 'SWIM', bpm: 93, doubletime: false, color: '#06b6d4', laserColor: '#22d3ee' },
+    ],
+    // ── Week 10 · Las Vegas D2 — Hooligan / Aliens / Run BTS (cut 11:15) ──
+    // Exact transitions from the video's own chapter timestamps.
+    'hFd6N7_4R8s': [
+      // Hooligan (00:00) — 135 BPM, fiery red stage → red
+      { startSec: 0,   song: 'Hooligan', bpm: 135, doubletime: false, color: '#ef4444', laserColor: '#f87171', petalColor: '#fca5a5' },
+      // Aliens (04:49) — 98 BPM base with 196 double-time flash, high-energy → UFO green
+      { startSec: 289, song: 'Aliens',   bpm: 98,  doubletime: true,  color: '#22c55e', laserColor: '#86efac', petalColor: '#bbf7d0' },
+      // Run BTS (07:43) — 149 BPM, intense hype → electric purple
+      { startSec: 463, song: 'Run BTS',  bpm: 149, doubletime: false, color: '#a855f7', laserColor: '#d8b4fe', petalColor: '#e9d5ff' },
+    ],
+    // ── Week 11 · 2.0 + NORMAL (video starts at 45:37) ──
+    // startSec values are ABSOLUTE video time (the player reports absolute time even
+    // when it begins mid-video), matching the YouTube timestamps you gave.
+    'b0942Rl6CX0': [
+      // 2.0 (45:37) — 130 BPM + 260 double-time, electric/hype → electric blue
+      { startSec: 2737, song: '2.0',    bpm: 130, doubletime: true, color: '#3b82f6', laserColor: '#60a5fa', petalColor: '#bfdbfe' },
+      // NORMAL (48:34) — 73 BPM + 146 double-time → yellowish gold (matches stage)
+      { startSec: 2914, song: 'NORMAL', bpm: 73,  doubletime: true, color: '#eab308', laserColor: '#fde047', petalColor: '#fef08a' },
+    ],
+    // ── Week 12 · Into the Sun (112 BPM, yellow) ──
+    // Update startSec if the song starts partway into the video.
+    'Jg2g4Fh4JDA': [
+      { startSec: 0, song: 'Into the Sun', bpm: 112, doubletime: false, color: '#eab308', laserColor: '#fde047', petalColor: '#fef08a' },
+    ],
+    // ── Festa override · One More Night (117 BPM, purple) ──
+    // Plays on June 13 KST via the isFestaNow override in launchTheVoyage.
+    // Update startSec if the song starts partway into the video.
+    'Kakq7u8WgZo': [
+      { startSec: 0, song: 'One More Night', bpm: 117, doubletime: false, color: '#a855f7', laserColor: '#c084fc', petalColor: '#e9d5ff' },
     ],
   },
 
@@ -545,9 +624,49 @@ function sparkleBurst(e) {
 
 
 // ==================== TEAM HELPERS ====================
+const DISSOLVED_TEAMS = new Set(['Team Muse', 'Team Layover']);
+const isTeamDissolved = team => DISSOLVED_TEAMS.has(team);
+
 const teamColor = team => CONFIG.TEAMS[team]?.color || '#ff0000';
 
 const teamPfp = team => CONFIG.TEAM_PFPS[team] || '';
+
+/**
+ * Resolve an agent's avatar. Returns their chosen badge image if they've set one
+ * AND it's still valid (streak maintained — pfpValidThrough >= today KST);
+ * otherwise falls back to their team PFP. Works for self and other agents.
+ * @param {object} agent - object with {team|profile.team, pfpBadgeUrl, pfpValidThrough}
+ */
+function agentAvatar(agent) {
+  if (!agent) return '';
+  const team = agent.team || agent.profile?.team;
+  const url = agent.pfpBadgeUrl;
+  const valid = agent.pfpValidThrough;
+  if (url && valid && valid >= getKSTDateString()) return url;
+  return teamPfp(team);
+}
+
+/**
+ * Badge-avatar URLs may carry a focal-point fragment: "…/img.jpg#fp=X,Y"
+ * (X/Y = object-position percentages picked in the avatar adjuster).
+ * Browsers ignore URL fragments when fetching images, so the raw URL still
+ * loads anywhere it isn't parsed — this just enables nicer cropping where it is.
+ * Returns { src, pos } — pos is a CSS object-position value.
+ */
+function avatarParts(url) {
+  const m = String(url || '').match(/^(.*?)#fp=(\d{1,3}),(\d{1,3})$/);
+  if (!m) return { src: url || '', pos: '50% 50%' };
+  return { src: m[1], pos: `${Math.min(100, +m[2])}% ${Math.min(100, +m[3])}%` };
+}
+
+/** True if the agent is currently showing a custom (earned) badge avatar — used
+ *  to apply the holo "C+" ring only to badge avatars, not team PFPs. */
+function isBadgeAvatar(agent) {
+  if (!agent) return false;
+  const url = agent.pfpBadgeUrl;
+  const valid = agent.pfpValidThrough;
+  return !!(url && valid && valid >= getKSTDateString());
+}
 
 // If emoji is empty, we return an image tag pointing to the PFP!
 const teamEmoji = team => {
@@ -790,7 +909,7 @@ const Api = {
    * await Api.call('heartbeat', {}, { silent: true, dedupe: false });
    */
   async call(action, params = {}, opts = {}) {
-    const { cache = false, ttl = 30_000, dedupe = true, silent = false } = opts;
+    const { cache = false, ttl = 30_000, dedupe = true, silent = false, timeout = 20_000 } = opts;
     const key = this._key(action, params);
 
     // 1) Check cache
@@ -810,7 +929,7 @@ const Api = {
     // 3) Fire the request
     const promise = (async () => {
       try {
-        const data = await this._request(action, params, silent);
+        const data = await this._request(action, params, silent, 1, timeout);
         if (!data) throw new Error('Received empty/undefined data from _request');
         return data;
       } catch (err) {
@@ -843,46 +962,45 @@ const Api = {
     }
   },
 
-  /** Internal fetch with AbortController timeout */
-  /** Internal fetch with AbortController timeout */
-  async _request(action, params, silent) {
+  /** Internal fetch with AbortController timeout + retry */
+  async _request(action, params, silent, _attempt = 1, timeout = 20_000) {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 90_000);
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
 
     try {
       const res = await fetch(CONFIG.API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${CONFIG.SUPABASE_ANON_KEY}` // <--- ADD THIS LINE
+          'Authorization': `Bearer ${CONFIG.SUPABASE_ANON_KEY}`,
         },
         signal: controller.signal,
         body: JSON.stringify({
           action,
           agentNo: STATE.agentNo,
           week: STATE.week,
-          _cb: Date.now(), // Cache buster
+          _cb: Date.now(),
           ...params,
         }),
       });
 
       if (!res.ok) throw new Error(`Server Error: ${res.status}`);
-
       const data = await res.json();
-      console.log(`API [${action}] Response:`, data);
       if (data.error && !data.success) throw new Error(data.error);
-
       return data;
+
     } catch (err) {
-      if (err.name === 'AbortError') {
-        const timeoutErr = new Error('Request timed out (15s)');
-        if (!silent) console.warn(`API [${action}]: timed out`);
-        throw timeoutErr;
+      // Auto-retry ONCE on transient network errors (mobile WiFi↔LTE switches etc.)
+      const isTransient = err.name === 'TypeError' || err.message === 'Failed to fetch' || err.message === 'Network request failed';
+      if (isTransient && _attempt < 2) {
+        if (!silent) console.warn(`API [${action}]: transient network error, retrying in 2s…`);
+        await new Promise(r => setTimeout(r, 2000));
+        return this._request(action, params, silent, 2, timeout);
       }
-      if (!silent) console.error(`API [${action}]:`, err.message);
+      if (err.name === 'AbortError') throw new Error('Request timed out — check your connection and retry');
       throw err;
     } finally {
-      clearTimeout(timeoutId);
+      clearTimeout(timeoutId); // always clear — fixes timer leak on success path
     }
   },
 
@@ -1030,7 +1148,7 @@ async function showRescueGuide() {
           <div>
             <div style="color:#e5a528; font-weight:800; text-transform:uppercase; margin-bottom:4px;">4. Rules & Limits</div>
             <ul style="margin:0; padding-left:16px;">
-              <li>Max <b>5 rescues per week</b> per team — use wisely.</li>
+              <li>Max <b>5 rescues per week</b> per team — use wisely. <span style="color:var(--ff-gold);">(+1 each time a teammate wins one from a Pop Out 🛟)</span></li>
               <li>The sold Classified Merit is <b>permanently removed</b> — it cannot be refunded.</li>
               <li>Only agents who have earned a Classified Merit can sell one.</li>
             </ul>
@@ -1755,9 +1873,34 @@ function startOnlinePolling() {
 async function loadOnlineCount() {
   try {
     const d = await Api.call('getOnlineCount', {}, { cache: true, ttl: 45_000, silent: true });
-    if (d.success) {
-      const el = $('onlineCount');
-      if (el) el.textContent = d.online || 0;
+    if (!d.success) return;
+
+    // Sidebar count
+    const el = $('onlineCount');
+    if (el) el.textContent = d.online || 0;
+    const elHome = $('onlineCountHome');
+    if (elHome) elHome.textContent = d.online || 0;
+
+    // Home avatar stack
+    const wrap = $('onlineAvatars');
+    if (wrap) {
+      const users = d.users || [];
+      if (!users.length) {
+        wrap.innerHTML = `<span style="font-size:10px; color:var(--text-ghost);">No agents online right now</span>`;
+      } else {
+        const MAX = 14;
+        const shown = users.slice(0, MAX);
+        const extra = users.length - shown.length;
+        wrap.innerHTML = shown.map((u, i) => {
+          const ring = u.isBadge ? ' is-badge-pfp' : '';
+          const safeName = sanitize(u.username || 'Agent');
+          const teamShort = (u.team || '').replace('Team ', '');
+          const img = u.pfp
+            ? `<img src="${u.pfp}" alt="">`
+            : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:11px;">${teamEmoji(u.team)}</div>`;
+          return `<div class="online-avatar${ring}" title="${safeName} · ${teamShort}" style="margin-left:${i ? '-9px' : '0'}; z-index:${100 - i};">${img}</div>`;
+        }).join('') + (extra > 0 ? `<div class="online-avatar-more" style="margin-left:-9px;">+${extra}</div>` : '');
+      }
     }
   } catch { /* silent */ }
 }
@@ -1891,7 +2034,71 @@ async function loadDashboard() {
 
     if (!d || !d.success) {
       console.error("DASHBOARD LOAD FAILED:", d);
-      showToast(d?.error || 'Failed to load dashboard', 'error');
+      const errMsg = d?.error || 'Failed to fetch';
+      const isOffline = !navigator.onLine;
+      const content = $('page-home');
+      if (content) {
+        content.style.display = 'block';
+        content.innerHTML = `
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;
+            min-height:60vh;padding:32px;text-align:center;gap:14px;">
+            <div style="font-size:44px;">${isOffline ? '📵' : '📡'}</div>
+            <div style="font-size:15px;font-weight:900;color:#fff;">
+              ${isOffline ? 'You appear to be offline' : 'Connection Error'}
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);max-width:300px;line-height:1.7;">
+              ${isOffline
+                ? 'No internet connection detected. Connect to WiFi or mobile data and retry.'
+                : 'Could not reach HopeTracker servers. This sometimes happens on mobile — try switching between WiFi and mobile data, then retry.'}
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.2);font-family:monospace;
+              background:rgba(0,0,0,0.3);padding:6px 12px;border-radius:6px;max-width:300px;
+              word-break:break-all;">${errMsg}</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px;">
+              <button onclick="loadDashboard()" style="
+                background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;
+                padding:13px 28px;border-radius:12px;font-size:13px;font-weight:900;
+                cursor:pointer;letter-spacing:0.5px;">↺ Retry</button>
+              <button onclick="window._testConn()" style="
+                background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--text-muted);
+                padding:13px 20px;border-radius:12px;font-size:11px;font-weight:700;
+                cursor:pointer;">🔍 Test Connection</button>
+            </div>
+            <div id="conn-test-result" style="font-size:10px;color:var(--text-muted);min-height:14px;"></div>
+          </div>`;
+      }
+      // Test connection helper — checks internet AND Supabase separately
+      window._testConn = async () => {
+        const el = document.getElementById('conn-test-result');
+        if (!el) return;
+        el.style.color = 'var(--text-muted)';
+        el.textContent = 'Testing internet…';
+
+        // Step 1: can we reach the internet at all?
+        let hasInternet = false;
+        try {
+          await fetch('https://www.google.com/favicon.ico', { method: 'HEAD', mode: 'no-cors', cache: 'no-store' });
+          hasInternet = true;
+        } catch (_) {}
+
+        if (!hasInternet) {
+          el.style.color = 'var(--fail)';
+          el.innerHTML = '❌ <strong>No internet.</strong> Your network is connected but has no internet access.<br><span style="color:rgba(255,255,255,0.4)">Try: turn WiFi off and use mobile data instead, or move to a different network.</span>';
+          return;
+        }
+
+        el.textContent = 'Internet OK — testing HopeTracker servers…';
+
+        // Step 2: can we reach Supabase specifically?
+        try {
+          await fetch('https://xyivyebbafqwthvlwzlm.supabase.co', { method: 'HEAD', mode: 'no-cors', cache: 'no-store' });
+          el.style.color = 'var(--green)';
+          el.textContent = '✅ All good — tap Retry above';
+        } catch (_) {
+          el.style.color = 'var(--courage-amber)';
+          el.innerHTML = '⚠️ <strong>Internet works but HopeTracker servers are blocked.</strong><br><span style="color:rgba(255,255,255,0.4)">Your network or ISP is blocking Supabase. Try: switch to mobile data, disable VPN, or use a different WiFi network.</span>';
+        }
+      };
       return;
     }
 
@@ -1928,6 +2135,13 @@ async function loadDashboard() {
       if (typeof showPushPromptIfNeeded === 'function') showPushPromptIfNeeded();
     }, 2500);
 
+    // Team choice / Friends welcome — fires after 3.5s so it doesn't compete with other modals
+    Timers.setTimeout('team-choice-check', async () => {
+      // Friends welcome takes priority; if not applicable, check pending team choice
+      const welcomed = await checkFriendsWelcome();
+      if (!welcomed) checkPendingTeamChoice();
+    }, 3500);
+
     // Trainee promotion check (non-blocking, fires after 3s to not compete with load animations)
     if (d.agent?.isTrainee || d.agent?.status === 'trainee') {
       Timers.setTimeout('trainee-promo-check', async () => {
@@ -1960,6 +2174,11 @@ async function loadDashboard() {
         } catch (e) { /* silent */ }
       }, 3000);
     }
+
+    // 🚨 Pop Out live invite — friendly popup nudging the agent to join an active op
+    Timers.setTimeout('popout-invite', () => { maybeShowPopOutInvite(); }, 2500);
+    // 🎁 Magic Box ready nudge — reminds qualified agents to open their box
+    Timers.setTimeout('magic-box-ready', () => { maybeShowMagicBoxReady(); }, 3500);
 
   } catch (e) {
     showToast('Failed to connect to HQ', 'error');
@@ -2063,13 +2282,18 @@ function updateSidebarAgent(agent) {
   if (sbPfp) {
     sbPfp.style.setProperty('--team-color', tColor);
 
-    const pfpUrl = teamPfp(team);
+    const pfpUrl = agentAvatar(agent); // custom badge avatar if streak-valid, else team PFP
     // Add the online dot back in since we are overwriting innerHTML
     const onlineDot = '<div class="online-dot"></div>';
 
+    // Holo "C+" ring only when wearing an earned badge avatar
+    sbPfp.classList.toggle('is-badge-pfp', isBadgeAvatar(agent));
+
     if (pfpUrl) {
-      sbPfp.innerHTML = `<img src="${pfpUrl}" alt="${team}">${onlineDot}`;
+      const av = avatarParts(pfpUrl);
+      sbPfp.innerHTML = `<img src="${av.src}" alt="${team}" style="object-position:${av.pos};">${onlineDot}`;
     } else {
+      sbPfp.classList.remove('is-badge-pfp');
       sbPfp.innerHTML = `<span>${teamEmoji(team)}</span>${onlineDot}`;
     }
   }
@@ -2111,8 +2335,20 @@ async function syncData() {
   const btn = $('syncBtn');
   if (btn) { btn.textContent = '⟳ SYNCING...'; btn.disabled = true; }
 
+  // Reassure on heavy weeks that a long sync hasn't frozen
+  if (btn) {
+    Timers.setTimeout('sync-hint-1', () => { if (_syncInProgress && btn) btn.textContent = '⟳ Fetching scrobbles…'; }, 12000);
+    Timers.setTimeout('sync-hint-2', () => { if (_syncInProgress && btn) btn.textContent = '⟳ Almost there…'; }, 35000);
+  }
+
   try {
-    const d = await Api.call('refreshAgentStats', { agentNo: STATE.agentNo }, { dedupe: false, cache: false });
+    // Long timeout: a heavy streaming week (e.g. Festa/comeback) means many
+    // Last.fm pages to fetch — the backend self-limits, so wait it out.
+    const d = await Api.call('refreshAgentStats', { agentNo: STATE.agentNo }, { dedupe: false, cache: false, timeout: 90_000 });
+
+    // Cancel the "still working" hints so they can't overwrite the result text
+    Timers.clearTimeout('sync-hint-1');
+    Timers.clearTimeout('sync-hint-2');
 
     if (d.success) {
       if (d.alreadySynced) {
@@ -2133,6 +2369,8 @@ async function syncData() {
       showToast(d.error || 'Sync failed', 'error');
     }
   } catch (e) {
+    Timers.clearTimeout('sync-hint-1');
+    Timers.clearTimeout('sync-hint-2');
     if (btn) btn.textContent = '✗ ERROR';
     showToast('Sync failed', 'error');
   }
@@ -2282,11 +2520,11 @@ function showFestaClaimPopup(relic, xp, isTopClaimer, claimNumber) {
   document.querySelectorAll('#festa-claim-popup').forEach(e => e.remove());
   const overlay = document.createElement('div');
   overlay.id = 'festa-claim-popup';
-  overlay.style.cssText = `position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;animation:fadeIn 0.3s ease;`;
+  overlay.style.cssText = `position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s ease;`;
   overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
 
   overlay.innerHTML = `
-    <div style="background:linear-gradient(135deg,#1a0a2e,#0d1b2a);border:1px solid rgba(139,92,246,0.4);border-radius:20px;padding:32px 28px;max-width:340px;width:90%;text-align:center;box-shadow:0 0 60px rgba(139,92,246,0.3);animation:promoSlideUp 0.4s ease;">
+    <div style="background:linear-gradient(135deg,#1a0a2e,#0d1b2a);border:1px solid rgba(139,92,246,0.4);border-radius:20px;padding:32px 28px;max-width:340px;width:90%;max-height:85vh;overflow-y:auto;text-align:center;box-shadow:0 0 60px rgba(139,92,246,0.3);animation:promoSlideUp 0.4s ease;">
       <div style="font-size:14px;font-weight:900;color:#a78bfa;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">🎁 Festa Relic Secured</div>
       <div style="font-size:64px;margin:16px 0;filter:drop-shadow(0 0 16px rgba(139,92,246,0.8));">${relic.emoji}</div>
       <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px;">${relic.name}</div>
@@ -2386,7 +2624,54 @@ function showFestaHuntPopup() {
   document.body.appendChild(overlay);
 }
 
+function showFestaRelicDetail(relic) {
+  document.querySelectorAll('#festa-relic-detail').forEach(e => e.remove());
+  const overlay = document.createElement('div');
+  overlay.id = 'festa-relic-detail';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,0.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s ease;`;
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+
+  overlay.innerHTML = `
+    <div style="background:linear-gradient(160deg,#0f0a1e,#0a1628);border:1px solid rgba(139,92,246,0.4);border-radius:22px;width:100%;max-width:420px;max-height:85vh;overflow-y:auto;padding:28px;box-shadow:0 0 80px rgba(124,58,237,0.25);animation:promoSlideUp 0.4s ease;">
+
+      <!-- Header with emoji and close btn -->
+      <div style="position:relative; margin-bottom:20px;">
+        <button onclick="document.getElementById('festa-relic-detail')?.remove()" style="position:absolute;top:-8px;right:-8px;background:transparent;border:none;color:rgba(167,139,250,0.5);font-size:20px;cursor:pointer;line-height:1;">✕</button>
+
+        <div style="text-align:center;">
+          <div style="font-size:64px; margin-bottom:16px; filter:drop-shadow(0 0 12px rgba(167,139,250,0.8));">${relic.emoji}</div>
+          <div style="font-size:18px; font-weight:900; color:#fff; margin-bottom:4px;">${relic.name}</div>
+          <div style="font-size:11px; color:#a78bfa; font-weight:700; letter-spacing:2px; text-transform:uppercase;">${relic.era}</div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div style="height:1px; background:rgba(139,92,246,0.2); margin-bottom:18px;"></div>
+
+      <!-- Lore section -->
+      <div style="margin-bottom:18px;">
+        <div style="font-size:10px; color:#a78bfa; font-weight:900; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;">📖 The Story</div>
+        <div style="font-size:11px; color:rgba(196,181,253,0.85); line-height:1.8; font-style:italic; padding:12px 14px; background:rgba(255,255,255,0.03); border-radius:10px; border-left:3px solid rgba(139,92,246,0.5);">
+          ${relic.lore || 'No lore recorded for this relic.'}
+        </div>
+      </div>
+
+      <!-- Claimed info -->
+      <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); padding-top:12px; border-top:1px solid rgba(139,92,246,0.2);">
+        <span>XP Awarded: <span style="color:#fbbf24; font-weight:800;">${relic.xpAwarded}</span></span>
+        <span>Claimed: ${relic.dateKST ? new Date(relic.dateKST).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Unknown'}</span>
+      </div>
+
+      <button onclick="document.getElementById('festa-relic-detail')?.remove()" style="width:100%; margin-top:18px; background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;padding:12px;border-radius:12px;font-size:11px;font-weight:900;cursor:pointer;letter-spacing:1px;text-transform:uppercase;">
+        CLOSE 💜
+      </button>
+    </div>`;
+
+  document.body.appendChild(overlay);
+}
+
 window.showFestaHuntPopup = showFestaHuntPopup;
+window.showFestaRelicDetail = showFestaRelicDetail;
 window.initFestaRelic = initFestaRelic;
 
 // =============================================
@@ -2756,8 +3041,8 @@ async function renderHome() {
     html += `
       <div class="glass-card" style="padding:20px; margin-bottom:20px; border:1px solid ${tColor}44; border-left:4px solid ${tColor}; background:linear-gradient(90deg, ${tColor}11, transparent);">
         <div style="display:flex; align-items:center; gap:15px;">
-          <div class="battle-pfp-mid" style="--team-color:${tColor}; width:50px; height:50px; border-color:${tColor};">
-            <img src="${teamPfp(team)}" alt="${sanitize(team)}">
+          <div class="battle-pfp-mid ${isBadgeAvatar(a) ? 'is-badge-pfp' : ''}" style="--team-color:${tColor}; width:50px; height:50px; border-color:${tColor};">
+            <img src="${avatarParts(agentAvatar(a)).src}" alt="${sanitize(team)}" style="object-position:${avatarParts(agentAvatar(a)).pos};">
           </div>
           <div style="flex:1; min-width:0;">
             <div style="font-size:14px; color:var(--text-muted); font-family:var(--font-ui);">Welcome back,</div>
@@ -2798,6 +3083,69 @@ async function renderHome() {
 
     // ── Festa Hunt card ──
     if (festaCardHtml) html += festaCardHtml;
+
+    // ── Festa Magic Ship card — June 13 only ──
+    const _shipKST = new Date(Date.now() + 9 * 3600000);
+    if (_shipKST.getUTCMonth() === 5 && _shipKST.getUTCDate() === 13) {
+      if (!document.getElementById('fsh-star-css')) {
+        const _s = document.createElement('style');
+        _s.id = 'fsh-star-css';
+        _s.textContent = '@keyframes fshStarTwinkle{0%,100%{opacity:0.1}50%{opacity:0.8}}';
+        document.head.appendChild(_s);
+      }
+      // Stars scattered in the gap area (left:160px to right:100px)
+      let _gapStars = '';
+      for (let i = 0; i < 22; i++) {
+        const sz = (0.8 + Math.random() * 1.6).toFixed(1);
+        const left = (20 + Math.random() * 60).toFixed(1); // % across card
+        const top  = (8  + Math.random() * 84).toFixed(1); // % vertically
+        const dur  = (1.5 + Math.random() * 2.5).toFixed(2);
+        const del  = (Math.random() * 2).toFixed(2);
+        _gapStars += `<div style="position:absolute;width:${sz}px;height:${sz}px;left:${left}%;top:${top}%;border-radius:50%;background:#d8b4fe;animation:fshStarTwinkle ${dur}s ease-in-out ${del}s infinite;pointer-events:none;"></div>`;
+      }
+      const _miniShip = renderArirangShip(true)
+        .replace(/>Arirang<\/div>/, '>Festa</div>')
+        .replace(/margin-bottom:\s*16px/g, 'margin-bottom:0');
+      html += `
+        <div id="festa-ship-home" style="
+          position:relative; height:140px; margin-bottom:16px;
+          border-radius:16px; overflow:hidden;
+          border:1px solid rgba(168,85,247,0.3);
+          box-shadow:0 0 24px rgba(168,85,247,0.15);">
+          ${_gapStars}
+          <!-- mini ship bottom-left, no pointer events -->
+          <div style="position:absolute;bottom:0;left:0;width:280px;height:260px;transform:scale(0.45);transform-origin:bottom left;pointer-events:none;overflow:hidden;">
+            ${_miniShip}
+          </div>
+          <!-- Right content: text + button stacked, flex column -->
+          <div style="position:absolute;left:44%;right:0;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:0 12px;">
+            <div style="text-align:center;">
+              <div style="font-size:13px;font-weight:900;color:#f0e6ff;letter-spacing:0.5px;margin-bottom:3px;">Festa Ship is Open</div>
+              <div style="font-size:10px;color:rgba(196,180,255,0.5);letter-spacing:0.3px;">Board now to celebrate 💜</div>
+            </div>
+            <button onclick="launchTheVoyage()" style="
+              display:inline-block;padding:9px 22px;border-radius:10px;border:none;
+              background:linear-gradient(135deg,#a78bfa,#7c3aed);
+              color:#fff;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;
+              letter-spacing:2px;text-transform:uppercase;cursor:pointer;
+              box-shadow:0 6px 20px rgba(167,139,250,0.4);white-space:nowrap;">
+              ⛵ Board
+            </button>
+          </div>
+        </div>`;
+    }
+
+    // ── Online Now widget (avatar stack — badge avatars pop) ──
+    html += `
+      <div class="glass-card" style="padding:12px 16px; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+          <div style="font-size:11px; font-weight:800; color:var(--text-secondary); letter-spacing:1px; text-transform:uppercase;">🟢 Online Now</div>
+          <span style="font-size:10px; color:var(--text-ghost);"><span id="onlineCountHome">0</span> agents</span>
+        </div>
+        <div id="onlineAvatars" style="min-height:34px; display:flex; align-items:center; flex-wrap:wrap;">
+          <span style="font-size:10px; color:var(--text-ghost);">Loading…</span>
+        </div>
+      </div>`;
 
     // ═══════════════════════════════════════
     // 2. LIVE TICKER
@@ -2952,7 +3300,7 @@ async function renderHome() {
       <div class="hero-stats-grid">
         <div class="hero-stat-card xp">
           <div class="h-stat-val red">${fmt(stats.totalXP || 0)}</div>
-          <div class="h-stat-lbl">XP Earned</div>
+          <div class="h-stat-lbl">XP Earned${((stats.totalXP||0) - (stats.trackXP||0) - (stats.albumXP||0) - (stats.songXP||0)) > 0 ? ` <span style="font-size:8px;color:var(--purple-mid);font-weight:700;">+${fmt((stats.totalXP||0)-(stats.trackXP||0)-(stats.albumXP||0)-(stats.songXP||0))} 🎮</span>` : ''}</div>
         </div>
         <div class="hero-stat-card streams">
           <div class="h-stat-val blue">${fmt(stats.trackScrobbles || 0)}</div>
@@ -3018,7 +3366,7 @@ async function renderHome() {
       const buildTargetSection = (entries, icon, label, accentColor, page, barColor) => {
         const rows = entries.slice(0, 5).map(([name, goalInfo], idx) => {
           const prog = goalInfo.teams?.[team] || { current: 0 };
-          const goal = goalInfo.goal || 1;
+          const goal = (prog.goal ?? goalInfo.goal) || 1;   // per-team goal (targets differ per team)
           const cur = prog.current || 0;
           const pct = Math.min(100, Math.round((cur / goal) * 100));
           const done = pct >= 100;
@@ -3481,6 +3829,9 @@ async function renderHome() {
     renderHomeStreakWidget(stats);
     loadHomeActivityWidget();
     updateTickerWithActivity();
+    loadFrozenBadges(); // load locked badge images so the badges page shows permanent pics
+    if (typeof maybeShowAvatarIntro === 'function') Timers.setTimeout('avatar-intro', maybeShowAvatarIntro, 2500); // one-time feature intro
+    if (typeof maybeShowAvatarAdjustIntro === 'function') Timers.setTimeout('avatar-adjust-intro', maybeShowAvatarAdjustIntro, 4000); // one-time adjuster announcement
 
     // Async: fill Festa daily progress pill
     if (_festaOn && document.getElementById('festa-daily-progress')) {
@@ -4017,9 +4368,10 @@ function renderProfile() {
     html += `
       <div class="profile-agent-card" style="--team-color: ${tColor}">
         <div style="display: flex; align-items: center; gap: 20px; position: relative; z-index: 5;">
-          <div class="profile-pfp-large" style="--team-color: ${tColor};">
-            <img src="${teamPfp(team)}" alt="Agent">
+          <div class="profile-pfp-large ${isBadgeAvatar(a) ? 'is-badge-pfp' : ''}" style="--team-color: ${tColor}; cursor:pointer; position:relative;" onclick="window.openAvatarPicker()" title="Customize your avatar">
+            <img src="${avatarParts(agentAvatar(a)).src}" alt="Agent" style="object-position:${avatarParts(agentAvatar(a)).pos};">
             <div class="online-dot"></div>
+            <div style="position:absolute; bottom:-2px; right:-2px; background:var(--team-color,#7c3aed); border:2px solid var(--bg-deep,#0a0a14); border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px;">🎨</div>
           </div>
           <div style="flex: 1;">
             <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); letter-spacing: 2px;">FILE # ${a.agentNo || STATE.agentNo}</div>
@@ -4038,8 +4390,8 @@ function renderProfile() {
     html += `
       <div class="grid-3" style="margin-bottom:24px;">
         <div class="stat-box" style="border-top:2px solid var(--red-core);">
-          <div class="sv red" style="font-size:20px;">${fmt(stats.totalXP)}</div>
-          <div class="sl">XP (${STATE.week})</div>
+          <div class="sv red" style="font-size:20px;" id="profile-xp-value">${fmt(stats.totalXP)}</div>
+          <div class="sl">XP (${STATE.week})<span id="profile-popout-xp-note"></span></div>
         </div>
         <div class="stat-box" style="border-top:2px solid var(--wave-foam);">
           <div class="sv white" style="font-size:20px;">#${a.rank || '—'}</div>
@@ -4214,6 +4566,7 @@ function renderProfile() {
     `;
 
     // --- 3. BADGES ---
+    html += `<div id="profile-honours-section">`; // wraps Standard + Classified — updated when Pop Out XP loads
     html += `
       <div style="display:flex; align-items:center; gap:12px; margin:0 0 16px 0;">
         <div style="font-size:16px;">🎖️</div>
@@ -4286,6 +4639,14 @@ function renderProfile() {
         </div>
       `;
     }
+
+    html += `</div>`; // close #profile-honours-section
+
+    // --- 3.6 GOLDEN VINYLS (Pop Out MVP collectibles, lazy-loaded) ---
+    html += `<div id="profile-golden-vinyls"></div>`;
+
+    // --- 3.7 LISTENBRAINZ BETA ---
+    html += `<div id="spotify-beta-card" style="margin-bottom:24px;"></div>`;
 
     // --- 4. GHOST PROTOCOL (LEAVE) ---
     const leaveUsage = a.leaveUsage || {};
@@ -4368,6 +4729,108 @@ function renderProfile() {
 
     if (typeof loadCareerHistory === 'function') loadCareerHistory();
     if (typeof loadProfileStreak === 'function') loadProfileStreak();
+    renderSpotifyBetaCard();
+
+    // Load Pop Out XP + Golden Vinyls (MVP wins) to update badge drawer and profile
+    Promise.all([
+      Api.call('getPopOutBadges', { agentNo: STATE.agentNo }, { dedupe: false, cache: false }),
+      Api.call('getPopOutHallOfFame', { agentNo: STATE.agentNo, limit: 1 }, { dedupe: false, cache: false }),
+    ]).then(([pb, hof]) => {
+      // This week's Pop Out XP — display-only. stats.totalXP ALREADY includes it
+      // (weekly_member_stats.total_xp = track + album + song + pop_out_xp), so
+      // adding it again here would double-count.
+      const popXP = (pb && pb.xpByWeek && pb.xpByWeek[STATE.week]) || 0;
+
+      if (popXP > 0) {
+        // 1) Annotate headline XP display (value itself is already correct)
+        const noteEl = document.getElementById('profile-popout-xp-note');
+        const combinedXP = parseInt(stats.totalXP) || 0;
+        if (noteEl) noteEl.innerHTML = ` <span style="font-size:9px;color:var(--purple-mid);">+${fmt(popXP)} 🎮</span>`;
+
+        // 2) Re-render the badge drawer (Standard + Classified) with combined XP
+        //    so Pop Out XP unlocks the real BTS image badges in the drawer
+        const honoursHost = document.getElementById('profile-honours-section');
+        if (honoursHost) {
+          const newXpBadges = getLevelBadges(STATE.agentNo, combinedXP) || [];
+          const newBadges = [];
+          if (album2xBadge) newBadges.push(album2xBadge);
+          newBadges.push(...newXpBadges);
+          const newCoolBadges = (STATE.week !== 'Week 1' && STATE.week !== 'Week 2' && STATE.week !== 'Week 3')
+            ? (getTacticalBadges(STATE.agentNo, combinedXP, STATE.week, meritsConsumedProfile) || [])
+            : [];
+
+          let honoursHtml = `
+            <div style="display:flex; align-items:center; gap:12px; margin:0 0 16px 0;">
+              <div style="font-size:16px;">🎖️</div>
+              <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--vinyl-gold);">Recent Honors</div>
+              <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(212,175,55,0.3), transparent);"></div>
+            </div>`;
+
+          if (newBadges.length > 0) {
+            honoursHtml += `
+              <div class="glass-card" style="padding:16px; margin-bottom:24px;">
+                <div class="badge-grid">
+                  ${newBadges.map(b => `
+                    <div class="holo-badge-container">
+                      <div class="holo-circle">
+                        <div class="holo-inner">
+                          <img src="${b.imageUrl}" alt="${sanitize(b.name)}" onerror="this.style.display='none'">
+                          <div class="holo-shine"></div>
+                        </div>
+                      </div>
+                      <div class="badge-label">${sanitize(b.name)}</div>
+                    </div>
+                  `).join('')}
+                </div>
+                <button onclick="goTo('badges')" class="btn-outline" style="width:100%; margin-top:15px; font-size:10px;">
+                  🎒 View Full Archive →
+                </button>
+              </div>`;
+          }
+
+          if (newCoolBadges.length > 0) {
+            honoursHtml += `
+              <div style="display:flex; align-items:center; gap:12px; margin:24px 0 16px 0;">
+                <div style="font-size:16px;">🛡️</div>
+                <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Classified Merits</div>
+                <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(74,144,164,0.3), transparent);"></div>
+              </div>
+              <div class="glass-card" style="padding:16px; margin-bottom:24px;">
+                <div class="tactical-grid">
+                  ${newCoolBadges.map(b => `
+                    <div class="tactical-card-container">
+                      <div class="tactical-card">
+                        <div class="corner-tl"></div><div class="corner-br"></div>
+                        <div class="tactical-inner"><img src="${b.imageUrl}" alt="Badge"></div>
+                        <div class="tactical-shine"></div>
+                      </div>
+                      <div class="tactical-label">MERIT ${b.name.split(' ')[1]}</div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>`;
+          }
+
+          honoursHost.innerHTML = honoursHtml;
+        }
+      }
+
+      // 3) Golden Vinyls (MVP wins only — separate collectible section)
+      const vinyls = (hof && hof.mine) || [];
+      const vinylHost = document.getElementById('profile-golden-vinyls');
+      if (vinylHost && vinyls.length) {
+        vinylHost.innerHTML = `
+          <style>${GOLDEN_VINYL_CSS}</style>
+          <div style="display:flex;align-items:center;gap:12px;margin:22px 0 14px 0;">
+            <div style="font-size:16px;">🏆</div>
+            <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:3px;color:var(--vinyl-gold);">Golden Vinyls</div>
+            <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(231,197,96,0.3),transparent);"></div>
+            <div style="font-size:10px;color:var(--vinyl-gold);font-weight:800;">${vinyls.length}</div>
+          </div>
+          ${goldenVinylFull(vinyls[0])}
+          ${vinyls.length > 1 ? `<div style="margin-top:10px;">${vinyls.slice(1).map(goldenVinylRow).join('')}</div>` : ''}`;
+      }
+    }).catch(() => {});
 
     // Load Festa inventory asynchronously
     if (_festaActive) {
@@ -4381,9 +4844,12 @@ function renderProfile() {
         body.innerHTML = `
           <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
             ${inv.finds.map(f => `
-              <div title="${f.name} · ${f.era}" style="display:flex; flex-direction:column; align-items:center; gap:4px; padding:8px 10px; background:rgba(124,58,237,0.08); border:1px solid rgba(124,58,237,0.2); border-radius:10px; min-width:56px; cursor:default;">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; padding:8px 10px; background:rgba(124,58,237,0.08); border:1px solid rgba(124,58,237,0.2); border-radius:10px; min-width:56px; cursor:pointer; transition:all 0.15s ease;"
+                onclick="window.showFestaRelicDetail(${JSON.stringify(f).replace(/"/g, '&quot;')})"
+                onmouseover="this.style.background='rgba(124,58,237,0.15)'; this.style.borderColor='rgba(139,92,246,0.5)';"
+                onmouseout="this.style.background='rgba(124,58,237,0.08)'; this.style.borderColor='rgba(124,58,237,0.2)';">
                 <span style="font-size:24px;">${f.emoji}</span>
-                <span style="font-size:7px; color:#a78bfa; font-weight:800; text-align:center; max-width:54px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${f.name.split(' ').slice(0,2).join(' ')}</span>
+                <span style="font-size:7px; color:#a78bfa; font-weight:800; text-align:center; max-width:54px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${f.name} · ${f.era}">${f.name.split(' ').slice(0,2).join(' ')}</span>
               </div>
             `).join('')}
           </div>
@@ -4601,7 +5067,7 @@ async function renderTrackGoals() {
       for (const [track, info] of Object.entries(trackGoals)) {
         const tp = info.teams?.[team] || {};
         const current = tp.current || 0;
-        const goal = info.goal || 0;
+        const goal = (tp.goal ?? info.goal) || 0;   // per-team goal (targets differ per team)
         const done = tp.status === 'Completed' || current >= goal;
 
         // Ensure pct is at least 1% if there are ANY streams, so the bar isn't totally invisible
@@ -4735,7 +5201,7 @@ async function renderAlbumGoals() {
       for (const [album, info] of Object.entries(albumGoals)) {
         const ap = info.teams?.[team] || {};
         const current = ap.current || 0;
-        const goal = info.goal || 0;
+        const goal = (ap.goal ?? info.goal) || 0;   // per-team goal (targets differ per team)
         const done = ap.status === 'Completed' || current >= goal;
 
         // Ensure pct is at least 1% if there are ANY streams, so the bar isn't totally invisible
@@ -4853,7 +5319,7 @@ async function renderAlbum2x() {
     a2xData = { dailyGrid: STATE.data?.agent?.album2xStatus?.dailyGrid || {} };
   }
 
-  const isUserExempt = STATE.data?.agent?.onLeave || false;
+  const isUserExempt = STATE.data?.agent?.onLeave || STATE.data?.agent?.isTrainee || false;
   // Use fresh API response for weekly status — STATE.data can be stale
   const isWeekComplete = a2xData?.weeklyPassed || false;
 
@@ -5540,20 +6006,6 @@ function renderSmDayMembers(members, date, today, totalTracks) {
             <div class="pbar" style="height:5px; margin-bottom:4px;">
                 <div class="pfill" style="width:${completionPct}%; background:${completionPct === 100 ? 'var(--green)' : 'var(--red-core)'};"></div>
             </div>
-            ${dayExempt.length > 0 ? `
-                <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:8px; padding:10px;">
-                    <div style="color:var(--text-muted); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
-                        💤 Exempt / Pre-Enlistment (${dayExempt.length})
-                    </div>
-                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
-                        ${dayExempt.map(m => `
-                            <span style="display:inline-flex; align-items:center; gap:4px; padding:3px 8px; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:6px; font-size:9px; color:var(--text-ghost);">
-                                ${m.isPreJoin ? '👋' : '—'} ${displayName(m.name)}
-                            </span>
-                        `).join('')}
-                    </div>
-                </div>
-            ` : ''}
         </div>
 
         ${dayFailed.length > 0 ? `
@@ -5648,7 +6100,7 @@ function renderSideMissions() {
   const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const sm = STATE.data.agent.sideMissions;
   const today = sm?.today || getKSTDateString();
-  const isOnLeave = STATE.data.agent.onLeave || false;
+  const isOnLeave = STATE.data.agent.onLeave || STATE.data.agent.isTrainee || false;
   const teamName = STATE.data?.agent?.profile?.team;
 
   let html = renderGuide('sidemissions') || '';
@@ -6108,7 +6560,7 @@ function buildRankCard(agent, index, opts = {}) {
   const { showTeam = true } = opts;
   const isMe = agent.agentNo === STATE.agentNo;
   const tColor = teamColor(agent.team);
-  const pfpUrl = teamPfp(agent.team);
+  const pfpUrl = agentAvatar(agent); // custom badge avatar if set & streak-valid
 
   // Top 3 medals
   const medals = ['🥇', '🥈', '🥉'];
@@ -6146,9 +6598,9 @@ function buildRankCard(agent, index, opts = {}) {
         <!-- Rank -->
         <div class="rank-badge">${rankDisplay}</div>
         
-        <!-- Scifi Oval PFP -->
-        <div class="rank-pfp-oval">
-          <img src="${pfpUrl}" alt="${agent.team}" onerror="this.src='https://i.pravatar.cc/100?u=${agent.agentNo}'">
+        <!-- Avatar (holo ring when wearing an earned badge) -->
+        <div class="rank-pfp-oval ${isBadgeAvatar(agent) ? 'is-badge-pfp' : ''}">
+          <img src="${avatarParts(pfpUrl).src}" alt="${agent.team}" style="object-position:${avatarParts(pfpUrl).pos};" onerror="this.src='https://i.pravatar.cc/100?u=${agent.agentNo}'">
         </div>
         
         <!-- Info Block -->
@@ -6228,6 +6680,7 @@ function renderTeams() {
     const tColor = teamColor(tm.team);
     const badgeCount = ARMY_BOMB_BADGES.filter(b => tm[b.key]).length;
     const rankDisplay = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`;
+    const isDissolved = tm.team === 'Team Muse' || tm.team === 'Team Layover';
 
     const missions = [
       { group: 'Core Streaming', key: 'trackGoalPassed',   label: 'Track Goals',   icon: '🎵' },
@@ -6259,7 +6712,7 @@ function renderTeams() {
 
     return `
           <div class="team-group-container glass-card"
-               style="border:1px solid ${isMe ? tColor+'66' : 'rgba(255,255,255,0.06)'}; border-left:3px solid ${isMe ? tColor : 'rgba(255,255,255,0.06)'}; padding:0; overflow:hidden; transition:border-color 0.2s;">
+               style="border:1px solid ${isMe ? tColor+'66' : 'rgba(255,255,255,0.06)'}; border-left:3px solid ${isMe ? tColor : 'rgba(255,255,255,0.06)'}; padding:0; overflow:hidden; transition:border-color 0.2s;${isDissolved ? 'opacity:0.35;filter:grayscale(0.7) blur(0.5px);pointer-events:none;' : ''}">
 
             <!-- ── ACCORDION HEADER ── -->
             <div onclick="
@@ -6286,6 +6739,7 @@ function renderTeams() {
                     ${sanitize(tm.team.replace('Team ', ''))}
                   </span>
                   ${tm.isWinner ? '<span style="font-size:11px;">🏆</span>' : ''}
+                  ${isDissolved ? '<span style="font-size:7px;color:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.15);padding:1px 5px;border-radius:3px;font-weight:800;letter-spacing:1px;flex-shrink:0;">DISSOLVED</span>' : ''}
                   ${isMe ? `<span style="font-size:7px; color:${tColor}; border:1px solid ${tColor}66; padding:1px 5px; border-radius:3px; font-weight:800; letter-spacing:1px; flex-shrink:0;">YOU</span>` : ''}
                 </div>
                 <!-- Secondary: muted stats row -->
@@ -6411,13 +6865,24 @@ async function loadChat() {
     const box = $('chatBox');
     if (!box) return;
 
-    box.innerHTML = (d.messages || []).map(m =>
-      `<div class="chat-msg">
-          <span class="cm-name">${sanitize(m.username)}</span>
-          <span class="cm-team">[${(m.team || '').replace('Team ', '')}]</span>
-          <div class="cm-text">${sanitize(m.message)}</div>
-        </div>`
-    ).join('');
+    box.innerHTML = (d.messages || []).map(m => {
+      const pfp = m.pfp || teamPfp(m.team);
+      let avatarHtml = '';
+      if (pfp) {
+        const img = `<img src="${pfp}" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;display:block;">`;
+        avatarHtml = m.isBadge
+          ? `<span class="is-badge-pfp" style="border-radius:50%;flex-shrink:0;display:inline-block;">${img}</span>`
+          : `<span style="flex-shrink:0;display:inline-block;border-radius:50%;border:1px solid var(--glass-border);">${img}</span>`;
+      }
+      return `<div class="chat-msg" style="display:flex; gap:8px; align-items:flex-start;">
+          ${avatarHtml}
+          <div style="flex:1; min-width:0;">
+            <span class="cm-name">${sanitize(m.username)}</span>
+            <span class="cm-team">[${(m.team || '').replace('Team ', '')}]</span>
+            <div class="cm-text">${sanitize(m.message)}</div>
+          </div>
+        </div>`;
+    }).join('');
 
     box.scrollTop = box.scrollHeight;
 
@@ -6472,7 +6937,7 @@ async function renderWrappedPage() {
   const myTracks = STATE.data?.agent?.trackContributions || {};
 
   // Dynamically build profiles from CONFIG with a "Friendly Spy" vibe
-  const wrappedProfiles = Object.keys(CONFIG.TEAMS).map(teamName => ({
+  const wrappedProfiles = Object.keys(CONFIG.TEAMS).filter(t => !isTeamDissolved(t)).map(teamName => ({
     team: teamName,
     color: CONFIG.TEAMS[teamName].color,
     pfp: CONFIG.TEAM_PFPS[teamName],
@@ -6519,7 +6984,8 @@ async function renderWrappedPage() {
       "Team Hopeworld": "Spreading good energy everywhere! Team Hopeworld lights up the whole battle! ☀️",
       "Team Muse": "Pure art! Team Muse streams with style and never misses a beat! 🎨",
       "Team Layover": "Quietly unstoppable! Team Layover puts in work around the clock! 🌙",
-      "Team Golden": "Golden touch, golden results! Team Golden's energy is absolutely unstoppable! ✨"
+      "Team Golden": "Golden touch, golden results! Team Golden's energy is absolutely unstoppable! ✨",
+      "Friends": "Two hearts, one mission! Friends streams with love and that Vmin energy is unmatched! 💜"
     };
 
     if (allAlbums.length > 0) {
@@ -7507,6 +7973,52 @@ function getBadgeForSeed(seed) {
   return pool[Math.abs(seed) % pool.length];
 }
 
+// =============================================
+// BADGE FREEZING — once a badge's picture is shown, it's locked forever.
+// Adding new images to the pool can never change an already-earned badge.
+// =============================================
+let _badgeFreezeQueue = [];
+let _badgeFreezeTimer = null;
+
+/** Load this agent's permanently-frozen badge images. Always fetches fresh so a
+ *  recent "Lock All" / restore is reflected immediately. */
+async function loadFrozenBadges() {
+  if (!STATE.agentNo) return;
+  try {
+    const r = await Api.call('getFrozenBadges', { agentNo: STATE.agentNo }, { dedupe: false, cache: false });
+    STATE.frozenBadges = (r && r.success && r.frozen) ? r.frozen : (STATE.frozenBadges || {});
+  } catch (_) {
+    STATE.frozenBadges = STATE.frozenBadges || {};
+  }
+}
+
+/**
+ * Return the locked image for a badge if one exists; otherwise lock the freshly
+ * computed image and persist it. After the first view a badge's picture is permanent.
+ * @param {string} key  Stable unique badge identity (agent + type + week + index)
+ * @param {string} computedUrl  The image the current pool would pick
+ */
+function resolveBadgeImage(key, computedUrl) {
+  if (!key) return computedUrl;
+  if (!STATE.frozenBadges) STATE.frozenBadges = {};
+  const locked = STATE.frozenBadges[key];
+  if (locked) return locked;               // already permanent → use it
+  // First time seen: lock the current pick and queue it for the server
+  STATE.frozenBadges[key] = computedUrl;
+  _badgeFreezeQueue.push({ key, url: computedUrl });
+  if (_badgeFreezeTimer) clearTimeout(_badgeFreezeTimer);
+  _badgeFreezeTimer = setTimeout(_flushBadgeFreezes, 1500);
+  return computedUrl;
+}
+
+async function _flushBadgeFreezes() {
+  const batch = _badgeFreezeQueue.splice(0, _badgeFreezeQueue.length);
+  if (!batch.length || !STATE.agentNo) return;
+  try {
+    await Api.call('freezeBadges', { agentNo: STATE.agentNo, badges: batch }, { dedupe: false, cache: false });
+  } catch (_) { /* will retry on next view */ }
+}
+
 /**
  * Get all level badges an agent has earned (1 per 50 XP).
  * @returns {Array<{name: string, description: string, imageUrl: string, type: string}>}
@@ -7529,7 +8041,7 @@ function getLevelBadges(agentNo, totalXP, weekName = STATE.week) {
     badges.push({
       name: `${i * 50} XP`,
       description: `Earned at ${i * 50} XP`,
-      imageUrl: getBadgeForSeed(seed),
+      imageUrl: resolveBadgeImage(`xp:${String(agentNo).toUpperCase()}:${weekName || ''}:${i}`, getBadgeForSeed(seed)),
       type: 'xp',
     });
   }
@@ -7557,7 +8069,7 @@ function getTacticalBadges(agentNo, totalXP, weekName = STATE.week, consumed = 0
       seed = Math.imul(seed, 0x01000193) | 0;
     }
     seed = Math.abs(seed);
-    badges.push({ name: `Elite ${i}`, imageUrl: pool[seed % pool.length] });
+    badges.push({ name: `Elite ${i}`, imageUrl: resolveBadgeImage(`tac:${String(agentNo).toUpperCase()}:${weekName || ''}:${i}`, pool[seed % pool.length]) });
   }
   badges.reverse(); // most recently earned first
 
@@ -7587,7 +8099,7 @@ function getAlbum2xBadge(agentNo, weekName) {
   return {
     name: CONFIG.ALBUM_CHALLENGE.BADGE_NAME,
     description: `${CONFIG.ALBUM_CHALLENGE.BADGE_DESCRIPTION} (${weekName})`,
-    imageUrl: pool[seed % pool.length],
+    imageUrl: resolveBadgeImage(`alb:${String(agentNo).toUpperCase()}:${weekName || ''}`, pool[seed % pool.length]),
     type: 'achievement',
     icon: '✨',
   };
@@ -8294,6 +8806,223 @@ function openPasswordModal() {
   if (modal) modal.hidden = false;
 }
 
+// ── FRIENDS WELCOME + TEAM CHOICE MODALS ─────────────────────
+
+const TEAM_CHOICE_META = {
+  'Team MONO':      { short: 'MONO',      color: '#b8c5d6', ref: 'RM' },
+  'Team Happy':     { short: 'HAPPY',     color: '#ff2d78', ref: 'Jin' },
+  'Team D-Day':     { short: 'D-DAY',     color: '#c62828', ref: 'Agust D' },
+  'Team Hopeworld': { short: 'HOPEWORLD', color: '#ff6d3a', ref: 'J-Hope' },
+  'Team Golden':    { short: 'GOLDEN',    color: '#e5a528', ref: 'Jungkook' },
+};
+
+// Returns true if the welcome modal was shown (so the caller skips the choice check)
+// ── LISTENBRAINZ BETA ─────────────────────────────────────────────────────────
+// No OAuth — agent just enters their ListenBrainz username.
+// Preview only, does not touch official scrobble tables.
+
+const LB_COLOR = '#eb743b'; // ListenBrainz orange
+
+async function renderSpotifyBetaCard() { // kept name so existing call in renderProfile works
+  const card = document.getElementById('spotify-beta-card');
+  if (!card) return;
+
+  card.innerHTML = `
+    <div class="archive-card" style="border-color:rgba(235,116,59,0.4); background:rgba(235,116,59,0.03); margin-bottom:0;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <span style="font-size:18px;">📻</span>
+        <div>
+          <div style="font-size:11px; font-weight:900; color:${LB_COLOR}; letter-spacing:1px;">
+            LISTENBRAINZ PREVIEW
+            <span style="font-size:8px; background:rgba(235,116,59,0.2); color:${LB_COLOR}; border:1px solid rgba(235,116,59,0.4); padding:1px 6px; border-radius:4px; margin-left:4px; letter-spacing:1.5px;">BETA</span>
+          </div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Compare your ListenBrainz streams to this week's targets — preview only</div>
+        </div>
+      </div>
+      <div id="lb-input-row" style="display:flex; gap:8px; margin-bottom:10px;">
+        <input id="lb-username-input" type="text" placeholder="Your ListenBrainz username"
+          style="flex:1; padding:9px 12px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12);
+            border-radius:8px; color:#fff; font-size:11px; outline:none;"
+          onkeydown="if(event.key==='Enter') previewLB()" />
+        <button onclick="previewLB()"
+          style="padding:9px 16px; background:${LB_COLOR}; border:none; border-radius:8px;
+            color:#fff; font-size:11px; font-weight:900; cursor:pointer; white-space:nowrap;">
+          Check →
+        </button>
+      </div>
+      <div id="lb-status-area"></div>
+      <div style="font-size:9px; color:var(--text-ghost); margin-top:8px; line-height:1.5;">
+        Don't have ListenBrainz? It's free at <strong style="color:${LB_COLOR};">listenbrainz.org</strong> — same scrobbler apps work for both Last.fm and ListenBrainz simultaneously.
+      </div>
+    </div>`;
+}
+
+async function previewLB() {
+  const input = document.getElementById('lb-username-input') as HTMLInputElement;
+  const area = document.getElementById('lb-status-area');
+  if (!input || !area) return;
+
+  const username = input.value.trim();
+  if (!username) { toast('Enter your ListenBrainz username'); return; }
+
+  area.innerHTML = `<div style="font-size:10px; color:var(--text-muted); font-family:var(--font-mono); padding:6px 0;">Fetching from ListenBrainz…</div>`;
+
+  try {
+    const d = await Api.call('previewListenBrainz', { agentNo: STATE.agentNo, lbUsername: username, weekLabel: STATE.week }, { cache: false });
+
+    if (!d?.success) {
+      area.innerHTML = `<div style="font-size:10px; color:var(--fail); padding:6px 0;">${d?.error || 'Something went wrong.'}</div>`;
+      return;
+    }
+
+    const rows = Object.entries(d.counts || {})
+      .sort(([, a]: any, [, b]: any) => b.lbCount - a.lbCount)
+      .map(([name, info]: any) => `
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
+          <span style="font-size:10px; color:var(--text-secondary);">${sanitize(name)}</span>
+          <span style="font-size:10px; font-weight:900; font-family:var(--font-mono); color:${info.lbCount > 0 ? LB_COLOR : 'var(--text-ghost)'};">
+            ${info.lbCount} <span style="color:var(--text-ghost); font-weight:400;">/ ${info.goal}</span>
+          </span>
+        </div>`).join('');
+
+    area.innerHTML = `
+      <div style="font-size:9px; color:var(--text-ghost); margin-bottom:8px;">
+        Scanned last <strong style="color:${LB_COLOR};">${d.listensScanned}</strong> listens for <strong style="color:#fff;">${sanitize(d.lbUsername)}</strong>
+      </div>
+      <div style="margin-bottom:12px;">${rows || '<div style="font-size:10px;color:var(--text-ghost);">No matching streams found in recent listens.</div>'}</div>
+      <div style="display:flex; gap:8px; align-items:center; background:rgba(235,116,59,0.08); border:1px solid rgba(235,116,59,0.2); border-radius:8px; padding:10px 12px;">
+        <span style="font-size:16px;">👀</span>
+        <div style="font-size:10px; color:var(--text-secondary); line-height:1.5;">
+          Does this look right? This is a <strong style="color:${LB_COLOR};">preview only</strong> — your official record still comes from Last.fm.
+        </div>
+      </div>
+      <button onclick="previewLB()"
+        style="width:100%; margin-top:10px; padding:9px; background:transparent; border:1px solid rgba(235,116,59,0.3);
+          border-radius:8px; color:${LB_COLOR}; font-size:10px; font-weight:700; cursor:pointer;">
+        ↺ Refresh
+      </button>`;
+  } catch (_) {
+    area.innerHTML = `<div style="font-size:10px; color:var(--text-muted); padding:6px 0;">ListenBrainz preview unavailable.</div>`;
+  }
+}
+
+// ── END LISTENBRAINZ BETA ──────────────────────────────────────────────────────
+
+async function checkFriendsWelcome() {
+  if (!STATE.agentNo) return false;
+  try {
+    const d = await Api.call('checkFriendsWelcome', { agentNo: STATE.agentNo }, { cache: false });
+    if (!d?.success || !d.showWelcome) return false;
+    $('friendsWelcomeModal').hidden = false;
+    return true;
+  } catch (_) { return false; }
+}
+
+async function dismissFriendsWelcome() {
+  $('friendsWelcomeModal').hidden = true;
+  try { await Api.call('dismissFriendsWelcome', { agentNo: STATE.agentNo }, { cache: false }); } catch (_) {}
+}
+
+let _teamChoiceSelected = null;
+
+async function checkPendingTeamChoice() {
+  if (!STATE.agentNo) return;
+  try {
+    const d = await Api.call('getPendingTeamChoice', { agentNo: STATE.agentNo }, { cache: false });
+    if (!d?.success || !d.hasPendingChoice) return;
+    showTeamChoiceModal(d.deadline, d.availableTeams || []);
+  } catch (_) {}
+}
+
+function showTeamChoiceModal(deadline, availableTeams) {
+  const modal = $('teamChoiceModal');
+  const grid  = $('teamChoiceGrid');
+  const dl    = $('teamChoiceDeadline');
+  if (!modal || !grid) return;
+
+  _teamChoiceSelected = null;
+
+  if (deadline && dl) {
+    const d = new Date(deadline);
+    dl.textContent = `⏳ Choose before ${d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })}`;
+  }
+
+  // Build team cards with live agent counts
+  grid.innerHTML = availableTeams.map(t => {
+    const meta = TEAM_CHOICE_META[t.name] || { short: t.name, color: '#fff', ref: '' };
+    return `
+      <div onclick="selectTeamChoice('${t.name}', this)"
+        style="border:2px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 8px;
+          text-align:center;cursor:pointer;transition:all 0.2s;background:rgba(255,255,255,0.03);"
+        data-team="${t.name}">
+        <div style="font-size:0.75rem;font-weight:900;letter-spacing:1.5px;color:${meta.color};">${meta.short}</div>
+        <div style="font-size:0.6rem;color:var(--text-muted);margin-top:2px;">${meta.ref}</div>
+        <div style="font-size:0.65rem;color:rgba(255,255,255,0.5);margin-top:5px;font-weight:700;">${t.count} agents</div>
+      </div>`;
+  }).join('');
+
+  modal.hidden = false;
+}
+
+function selectTeamChoice(teamName, el) {
+  _teamChoiceSelected = teamName;
+  document.querySelectorAll('#teamChoiceGrid [data-team]').forEach(c => {
+    c.style.border = '2px solid rgba(255,255,255,0.08)';
+    c.style.background = 'rgba(255,255,255,0.03)';
+  });
+  const meta = TEAM_CHOICE_META[teamName];
+  el.style.border = `2px solid ${meta?.color || '#7C5CBF'}`;
+  el.style.background = `${meta?.color || '#7C5CBF'}18`;
+  const btn = $('teamChoiceConfirmBtn');
+  if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
+}
+
+async function confirmTeamChoice() {
+  if (!_teamChoiceSelected) return;
+  const btn = $('teamChoiceConfirmBtn');
+  const err = $('teamChoiceError');
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+  if (err) err.textContent = '';
+  try {
+    const d = await Api.call('submitTeamChoice', { agentNo: STATE.agentNo, newTeam: _teamChoiceSelected }, { cache: false });
+    if (d?.success) {
+      const gcLink = CONFIG.GC_LINKS?.teams?.[_teamChoiceSelected] || '';
+      const meta = TEAM_CHOICE_META[_teamChoiceSelected] || {};
+      const modal = $('teamChoiceModal');
+      modal.querySelector('.modal-card').innerHTML = `
+        <div style="padding:28px 24px;text-align:center;">
+          <div style="font-size:2.2rem;margin-bottom:10px;">💜</div>
+          <div style="font-size:1rem;font-weight:900;color:#fff;margin-bottom:6px;">Welcome to ${_teamChoiceSelected}!</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);line-height:1.7;margin-bottom:20px;">
+            Your XP, badges and stream history are all preserved.<br>Stream hard and represent your new team!
+          </div>
+          ${gcLink ? `
+          <a href="${gcLink}" target="_blank" rel="noopener"
+            style="display:block;padding:13px;background:${meta.color || '#7C5CBF'}22;
+              border:1px solid ${meta.color || '#7C5CBF'}66;border-radius:10px;
+              color:${meta.color || '#7C5CBF'};font-size:0.8rem;font-weight:900;
+              letter-spacing:1px;text-decoration:none;margin-bottom:12px;">
+            📲 Join ${_teamChoiceSelected} Group Chat
+          </a>` : ''}
+          <button onclick="$('teamChoiceModal').hidden=true;loadDashboard();"
+            style="width:100%;padding:13px;background:linear-gradient(135deg,${meta.color || '#7C5CBF'},#4f46e5);
+              border:none;border-radius:10px;color:#fff;font-size:0.8rem;font-weight:900;
+              letter-spacing:1px;cursor:pointer;text-transform:uppercase;">
+            Let's Go →
+          </button>
+        </div>`;
+      setTimeout(() => loadDashboard(), 8000);
+    } else {
+      if (err) err.textContent = d?.error || 'Something went wrong — try again';
+      if (btn) { btn.disabled = false; btn.textContent = 'Confirm Team'; }
+    }
+  } catch (_) {
+    if (err) err.textContent = 'Connection error — try again';
+    if (btn) { btn.disabled = false; btn.textContent = 'Confirm Team'; }
+  }
+}
+// ─────────────────────────────────────────────────────────────
+
 function closePasswordModal() {
   const modal = $('passwordModal');
   if (modal) modal.hidden = true;
@@ -8682,18 +9411,19 @@ async function renderSecretMissions() {
       <div class="intel-hud-grid">
         ${Object.keys(CONFIG.TEAMS).map(tName => {
       const isMe = tName === myTeam;
+      const dissolved = isTeamDissolved(tName);
       const tStats = statsData.teams?.[tName] || { secretXP: 0, completed: 0 };
       const tColor = teamColor(tName);
       const pfp = teamPfp(tName);
 
       return `
-            <div class="intel-hud-card ${isMe ? 'is-me' : ''}" style="--team-color: ${tColor};">
+            <div class="intel-hud-card ${isMe ? 'is-me' : ''}" style="--team-color: ${tColor};${dissolved ? 'opacity:0.3;filter:grayscale(0.7);pointer-events:none;' : ''}">
               <div class="hud-card-inner">
                 <div class="hud-pfp">
                   <img src="${pfp}" alt="${tName}">
                 </div>
                 <div class="hud-info">
-                  <div class="hud-team" style="color: ${tColor}">${tName.replace('Team ', '')}</div>
+                  <div class="hud-team" style="color: ${tColor}">${tName.replace('Team ', '')}${dissolved ? ' <span style="font-size:6px;letter-spacing:1px;opacity:0.6;">DISSOLVED</span>' : ''}</div>
                   <div class="hud-xp">+${tStats.secretXP || 0} XP</div>
                   <div class="hud-stats">${tStats.completed || 0}/5 DONE</div>
                 </div>
@@ -8774,6 +9504,312 @@ function renderSecretMissionCard(mission, team, isAssigned = false) {
 // ██████  BADGES PAGE
 // =============================================
 
+// =============================================
+// CUSTOM BADGE AVATAR — picker, apply, intro popup
+// =============================================
+
+/** Apply (or reset) the chosen badge avatar. Empty url = revert to team PFP. */
+window._applyAvatar = async function (badgeUrl) {
+  try {
+    const r = await Api.call('setBadgeAvatar', { agentNo: STATE.agentNo, badgeUrl: badgeUrl || '' }, { dedupe: false, cache: false });
+    if (r?.success) {
+      if (STATE.data?.agent) {
+        STATE.data.agent.pfpBadgeUrl = badgeUrl || null;
+        if (r.pfpValidThrough) STATE.data.agent.pfpValidThrough = r.pfpValidThrough;
+      }
+      showToast(badgeUrl ? '🎨 Avatar updated! 💜' : '↩ Back to team PFP', 'success');
+      if (typeof updateSidebarAgent === 'function') updateSidebarAgent(STATE.data.agent);
+      document.getElementById('avatar-picker-overlay')?.remove();
+      if (STATE.page === 'profile' && typeof renderProfile === 'function') renderProfile();
+      else if (STATE.page === 'badges' && typeof renderBadgesPage === 'function') renderBadgesPage();
+    } else {
+      showToast(r?.error || 'Could not update avatar', 'error');
+    }
+  } catch (e) {
+    showToast('Network error', 'error');
+  }
+};
+
+/**
+ * Avatar position adjuster — badge images come in all shapes, so a fixed
+ * center-crop often cuts off faces. This lets the agent drag/slide the
+ * focal point inside a live circular preview before applying. The chosen
+ * position is stored as a "#fp=X,Y" fragment on the saved URL.
+ */
+window.openAvatarAdjust = function (url) {
+  const cur = STATE.data?.agent?.pfpBadgeUrl || '';
+  const curParts = avatarParts(cur);
+  // Start from the saved position if re-adjusting the current avatar; else face-biased default
+  let x = 50, y = 30;
+  if (curParts.src === url) {
+    const m = curParts.pos.match(/^(\d+)% (\d+)%$/);
+    if (m) { x = +m[1]; y = +m[2]; }
+  }
+
+  document.getElementById('avatar-adjust-overlay')?.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'avatar-adjust-overlay';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.9);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:18px;animation:fadeIn 0.25s ease;`;
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+
+  overlay.innerHTML = `
+    <div style="background:linear-gradient(160deg,#0f0a1e,#0a1628);border:1px solid rgba(139,92,246,0.4);border-radius:22px;width:100%;max-width:340px;padding:24px;box-shadow:0 0 80px rgba(124,58,237,0.25);animation:promoSlideUp 0.3s ease;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <div style="font-size:15px;font-weight:900;color:#fff;">🎯 Adjust Your Avatar</div>
+        <button onclick="document.getElementById('avatar-adjust-overlay')?.remove()" style="background:transparent;border:none;color:rgba(167,139,250,0.6);font-size:18px;cursor:pointer;">✕</button>
+      </div>
+      <div style="font-size:10px;color:var(--text-muted);margin-bottom:16px;">Drag the photo (or use the sliders) until it's framed how you like 💜</div>
+
+      <!-- Live circular preview — drag to reposition -->
+      <div id="av-adjust-stage" style="width:180px;height:180px;border-radius:50%;overflow:hidden;margin:0 auto 16px;border:3px solid rgba(139,92,246,0.6);box-shadow:0 0 30px rgba(124,58,237,0.3);cursor:grab;touch-action:none;user-select:none;">
+        <img id="av-adjust-img" src="${url.replace(/"/g, '&quot;')}" draggable="false"
+          style="width:100%;height:100%;object-fit:cover;object-position:${x}% ${y}%;pointer-events:none;">
+      </div>
+
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px;">
+        <button type="button" data-fp="50,22" class="av-adjust-preset btn-outline" style="font-size:10px;padding:6px 14px;">😊 Face</button>
+        <button type="button" data-fp="50,50" class="av-adjust-preset btn-outline" style="font-size:10px;padding:6px 14px;">🎯 Center</button>
+      </div>
+
+      <div style="margin-bottom:10px;">
+        <div style="font-size:9px;color:var(--text-ghost);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">↔ Horizontal</div>
+        <input type="range" id="av-adjust-x" min="0" max="100" value="${x}" style="width:100%;">
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:9px;color:var(--text-ghost);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">↕ Vertical</div>
+        <input type="range" id="av-adjust-y" min="0" max="100" value="${y}" style="width:100%;">
+      </div>
+
+      <button type="button" id="av-adjust-apply" class="btn-red" style="width:100%;padding:13px;font-size:13px;font-weight:900;">✓ Set as Avatar</button>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  const img = overlay.querySelector('#av-adjust-img');
+  const sx = overlay.querySelector('#av-adjust-x');
+  const sy = overlay.querySelector('#av-adjust-y');
+  const stage = overlay.querySelector('#av-adjust-stage');
+  const paint = () => { img.style.objectPosition = `${x}% ${y}%`; sx.value = x; sy.value = y; };
+
+  sx.oninput = () => { x = +sx.value; paint(); };
+  sy.oninput = () => { y = +sy.value; paint(); };
+  overlay.querySelectorAll('.av-adjust-preset').forEach(b => {
+    b.onclick = () => { const [px, py] = b.dataset.fp.split(','); x = +px; y = +py; paint(); };
+  });
+
+  // Drag on the preview — moving the pointer pans the photo (position moves opposite the drag)
+  let drag = null;
+  stage.onpointerdown = (e) => { drag = { px: e.clientX, py: e.clientY, x, y }; stage.setPointerCapture(e.pointerId); stage.style.cursor = 'grabbing'; };
+  stage.onpointermove = (e) => {
+    if (!drag) return;
+    x = Math.max(0, Math.min(100, Math.round(drag.x - (e.clientX - drag.px) / 1.8)));
+    y = Math.max(0, Math.min(100, Math.round(drag.y - (e.clientY - drag.py) / 1.8)));
+    paint();
+  };
+  stage.onpointerup = stage.onpointercancel = () => { drag = null; stage.style.cursor = 'grab'; };
+
+  overlay.querySelector('#av-adjust-apply').onclick = () => {
+    const finalUrl = (x === 50 && y === 50) ? url : `${url}#fp=${x},${y}`;
+    overlay.remove();
+    window._applyAvatar(finalUrl);
+  };
+};
+
+/** Open the avatar picker modal (used by Profile shortcut + Badge Drawer). */
+window.openAvatarPicker = function () {
+  const a = STATE.data?.agent;
+  if (!a) { showToast('Still loading…', 'info'); return; }
+
+  const canChange = a.canChangeAvatarToday === true;
+  const totalXP = a.stats?.totalXP || 0;
+  const meritsConsumed = a.stats?.meritsConsumedThisWeek || 0;
+  const current = (a.pfpBadgeUrl && a.pfpValidThrough && a.pfpValidThrough >= getKSTDateString()) ? a.pfpBadgeUrl : null;
+
+  // Gather this week's earned badges
+  let badges = [];
+  try {
+    const lvl = (typeof getLevelBadges === 'function') ? (getLevelBadges(STATE.agentNo, totalXP, STATE.week) || []) : [];
+    const tac = (typeof getTacticalBadges === 'function') ? (getTacticalBadges(STATE.agentNo, totalXP, STATE.week, meritsConsumed) || []) : [];
+    badges = [...lvl, ...tac];
+    if (a.album2xStatus?.weeklyPassed && typeof getAlbum2xBadge === 'function') {
+      const ab = getAlbum2xBadge(STATE.agentNo, STATE.week);
+      if (ab) badges.unshift(ab);
+    }
+  } catch (_) {}
+  // De-duplicate by image
+  const seen = new Set();
+  const uniq = [];
+  for (const b of badges) { if (b?.imageUrl && !seen.has(b.imageUrl)) { seen.add(b.imageUrl); uniq.push(b); } }
+
+  // Pop Out badges — saved from Magic Box operations (all weeks)
+  const popOutBadges = (STATE._popOutBadges || []).filter(b => b?.imageUrl);
+
+  document.getElementById('avatar-picker-overlay')?.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'avatar-picker-overlay';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,0.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:18px;animation:fadeIn 0.3s ease;`;
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+
+  const curSrc = avatarParts(current || '').src;
+  const tile = (url, label) => {
+    const isCur = url === curSrc;
+    const locked = !canChange;
+    return `
+      <div onclick="${locked ? '' : `window.openAvatarAdjust('${url.replace(/'/g, "\\'")}')`}"
+        style="position:relative;border-radius:14px;overflow:hidden;cursor:${locked ? 'not-allowed' : 'pointer'};
+        border:2px solid ${isCur ? '#a78bfa' : 'rgba(255,255,255,0.1)'};aspect-ratio:1;
+        opacity:${locked ? '0.45' : '1'};transition:transform 0.15s, border-color 0.15s;"
+        ${locked ? '' : `onmouseover="this.style.transform='scale(1.05)';this.style.borderColor='#a78bfa'" onmouseout="this.style.transform='';this.style.borderColor='${isCur ? '#a78bfa' : 'rgba(255,255,255,0.1)'}'"`}>
+        <img src="${url}" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center 25%;">
+        ${isCur ? `<div style="position:absolute;top:4px;right:4px;background:#a78bfa;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:11px;">✓</div>` : ''}
+        ${label ? `<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);font-size:7px;color:#fff;text-align:center;padding:2px;">${label}</div>` : ''}
+      </div>`;
+  };
+
+  const teamPfpUrl = teamPfp(a.profile?.team);
+
+  overlay.innerHTML = `
+    <div style="background:linear-gradient(160deg,#0f0a1e,#0a1628);border:1px solid rgba(139,92,246,0.4);border-radius:22px;width:100%;max-width:420px;max-height:88vh;overflow-y:auto;padding:24px;box-shadow:0 0 80px rgba(124,58,237,0.25);animation:promoSlideUp 0.4s ease;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <div style="font-size:16px;font-weight:900;color:#fff;">🎨 Choose Your Avatar</div>
+        <button onclick="document.getElementById('avatar-picker-overlay')?.remove()" style="background:transparent;border:none;color:rgba(167,139,250,0.6);font-size:18px;cursor:pointer;">✕</button>
+      </div>
+
+      ${canChange
+        ? `<div style="font-size:11px;color:rgba(196,181,253,0.8);margin-bottom:14px;">✅ Habits done today — pick your avatar for today 💜 <span style="color:var(--text-ghost);">(one change per day)</span></div>`
+        : a.avatarChangedToday
+          ? `<div style="font-size:11px;color:var(--green);background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:10px 12px;margin-bottom:14px;">✅ You've already set today's avatar. Come back after <strong>tomorrow's habits</strong> to change it again. (You can still revert to your team PFP below.)</div>`
+          : `<div style="font-size:11px;color:var(--courage-amber);background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:10px 12px;margin-bottom:14px;">🔒 Complete today's <strong>148 daily habits</strong> (Arirang 2X · Unit · Side Missions) to choose a badge. You can still switch back to your team PFP below anytime.</div>`
+      }
+
+      <!-- Team PFP reset tile -->
+      <div style="margin-bottom:12px;">
+        <div style="font-size:9px;color:var(--text-ghost);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Default</div>
+        <div onclick="window._applyAvatar('')" style="display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;cursor:pointer;border:2px solid ${!current ? '#a78bfa' : 'rgba(255,255,255,0.1)'};background:rgba(255,255,255,0.03);">
+          <img src="${teamPfpUrl}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+          <span style="font-size:11px;font-weight:700;color:#fff;">Team PFP ${!current ? '✓' : ''}</span>
+        </div>
+      </div>
+
+      <!-- Earned badges grid -->
+      <div style="font-size:9px;color:var(--text-ghost);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Your badges this week (${uniq.length})</div>
+      ${uniq.length
+        ? `<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">${uniq.map(b => tile(b.imageUrl, b.name)).join('')}</div>`
+        : `<div style="font-size:11px;color:var(--text-muted);text-align:center;padding:18px;">No badges earned yet this week — earn 50 XP to unlock your first badge.</div>`
+      }
+
+      <!-- Pop Out Magic Box badges -->
+      ${popOutBadges.length ? `
+        <div style="font-size:9px;color:var(--purple-mid);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;margin-top:4px;">🎮 Pop Out Magic Box (${popOutBadges.length})</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">
+          ${popOutBadges.map(b => {
+            const isCur = b.imageUrl === curSrc;
+            const locked = !canChange;
+            const isMvp = String(b.type||'').includes('_mvp_');
+            const label = isMvp ? '👑 MVP' : String(b.type||'').includes('_cls_') ? '🥇 Cls' : '🥈 Std';
+            return `<div onclick="${locked ? '' : `window.openAvatarAdjust('${b.imageUrl.replace(/'/g,"\\'")}')`}"
+              style="position:relative;border-radius:14px;overflow:hidden;cursor:${locked?'not-allowed':'pointer'};
+              border:2px solid ${isCur?'#a78bfa':isMvp?'rgba(231,197,96,0.5)':'rgba(124,58,237,0.4)'};aspect-ratio:1;
+              opacity:${locked?'0.45':'1'};transition:transform 0.15s,border-color 0.15s;"
+              ${locked?'':` onmouseover="this.style.transform='scale(1.05)';this.style.borderColor='#a78bfa'" onmouseout="this.style.transform='';this.style.borderColor='${isCur?'#a78bfa':isMvp?'rgba(231,197,96,0.5)':'rgba(124,58,237,0.4)'}'"`}>
+              <img src="${b.imageUrl}" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center 25%;">
+              ${isCur?`<div style="position:absolute;top:4px;right:4px;background:#a78bfa;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:11px;">✓</div>`:''}
+              <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);font-size:7px;color:#fff;text-align:center;padding:2px;">${label}</div>
+            </div>`;
+          }).join('')}
+        </div>
+      ` : ''}
+
+      <!-- How it works -->
+      <details style="border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;">
+        <summary style="font-size:10px;font-weight:800;color:#a78bfa;cursor:pointer;letter-spacing:1px;text-transform:uppercase;">ℹ️ How it works</summary>
+        <div style="font-size:10px;color:var(--text-muted);line-height:1.8;margin-top:8px;">
+          <div>• Complete your <strong>148 daily habits</strong> each day → unlock the picker that day.</div>
+          <div>• Pick <strong>any badge you've earned</strong> as your avatar — everyone sees it.</div>
+          <div>• Keep doing your habits daily to keep wearing it.</div>
+          <div>• <strong>Miss a day</strong> and your avatar reverts to the <strong>team PFP</strong> until you resume.</div>
+          <div>• Your last choice is remembered — it returns automatically when you're back on track.</div>
+        </div>
+      </details>
+    </div>`;
+
+  document.body.appendChild(overlay);
+};
+
+/** One-time intro popup for users who've done their habits after this update. */
+function maybeShowAvatarIntro() {
+  const a = STATE.data?.agent;
+  if (!a || a.canChangeAvatarToday !== true) return;
+  if (localStorage.getItem('avatar_feature_intro_seen') === '1') return;
+  localStorage.setItem('avatar_feature_intro_seen', '1');
+
+  document.getElementById('avatar-intro-overlay')?.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'avatar-intro-overlay';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s ease;`;
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+  overlay.innerHTML = `
+    <div style="background:linear-gradient(160deg,#1a0a2e,#0d1b2a);border:1px solid rgba(139,92,246,0.4);border-radius:22px;max-width:360px;width:100%;padding:28px 24px;text-align:center;box-shadow:0 0 80px rgba(124,58,237,0.3);animation:promoSlideUp 0.4s ease;">
+      <div style="font-size:44px;margin-bottom:12px;">🎨</div>
+      <div style="font-size:9px;color:#a78bfa;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;">New Reward Unlocked</div>
+      <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:10px;">Wear Your Badges 💜</div>
+      <div style="font-size:11px;color:rgba(196,181,253,0.85);line-height:1.7;margin-bottom:18px;">
+        You completed today's <strong>148 daily habits</strong> — so you can now set <strong>any badge you've earned</strong> as your avatar! Everyone sees it.<br><br>
+        Keep doing your habits daily to keep wearing it. Miss a day and it reverts to your team PFP.
+      </div>
+      <button onclick="document.getElementById('avatar-intro-overlay')?.remove(); window.openAvatarPicker();"
+        style="width:100%;background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;padding:14px;border-radius:12px;font-size:13px;font-weight:900;cursor:pointer;letter-spacing:0.5px;margin-bottom:8px;">
+        🎨 Choose My Avatar
+      </button>
+      <button onclick="document.getElementById('avatar-intro-overlay')?.remove()"
+        style="width:100%;background:transparent;border:none;color:var(--text-muted);padding:8px;font-size:11px;cursor:pointer;">
+        Maybe later
+      </button>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+window.maybeShowAvatarIntro = maybeShowAvatarIntro;
+
+/** One-time popup announcing the avatar position adjuster + pop-out badge avatars.
+ *  Only fires when the agent can change their avatar RIGHT NOW (habits done, not
+ *  yet changed today) — otherwise it defers to a day they can act on it, instead
+ *  of burning the one-time flag on a locked day they'll forget about. */
+function maybeShowAvatarAdjustIntro() {
+  const a = STATE.data?.agent;
+  if (!a) return;
+  if (a.canChangeAvatarToday !== true) return; // locked today → try again another day
+  if (localStorage.getItem('avatar_adjust_intro_seen') === '1') return;
+  if (document.getElementById('avatar-intro-overlay')) return; // don't stack on the first-time intro
+  localStorage.setItem('avatar_adjust_intro_seen', '1');
+
+  document.getElementById('avatar-adjust-intro-overlay')?.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'avatar-adjust-intro-overlay';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s ease;`;
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+  overlay.innerHTML = `
+    <div style="background:linear-gradient(160deg,#1a0a2e,#0d1b2a);border:1px solid rgba(139,92,246,0.4);border-radius:22px;max-width:360px;width:100%;padding:28px 24px;text-align:center;box-shadow:0 0 80px rgba(124,58,237,0.3);animation:promoSlideUp 0.4s ease;">
+      <div style="font-size:44px;margin-bottom:12px;">🎯</div>
+      <div style="font-size:9px;color:#a78bfa;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;">Avatar Upgrade</div>
+      <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:10px;">Frame It Your Way 💜</div>
+      <div style="font-size:11px;color:rgba(196,181,253,0.85);line-height:1.7;margin-bottom:18px;">
+        No more awkward crops! When you pick a badge as your avatar you can now
+        <strong>drag the photo</strong> (or use sliders) to frame it exactly how you want —
+        face front and center. ✨<br><br>
+        Plus: your <strong>🎮 Pop Out Magic Box badges</strong> can now be worn as avatars too!
+      </div>
+      <button onclick="document.getElementById('avatar-adjust-intro-overlay')?.remove(); window.openAvatarPicker();"
+        style="width:100%;background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;padding:14px;border-radius:12px;font-size:13px;font-weight:900;cursor:pointer;letter-spacing:0.5px;margin-bottom:8px;">
+        🎯 Try It Now
+      </button>
+      <button onclick="document.getElementById('avatar-adjust-intro-overlay')?.remove()"
+        style="width:100%;background:transparent;border:none;color:var(--text-muted);padding:8px;font-size:11px;cursor:pointer;">
+        Got it
+      </button>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+window.maybeShowAvatarAdjustIntro = maybeShowAvatarAdjustIntro;
+
 async function renderBadgesPage() {
   const container = $('badgesContent');
   if (!container) return;
@@ -8781,12 +9817,23 @@ async function renderBadgesPage() {
   showPageLoading(container);
 
   try {
-    // 1. Fetch full career history
-    const careerData = await Api.call('getAgentCareerStats', {
-      agentNo: STATE.agentNo
-    }, { cache: true, ttl: 60000 });
+    // Ensure locked badge images are loaded BEFORE computing any badge,
+    // so frozen pictures always win over the live pool.
+    await loadFrozenBadges();
+
+    // 1. Fetch full career history + Pop Out data (XP per week + saved badge images)
+    const [careerData, popOutData] = await Promise.all([
+      Api.call('getAgentCareerStats', { agentNo: STATE.agentNo }, { cache: true, ttl: 60000 }),
+      Api.call('getPopOutBadges', { agentNo: STATE.agentNo }, { cache: false }).catch(() => null),
+    ]);
 
     if (!careerData.success) throw new Error("Database connection lost");
+
+    // Cache saved pop-out badges globally so the avatar picker can access them
+    STATE._popOutBadges = (popOutData && popOutData.savedBadges) || [];
+
+    // Per-week Pop Out XP bonus (added on top of mission XP for badge computation)
+    const popOutXpByWeek = popOutData?.xpByWeek || {};
 
     // Sort numerically descending — backend sorts week_label as text so "Week 10"
     // lands between "Week 1" and "Week 2" in lexicographic order.
@@ -8796,10 +9843,23 @@ async function renderBadgesPage() {
       return numB - numA; // most recent week first
     });
 
-    // 2. Build per-week folder data (skip empty weeks)
+    // 2. Group saved pop-out badges by week so they slot into the correct folder
+    const savedBadges = (popOutData && popOutData.savedBadges) || [];
+    const popOutBadgesByWeek = {};
+    for (const b of savedBadges) {
+      const wk = b.weekEarned || '';
+      if (!popOutBadgesByWeek[wk]) popOutBadgesByWeek[wk] = [];
+      popOutBadgesByWeek[wk].push(b);
+    }
+
+    // 3. Build per-week folder data (skip empty weeks)
     const weekFolders = weeksHistory.map(wk => {
       const weekName = wk.week;
-      const weeklyXP = parseInt(wk.xp) || 0;
+      const missionXP = parseInt(wk.xp) || 0;
+      const popXP = popOutXpByWeek[weekName] || 0;
+      // wk.xp (weekly_member_stats.total_xp) ALREADY includes pop_out_xp — popXP is
+      // kept for the "(+N 🎮 Pop Out)" label only. Adding it again would double-count.
+      const weeklyXP = missionXP;
       const meritsConsumed = wk.meritsConsumed || 0;
 
       const levelBadges = getLevelBadges(STATE.agentNo, weeklyXP, weekName);
@@ -8808,10 +9868,25 @@ async function renderBadgesPage() {
       const tacticalBadges = isTacticalActive
         ? getTacticalBadges(STATE.agentNo, weeklyXP, weekName, meritsConsumed)
         : [];
+      const popOutBadges = popOutBadgesByWeek[weekName] || [];
 
-      const weekTotal = levelBadges.length + (album2xBadge ? 1 : 0) + tacticalBadges.length;
-      return { weekName, weeklyXP, levelBadges, album2xBadge, tacticalBadges, weekTotal };
+      const weekTotal = levelBadges.length + (album2xBadge ? 1 : 0) + tacticalBadges.length + popOutBadges.length;
+      return { weekName, weeklyXP, missionXP, popXP, levelBadges, album2xBadge, tacticalBadges, popOutBadges, weekTotal };
     }).filter(f => f.weekTotal > 0);
+
+    // Also surface pop-out badges from weeks not in career history (edge case)
+    const knownWeeks = new Set(weekFolders.map(f => f.weekName));
+    for (const [wk, badges] of Object.entries(popOutBadgesByWeek)) {
+      if (!knownWeeks.has(wk) && badges.length > 0) {
+        weekFolders.push({ weekName: wk, weeklyXP: 0, missionXP: 0, popXP: 0, levelBadges: [], album2xBadge: null, tacticalBadges: [], popOutBadges: badges, weekTotal: badges.length });
+      }
+    }
+    // Re-sort after possible push
+    weekFolders.sort((a, b) => {
+      const numA = parseInt((a.weekName || '').match(/\d+/)?.[0] || '0', 10);
+      const numB = parseInt((b.weekName || '').match(/\d+/)?.[0] || '0', 10);
+      return numB - numA;
+    });
 
     const totalBadges = weekFolders.reduce((s, f) => s + f.weekTotal, 0);
 
@@ -8834,9 +9909,25 @@ async function renderBadgesPage() {
     if (dot) dot.style.display = 'none';
 
     // 5. Summary header + one-time "what's new" banner
+    const _canAvatar = STATE.data?.agent?.canChangeAvatarToday === true;
+    const _avatarChanged = STATE.data?.agent?.avatarChangedToday === true;
     let html = `
-      <div style="font-size:11px;color:var(--text-muted);margin-bottom:20px;background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;border:1px solid var(--border-subtle);">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px;background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;border:1px solid var(--border-subtle);">
         Digital Archive synced. <strong>${totalBadges}</strong> items across <strong>${weekFolders.length}</strong> missions.
+      </div>
+
+      <!-- Set-as-avatar shortcut -->
+      <div onclick="window.openAvatarPicker()" style="display:flex;align-items:center;gap:12px;margin-bottom:20px;padding:14px 16px;border-radius:14px;cursor:pointer;
+        background:linear-gradient(135deg,rgba(124,58,237,0.14),rgba(79,70,229,0.08));border:1px solid rgba(139,92,246,0.35);transition:transform 0.15s;"
+        onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        <div style="font-size:26px;">🎨</div>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:900;color:#a78bfa;">Wear a badge as your avatar</div>
+          <div style="font-size:10px;color:rgba(196,181,253,0.7);margin-top:2px;">
+            ${_canAvatar ? 'Habits done today ✅ — tap to pick a badge 💜' : _avatarChanged ? '✅ Set for today — change again after tomorrow’s habits' : '🔒 Complete today’s 148 habits to unlock'}
+          </div>
+        </div>
+        <div style="font-size:12px;color:#a78bfa;opacity:0.7;">→</div>
       </div>
       ${isFirstVisit ? `
       <div id="badgeDrawerWhatsNew" style="margin-bottom:20px; padding:14px 16px; background:linear-gradient(135deg,rgba(212,175,55,0.08),rgba(212,175,55,0.03)); border:1px solid rgba(212,175,55,0.25); border-radius:12px; display:flex; align-items:flex-start; gap:12px;">
@@ -8853,7 +9944,7 @@ async function renderBadgesPage() {
 
     // 5. One folder per week — most recent first (backend returns desc order)
     weekFolders.forEach((folder, idx) => {
-      const { weekName, weeklyXP, levelBadges, album2xBadge, tacticalBadges, weekTotal } = folder;
+      const { weekName, weeklyXP, missionXP, popXP, levelBadges, album2xBadge, tacticalBadges, popOutBadges, weekTotal } = folder;
       const isOpen = idx === 0; // open the most recent week by default
 
       // Folder accent colour: red if classified merits, gold if 2X achieved, teal otherwise
@@ -8868,6 +9959,7 @@ async function renderBadgesPage() {
       if (levelBadges.length > 0) tags.push(`${levelBadges.length} standard`);
       if (album2xBadge) tags.push('✨ 2X');
       if (tacticalBadges.length > 0) tags.push(`${tacticalBadges.length} classified`);
+      if (popOutBadges.length > 0) tags.push(`🎮 ${popOutBadges.length} Pop Out`);
 
       // ── Folder body content ──
       let bodyHtml = '';
@@ -8876,7 +9968,7 @@ async function renderBadgesPage() {
       if (levelBadges.length > 0) {
         bodyHtml += `
           <div style="font-size:9px;color:var(--text-ghost);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Standard Clearances</div>
-          <div class="badge-grid" style="margin-bottom:${album2xBadge || tacticalBadges.length ? '20px' : '0'};">
+          <div class="badge-grid" style="margin-bottom:${album2xBadge || tacticalBadges.length || popOutBadges.length ? '20px' : '0'};">
             ${levelBadges.map(b => `
               <div class="holo-badge-container">
                 <div class="holo-circle">
@@ -8893,7 +9985,7 @@ async function renderBadgesPage() {
       // Album 2X badge — distinct gold highlight row
       if (album2xBadge) {
         bodyHtml += `
-          <div style="display:flex;align-items:center;gap:14px;padding:12px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;margin-bottom:${tacticalBadges.length ? '20px' : '0'};">
+          <div style="display:flex;align-items:center;gap:14px;padding:12px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;margin-bottom:${tacticalBadges.length || popOutBadges.length ? '20px' : '0'};">
             <div class="holo-circle" style="width:54px;height:54px;flex-shrink:0;">
               <div class="holo-inner">
                 <img src="${album2xBadge.imageUrl}" alt="${sanitize(album2xBadge.name)}" loading="lazy">
@@ -8911,7 +10003,7 @@ async function renderBadgesPage() {
       if (tacticalBadges.length > 0) {
         bodyHtml += `
           <div style="font-size:9px;color:var(--red-core);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;${levelBadges.length || album2xBadge ? 'margin-top:0;' : ''}">Classified Merits</div>
-          <div class="tactical-grid">
+          <div class="tactical-grid" style="margin-bottom:${popOutBadges.length ? '20px' : '0'};">
             ${tacticalBadges.map(badge => `
               <div class="tactical-card-container">
                 <div class="tactical-card">
@@ -8927,6 +10019,29 @@ async function renderBadgesPage() {
           </div>`;
       }
 
+      // Pop Out Magic Box badges — same loot style as the chest reveal
+      if (popOutBadges.length > 0) {
+        bodyHtml += `
+          <div style="font-size:9px;color:var(--purple-mid);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">🎮 Pop Out Magic Box</div>
+          <div style="display:flex;flex-wrap:wrap;gap:18px;justify-content:flex-start;">
+            ${popOutBadges.map(b => {
+              const isMvp = String(b.type || '').includes('_mvp_');
+              const isCls = String(b.type || '').includes('_cls_');
+              const capLabel = isMvp ? '👑 MVP Badge' : isCls ? '🥇 Classified Badge' : '🥈 Standard Badge';
+              const borderColor = isMvp ? '#e7c560' : isCls ? 'var(--red-core)' : 'rgba(231,197,96,0.8)';
+              const glowColor = isMvp ? 'rgba(231,197,96,0.55)' : isCls ? 'rgba(232,58,93,0.45)' : 'rgba(231,197,96,0.45)';
+              return `
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <img src="${sanitize(b.imageUrl || '')}" alt="${sanitize(b.name || '')}" loading="lazy"
+                  onerror="this.style.opacity='0.3'"
+                  style="width:64px;height:64px;border-radius:11px;border:2px solid ${borderColor};object-fit:cover;object-position:center 22%;background:#1a1a1a;
+                         box-shadow:0 0 18px ${glowColor};">
+                <div style="font-size:9px;color:var(--text-muted);font-weight:700;">${capLabel}</div>
+              </div>`;
+            }).join('')}
+          </div>`;
+      }
+
       // ── Collapsible folder wrapper ──
       // Uses existing toggleNavGroup() + nav-group-toggle / nav-group-body CSS
       html += `
@@ -8935,7 +10050,7 @@ async function renderBadgesPage() {
                style="padding:14px 16px;background:rgba(255,255,255,0.02);display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;">
             <div>
               <div style="font-family:'Orbitron',sans-serif;font-size:12px;font-weight:800;color:#fff;letter-spacing:1px;text-transform:uppercase;">${weekName}</div>
-              <div style="font-size:9px;color:var(--text-ghost);margin-top:3px;font-family:var(--font-mono);">${weeklyXP} XP · ${tags.join(' · ')}</div>
+              <div style="font-size:9px;color:var(--text-ghost);margin-top:3px;font-family:var(--font-mono);">${weeklyXP} XP${popXP > 0 ? ` <span style="color:var(--purple-mid);font-size:8px;">(+${popXP} 🎮 Pop Out)</span>` : ''} · ${tags.join(' · ')}</div>
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">${weekTotal}</span>
@@ -9531,6 +10646,7 @@ function showAdminPanel() {
     { key: 'confirm', icon: '📋', label: 'Verify' },
     { key: 'army', icon: '💜', label: 'Voting' },
     { key: 'sotd', icon: '🎵', label: 'SOTD' },
+    { key: 'popout', icon: '🚨', label: 'Pop Out' },
     { key: 'aliens', icon: '🛸', label: 'Aliens' },
     { key: 'leaves', icon: '💤', label: 'Leave' },
     { key: 'history', icon: '📜', label: 'History' },
@@ -9539,6 +10655,7 @@ function showAdminPanel() {
     { key: 'trainees', icon: '🎓', label: 'Trainees' },
     { key: 'debug', icon: '🔧', label: 'Diagnostics' },
     { key: 'badges', icon: '🎖️', label: 'Badges' },
+    { key: 'playlist', icon: '🎧', label: 'Playlist' },
   ];
 
   const panel = document.createElement('div');
@@ -9593,6 +10710,7 @@ const TAB_RENDERERS = {
   confirm: renderWeekConfirmation,
   army: renderAdminArmyTab,
   sotd: renderAdminSOTD,
+  popout: renderAdminPopOutTab,
   aliens: renderAdminAliensTab,
   leaves: loadLeavesAdmin,
   history: loadMissionHistory,
@@ -9601,6 +10719,7 @@ const TAB_RENDERERS = {
   trainees: renderAdminTraineesTab,
   debug: renderAdminDiagnosticsTab,
   badges: renderAdminBadgesTab,
+  playlist: renderAdminPlaylistTab,
 };
 
 function switchAdminTab(tabName, btnElement) {
@@ -9622,6 +10741,557 @@ function switchAdminTab(tabName, btnElement) {
   if (renderer) renderer(container);
 }
 
+// ==================== TAB: PLAYLIST GENERATOR + VALIDATOR ====================
+
+window._pl = window._pl || { connection: null, catalog: null, fillers: null };
+
+function plReportHtml(report) {
+  if (!report || !report.findings) return '';
+  const col = s => s === 'pass' ? 'var(--green)' : s === 'warn' ? '#f5a623' : 'var(--red-core)';
+  const ico = s => s === 'pass' ? '✓' : s === 'warn' ? '⚠' : '✗';
+  const rows = report.findings.map(f => `
+    <div style="display:flex; gap:8px; padding:8px 10px; border:1px solid var(--border-subtle); border-radius:6px; margin-bottom:6px;">
+      <span style="color:${col(f.status)}; font-weight:900;">${ico(f.status)}</span>
+      <div><div style="font-size:12px; color:#fff; font-weight:700;">${sanitize(f.rule)}</div>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${sanitize(f.detail)}</div></div>
+    </div>`).join('');
+  const s = report.summary || {};
+  return `<div style="margin-top:12px;">
+    <div style="font-size:11px; color:var(--text-muted); margin-bottom:8px; font-family:'Share Tech Mono',monospace;">
+      ${s.tracks || 0} tracks · ${s.runtimeMin || 0} min · <span style="color:var(--green);">${s.passed || 0} passed</span> · <span style="color:var(--red-core);">${s.failed || 0} failed</span>
+    </div>${rows}</div>`;
+}
+
+function plFocusRowHtml(mult) {
+  const s = `width:100%; padding:9px 10px; background:rgba(255,255,255,0.04); border:1px solid var(--border-subtle); border-radius:6px; color:#fff; font-size:12px; box-sizing:border-box;`;
+  // Type-to-search field backed by the shared <datalist id="pl-song-datalist">.
+  return `<div class="pl-focus-row" style="display:grid; grid-template-columns:1fr 76px 38px; gap:8px; margin-bottom:8px; align-items:center;">
+    <input class="pl-focus-sel" list="pl-song-datalist" placeholder="Type a song…" autocomplete="off" style="${s}">
+    <input class="pl-focus-mult" type="number" min="1" value="${mult}" title="times to stream" style="${s} text-align:center;">
+    <button type="button" title="Remove" onclick="this.closest('.pl-focus-row').remove()" style="background:none; border:1px solid var(--border-subtle); border-radius:6px; color:var(--red-core); cursor:pointer; padding:8px 0;">×</button>
+  </div>`;
+}
+
+function plAddFocusRow() {
+  const wrap = document.getElementById('pl-focus-rows');
+  if (wrap) wrap.insertAdjacentHTML('beforeend', plFocusRowHtml(3));
+}
+
+async function renderAdminPlaylistTab(container) {
+  if (!container) container = $('admin-panel-body');
+  if (!container) return;
+  container.innerHTML = `<div style="color:var(--text-muted); padding:40px; text-align:center;">Loading playlist tools…</div>`;
+
+  const st = STATE.adminSession;
+  const [conn, cat, lib, alb] = await Promise.all([
+    Api.call('getSpotifyConnection', { sessionToken: st }, { dedupe: false }),
+    Api.call('getBTSCatalog', { sessionToken: st }, { dedupe: false }),
+    Api.call('getFillerLibrary', { sessionToken: st }, { dedupe: false }),
+    Api.call('getCatalogAlbums', { sessionToken: st }, { dedupe: false }),
+  ]);
+  window._pl = { connection: conn, catalog: cat, fillers: lib, albums: alb };
+  const albums = (alb && alb.albums) || [];
+
+  const allSongs = (cat && cat.songs) || [];
+  // Only songs with a real Spotify URI can be picked — the rest are Last.fm-only names that
+  // don't resolve to Spotify ("song does not exist"). Search ② to add more playable songs.
+  const songs = allSongs.filter(s => (s.versions || []).length > 0);
+  const fillers = (lib && lib.fillers) || [];
+  // Build a typeable label → catalog-key map (and matching datalist options) so the
+  // generator's song fields can be searched by name instead of scrolled in a dropdown.
+  window._plSongByLabel = {};
+  const songListOpts = songs.map(s => {
+    const key = s.key || s.isrc;
+    const label = `${s.name} — ${(s.artists || []).join(', ')} (${(s.versions || []).length}v)`;
+    window._plSongByLabel[label] = key;
+    return `<option value="${sanitize(label)}"></option>`;
+  }).join('');
+  // The album block stays a multi-select, so it keeps the value=key <option> form.
+  const songOpts = songs.map(s =>
+    `<option value="${s.key || s.isrc}">${sanitize(s.name)} — ${sanitize((s.artists || []).join(', '))} (${(s.versions || []).length}v)</option>`).join('');
+
+  const sect = (title, body) => `
+    <div class="archive-card" style="margin-bottom:18px;">
+      <div style="font-size:13px; font-weight:900; color:var(--red-core); letter-spacing:1px; margin-bottom:12px; text-transform:uppercase;">${title}</div>
+      ${body}
+    </div>`;
+  const inputStyle = `width:100%; padding:9px 10px; background:rgba(255,255,255,0.04); border:1px solid var(--border-subtle); border-radius:6px; color:#fff; font-size:12px; box-sizing:border-box;`;
+  const btn = (label, onclick, color = 'var(--red-core)') =>
+    `<button type="button" onclick="${onclick}" style="padding:9px 16px; background:transparent; border:1px solid ${color}; color:${color}; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer; white-space:nowrap;">${label}</button>`;
+
+  const redirectUri = window.location.origin + '/spotify-callback.html';
+  const redirectBox = `
+    <div style="margin-top:10px; padding:10px; background:rgba(255,255,255,0.03); border:1px dashed var(--border-subtle); border-radius:6px;">
+      <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">Register this exact Redirect URI in your Spotify app</div>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <code id="pl-redirect-uri" style="flex:1; font-size:11px; color:#1DB954; word-break:break-all; background:rgba(0,0,0,0.3); padding:6px 8px; border-radius:4px;">${sanitize(redirectUri)}</code>
+        ${btn('Copy', `navigator.clipboard.writeText('${redirectUri}').then(()=>showToast('Copied','success'))`, 'var(--text-muted)')}
+      </div>
+      <div style="font-size:10px; color:var(--text-muted); margin-top:6px;">Spotify Dashboard → your app → Settings → Edit → Redirect URIs. Must match character-for-character (no trailing slash).</div>
+    </div>`;
+
+  const connHtml = (conn && conn.connected
+    ? `<div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+         <div style="font-size:12px; color:var(--green);">✓ Connected as <b>${sanitize(conn.displayName || conn.spotifyUser || 'account')}</b></div>
+         ${btn('Disconnect', 'plDisconnectSpotify()', 'var(--text-muted)')}
+       </div>`
+    : `<div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+         <div style="font-size:12px; color:var(--text-muted);">Not connected. Auto-creating playlists needs a connected Spotify account.</div>
+         ${btn('Connect Spotify', 'plConnectSpotify()', '#1DB954')}
+       </div>`) + redirectBox;
+
+  // ── catalog breakdown table ──────────────────────────────────────────────
+  const pending  = allSongs.filter(s => !(s.versions || []).length);
+  const resolved = allSongs.filter(s =>  (s.versions || []).length);
+
+  const statusDot = (ok) => `<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${ok?'#1DB954':'#f5a623'};margin-right:5px;flex-shrink:0;"></span>`;
+
+  const songRow = (s, showIsrcEdit) => {
+    const uri  = s.versions?.[0]?.uri  || null;
+    const spId = uri ? uri.split(':')[2] : null;
+    const isrc = s.isrc || null;
+    const artist = (s.artists || []).join(', ');
+    const keyEsc = s.key.replace(/'/g, "\\'");
+    return `<tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+      <td style="padding:5px 8px; font-size:11px; color:#fff; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${sanitize(s.name)}">${sanitize(s.name)}</td>
+      <td style="padding:5px 8px; font-size:10px; color:var(--text-muted); white-space:nowrap;">${sanitize(artist)}</td>
+      <td style="padding:5px 8px; font-size:10px;">${statusDot(!!uri)}${uri ? '<span style="color:#1DB954;">Resolved</span>' : '<span style="color:#f5a623;">Pending</span>'}</td>
+      <td style="padding:5px 8px; font-size:10px; font-family:monospace; color:${isrc?'#aaa':'rgba(255,255,255,0.2)'};">${isrc || '—'}</td>
+      <td style="padding:5px 8px; font-size:10px;">${spId ? `<a href="https://open.spotify.com/track/${spId}" target="_blank" style="color:#1DB954; text-decoration:none;">open ↗</a>` : '—'}</td>
+      <td style="padding:5px 8px;">
+        ${showIsrcEdit ? `<div style="display:flex;gap:4px;align-items:center;">
+          <input id="isrc-${keyEsc}" placeholder="e.g. QM7282022872" style="width:130px;padding:3px 6px;background:rgba(255,255,255,0.05);border:1px solid var(--border-subtle);border-radius:4px;color:#fff;font-size:10px;font-family:monospace;" value="${isrc||''}">
+          <button onclick="plPatchIsrc('${keyEsc}')" style="padding:3px 8px;background:transparent;border:1px solid var(--text-muted);color:var(--text-muted);border-radius:4px;font-size:10px;cursor:pointer;">Save</button>
+        </div>` : ''}
+      </td>
+    </tr>`;
+  };
+
+  const tableHead = `<table style="width:100%;border-collapse:collapse;table-layout:fixed;">
+    <colgroup><col style="width:32%"><col style="width:14%"><col style="width:12%"><col style="width:16%"><col style="width:10%"><col style="width:16%"></colgroup>
+    <thead><tr style="border-bottom:1px solid var(--border-subtle);">
+      <th style="padding:4px 8px;font-size:10px;color:var(--text-ghost);font-weight:600;text-align:left;">SONG</th>
+      <th style="padding:4px 8px;font-size:10px;color:var(--text-ghost);font-weight:600;text-align:left;">ARTIST</th>
+      <th style="padding:4px 8px;font-size:10px;color:var(--text-ghost);font-weight:600;text-align:left;">STATUS</th>
+      <th style="padding:4px 8px;font-size:10px;color:var(--text-ghost);font-weight:600;text-align:left;">ISRC</th>
+      <th style="padding:4px 8px;font-size:10px;color:var(--text-ghost);font-weight:600;text-align:left;">SPOTIFY</th>
+      <th style="padding:4px 8px;font-size:10px;color:var(--text-ghost);font-weight:600;text-align:left;">PATCH ISRC</th>
+    </tr></thead><tbody>`;
+
+  const catalogTableHtml = allSongs.length ? `
+    <div style="margin-top:14px;">
+      <button onclick="this.nextElementSibling.hidden=!this.nextElementSibling.hidden;this.textContent=this.nextElementSibling.hidden?'▶ Show all ${allSongs.length} songs':'▼ Hide song list'" style="background:none;border:none;color:var(--text-muted);font-size:11px;cursor:pointer;padding:0;margin-bottom:8px;">▶ Show all ${allSongs.length} songs</button>
+      <div hidden>
+        <div style="display:flex;gap:12px;margin-bottom:8px;font-size:11px;">
+          <span>${statusDot(true)}<b style="color:#1DB954;">${resolved.length}</b> resolved</span>
+          <span>${statusDot(false)}<b style="color:#f5a623;">${pending.length}</b> pending</span>
+          <span style="color:var(--text-ghost);">${allSongs.filter(s=>s.isrc).length} have ISRC</span>
+        </div>
+        <div style="max-height:340px;overflow-y:auto;border:1px solid var(--border-subtle);border-radius:6px;">
+          ${tableHead}
+            ${resolved.map(s => songRow(s, false)).join('')}
+            ${pending.map(s => songRow(s, true)).join('')}
+          </tbody></table>
+        </div>
+      </div>
+    </div>` : '';
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const catHtml = `
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <div style="font-size:12px; color:var(--text-muted);">
+        <b style="color:#1DB954;">${resolved.length}</b> resolved to Spotify &nbsp;·&nbsp; <b style="color:#f5a623;">${pending.length}</b> pending &nbsp;·&nbsp; <b style="color:#aaa;">${allSongs.length}</b> total
+        ${cat && cat.updatedAt ? `<br><span style="font-size:10px;">catalog updated ${new Date(cat.updatedAt).toLocaleString()}</span>` : ''}
+      </div>
+      ${btn('Refresh catalog', 'plRefreshCatalog()')}
+    </div>
+    ${catalogTableHtml}
+    <div style="font-size:10px; color:var(--text-muted); margin:10px 0 6px;">Search BTS tracks one at a time — each result is added to the catalog.</div>
+    <div style="display:flex; gap:8px;">
+      <input id="pl-cat-search" placeholder="Search a BTS song or member…" onkeydown="if(event.key==='Enter')plSearchCatalog()" style="${inputStyle}">
+      ${btn('Search', 'plSearchCatalog()')}
+    </div>
+    <div id="pl-cat-results" style="margin-top:8px;"></div>
+    <div style="display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;">
+      ${btn('⚡ Resolve more playable links', 'plResolveCatalog()', '#1DB954')}
+      ${btn('Stop', 'plStopResolve()', 'var(--text-muted)')}
+      <span style="font-size:10px; color:var(--text-muted);">Links iTunes catalog to Spotify via name search.</span>
+    </div>
+    <div id="pl-resolve-status" style="font-size:11px; color:var(--text-muted); margin-top:8px;"></div>
+    <div style="display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;">
+      ${btn('🔍 Auto-fetch ISRCs', 'plBulkFetchIsrcs()', '#7c3aed')}
+      <span style="font-size:10px; color:var(--text-muted);">Fetches ISRCs from MusicBrainz for pending songs (10 per run). Run repeatedly until done.</span>
+    </div>
+    <div id="pl-isrc-status" style="font-size:11px; color:var(--text-muted); margin-top:8px;"></div>
+    <div style="font-size:10px; color:var(--text-muted); margin:12px 0 6px;">Or add a song manually with its Spotify link — works even when rate-limited (no Spotify API call).</div>
+    <div style="display:flex; gap:8px;">
+      <input id="pl-cat-manual" placeholder="Paste Spotify track link, e.g. https://open.spotify.com/track/…" onkeydown="if(event.key==='Enter')plAddCatalogManual()" style="${inputStyle}">
+      ${btn('Add song', 'plAddCatalogManual()', '#1DB954')}
+    </div>
+    <div id="pl-cat-status" style="font-size:11px; color:var(--text-muted); margin-top:8px;"></div>
+    <div style="font-size:10px; color:var(--text-muted); margin:14px 0 6px;">Bulk-add from a <b>BTS playlist</b> (e.g. "This Is BTS") — every BTS track becomes playable in the catalog. Non-BTS tracks are skipped.</div>
+    <div style="display:flex; gap:8px;">
+      <input id="pl-playlist-url" placeholder="Paste Spotify playlist link, e.g. https://open.spotify.com/playlist/…" onkeydown="if(event.key==='Enter')plAddPlaylist()" style="${inputStyle}">
+      ${btn('Add playlist', 'plAddPlaylist()', '#1DB954')}
+    </div>
+    <div id="pl-playlist-status" style="font-size:11px; color:var(--text-muted); margin-top:8px;"></div>
+    <div style="font-size:10px; color:var(--text-muted); margin:14px 0 6px;">Add a full <b>album</b> by its Spotify link — every track becomes playable, and you can drop the whole album into a playlist (each track once).</div>
+    <div style="display:flex; gap:8px;">
+      <input id="pl-album-url" placeholder="Paste Spotify album link, e.g. https://open.spotify.com/album/…" onkeydown="if(event.key==='Enter')plAddAlbum()" style="${inputStyle}">
+      ${btn('Add album', 'plAddAlbum()', '#1DB954')}
+    </div>
+    <div id="pl-album-status" style="font-size:11px; color:var(--text-muted); margin-top:8px;"></div>
+    ${albums.length ? `<div style="margin-top:10px; display:flex; flex-direction:column; gap:6px;">
+      ${albums.map(a => `<div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 8px; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:6px;">
+        <div style="min-width:0;"><div style="font-size:11px; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">💿 ${sanitize(a.name)}</div>
+          <div style="font-size:10px; color:var(--text-muted);">${a.count} tracks</div></div>
+        <button type="button" onclick="plRemoveAlbum('${a.id}')" style="background:none; border:none; color:var(--red-core); cursor:pointer; font-size:14px;">×</button>
+      </div>`).join('')}
+    </div>` : ''}`;
+
+  const fillerList = fillers.length
+    ? `<div style="max-height:220px; overflow-y:auto; margin-top:10px;">
+        ${fillers.map(f => `
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 8px; border-bottom:1px solid var(--border-subtle);">
+            <div style="min-width:0;"><div style="font-size:11px; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${sanitize(f.name)}</div>
+              <div style="font-size:10px; color:var(--text-muted);">${sanitize((f.artists || []).join(', '))} · ${sanitize(f.region || '')}</div></div>
+            <button type="button" onclick="plRemoveFiller('${f.track_id}')" style="background:none; border:none; color:var(--red-core); cursor:pointer; font-size:14px;">×</button>
+          </div>`).join('')}
+       </div>`
+    : `<div style="font-size:11px; color:var(--text-muted); margin-top:8px;">No fillers yet. Import a playlist or add songs manually.</div>`;
+
+  const fillerHtml = `
+    <div style="font-size:12px; color:var(--text-muted); margin-bottom:8px;"><b style="color:#fff;">${fillers.length}</b> fillers in the pool (non-BTS, non-Kpop)</div>
+    <div style="display:flex; gap:8px; margin-bottom:8px;">
+      <input id="pl-import-url" placeholder="Paste a Spotify playlist link to learn from" style="${inputStyle}">
+      ${btn('Import', 'plImportFillers()')}
+    </div>
+    <div style="display:flex; gap:8px;">
+      <input id="pl-add-url" placeholder="Add one song (Spotify track link)" style="${inputStyle}">
+      ${btn('Add', 'plAddFiller()')}
+    </div>
+    <div id="pl-filler-status" style="font-size:11px; color:var(--text-muted); margin-top:8px;"></div>
+    ${fillerList}`;
+
+  window._plSongOpts = songOpts;
+  const emptyCatalogWarn = songs.length === 0
+    ? `<div style="font-size:11px; color:#f5a623; background:rgba(245,166,35,0.08); border:1px solid rgba(245,166,35,0.3); border-radius:6px; padding:9px 10px; margin-bottom:10px;">
+         ⚠ No <b>Spotify-playable</b> songs yet. Use the search box in <b>② BTS song catalog</b> to find the songs you want (e.g. "Spring Day", "Seven") — each one becomes pickable here. Last.fm-only names can't be used because they don't resolve to Spotify.
+       </div>`
+    : '';
+  const genHtml = `
+    ${emptyCatalogWarn}
+    <div style="font-size:11px; color:var(--text-muted); margin-bottom:10px; line-height:1.5;">
+      Type each song name and how many times to stream it — like a 148 combo line<br>
+      (e.g. 12x Swim · 6x CO · 5x Hae · 4x WF…). Fillers are woven in automatically.
+    </div>
+    <datalist id="pl-song-datalist">${songListOpts}</datalist>
+    <div id="pl-focus-rows">
+      ${plFocusRowHtml(12)}
+      ${plFocusRowHtml(6)}
+      ${plFocusRowHtml(4)}
+    </div>
+    ${btn('+ Add song', 'plAddFocusRow()', 'var(--text-muted)')}
+    ${albums.length ? `<label style="display:block; font-size:11px; color:var(--text-muted); margin-top:14px;">Include full albums (each track added once)</label>
+    <div id="pl-album-checks" style="display:flex; flex-direction:column; gap:4px; margin:4px 0 8px;">
+      ${albums.map(a => `<label style="display:flex; align-items:center; gap:8px; font-size:11px; color:#fff; cursor:pointer;">
+        <input type="checkbox" class="pl-album-check" value='${sanitize(JSON.stringify(a.trackKeys))}'> 💿 ${sanitize(a.name)} <span style="color:var(--text-muted);">(${a.count})</span>
+      </label>`).join('')}
+    </div>` : ''}
+    <label style="display:block; font-size:11px; color:var(--text-muted); margin-top:14px;">Optional individual songs (ctrl/cmd-click to multi-select — added once each)</label>
+    <select id="pl-album" multiple size="4" style="${inputStyle} margin:4px 0 8px;">${songOpts}</select>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:4px;">
+      <input id="pl-name" placeholder="Name (blank = random)" style="${inputStyle}">
+      <input id="pl-target" type="number" min="30" max="180" value="180" title="Max minutes" placeholder="Max min" style="${inputStyle}">
+      <input id="pl-filler-every" type="number" min="5" max="30" value="20" title="Non-BTS filler every N songs" placeholder="Filler /N" style="${inputStyle}">
+    </div>
+    <div style="font-size:10px; color:var(--text-muted); margin-bottom:10px;">Gaps fill with other BTS songs; a non-Kpop song drops roughly every <b>60–75 min</b> (~2 per playlist), capped at one per <b>N</b> tracks.</div>
+    ${btn('🎧 Generate & create in Spotify', 'plGenerate()')}
+    <div id="pl-gen-status" style="font-size:12px; margin-top:10px;"></div>
+    <div id="pl-gen-report"></div>`;
+
+  const valHtml = `
+    <div style="display:flex; gap:8px;">
+      <input id="pl-validate-url" placeholder="Paste any Spotify playlist link to check the rules" style="${inputStyle}">
+      ${btn('Validate', 'plValidate()')}
+    </div>
+    <div id="pl-validate-status" style="font-size:12px; color:var(--text-muted); margin-top:8px;"></div>
+    <div id="pl-validate-report"></div>`;
+
+  container.innerHTML =
+    sect('① Spotify account', connHtml) +
+    sect('② BTS song catalog', catHtml) +
+    sect('③ Filler library', fillerHtml) +
+    sect('④ Generate a playlist', genHtml) +
+    sect('⑤ Validate a playlist', valHtml);
+}
+
+async function plConnectSpotify() {
+  const redirectUri = window.location.origin + '/spotify-callback.html';
+  const res = await Api.call('getSpotifyAuthUrl', { redirectUri, sessionToken: STATE.adminSession }, { dedupe: false });
+  if (!res || !res.url) { showToast(res?.error || 'Could not start Spotify connect', 'error'); return; }
+  const popup = window.open(res.url, 'spotify-oauth', 'width=480,height=720');
+  const handler = async (ev) => {
+    if (ev.origin !== window.location.origin) return;
+    const d = ev.data;
+    if (!d || d.source !== 'spotify-oauth') return;
+    window.removeEventListener('message', handler);
+    if (d.error) { showToast('Spotify connection cancelled', 'error'); return; }
+    if (d.code) {
+      showToast('Finishing connection…', 'info');
+      const ex = await Api.call('spotifyExchangeCode', { code: d.code, redirectUri, sessionToken: STATE.adminSession }, { dedupe: false, timeout: 30000 });
+      if (ex && ex.success) {
+        showToast('Spotify connected ✓', 'success');
+        renderAdminPlaylistTab($('admin-panel-body'));
+      } else showToast(ex?.error || 'Token exchange failed', 'error');
+    }
+  };
+  window.addEventListener('message', handler);
+}
+
+async function plDisconnectSpotify() {
+  await Api.call('disconnectSpotify', { sessionToken: STATE.adminSession }, { dedupe: false });
+  showToast('Spotify disconnected', 'info');
+  renderAdminPlaylistTab($('admin-panel-body'));
+}
+
+async function plRefreshCatalog() {
+  const el = $('pl-cat-status');
+  if (el) el.textContent = 'Fetching BTS catalog from iTunes (free, global, no Spotify needed)…';
+  const res = await Api.call('refreshBTSCatalog', { sessionToken: STATE.adminSession }, { dedupe: false, timeout: 30000 });
+  if (res && res.success) {
+    if (res.songCount > 0) {
+      showToast(`Catalog refreshed: ${res.songCount} BTS songs from iTunes — now run ⚡ Resolve to link to Spotify`, 'success');
+      renderAdminPlaylistTab($('admin-panel-body'));
+    } else if (el) {
+      const d = res.diag || {};
+      el.innerHTML = `Got 0 songs from iTunes. requests: <b>${d.requests ?? '?'}</b>, rawTracks: <b>${d.rawTracks ?? '?'}</b>. Send me these numbers.`;
+    }
+  } else if (el) el.textContent = res?.error || 'Refresh failed.';
+}
+
+async function plBulkFetchIsrcs() {
+  const el = $('pl-isrc-status');
+  if (el) el.textContent = 'Fetching ISRCs from Credits.fm… (up to 40 songs, ~10s)';
+  const res = await Api.call('bulkFetchIsrcs', { sessionToken: STATE.adminSession }, { dedupe: false, timeout: 60000 });
+  if (res && res.success) {
+    const msg = `Updated ${res.updated} ISRCs (${res.notFound} not found, ${res.errors} errors). ${res.remaining > 0 ? `${res.remaining} still missing — run again.` : 'All done!'}`;
+    if (el) el.textContent = msg;
+    showToast(msg, res.updated > 0 ? 'success' : 'info');
+    if (res.updated > 0) renderAdminPlaylistTab($('admin-panel-body'));
+  } else {
+    const errMsg = res?.error || 'Failed to fetch ISRCs';
+    if (el) el.textContent = errMsg;
+    showToast(errMsg, 'error');
+  }
+}
+
+async function plSearchCatalog() {
+  const input = $('pl-cat-search');
+  const q = input?.value?.trim();
+  if (!q) { showToast('Type a song or member to search', 'error'); return; }
+  const status = $('pl-cat-status');
+  const resultsEl = $('pl-cat-results');
+  if (status) status.textContent = 'Searching Spotify…';
+  const res = await Api.call('searchBTSTracks', { query: q, sessionToken: STATE.adminSession }, { dedupe: false, timeout: 45000 });
+  if (!res || !res.success) { if (status) status.textContent = res?.error || 'Search failed.'; return; }
+  if (status) status.textContent = `${res.found} BTS track(s) found · ${res.addedToCatalog} new added to catalog`;
+  if (resultsEl) {
+    resultsEl.innerHTML = res.results.length
+      ? `<div style="max-height:240px; overflow-y:auto; border:1px solid var(--border-subtle); border-radius:6px;">
+          ${res.results.map(s => `
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 8px; border-bottom:1px solid var(--border-subtle);">
+              <div style="min-width:0;">
+                <div style="font-size:11px; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${sanitize(s.name)}</div>
+                <div style="font-size:10px; color:var(--text-muted);">${sanitize((s.artists || []).join(', '))}</div>
+              </div>
+              <span style="font-size:14px; color:#1DB954;">✓</span>
+            </div>`).join('')}
+         </div>`
+      : `<div style="font-size:11px; color:var(--text-muted);">No BTS tracks in those results — try the song title plus a member name.</div>`;
+  }
+  // Refresh the tab so the song count + focus-song dropdown pick up the newly added tracks.
+  if (res.addedToCatalog > 0) renderAdminPlaylistTab($('admin-panel-body'));
+}
+
+async function plPatchIsrc(key) {
+  const input = document.getElementById(`isrc-${key}`);
+  if (!input) return;
+  const isrc = input.value.trim().toUpperCase();
+  if (!isrc) { showToast('Enter an ISRC first', 'error'); return; }
+  const res = await Api.call('patchCatalogSongIsrc', { key, isrc, sessionToken: STATE.adminSession }, { dedupe: false, timeout: 15000 });
+  if (res && res.success) {
+    showToast(`ISRC saved for "${res.name}"`, 'success');
+    input.style.borderColor = '#1DB954';
+  } else {
+    showToast(res?.error || 'Failed to save ISRC', 'error');
+  }
+}
+
+async function plAddCatalogManual() {
+  const input = $('pl-cat-manual');
+  const url = input?.value?.trim();
+  if (!url) { showToast('Paste a Spotify track link first', 'error'); return; }
+  const status = $('pl-cat-status');
+  if (status) status.textContent = 'Adding…';
+  const res = await Api.call('addCatalogSongManual', { trackUrl: url, sessionToken: STATE.adminSession }, { dedupe: false, timeout: 20000 });
+  if (res && res.success) {
+    const msg = res.added
+      ? `Added "${res.name}" ✓`
+      : res.addedCover
+        ? `Added cover version of "${res.name}" — now ${res.totalVersions} versions ✓`
+        : `"${res.name}" already in catalog (${res.totalVersions} version${res.totalVersions > 1 ? 's' : ''})`;
+    showToast(msg, 'success');
+    if (status) status.textContent = msg;
+    if (input) input.value = '';
+    if (res.added) renderAdminPlaylistTab($('admin-panel-body'));
+  } else if (status) status.textContent = res?.error || 'Could not add that link.';
+}
+
+async function plAddPlaylist() {
+  const input = $('pl-playlist-url');
+  const url = input?.value?.trim();
+  if (!url) { showToast('Paste a Spotify playlist link first', 'error'); return; }
+  const status = $('pl-playlist-status');
+  if (status) status.textContent = 'Fetching playlist tracks… (may take up to 30s for large playlists)';
+  const res = await Api.call('addPlaylistToCatalog', { playlistUrl: url, sessionToken: STATE.adminSession }, { dedupe: false, timeout: 60000 });
+  if (res && res.success) {
+    showToast(`Done — ${res.added} new tracks added, ${res.found - res.added} already in catalog ✓`, 'success');
+    if (input) input.value = '';
+    if (status) status.textContent = `✓ ${res.added} new BTS tracks added, ${res.found - res.added} already known, ${res.skipped} non-BTS skipped.`;
+  } else if (status) status.textContent = res?.error || 'Could not add that playlist (it may be rate-limited — wait and retry).';
+}
+
+async function plAddAlbum() {
+  const input = $('pl-album-url');
+  const url = input?.value?.trim();
+  if (!url) { showToast('Paste a Spotify album link first', 'error'); return; }
+  const status = $('pl-album-status');
+  if (status) status.textContent = 'Fetching album tracks…';
+  const res = await Api.call('addAlbumToCatalog', { albumUrl: url, sessionToken: STATE.adminSession }, { dedupe: false, timeout: 45000 });
+  if (res && res.success) {
+    showToast(`Added album "${res.name}" — ${res.trackCount} tracks ✓`, 'success');
+    if (input) input.value = '';
+    renderAdminPlaylistTab($('admin-panel-body'));
+  } else if (status) status.textContent = res?.error || 'Could not add that album (it may be rate-limited — wait and retry).';
+}
+
+async function plRemoveAlbum(albumId) {
+  await Api.call('removeCatalogAlbum', { albumId, sessionToken: STATE.adminSession }, { dedupe: false });
+  renderAdminPlaylistTab($('admin-panel-body'));
+}
+
+let _plResolveStop = false;
+function plStopResolve() { _plResolveStop = true; }
+async function plResolveCatalog() {
+  _plResolveStop = false;
+  const status = $('pl-resolve-status');
+  // Immediate feedback — the first batch takes 10-15s, so without this it looks like nothing happened.
+  if (status) status.innerHTML = '⏳ Resolving Spotify links… first batch takes ~15s. Leave this tab open (press Stop to end).';
+  showToast('Resolving playable links…', 'info');
+  let totalResolved = 0, idleRuns = 0;
+  while (!_plResolveStop) {
+    const res = await Api.call('resolveMoreCatalog', { batchSize: 15, sessionToken: STATE.adminSession }, { dedupe: false, timeout: 70000 });
+    if (!res || !res.success) {
+      if (status) status.textContent = (res?.error || 'Resolve failed') + ' — waiting 5s before retrying… (press Stop to end)';
+      await new Promise(r => setTimeout(r, 5000));
+      if (++idleRuns >= 3) { if (status) status.textContent = (res?.error || 'Resolve failed') + ' — stopped after repeated failures.'; break; }
+      continue;
+    }
+    idleRuns = 0;
+    totalResolved = res.totalResolved;
+    if (res.rateLimited && res.resolvedThisRun === 0) {
+      if (status) status.innerHTML = `⚠ Spotify is rate-limiting your app right now, so auto-resolve can't run. <b>Wait a few minutes</b> and try again — or use <b>Add song</b> below to paste links manually (that always works). Resolved so far: <b style="color:#1DB954;">${res.totalResolved}</b>.`;
+      break;
+    }
+    if (status) status.innerHTML = `Resolved <b style="color:#1DB954;">${res.totalResolved}</b> playable so far · ${res.remaining} names left to check` + (res.notFoundThisRun ? ` · ${res.notFoundThisRun} not on Spotify this batch` : '');
+    if (res.done || res.remaining === 0) { if (status) status.innerHTML = `✓ Done — <b style="color:#1DB954;">${res.totalResolved}</b> songs are now playable. The rest aren't on Spotify.`; break; }
+    // Pace between batches so the rolling rate-limit window stays light.
+    await new Promise(r => setTimeout(r, 2500));
+  }
+  if (_plResolveStop && status) status.innerHTML = `Stopped · <b style="color:#1DB954;">${totalResolved}</b> playable so far. Press Resolve again anytime to continue.`;
+  renderAdminPlaylistTab($('admin-panel-body'));
+}
+
+async function plImportFillers() {
+  const url = $('pl-import-url')?.value?.trim();
+  if (!url) { showToast('Paste a playlist link first', 'error'); return; }
+  const el = $('pl-filler-status');
+  if (el) el.textContent = 'Importing…';
+  const res = await Api.call('importFillerPlaylist', { playlistUrl: url, sessionToken: STATE.adminSession }, { dedupe: false, timeout: 120000 });
+  if (res && res.success) {
+    showToast(`Scanned ${res.scanned} tracks → ${res.added} fillers added (${res.skippedKpop} K-pop skipped)`, 'success');
+    renderAdminPlaylistTab($('admin-panel-body'));
+  } else if (el) el.textContent = res?.error || 'Import failed.';
+}
+
+async function plAddFiller() {
+  const url = $('pl-add-url')?.value?.trim();
+  if (!url) { showToast('Paste a track link first', 'error'); return; }
+  const res = await Api.call('addFillerManual', { trackUrl: url, sessionToken: STATE.adminSession }, { dedupe: false, timeout: 30000 });
+  if (res && res.success) {
+    showToast(`Added "${res.name}"`, 'success');
+    renderAdminPlaylistTab($('admin-panel-body'));
+  } else showToast(res?.error || 'Could not add', 'error');
+}
+
+async function plRemoveFiller(trackId) {
+  await Api.call('removeFiller', { trackId, sessionToken: STATE.adminSession }, { dedupe: false });
+  renderAdminPlaylistTab($('admin-panel-body'));
+}
+
+async function plGenerate() {
+  const focus = [];
+  const seen = new Set();
+  const labelMap = window._plSongByLabel || {};
+  const unmatched = [];
+  document.querySelectorAll('#pl-focus-rows .pl-focus-row').forEach(row => {
+    const typed = row.querySelector('.pl-focus-sel')?.value?.trim();
+    const mult = parseInt(row.querySelector('.pl-focus-mult')?.value) || 0;
+    if (!typed || mult <= 0) return;
+    // Resolve the typed song name to its catalog key (fall back to a raw key if pasted directly).
+    const isrc = labelMap[typed] || (labelMap[typed.toLowerCase()] || (/^[A-Za-z0-9:]+$/.test(typed) ? typed : null));
+    if (!isrc) { unmatched.push(typed); return; }
+    if (!seen.has(isrc)) { seen.add(isrc); focus.push({ key: isrc, multiplier: mult }); }
+  });
+  const album = Array.from($('pl-album')?.selectedOptions || []).map(o => o.value);
+  // Add every track key from each checked album (each track added once).
+  document.querySelectorAll('.pl-album-check:checked').forEach(chk => {
+    try { (JSON.parse(chk.value) || []).forEach(k => { if (!album.includes(k)) album.push(k); }); } catch (_) {}
+  });
+  const name = $('pl-name')?.value?.trim();
+  const targetMinutes = parseInt($('pl-target')?.value) || 180;
+  const fillerEvery = parseInt($('pl-filler-every')?.value) || 10;
+
+  if (unmatched.length) { showToast(`Pick songs from the list — not recognised: ${unmatched.slice(0, 3).join(', ')}`, 'error'); return; }
+  if (!focus.length) { showToast('Add at least one song with a multiplier', 'error'); return; }
+
+  const el = $('pl-gen-status');
+  if (el) { el.style.color = 'var(--text-muted)'; el.textContent = 'Building & creating the playlist in Spotify…'; }
+  const res = await Api.call('generatePlaylist',
+    { focus, album, name, targetMinutes, fillerEvery, sessionToken: STATE.adminSession },
+    { dedupe: false, timeout: 180000 });
+
+  if (res && res.success) {
+    if (el) el.innerHTML = `✅ <b>${sanitize(res.name)}</b> created — <a href="${res.url}" target="_blank" style="color:#1DB954;">open in Spotify ↗</a>
+      <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">${res.trackCount} tracks · ${res.usedSpacers || 0} BTS spacers · ${res.usedFillers || 0} non-BTS fillers${res.truncated ? ' · trimmed to fit' : ''}</div>`;
+    const rep = $('pl-gen-report'); if (rep) rep.innerHTML = plReportHtml(res.report);
+    showToast('Playlist created ✓', 'success');
+  } else if (el) { el.style.color = 'var(--red-core)'; el.textContent = res?.error || 'Generation failed.'; }
+}
+
+async function plValidate() {
+  const url = $('pl-validate-url')?.value?.trim();
+  if (!url) { showToast('Paste a playlist link first', 'error'); return; }
+  const el = $('pl-validate-status');
+  if (el) el.textContent = 'Checking the rules…';
+  const res = await Api.call('validatePlaylist', { playlistUrl: url, sessionToken: STATE.adminSession }, { dedupe: false, timeout: 120000 });
+  if (res && res.success) {
+    if (el) el.textContent = '';
+    const rep = $('pl-validate-report'); if (rep) rep.innerHTML = plReportHtml(res);
+  } else if (el) el.textContent = res?.error || 'Validation failed.';
+}
+
 // ==================== TAB: ARMY VOTING VERIFICATION ====================
 
 function renderAdminArmyTab(container) {
@@ -9640,6 +11310,7 @@ function renderAdminArmyTab(container) {
   `;
 
   Object.keys(CONFIG.TEAMS).forEach(teamName => {
+    if (isTeamDissolved(teamName)) return;
     const tColor = teamColor(teamName);
     html += `
       <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:8px; border-left:3px solid ${tColor};">
@@ -9810,11 +11481,31 @@ function renderAdminBadgesTab(container) {
   const holoPool = CONFIG.BADGE_POOL;
 
   let html = `
+          <div class="glass-card" style="padding:14px 16px; margin-bottom:20px; border-left:3px solid var(--wave-foam);">
+              <div style="font-size:11px; color:var(--text-secondary); line-height:1.7; margin-bottom:10px;">
+                  🖼️ <strong>Auto-discovery is ON.</strong> To add new badge pics, just upload images to the GitHub
+                  folders (<code>lvl1badges/</code> for classic, <code>2.0badges/</code> for merits) — <strong>any filename</strong>.
+                  No code edits or renaming needed. Then tap refresh below.
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                <button onclick="window.adminRefreshBadges(this)" class="btn-outline" style="font-size:11px; padding:8px 16px;">
+                    🔄 Refresh Badge Images Now
+                </button>
+                <button onclick="window.adminFreezeAllBadges(this)" class="btn-outline" style="font-size:11px; padding:8px 16px; border-color:var(--green); color:var(--green);">
+                    🔒 Restore & Lock Original Badges
+                </button>
+              </div>
+              <div style="font-size:10px; color:var(--text-ghost); margin-top:8px; line-height:1.6;">
+                  <strong>Restore & Lock</strong> reproduces every badge's ORIGINAL image (the look before recent uploads), locks it permanently for all users, and fixes any badges that shifted. Run this once after uploading. New images only appear on badges earned afterward.
+              </div>
+              <div id="badge-refresh-status" style="font-size:10px; color:var(--text-muted); margin-top:6px;"></div>
+          </div>
+
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
               <h3 style="margin:0; font-family:'Orbitron',sans-serif; color:var(--wave-foam);">CLASSIC BADGES PREVIEW</h3>
               <span style="font-size:12px; color:var(--text-muted);">${holoPool.length} Badges Loaded</span>
           </div>
-          
+
           <div class="glass-card" style="padding:16px; margin-bottom:30px;">
               <div class="badge-grid">
                   ${holoPool.map((url, i) => `
@@ -9856,6 +11547,80 @@ function renderAdminBadgesTab(container) {
       `;
   container.innerHTML = html;
 }
+
+// Build the ORIGINAL sequential pools (the scheme used before any uploads),
+// so we can reproduce and lock the exact images users historically saw.
+function _buildOriginalPools(badgeCount, tacticalCount) {
+  const badgePool = [];
+  for (let i = 1; i <= badgeCount; i++) {
+    if (!CONFIG.EXCLUDE_BADGES.includes(i)) badgePool.push(`${CONFIG.BADGE_REPO_URL}BTS%20(${i}).jpg`);
+  }
+  const tacticalPool = [];
+  for (let i = 1; i <= tacticalCount; i++) {
+    tacticalPool.push(`${CONFIG.TACTICAL_BADGE_REPO}BTS2.0-%20(${i}).jpg`);
+  }
+  return { badgePool, tacticalPool };
+}
+
+window.adminFreezeAllBadges = async function(btn) {
+  const badgeCount = parseInt(prompt(
+    'RESTORE & LOCK badges to their ORIGINAL images.\n\n' +
+    'How many CLASSIC badge images existed BEFORE you started uploading new ones?\n' +
+    '(this is the original count — leave as-is if unsure)',
+    String(CONFIG.TOTAL_BADGE_IMAGES)
+  ) || '', 10);
+  if (!badgeCount || badgeCount < 1) return;
+  const tacticalCount = parseInt(prompt(
+    'And how many TACTICAL (2.0) badge images existed originally?',
+    String(CONFIG.TOTAL_TACTICAL_IMAGES)
+  ) || '', 10);
+  if (!tacticalCount || tacticalCount < 1) return;
+
+  if (!confirm(`This will lock EVERY badge for ALL users to the original ${badgeCount} classic / ${tacticalCount} tactical images, and OVERWRITE any wrong freezes from recent uploads.\n\nProceed?`)) return;
+
+  const status = document.getElementById('badge-refresh-status');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Restoring & locking…'; }
+  if (status) { status.style.color = 'var(--text-muted)'; status.textContent = 'Reproducing original images and locking all badges…'; }
+  try {
+    const { badgePool, tacticalPool } = _buildOriginalPools(badgeCount, tacticalCount);
+    const r = await Api.call('adminFreezeAllBadges', {
+      sessionToken: STATE.adminSession,
+      badgePool, tacticalPool,
+      overwrite: true,   // correct any wrong freezes from recent uploads
+    }, { dedupe: false, cache: false });
+    if (r?.success) {
+      Api.invalidate('getFrozenBadges');
+      STATE.frozenBadges = null;
+      await loadFrozenBadges();
+      if (status) { status.style.color = 'var(--green)'; status.textContent = `✅ Locked ${r.frozen} badges to their original images for all users. Permanent now.`; }
+    } else {
+      if (status) { status.style.color = 'var(--fail)'; status.textContent = '❌ ' + (r?.error || 'Failed'); }
+    }
+  } catch (e) {
+    if (status) { status.style.color = 'var(--fail)'; status.textContent = '❌ ' + e.message; }
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '🔒 Restore & Lock Original Badges'; }
+  }
+};
+
+window.adminRefreshBadges = async function(btn) {
+  const status = document.getElementById('badge-refresh-status');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Refreshing…'; }
+  if (status) { status.style.color = 'var(--text-muted)'; status.textContent = 'Fetching from GitHub…'; }
+  try {
+    // Clear in-memory caches so getters re-read after refresh
+    CONFIG._badgePoolCache = null;
+    CONFIG._tacticalPoolCache = null;
+    await refreshBadgePools(true); // force = ignore the 12h cache
+    const n1 = CONFIG.BADGE_POOL.length, n2 = CONFIG.TACTICAL_POOL.length;
+    if (status) { status.style.color = 'var(--green)'; status.textContent = `✅ ${n1} classic + ${n2} merit images loaded`; }
+    // Re-render the preview with the fresh pools
+    renderAdminBadgesTab($('admin-panel-body'));
+  } catch (e) {
+    if (status) { status.style.color = 'var(--fail)'; status.textContent = '❌ ' + e.message; }
+    if (btn) { btn.disabled = false; btn.textContent = '🔄 Refresh Badge Images Now'; }
+  }
+};
 
 // ==================== TAB: CREATE MISSION ====================
 
@@ -9944,6 +11709,433 @@ function renderCreateMissionForm(container) {
           <div id="create-result" style="margin-top:16px; text-align:center;"></div>`;
 }
 
+// ==================== TAB: POP OUT ====================
+
+function renderAdminPopOutTab(container) {
+  container.innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:20px;">
+
+      <div class="archive-card">
+        <div style="font-size:12px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;">🚨 LAUNCH POP OUT</div>
+
+        <div style="margin-bottom:16px;">
+          <label class="label-tag" style="display:block;margin-bottom:6px;">Song / Album Name</label>
+          <input type="text" id="po-track-name" class="input-field" placeholder="e.g. IDOL, Butter, MAP OF THE SOUL: 7">
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <label class="label-tag" style="display:block;margin-bottom:6px;">Variants <span style="color:var(--text-ghost);font-weight:400;">(alternate names, comma-separated)</span></label>
+          <input type="text" id="po-variants" class="input-field" placeholder="e.g. Idol, IDOL (feat. Nicki Minaj), idol">
+          <div style="font-size:9px;color:var(--text-ghost);margin-top:4px;">Scrobbles matching any of these names will also count toward the agent's stream total</div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <label class="label-tag" style="display:block;margin-bottom:8px;">Duration</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;" id="po-dur-btns">
+            ${[['1h',1],['2h',2],['6h',6],['12h',12],['24h',24]].map(([label,hrs],i) => `
+              <button type="button" class="po-dur-btn${i===2?' active':''}" data-hours="${hrs}"
+                onclick="selectPoDuration(this)"
+                style="padding:6px 14px;background:${i===2?'var(--red-whisper)':'transparent'};
+                border:1px solid ${i===2?'var(--red-core)':'var(--border-subtle)'};border-radius:6px;
+                color:${i===2?'var(--red-core)':'var(--text-muted)'};font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;">${label}</button>
+            `).join('')}
+            <button type="button" class="po-dur-btn" data-hours="custom"
+              onclick="selectPoDuration(this)"
+              style="padding:6px 14px;background:transparent;border:1px solid var(--border-subtle);
+              border-radius:6px;color:var(--text-muted);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;">Custom</button>
+          </div>
+          <input type="number" id="po-custom-hours" class="input-field"
+            style="display:none;max-width:180px;" placeholder="Enter hours (e.g. 3.5)" min="0.5" step="0.5">
+          <input type="hidden" id="po-duration-hours" value="6">
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+          <div>
+            <label class="label-tag" style="display:block;margin-bottom:6px;">Stream Target</label>
+            <input type="number" id="po-target-streams" class="input-field" value="500" min="1">
+            <div style="font-size:9px;color:var(--text-ghost);margin-top:4px;">Display goal on progress bar</div>
+          </div>
+          <div>
+            <label class="label-tag" style="display:block;margin-bottom:6px;">XP Pool</label>
+            <input type="number" id="po-xp-pool" class="input-field" value="2000" min="1">
+            <div style="font-size:9px;color:var(--text-ghost);margin-top:4px;">Split equally among qualifiers (≈180 users → 2000 is healthy)</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <label class="label-tag" style="display:block;margin-bottom:6px;">Min Streams to Qualify for XP</label>
+          <input type="number" id="po-min-streams" class="input-field" value="7" min="1" max="100" style="max-width:140px;">
+          <div style="font-size:9px;color:var(--text-ghost);margin-top:4px;">Agents below this get no share. XP earned counts toward the normal 50 XP (Standard) &amp; 100 XP (Classified) badges.</div>
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label class="label-tag" style="display:block;margin-bottom:6px;">Game Rules <span style="color:var(--text-ghost);font-weight:400;">(shown on agent dashboards)</span></label>
+          <textarea id="po-rules-text" class="input-field" style="min-height:90px;resize:vertical;"
+            placeholder="Describe the rules agents will see…">Stream the target song/album on your connected streaming service. The operation runs for the full window — all teams participate. Agents who contribute at least 7 streams will share the XP pool equally when the window closes.</textarea>
+        </div>
+
+        <button type="button" onclick="launchPopOut(this)" class="btn-red" style="font-size:14px;padding:16px;width:100%;">🚨 LAUNCH POP OUT</button>
+        <div id="po-launch-result" style="margin-top:12px;text-align:center;font-size:12px;"></div>
+      </div>
+
+      <div class="glass-card" style="padding:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div style="font-size:12px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:2px;">⚡ CURRENT OPERATION</div>
+          <button type="button" onclick="loadAdminBountyStatus()" class="btn-outline" style="font-size:10px;padding:5px 10px;">↺ Refresh</button>
+        </div>
+        <div id="po-active-status"><div style="color:var(--text-muted);font-size:11px;text-align:center;padding:16px;">Loading…</div></div>
+      </div>
+
+      <!-- ── FORCE-SYNC POP OUT PARTICIPANTS ──────────────── -->
+      <div class="archive-card" style="padding:20px;">
+        <div style="font-size:12px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;">🔄 SYNC POP OUT PARTICIPANTS</div>
+        <div style="font-size:10px;color:var(--text-muted);margin-bottom:16px;line-height:1.6;">
+          Force a Last.fm sync for every agent who joined a Pop Out. Use this when agents forgot to sync and their streams weren't counted.
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label class="label-tag" style="display:block;margin-bottom:6px;">Scope</label>
+          <select id="po-sync-scope" class="input-field" style="max-width:280px;" onchange="togglePoSyncBountyInput()">
+            <option value="current">Current / latest bounty only</option>
+            <option value="specific">Specific bounty ID</option>
+            <option value="all">All bounties (all-time)</option>
+          </select>
+        </div>
+
+        <div id="po-sync-bounty-wrap" style="display:none;margin-bottom:14px;">
+          <label class="label-tag" style="display:block;margin-bottom:6px;">Bounty ID</label>
+          <input type="text" id="po-sync-bounty-id" class="input-field" placeholder="e.g. c2b743c3-5f25-45c9-a51a-4806376f1bd6">
+        </div>
+
+        <button type="button" onclick="runPopOutParticipantSync(this)" class="btn-red"
+          style="padding:10px 24px;font-size:12px;">🔄 Sync Now</button>
+
+        <div id="po-sync-result" style="margin-top:14px;"></div>
+      </div>
+
+    </div>`;
+
+  loadAdminBountyStatus();
+}
+
+function togglePoSyncBountyInput() {
+  const scope = document.getElementById('po-sync-scope')?.value;
+  const wrap  = document.getElementById('po-sync-bounty-wrap');
+  if (wrap) wrap.style.display = scope === 'specific' ? 'block' : 'none';
+}
+
+async function runPopOutParticipantSync(btn) {
+  const resultEl = document.getElementById('po-sync-result');
+  const scope    = document.getElementById('po-sync-scope')?.value || 'current';
+  const bountyId = document.getElementById('po-sync-bounty-id')?.value?.trim();
+
+  if (scope === 'specific' && !bountyId) { showToast('Enter a bounty ID first', 'error'); return; }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Syncing…';
+
+  // Resolve bounty ID for 'current' scope
+  let targetBountyId = scope === 'specific' ? bountyId : null;
+  if (scope === 'current') {
+    const bountyRes = await Api.call('getActiveBounty', { agentNo: STATE.agentNo }, { cache: false });
+    targetBountyId = bountyRes?.bounty?.id || null;
+    if (!targetBountyId) {
+      const statusRes = await Api.call('getBountyParticipants', { adminKey: 'BTSSPYADMIN2024' }, { cache: false });
+      targetBountyId = statusRes?.bountyId || null;
+    }
+  }
+
+  const basePayload = { adminKey: 'BTSSPYADMIN2024' };
+  if (targetBountyId) basePayload.bountyId = targetBountyId;
+
+  // Raw fetch with 90s timeout — bypasses Api.call's hard 20s limit
+  const syncFetch = async (extra) => {
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 90_000);
+    try {
+      const res = await fetch(CONFIG.API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${CONFIG.SUPABASE_ANON_KEY}` },
+        signal: ctrl.signal,
+        body: JSON.stringify({ action: 'syncPopOutParticipants', agentNo: STATE.agentNo, week: STATE.week, _cb: Date.now(), ...basePayload, ...extra }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } finally { clearTimeout(tid); }
+  };
+
+  // Progress state
+  let totalSynced = 0, totalFailed = 0, grandTotal = 0;
+  const allErrors = [];
+  let offset = 0;
+  let batchNum = 0;
+
+  const showProgress = (msg, done = false) => {
+    if (!resultEl) return;
+    const pct = grandTotal > 0 ? Math.round((totalSynced + totalFailed) / grandTotal * 100) : 0;
+    resultEl.innerHTML = done
+      ? `<div style="background:rgba(46,213,115,0.08);border:1px solid rgba(46,213,115,0.3);border-radius:10px;padding:14px;">
+           <div style="font-size:13px;font-weight:900;color:var(--green);margin-bottom:10px;">✅ Sync complete</div>
+           <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:10px;">
+             <div><div style="font-size:20px;font-weight:900;color:var(--green);">${totalSynced}</div><div style="font-size:9px;color:var(--text-ghost);">SYNCED</div></div>
+             <div><div style="font-size:20px;font-weight:900;color:${totalFailed>0?'var(--fail)':'var(--text-muted)'};">${totalFailed}</div><div style="font-size:9px;color:var(--text-ghost);">FAILED</div></div>
+             <div><div style="font-size:20px;font-weight:900;color:#fff;">${grandTotal}</div><div style="font-size:9px;color:var(--text-ghost);">TOTAL</div></div>
+           </div>
+           ${allErrors.length ? `<div style="font-size:9px;color:var(--fail);line-height:1.6;">${allErrors.slice(0,5).map(e=>sanitize(e)).join('<br>')}</div>` : ''}
+         </div>`
+      : `<div style="padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid var(--border-subtle);">
+           <div style="font-size:11px;font-weight:700;color:#fff;margin-bottom:8px;">⏳ ${msg}</div>
+           <div style="background:rgba(255,255,255,0.08);border-radius:4px;height:6px;overflow:hidden;margin-bottom:6px;">
+             <div style="width:${pct}%;height:100%;background:var(--red-core);border-radius:4px;transition:width 0.4s;"></div>
+           </div>
+           <div style="font-size:9px;color:var(--text-muted);">${totalSynced + totalFailed} / ${grandTotal || '?'} agents · ${pct}%</div>
+         </div>`;
+  };
+
+  showProgress('Starting…');
+
+  try {
+    while (true) {
+      batchNum++;
+      const PAGE = 2;
+      showProgress(`Batch ${batchNum} — syncing agents ${offset + 1}–${Math.min(offset + PAGE, grandTotal || offset + PAGE)}…`);
+
+      // Retry once on timeout/network error before giving up
+      let res;
+      for (let attempt = 1; attempt <= 2; attempt++) {
+        try { res = await syncFetch({ offset, pageSize: PAGE }); break; }
+        catch (e) {
+          if (attempt === 2) throw e;
+          showProgress(`Batch ${batchNum} — retry after error…`);
+          await new Promise(r => setTimeout(r, 3000));
+        }
+      }
+
+      if (!res.success) {
+        if (resultEl) resultEl.innerHTML = `<div style="color:var(--fail);font-size:11px;">${sanitize(res.error)}</div>`;
+        showToast(res.error, 'error');
+        break;
+      }
+
+      totalSynced += res.synced || 0;
+      totalFailed += res.failed || 0;
+      grandTotal   = res.total  || grandTotal;
+      if (res.errors) allErrors.push(...res.errors);
+
+      if (!res.hasMore) {
+        showProgress('', true);
+        showToast(`✅ Synced ${totalSynced}/${grandTotal} Pop Out participants`, 'success');
+        break;
+      }
+      offset = res.nextOffset;
+    }
+  } catch (err) {
+    if (resultEl) resultEl.innerHTML = `<div style="color:var(--fail);font-size:11px;">Request failed — ${sanitize(String(err))}</div>`;
+    showToast('Sync failed', 'error');
+  }
+
+  btn.disabled = false;
+  btn.textContent = '🔄 Sync Now';
+}
+window.runPopOutParticipantSync = runPopOutParticipantSync;
+window.togglePoSyncBountyInput = togglePoSyncBountyInput;
+
+function selectPoDuration(btn) {
+  document.querySelectorAll('.po-dur-btn').forEach(b => {
+    b.style.background = 'transparent';
+    b.style.borderColor = 'var(--border-subtle)';
+    b.style.color = 'var(--text-muted)';
+    b.classList.remove('active');
+  });
+  btn.style.background = 'var(--red-whisper)';
+  btn.style.borderColor = 'var(--red-core)';
+  btn.style.color = 'var(--red-core)';
+  btn.classList.add('active');
+  const custom = document.getElementById('po-custom-hours');
+  const hidden = document.getElementById('po-duration-hours');
+  if (btn.dataset.hours === 'custom') {
+    custom.style.display = 'block';
+    custom.oninput = () => { if (hidden) hidden.value = custom.value; };
+    if (hidden) hidden.value = '';
+  } else {
+    if (custom) custom.style.display = 'none';
+    if (hidden) hidden.value = btn.dataset.hours;
+  }
+}
+
+async function launchPopOut(btn) {
+  const trackName = document.getElementById('po-track-name')?.value.trim();
+  if (!trackName) { showToast('Song/album name required', 'error'); return; }
+  const durationHours = parseFloat(document.getElementById('po-duration-hours')?.value || '6');
+  if (!durationHours || durationHours <= 0) { showToast('Select or enter a valid duration', 'error'); return; }
+  const variants    = document.getElementById('po-variants')?.value.trim() || '';
+  const targetStreams = parseInt(document.getElementById('po-target-streams')?.value || '500');
+  const xpPool      = parseInt(document.getElementById('po-xp-pool')?.value || '2000');
+  const minStreams   = parseInt(document.getElementById('po-min-streams')?.value || '7');
+  const rulesText   = document.getElementById('po-rules-text')?.value.trim() || '';
+  const result      = document.getElementById('po-launch-result');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Launching…';
+  if (result) result.textContent = '';
+
+  try {
+    const res = await Api.call('createFlashBounty', {
+      adminKey: 'BTSSPYADMIN2024',
+      trackName,
+      variants: variants || null,
+      durationHours,
+      targetStreams,
+      rewardXP: xpPool,
+      minStreamsForXP: minStreams,
+      rulesText: rulesText || null,
+    }, { cache: false, dedupe: false });
+
+    if (res.success) {
+      if (result) result.innerHTML = `<span style="color:var(--green);font-weight:700;">✅ ${sanitize(res.message)}</span>`;
+      showToast('Pop Out launched!', 'success');
+      loadAdminBountyStatus();
+    } else {
+      if (result) result.innerHTML = `<span style="color:var(--fail);">${sanitize(res.error)}</span>`;
+      showToast(res.error, 'error');
+    }
+  } catch (e) {
+    if (result) result.innerHTML = `<span style="color:var(--fail);">Launch failed — check console</span>`;
+  }
+  btn.disabled = false;
+  btn.textContent = '🚨 LAUNCH POP OUT';
+}
+
+async function loadAdminBountyStatus() {
+  const el = document.getElementById('po-active-status');
+  if (!el) return;
+  el.innerHTML = `<div style="color:var(--text-muted);font-size:11px;text-align:center;padding:12px;">Loading…</div>`;
+  try {
+    const d = await Api.call('getActiveBounty', { agentNo: STATE.agentNo }, { cache: false });
+    if (!d.bounty) {
+      el.innerHTML = `<div style="font-size:11px;color:var(--text-muted);text-align:center;padding:12px;">No active operation right now.</div>`;
+      return;
+    }
+    const b = d.bounty;
+    // Resolved op (won / expired) — show outcome, no actions
+    if (b.state === 'won' || b.state === 'expired') {
+      const won = b.state === 'won';
+      el.innerHTML = `
+        <div style="font-size:12px;color:#fff;font-weight:700;margin-bottom:6px;">${sanitize(b.trackName)}</div>
+        <div style="font-size:11px;color:${won ? 'var(--green)' : 'var(--text-muted)'};font-weight:700;margin-bottom:8px;">
+          ${won ? `💎 Magic Box opened — ${b.qualifierCount} agents shared ${b.rewardXP} XP (+${b.xpEach} each)` : `⌛ Expired — target missed (${b.currentStreams}/${b.targetStreams})`}
+        </div>
+        <div style="font-size:9px;color:var(--text-ghost);margin-bottom:8px;">Launch a new Pop Out above to start the next op.</div>
+        <button type="button" onclick="loadBountyParticipants('${b.id}', this)" class="btn-outline"
+          style="font-size:11px;padding:8px 16px;width:100%;">👥 View Joined Agents (${b.participantCount})</button>
+        <div id="po-participants" style="margin-top:10px;"></div>`;
+      return;
+    }
+    const durMins = b.minutesLeft;
+    const hLeft = Math.floor(durMins / 60), mLeft = durMins % 60;
+    // Projected XP/agent if every joined agent qualifies (worst-case dilution)
+    const projEach = b.participantCount > 0 ? Math.max(1, Math.floor(b.rewardXP / b.participantCount)) : b.rewardXP;
+    el.innerHTML = `
+      <div style="font-size:12px;color:#fff;font-weight:700;margin-bottom:6px;">${sanitize(b.trackName)}</div>
+      ${b.variants ? `<div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;">Variants: ${sanitize(b.variants)}</div>` : ''}
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;text-align:center;">
+        <div style="background:rgba(255,255,255,0.04);border-radius:6px;padding:8px;">
+          <div style="font-size:14px;font-weight:800;color:var(--fail);">${hLeft}h ${mLeft}m</div>
+          <div style="font-size:8px;color:var(--text-ghost);text-transform:uppercase;margin-top:2px;">Time left</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border-radius:6px;padding:8px;">
+          <div style="font-size:14px;font-weight:800;color:var(--courage-amber);">${b.participantCount}</div>
+          <div style="font-size:8px;color:var(--text-ghost);text-transform:uppercase;margin-top:2px;">Agents in</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border-radius:6px;padding:8px;">
+          <div style="font-size:14px;font-weight:800;color:var(--vinyl-gold);">${b.currentStreams} / ${b.targetStreams}</div>
+          <div style="font-size:8px;color:var(--text-ghost);text-transform:uppercase;margin-top:2px;">Streams</div>
+        </div>
+      </div>
+      <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">XP pool: <strong style="color:var(--vinyl-gold);">${b.rewardXP}</strong> · Min streams to qualify: <strong style="color:#fff;">${b.minStreamsForXP}</strong></div>
+      <div style="font-size:10px;color:var(--text-muted);margin-bottom:10px;">≈ <strong style="color:#fff;">${projEach} XP</strong>/agent if all ${b.participantCount} qualify</div>
+      <button type="button" onclick="adminCompleteBounty('${b.id}', this)" class="btn-red"
+        style="font-size:11px;padding:8px 16px;width:100%;">✅ Force Unlock &amp; Distribute Now</button>
+      <div id="po-complete-result" style="margin-top:8px;font-size:11px;text-align:center;"></div>
+      <button type="button" onclick="loadBountyParticipants('${b.id}', this)" class="btn-outline"
+        style="font-size:11px;padding:8px 16px;width:100%;margin-top:8px;">👥 View Joined Agents (${b.participantCount})</button>
+      <div id="po-participants" style="margin-top:10px;"></div>`;
+  } catch (e) {
+    el.innerHTML = `<div style="color:var(--fail);font-size:11px;text-align:center;">Failed to load status.</div>`;
+  }
+}
+
+async function loadBountyParticipants(bountyId, btn) {
+  const host = document.getElementById('po-participants');
+  if (!host) return;
+  // Toggle off if already shown
+  if (host.dataset.loaded === '1') {
+    host.innerHTML = ''; host.dataset.loaded = '';
+    if (btn) btn.textContent = btn.textContent.replace('Hide', 'View');
+    return;
+  }
+  host.innerHTML = `<div style="font-size:10px;color:var(--text-muted);text-align:center;padding:10px;">Loading agents…</div>`;
+  try {
+    const d = await Api.call('getBountyParticipants', { adminKey: 'BTSSPYADMIN2024', bountyId }, { cache: false, dedupe: false });
+    if (!d.success) { host.innerHTML = `<div style="font-size:10px;color:var(--fail);text-align:center;">${sanitize(d.error||'Failed to load')}</div>`; return; }
+    const ps = d.participants || [];
+    if (!ps.length) { host.innerHTML = `<div style="font-size:10px;color:var(--text-muted);text-align:center;padding:10px;">No agents have joined yet.</div>`; host.dataset.loaded = '1'; if (btn) btn.textContent = btn.textContent.replace('View', 'Hide'); return; }
+    const rows = ps.map((p, i) => `
+      <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-bottom:1px solid var(--border-subtle);">
+        <div style="font-size:10px;color:var(--text-ghost);font-family:var(--font-mono);width:18px;flex-shrink:0;">${i+1}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:11px;color:#fff;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sanitize(p.name)} <span style="color:var(--text-ghost);font-weight:500;">${sanitize(p.agentNo)}</span></div>
+          <div style="font-size:9px;color:${teamColor(p.team)};">${sanitize(p.team||'—')}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-size:12px;font-weight:800;color:${p.qualified?'var(--green)':'var(--text-muted)'};font-family:var(--font-mono);">${p.streams}${p.qualified?' ✓':''}</div>
+          <div style="font-size:7px;color:var(--text-ghost);text-transform:uppercase;">streams</div>
+        </div>
+      </div>`).join('');
+    host.innerHTML = `
+      <div style="background:rgba(0,0,0,0.25);border:1px solid var(--border-subtle);border-radius:10px;overflow:hidden;">
+        <div style="display:flex;justify-content:space-between;padding:8px 10px;background:rgba(255,255,255,0.03);">
+          <span style="font-size:9px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">${d.count} joined</span>
+          <span style="font-size:9px;font-weight:800;color:var(--green);">${d.qualifiedCount} qualified (≥ min)</span>
+        </div>
+        <div style="max-height:300px;overflow-y:auto;">${rows}</div>
+      </div>`;
+    host.dataset.loaded = '1';
+    if (btn) btn.textContent = btn.textContent.replace('View', 'Hide');
+  } catch (e) {
+    host.innerHTML = `<div style="font-size:10px;color:var(--fail);text-align:center;">Failed to load agents.</div>`;
+  }
+}
+window.loadBountyParticipants = loadBountyParticipants;
+
+async function adminCompleteBounty(bountyId, btn) {
+  if (!confirm('Close this operation and distribute XP to qualifying agents now?')) return;
+  btn.disabled = true;
+  btn.textContent = '⏳ Distributing…';
+  try {
+    const res = await Api.call('completeBounty', { adminKey: 'BTSSPYADMIN2024', bountyId }, { cache: false, dedupe: false });
+    const el = document.getElementById('po-complete-result');
+    if (res.success) {
+      if (el) el.innerHTML = `<span style="color:var(--green);font-weight:700;">✅ ${sanitize(res.message)}</span>`;
+      showToast(res.message, 'success');
+      setTimeout(loadAdminBountyStatus, 1500);
+    } else {
+      if (el) el.innerHTML = `<span style="color:var(--fail);">${sanitize(res.error)}</span>`;
+      showToast(res.error, 'error');
+      btn.disabled = false;
+      btn.textContent = '✅ Close & Distribute XP Now';
+    }
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = '✅ Close & Distribute XP Now';
+    showToast('Request failed', 'error');
+  }
+}
+window.selectPoDuration  = selectPoDuration;
+window.launchPopOut      = launchPopOut;
+window.loadAdminBountyStatus = loadAdminBountyStatus;
+window.adminCompleteBounty   = adminCompleteBounty;
+
 // ==================== TAB: AGENTS ====================
 function renderAdminAgentsTab(container) {
   container.innerHTML = `
@@ -9964,6 +12156,9 @@ function renderAdminAgentsTab(container) {
       `;
 }
 
+// Stores the real admin agentNo while impersonating so we can snap back instantly
+let _adminRealAgentNo = null;
+
 async function adminImpersonateAgent() {
   let agNo = $('admin-target-agent')?.value?.trim();
   if (!agNo) return showToast('Enter an Agent No', 'error');
@@ -9976,6 +12171,9 @@ async function adminImpersonateAgent() {
   try {
     const d = await Api.call('getDashboardData', { agentNo: agNo }, { cache: false });
     if (d.success) {
+      // Save real admin identity before switching
+      _adminRealAgentNo = prev;
+
       STATE.data = d;
       STATE.isAdmin = false;
       if (typeof updateSidebarAgent === 'function') updateSidebarAgent(d.agent);
@@ -9987,6 +12185,7 @@ async function adminImpersonateAgent() {
       showToast('Impersonating Agent ' + agNo, 'success');
       if (typeof closeAdminPanel === 'function') closeAdminPanel();
       goTo('home');
+      showImpersonationBanner(agNo, d.agent?.profile?.name || agNo);
     } else {
       STATE.agentNo = prev;
       showToast(d.error || 'Agent not found', 'error');
@@ -9998,6 +12197,94 @@ async function adminImpersonateAgent() {
     Loading.hide();
   }
 }
+
+function showImpersonationBanner(agNo, agentName) {
+  document.getElementById('impersonation-banner')?.remove();
+  const banner = document.createElement('div');
+  banner.id = 'impersonation-banner';
+  banner.style.cssText = `
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 99990;
+    background: linear-gradient(135deg, rgba(124,58,237,0.95), rgba(79,70,229,0.95));
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(167,139,250,0.5);
+    padding: 10px 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    font-size: 11px; color: #fff;
+    box-shadow: 0 -4px 24px rgba(124,58,237,0.4);
+    animation: slideUpBanner 0.3s ease;
+  `;
+
+  if (!document.getElementById('impersonation-banner-style')) {
+    const s = document.createElement('style');
+    s.id = 'impersonation-banner-style';
+    s.textContent = `
+      @keyframes slideUpBanner { from { transform:translateY(100%); } to { transform:translateY(0); } }
+    `;
+    document.head.appendChild(s);
+  }
+
+  banner.innerHTML = `
+    <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+      <span style="font-size:18px; flex-shrink:0;">🎭</span>
+      <div style="min-width:0;">
+        <div style="font-weight:900; letter-spacing:0.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+          Viewing as ${agentName} (${agNo})
+        </div>
+        <div style="font-size:9px; color:rgba(255,255,255,0.7); margin-top:1px;">
+          Tap to return to your account
+        </div>
+      </div>
+    </div>
+    <button onclick="adminReturnToOwnAccount()"
+      style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3);
+      color:#fff; padding:8px 16px; border-radius:8px; font-size:11px; font-weight:900;
+      cursor:pointer; white-space:nowrap; flex-shrink:0;
+      transition: background 0.15s ease;"
+      onmouseover="this.style.background='rgba(255,255,255,0.25)'"
+      onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+      ↩ Return to My Account
+    </button>
+  `;
+
+  document.body.appendChild(banner);
+}
+
+async function adminReturnToOwnAccount() {
+  if (!_adminRealAgentNo) {
+    showToast('Could not find original account — please re-login', 'error');
+    return;
+  }
+
+  Loading.show();
+  try {
+    const d = await Api.call('getDashboardData', { agentNo: _adminRealAgentNo }, { cache: false });
+    if (d.success) {
+      STATE.agentNo = _adminRealAgentNo;
+      STATE.data    = d;
+      STATE.isAdmin = true;
+      STATE.adminSession = localStorage.getItem('arirang_admin_session') || STATE.adminSession;
+      _adminRealAgentNo  = null;
+
+      if (typeof updateSidebarAgent === 'function') updateSidebarAgent(d.agent);
+      localStorage.setItem('arirang_agent', JSON.stringify({
+        agentNo: STATE.agentNo,
+        profile: d.agent.profile,
+        stats:   d.agent.stats
+      }));
+      document.getElementById('impersonation-banner')?.remove();
+      showToast('✅ Back to your account', 'success');
+      goTo('home');
+    } else {
+      showToast(d.error || 'Failed to load your account', 'error');
+    }
+  } catch (e) {
+    showToast('Network error', 'error');
+  } finally {
+    Loading.hide();
+  }
+}
+
+window.adminReturnToOwnAccount = adminReturnToOwnAccount;
 
 async function adminDeleteAgent() {
   let agNo = $('admin-target-agent')?.value?.trim();
@@ -10375,6 +12662,7 @@ async function renderWeekConfirmation(container) {
               <div style="display:flex; flex-direction:column; gap:16px;">`;
 
     Object.keys(CONFIG.TEAMS).forEach(teamName => {
+      const dissolved = isTeamDissolved(teamName);
       const info = teams[teamName] || {};
       const tc = teamColor(teamName);
       const att = info.attendanceConfirmed;
@@ -10388,10 +12676,10 @@ async function renderWeekConfirmation(container) {
                       font-weight:800; font-size:10px; cursor:pointer; transition:all 0.2s;">${label}</button>`;
 
       html += `
-                  <div class="glass-card" style="padding:20px; border-left:4px solid ${tc};">
+                  <div class="glass-card" style="padding:20px; border-left:4px solid ${tc};${dissolved ? 'opacity:0.35;filter:grayscale(0.6);pointer-events:none;' : ''}">
                       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                           <span style="color:${tc}; font-weight:800; font-size:14px;">
-                              ${teamEmoji(teamName)} ${teamName.replace('Team ', '')}</span>
+                              ${teamEmoji(teamName)} ${teamName.replace('Team ', '')}${dissolved ? ' <span style="font-size:7px;letter-spacing:1.5px;color:rgba(255,255,255,0.4);margin-left:4px;">DISSOLVED</span>' : ''}</span>
                           <span style="font-size:11px; font-weight:900; font-family:'Share Tech Mono',monospace;
                               color:var(--text-muted);">${fmt(info.teamXP || 0)} XP</span>
                       </div>
@@ -10932,49 +13220,145 @@ async function renderAdminTraineesTab(container) {
 
     if (!d.success) { body.innerHTML = `<div style="color:var(--fail);">❌ ${d.error}</div>`; return; }
 
-    const trainees = d.trainees || [];
+    const trainees = (d.trainees || []).slice().sort((a,b) => (b.totalXP||0) - (a.totalXP||0));
     if (trainees.length === 0) {
       body.innerHTML = `<div style="text-align:center; padding:24px; color:var(--text-ghost);">No active trainees.</div>`;
       return;
     }
 
+    // 7-day grid dots (shared with public page logic)
+    const gridDots = (grid) => (grid || []).map(g => {
+      if (g.preJoin)  return `<span style="color:rgba(255,255,255,0.12);">·</span>`;
+      if (g.future)   return `<span style="color:rgba(255,255,255,0.18);">○</span>`;
+      if (g.complete) return `<span style="color:var(--green);">●</span>`;
+      if (g.partial)  return `<span style="color:var(--courage-amber);">◐</span>`;
+      return `<span style="color:rgba(255,255,255,0.28);">○</span>`;
+    }).join('');
+    const missionRow = (emoji, label, today, grid) => {
+      const dn = today?.done || 0, tot = today?.total || 0;
+      const c = dn >= tot ? 'var(--green)' : dn > 0 ? 'var(--courage-amber)' : 'var(--fail)';
+      return `<div style="display:flex;align-items:center;gap:8px;margin-top:5px;">
+        <span style="flex:1;font-size:9px;color:var(--text-muted);font-weight:700;">${emoji} ${label}</span>
+        <span style="font-size:9px;font-weight:800;color:${c};">Today ${dn}/${tot}</span>
+        <span style="font-size:11px;letter-spacing:3px;">${gridDots(grid)}</span>
+      </div>`;
+    };
+
     const rows = trainees.map(t => {
-      const statusColor = t.readyToPromote ? 'var(--success)' : 'var(--courage-amber)';
-      const statusLabel = t.readyToPromote
-        ? '✅ Ready to Promote'
-        : `⏳ ${t.daysRemaining}d remaining`;
+      const statusColor  = t.readyToPromote ? 'var(--green)' : 'var(--courage-amber)';
+      const statusLabel  = t.readyToPromote ? '✅ Ready' : `⏳ ${t.daysRemaining}d left`;
+      const noStreams    = (t.arirangWeekTotal || 0) === 0 && (t.sideWeekTotal || 0) === 0;
+      const progressPct  = Math.round(((t.daysTrained || 0) / 7) * 100);
       return `
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:8px; align-items:center;
-            padding:12px 0; border-bottom:1px solid var(--border-subtle);">
-          <div>
-            <div style="font-weight:800; color:#fff; font-size:12px;">${t.name}</div>
-            <div style="font-size:10px; color:var(--text-ghost);">${t.agentNo}</div>
+        <div style="border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,0.02);">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+            <div>
+              <span style="font-weight:900;color:#fff;font-size:12px;">${sanitize(t.name)}</span>
+              <span style="color:var(--text-ghost);font-size:10px;margin-left:6px;">${t.agentNo} · ${sanitize(t.team)}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.3);color:${(t.totalXP||0)>0?'#a78bfa':'var(--fail)'};
+                padding:3px 9px;border-radius:20px;font-size:9px;font-weight:900;">⭐ ${t.totalXP||0} XP</span>
+              <span style="font-size:10px;font-weight:700;color:${statusColor};">${statusLabel}</span>
+              <button onclick="adminConfirmForcePromote('${t.agentNo}','${sanitize(t.name)}',${t.daysRemaining||0})"
+                style="background:rgba(124,58,237,0.15);border:1px solid rgba(139,92,246,0.4);color:#a78bfa;
+                padding:5px 12px;border-radius:8px;font-size:9px;font-weight:900;cursor:pointer;
+                white-space:nowrap;transition:all 0.15s;"
+                onmouseover="this.style.background='rgba(124,58,237,0.3)'"
+                onmouseout="this.style.background='rgba(124,58,237,0.15)'">⚡ Promote</button>
+            </div>
           </div>
-          <div style="font-size:11px; color:var(--text-muted);">${t.team}</div>
-          <div style="font-size:11px; color:var(--text-muted);">
-            <div>Joined: ${t.joinDate}</div>
-            <div>Promotes: ${t.promotionDate || '—'}</div>
+          <!-- Training bar -->
+          <div style="margin-bottom:8px;">
+            <div style="height:4px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;">
+              <div style="height:100%;width:${progressPct}%;background:var(--wave-foam);border-radius:4px;"></div>
+            </div>
+            <div style="font-size:9px;color:var(--text-ghost);margin-top:3px;">Day ${t.daysTrained||0}/7 · Joined ${t.joinDate} · Promotes ${t.promotionDate}</div>
           </div>
-          <div style="font-size:11px; font-weight:700; color:${statusColor}; text-align:right;">${statusLabel}</div>
+          <!-- Daily missions (mirrors agent system) -->
+          <div style="padding-top:6px;border-top:1px solid rgba(255,255,255,0.05);">
+            ${missionRow('🔁', 'Arirang 2X',    t.arirangToday, t.arirangGrid)}
+            ${missionRow('🛡️', 'Side Missions', t.sideToday,    t.sideGrid)}
+          </div>
+          ${noStreams ? `<div style="margin-top:8px;font-size:9px;color:var(--fail);padding:5px 8px;background:rgba(239,68,68,0.08);border-radius:6px;">⚠️ No streams this week — check their Last.fm is linked</div>` : ''}
         </div>`;
     }).join('');
 
     body.innerHTML = `
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:8px;
-          padding:8px 0; border-bottom:2px solid var(--border-light);
-          font-size:10px; font-weight:800; color:var(--text-ghost); text-transform:uppercase; letter-spacing:1px;">
-        <div>Agent</div><div>Team</div><div>Dates</div><div style="text-align:right;">Status</div>
+      <div style="margin-bottom:10px;font-size:10px;color:var(--text-ghost);">
+        ${trainees.length} trainee${trainees.length!==1?'s':''} · ${d.week||''} · Sorted by XP · Auto-promotes after 7 days
       </div>
-      ${rows}
-      <div style="margin-top:16px; font-size:10px; color:var(--text-ghost); text-align:center;">
-        ${trainees.length} trainee${trainees.length !== 1 ? 's' : ''} total · Promotion runs automatically on each sync
-      </div>`;
+      ${rows}`;
   } catch (e) {
     const body = $('trainee-overview-body');
     if (body) body.innerHTML = `<div style="color:var(--fail);">❌ ${e.message}</div>`;
   }
 }
 window.renderAdminTraineesTab = renderAdminTraineesTab;
+
+function adminConfirmForcePromote(agentNo, name, daysRemaining) {
+  document.querySelectorAll('#force-promote-modal').forEach(e => e.remove());
+  const overlay = document.createElement('div');
+  overlay.id = 'force-promote-modal';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.88);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.2s ease;`;
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+
+  const earlyNote = daysRemaining > 0
+    ? `<div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:11px;color:#fbbf24;">
+        ⚠️ This agent still has <strong>${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}</strong> remaining in training. Force-promoting will skip the wait.
+       </div>`
+    : `<div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:11px;color:var(--success);">
+        ✅ This agent has already completed 7 days — they can be promoted normally too.
+       </div>`;
+
+  overlay.innerHTML = `
+    <div style="background:linear-gradient(160deg,#0f0a1e,#0a1628);border:1px solid rgba(139,92,246,0.4);border-radius:20px;padding:28px;max-width:380px;width:100%;box-shadow:0 0 60px rgba(124,58,237,0.25);animation:promoSlideUp 0.3s ease;">
+      <div style="font-size:13px;font-weight:900;color:#a78bfa;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">⚡ Force Promote</div>
+      <div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:16px;">${sanitize(name)}</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">${agentNo}</div>
+      ${earlyNote}
+      <div style="font-size:11px;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:20px;">
+        Promoting will immediately change their status to <strong style="color:#fff;">Active Agent</strong>, grant full mission access, and remove the Trainee badge. This cannot be undone.
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="document.getElementById('force-promote-modal')?.remove()"
+          style="flex:1;background:transparent;border:1px solid var(--border-subtle);color:var(--text-muted);padding:12px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;">
+          Cancel
+        </button>
+        <button id="force-promote-confirm-btn"
+          onclick="adminExecuteForcePromote('${agentNo}', '${sanitize(name)}')"
+          style="flex:2;background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;color:#fff;padding:12px;border-radius:10px;font-size:11px;font-weight:900;cursor:pointer;letter-spacing:0.5px;">
+          ⚡ Confirm Promote
+        </button>
+      </div>
+    </div>`;
+
+  document.body.appendChild(overlay);
+}
+
+async function adminExecuteForcePromote(agentNo, name) {
+  const btn = document.getElementById('force-promote-confirm-btn');
+  if (btn) { btn.textContent = 'Promoting...'; btn.disabled = true; }
+
+  try {
+    const res = await Api.call('forcePromoteTrainee', { agentNo, sessionToken: STATE.adminSession }, { dedupe: false, cache: false });
+    document.getElementById('force-promote-modal')?.remove();
+    if (res?.success) {
+      showToast(`✅ ${name} promoted to Active Agent!`, 'success');
+      // Refresh the admin trainees tab
+      const body = $('admin-panel-body');
+      if (body) renderAdminTraineesTab(body);
+    } else {
+      showToast(`❌ ${res?.error || 'Promotion failed'}`, 'error');
+    }
+  } catch (e) {
+    document.getElementById('force-promote-modal')?.remove();
+    showToast(`❌ ${e.message}`, 'error');
+  }
+}
+
+window.adminConfirmForcePromote = adminConfirmForcePromote;
+window.adminExecuteForcePromote = adminExecuteForcePromote;
 
 // ==================== TAB: SYSTEM CONTROLS ====================
 
@@ -11113,7 +13497,7 @@ async function render148Protocol() {
         if (nameLower.includes('vote') || nameLower.includes('8th mission')) return;
 
         const current = info.teams?.[team]?.current || 0;
-        const goal = info.goal || 0;
+        const goal = (info.teams?.[team]?.goal ?? info.goal) || 0;
 
         if (current < goal) {
           const gap = goal - current;
@@ -11146,7 +13530,7 @@ async function render148Protocol() {
         const nameLower = name.toLowerCase();
         if (nameLower.includes('vote') || nameLower.includes('8th mission')) return;
         const current = info.teams?.[team]?.current || 0;
-        const goal = info.goal || 0;
+        const goal = (info.teams?.[team]?.goal ?? info.goal) || 0;
         const gap = Math.max(0, goal - current);
         const myShare = gap > 0 ? Math.ceil(gap / activeEst) + 1 : 0;
         const dailyTarget = myShare > 0 ? Math.ceil(myShare / Math.max(1, safeDays)) : Math.ceil(goal / activeEst / 7);
@@ -11913,8 +14297,10 @@ function renderGuidePage() {
       </ul>
     `],
 
-    ['⚔️', 'The 7 Teams', Object.entries(CONFIG.TEAMS).map(([name, info]) =>
-      `<span style="color:${info.color}">${info.emoji} ${name.replace('Team ', '')}</span> — ${info.ref}`
+    ['⚔️', 'The Active Teams', Object.entries(CONFIG.TEAMS).map(([name, info]) =>
+      isTeamDissolved(name)
+        ? `<span style="color:rgba(255,255,255,0.25);text-decoration:line-through;">${name.replace('Team ', '')} — DISSOLVED</span>`
+        : `<span style="color:${info.color}">${info.emoji} ${name.replace('Team ', '')}</span> — ${info.ref}`
     ).join('<br>') + `<br><br>Your team: <strong style="color:${teamColor(team)}">${team}</strong>`],
 
     ['🧠', 'The 148 Protocol (Your Best Friend)', `
@@ -12228,6 +14614,7 @@ const WINDOW_EXPORTS = {
 
   // Profile actions
   openPasswordModal, closePasswordModal, changePassword,
+  previewLB,
   deleteAccountConfirm, promptDeleteAccount,
   applyLeave, cancelLeave, submitAttendance,
   openLeaveModal, cancelLeaveRequest,
@@ -12276,6 +14663,58 @@ setupNotificationChecks();
 // if so skip login and go straight to dashboard.
 
 checkAuth();
+
+// =============================================
+// ██████  BADGE AUTO-DISCOVERY
+// =============================================
+// Reads badge images directly from the GitHub folders so admins can just drop
+// new pics in without editing code. Caches the result in localStorage (12h) so
+// it costs at most ~2 GitHub API calls per user per half-day.
+async function refreshBadgePools(force = false) {
+  const TTL = 12 * 3600 * 1000; // 12 hours
+  if (!force) {
+    try {
+      const c = JSON.parse(localStorage.getItem(CONFIG.BADGE_POOL_CACHE_KEY) || 'null');
+      if (c && (Date.now() - (c.ts || 0) < TTL) && c.lvl1?.length) return; // cache still fresh
+    } catch (_) {}
+  }
+
+  const fetchDir = async (apiUrl) => {
+    const r = await fetch(apiUrl, { headers: { 'Accept': 'application/vnd.github.v3+json' } });
+    if (!r.ok) throw new Error('GitHub ' + r.status);
+    const files = await r.json();
+    if (!Array.isArray(files)) throw new Error('Unexpected response');
+    return files
+      .filter(f => f.type === 'file' && /\.(jpe?g|png|webp|gif)$/i.test(f.name))
+      .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
+      .map(f => f.download_url)
+      .filter(Boolean);
+  };
+
+  try {
+    const [lvl1, tactical] = await Promise.all([
+      fetchDir(CONFIG.BADGE_REPO_API).catch(() => null),
+      fetchDir(CONFIG.TACTICAL_REPO_API).catch(() => null),
+    ]);
+    // Only overwrite a pool if discovery actually returned images
+    if (lvl1 && lvl1.length)         CONFIG._badgePoolCache = lvl1;
+    if (tactical && tactical.length) CONFIG._tacticalPoolCache = tactical;
+    if ((lvl1 && lvl1.length) || (tactical && tactical.length)) {
+      localStorage.setItem(CONFIG.BADGE_POOL_CACHE_KEY, JSON.stringify({
+        ts: Date.now(),
+        lvl1:     CONFIG._badgePoolCache,
+        tactical: CONFIG._tacticalPoolCache,
+      }));
+      console.log(`[Badges] Auto-discovered ${CONFIG._badgePoolCache?.length || 0} level + ${CONFIG._tacticalPoolCache?.length || 0} tactical images`);
+    }
+  } catch (e) {
+    console.warn('[Badges] Auto-discovery failed, using sequential fallback:', e.message);
+  }
+}
+window.refreshBadgePools = refreshBadgePools;
+// Kick off in the background — non-blocking
+refreshBadgePools().catch(() => {});
+
 // =============================================
 // ██████  NAV GROUP TOGGLE (Collapsible sidebar sections)
 // =============================================
@@ -12475,18 +14914,19 @@ function renderUnit() {
   html += `<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:12px;">`;
 
   teamComps.forEach(tc => {
+    const dissolved = isTeamDissolved(tc.team);
     const isMyTeam = tc.team === team.name;
     const passed = tc.arirangUnitPassed;
     const cColor = teamColor(tc.team);
 
     html += `
-              <div class="glass-card" style="padding:16px; text-align:center; transition:transform 0.3s; ${isMyTeam ? `border-color:${cColor}; background:${cColor}08;` : ''}">
-                  <div style="width:40px; height:40px; margin:0 auto 12px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; background:var(--bg-deep); border:2px solid ${passed ? 'var(--green)' : 'var(--border-light)'}; ${passed ? 'box-shadow:0 0 15px rgba(0,255,102,0.2);' : ''}">
-                      ${passed ? '🏆' : teamEmoji(tc.team)}
+              <div class="glass-card" style="padding:16px; text-align:center; transition:transform 0.3s; ${isMyTeam ? `border-color:${cColor}; background:${cColor}08;` : ''}${dissolved ? 'opacity:0.35;filter:grayscale(0.7);pointer-events:none;' : ''}">
+                  <div style="width:40px; height:40px; margin:0 auto 12px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; background:var(--bg-deep); border:2px solid ${passed && !dissolved ? 'var(--green)' : 'var(--border-light)'}; ${passed && !dissolved ? 'box-shadow:0 0 15px rgba(0,255,102,0.2);' : ''}">
+                      ${passed && !dissolved ? '🏆' : teamEmoji(tc.team)}
                   </div>
-                  <div style="font-size:11px; font-weight:800; color:${cColor}; margin-bottom:4px;">${tc.team.replace('Team ', '')}</div>
-                  <div style="font-size:10px; font-weight:800; font-family:'Share Tech Mono', monospace; color:${passed ? 'var(--green)' : 'var(--text-muted)'};">
-                      ${passed ? '+25 XP' : 'IN PROGRESS'}
+                  <div style="font-size:11px; font-weight:800; color:${cColor}; margin-bottom:4px;">${tc.team.replace('Team ', '')}${dissolved ? ' <span style="font-size:7px;letter-spacing:1px;opacity:0.6;">DISSOLVED</span>' : ''}</div>
+                  <div style="font-size:10px; font-weight:800; font-family:'Share Tech Mono', monospace; color:${passed && !dissolved ? 'var(--green)' : 'var(--text-muted)'};">
+                      ${dissolved ? 'DISSOLVED' : passed ? '+25 XP' : 'IN PROGRESS'}
                   </div>
                   ${isMyTeam ? `<div style="font-size:8px; color:#fff; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:8px; display:inline-block; margin-top:8px; font-weight:700;">YOUR TEAM</div>` : ''}
               </div>
@@ -12773,6 +15213,240 @@ async function loadCareerHistory() {
 // =============================================
 // ██████  OPERATIVE DATABASE & HELPER CHECK
 // =============================================
+// TRAINEES PAGE — visible to all agents
+// =============================================
+
+async function renderTraineesPage() {
+  const container = $('traineesContent');
+  if (!container) return;
+  container.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-muted);font-size:12px;">Loading...</div>`;
+
+  try {
+    const d = await Api.call('getTraineeOverview', { agentNo: STATE.agentNo }, { dedupe: false, cache: false });
+    if (!d?.success) throw new Error(d?.error || 'Failed to load');
+    const raw = d.trainees || [];
+
+    if (!raw.length) {
+      container.innerHTML = `<div class="glass-card" style="text-align:center;padding:48px 24px;">
+        <div style="font-size:40px;margin-bottom:12px;">🎓</div>
+        <div style="font-size:13px;font-weight:900;color:#fff;">No Active Trainees</div>
+        <div style="font-size:11px;color:var(--text-ghost);margin-top:6px;">All agents fully promoted 💜</div>
+      </div>`;
+      return;
+    }
+
+    // ── helpers ──────────────────────────────────────────────────────────
+    const TEAM_COLORS = {
+      Mono:'#10b981', Muse:'#ec4899', HopeWorld:'#f59e0b',
+      Happy:'#eab308', Layover:'#3b82f6', 'D-Day':'#ef4444',
+      Friends:'#7C5CBF',
+    };
+    const tc = t => TEAM_COLORS[t.team] || '#7c3aed';
+
+    const noStr  = t => (t.arirangWeekTotal||0)===0 && (t.sideWeekTotal||0)===0;
+    const streamedToday = t => (t.arirangToday?.done||0)>0 || (t.sideToday?.done||0)>0;
+    const status = t => {
+      if (t.readyToPromote)                          return { dot:'✅', label:'Ready!',          color:'var(--green)' };
+      if (noStr(t))                                  return { dot:'🔴', label:'No Streams',       color:'var(--fail)' };
+      if ((t.totalXP||0)<10 || t.daysRemaining<=1 || !streamedToday(t))
+                                                     return { dot:'🟡', label:'Needs Attention', color:'var(--courage-amber)' };
+      return                                                { dot:'🟢', label:'On Track',         color:'var(--green)' };
+    };
+
+    // ── enrich + sort by REAL XP (same formula as all agents) ───────────
+    const trainees = raw.map(t => ({ ...t, _status: status(t), _noStr: noStr(t) }))
+                        .sort((a,b) => (b.totalXP||0) - (a.totalXP||0));
+
+    // ── header stats ────────────────────────────────────────────────────
+    const teamsRep  = new Set(trainees.map(t=>t.team)).size;
+    const avgXP     = trainees.length ? Math.round(trainees.reduce((s,t)=>s+(t.totalXP||0),0)/trainees.length) : 0;
+    const needsHelp = trainees.filter(t => t._status.dot==='🔴'||t._status.dot==='🟡');
+
+    // ── SVG circle meter ────────────────────────────────────────────────
+    const meter = (t, color) => {
+      const pct  = Math.min(100, Math.round(((t.daysTrained||0)/7)*100));
+      const r    = 16, circ = 2*Math.PI*r;
+      const dash = circ*(pct/100);
+      return `<svg width="40" height="40" viewBox="0 0 40 40" style="flex-shrink:0;">
+        <circle cx="20" cy="20" r="${r}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3"/>
+        <circle cx="20" cy="20" r="${r}" fill="none" stroke="${color}" stroke-width="3"
+          stroke-dasharray="${dash} ${circ-dash}" stroke-linecap="round"
+          transform="rotate(-90 20 20)"/>
+        <text x="20" y="20" text-anchor="middle" dominant-baseline="middle"
+          fill="#fff" font-size="7" font-weight="900" font-family="sans-serif">${t.daysTrained||0}/7</text>
+      </svg>`;
+    };
+
+    // ── 7-day grid dots ──────────────────────────────────────────────────
+    const gridDots = (grid) => (grid || []).map(g => {
+      if (g.preJoin)  return `<span title="${g.date}: before joining" style="color:rgba(255,255,255,0.12);">·</span>`;
+      if (g.future)   return `<span title="${g.date}: upcoming" style="color:rgba(255,255,255,0.18);">○</span>`;
+      if (g.complete) return `<span title="${g.date}: full daily mission done (${g.done}/${g.total})" style="color:var(--green);">●</span>`;
+      if (g.partial)  return `<span title="${g.date}: partial (${g.done}/${g.total})" style="color:var(--courage-amber);">◐</span>`;
+      return `<span title="${g.date}: none (0/${g.total})" style="color:rgba(255,255,255,0.28);">○</span>`;
+    }).join('');
+
+    // ── one daily-mission row (Today X/Y + 7-day grid) ───────────────────
+    const missionRow = (emoji, label, today, grid) => {
+      const d = today?.done || 0, tot = today?.total || 0;
+      const tColor = d >= tot ? 'var(--green)' : d > 0 ? 'var(--courage-amber)' : 'var(--fail)';
+      return `
+      <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+        <span style="flex:1;min-width:0;font-size:9px;color:var(--text-muted);font-weight:700;white-space:nowrap;">${emoji} ${label}</span>
+        <span style="font-size:9px;font-weight:800;color:${tColor};white-space:nowrap;">Today ${d}/${tot}</span>
+        <span style="font-size:11px;letter-spacing:3px;white-space:nowrap;">${gridDots(grid)}</span>
+      </div>`;
+    };
+
+    // ── single card renderer ─────────────────────────────────────────────
+    const card = (t, rank) => {
+      const color = tc(t);
+      const st    = t._status;
+      return `
+      <div class="glass-card" style="padding:12px 14px;border-left:3px solid ${color};margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          ${meter(t, color)}
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <span style="font-size:9px;color:var(--text-ghost);font-weight:700;">#${rank}</span>
+              <span style="font-size:12px;font-weight:900;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sanitize(t.name)}</span>
+              <span style="font-size:9px;font-weight:800;color:${st.color};white-space:nowrap;">${st.dot} ${st.label}</span>
+            </div>
+            <div style="font-size:9px;color:var(--text-ghost);margin-top:2px;">
+              <span style="color:${color};font-weight:700;">${sanitize(t.team)}</span>
+              · ${t.agentNo}
+              · ${t.daysRemaining>0?`${t.daysRemaining}d left`:'Ready'}
+            </div>
+          </div>
+          <span style="background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.3);color:${(t.totalXP||0)>0?'#a78bfa':'var(--fail)'};
+            padding:3px 9px;border-radius:20px;font-size:9px;font-weight:900;white-space:nowrap;flex-shrink:0;">⭐ ${t.totalXP||0} XP</span>
+        </div>
+
+        <!-- Daily missions — mirrors the agent system -->
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.05);">
+          ${missionRow('🔁', 'Arirang 2X',    t.arirangToday, t.arirangGrid)}
+          ${missionRow('🛡️', 'Side Missions', t.sideToday,    t.sideGrid)}
+        </div>
+
+        ${t._noStr ? `<div style="margin-top:8px;font-size:9px;color:var(--fail);background:rgba(239,68,68,0.08);
+          border:1px solid rgba(239,68,68,0.25);border-radius:6px;padding:5px 8px;">⚠️ No Last.fm streams this week — check their account is linked</div>` : ''}
+      </div>`;
+    };
+
+    // ── filter state ────────────────────────────────────────────────────
+    window._traineeFilter = window._traineeFilter || 'all';
+    const setFilter = f => { window._traineeFilter = f; renderTraineesPage(); };
+
+    const filtered = window._traineeFilter === 'needs'   ? trainees.filter(t=>t._status.dot==='🔴'||t._status.dot==='🟡')
+                   : window._traineeFilter === 'soon'    ? trainees.filter(t=>t.daysRemaining<=2)
+                   : window._traineeFilter === 'nostr'   ? trainees.filter(t=>t._noStr)
+                   : trainees;
+
+    const tabBtn = (f, label, count) => {
+      const active = window._traineeFilter === f;
+      return `<button onclick="window._traineeFilter='${f}';renderTraineesPage()"
+        style="padding:6px 12px;border-radius:20px;font-size:10px;font-weight:800;cursor:pointer;border:1px solid;
+        background:${active?'rgba(124,58,237,0.25)':'transparent'};
+        border-color:${active?'rgba(139,92,246,0.6)':'rgba(255,255,255,0.12)'};
+        color:${active?'#a78bfa':'var(--text-muted)'};
+        transition:all 0.15s;">${label}${count!=null?` <span style="opacity:0.7;">(${count})</span>`:''}
+      </button>`;
+    };
+
+    // ── render ───────────────────────────────────────────────────────────
+    container.innerHTML = `
+      <!-- Header -->
+      <div class="glass-card" style="padding:14px 16px;margin-bottom:14px;border-left:3px solid #a78bfa;">
+        <div style="font-size:10px;font-weight:900;color:#a78bfa;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">🎓 Training Division</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;">
+          <div>
+            <div style="font-size:20px;font-weight:900;color:#fff;">${trainees.length}</div>
+            <div style="font-size:8px;color:var(--text-ghost);text-transform:uppercase;letter-spacing:1px;">Active</div>
+          </div>
+          <div>
+            <div style="font-size:20px;font-weight:900;color:#fff;">${teamsRep}</div>
+            <div style="font-size:8px;color:var(--text-ghost);text-transform:uppercase;letter-spacing:1px;">Teams</div>
+          </div>
+          <div>
+            <div style="font-size:20px;font-weight:900;color:#a78bfa;">${avgXP}</div>
+            <div style="font-size:8px;color:var(--text-ghost);text-transform:uppercase;letter-spacing:1px;">Avg XP</div>
+          </div>
+        </div>
+
+        <!-- How to read this page (collapsible) -->
+        <details style="margin-top:12px;border-top:1px solid rgba(255,255,255,0.07);padding-top:10px;">
+          <summary style="font-size:9px;color:#a78bfa;font-weight:800;cursor:pointer;letter-spacing:1px;text-transform:uppercase;outline:none;">
+            ℹ️ How to read this page
+          </summary>
+          <div style="font-size:9px;color:var(--text-muted);line-height:1.8;margin-top:8px;">
+            <div style="margin-bottom:6px;color:var(--text-secondary);font-weight:700;">Status (next to each name):</div>
+            <div>🟢 <strong>On Track</strong> — streamed today, healthy XP</div>
+            <div>🟡 <strong>Needs Attention</strong> — low XP, promoting in ≤1 day, or hasn't streamed today</div>
+            <div>🔴 <strong>No Streams</strong> — zero plays all week, likely Last.fm not linked</div>
+            <div>✅ <strong>Ready</strong> — 7 days done, auto-promotes on next sync</div>
+            <div style="margin:8px 0 6px;color:var(--text-secondary);font-weight:700;">Daily missions (same as agents):</div>
+            <div>🔁 <strong>Arirang 2X</strong> — stream each of the 14 album tracks 2× <em>per day</em></div>
+            <div>🛡️ <strong>Side Missions</strong> — stream each of the 4 survival tracks 1× <em>per day</em></div>
+            <div><strong>Today X/Y</strong> = tracks done so far today · grid = last 7 days:</div>
+            <div style="margin-left:4px;"><span style="color:var(--green);">●</span> full day · <span style="color:var(--courage-amber);">◐</span> partial · <span style="color:rgba(255,255,255,0.3);">○</span> missed/upcoming · <span style="color:rgba(255,255,255,0.2);">·</span> pre-join</div>
+            <div>⭐ <strong>XP</strong> — same formula as every agent (streams ÷ 10)</div>
+            <div>◔ <strong>Ring</strong> — days into the 7-day training period</div>
+            <div style="margin-top:8px;color:var(--text-ghost);font-style:italic;">
+              Trainees are exempt — they can't make a team fail — but their streams still count toward team goals. Use this to spot who needs a nudge 💜
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <!-- Needs Attention -->
+      ${needsHelp.length ? `
+      <div style="margin-bottom:14px;">
+        <div style="font-size:10px;font-weight:900;color:var(--courage-amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">
+          🚨 Needs Attention (${needsHelp.length})
+        </div>
+        ${needsHelp.map((t,i) => `
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;
+            padding:8px 12px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);
+            border-left:3px solid ${tc(t)};border-radius:8px;margin-bottom:6px;">
+            <div>
+              <span style="font-size:11px;font-weight:900;color:#fff;">${sanitize(t.name)}</span>
+              <span style="font-size:9px;color:var(--text-ghost);margin-left:6px;">${t.agentNo}</span>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:9px;color:${t._status.color};font-weight:800;">${t._status.dot} ${t._status.label}</div>
+              <div style="font-size:8px;color:var(--text-ghost);">${t.totalXP||0} XP · ${t.daysRemaining}d left</div>
+            </div>
+          </div>`).join('')}
+      </div>` : ''}
+
+      <!-- Filter tabs -->
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+        ${tabBtn('all','All',trainees.length)}
+        ${tabBtn('needs','Needs Help',needsHelp.length)}
+        ${tabBtn('soon','Promoting Soon',trainees.filter(t=>t.daysRemaining<=2).length)}
+        ${tabBtn('nostr','No Streams',trainees.filter(t=>t._noStr).length)}
+      </div>
+
+      <!-- Cards -->
+      ${filtered.length
+        ? filtered.map((t,i) => card(t, trainees.indexOf(t)+1)).join('')
+        : `<div style="text-align:center;padding:24px;color:var(--text-ghost);font-size:11px;">No trainees in this filter.</div>`
+      }
+
+      <div style="text-align:center;font-size:9px;color:var(--text-ghost);margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.05);">
+        Promotion auto-runs after 7 days · Streams from Last.fm · ${d.week||''}
+      </div>`;
+
+  } catch (e) {
+    container.innerHTML = `<div class="glass-card" style="border-left:3px solid var(--fail);padding:20px;">
+      <div style="color:var(--fail);font-size:12px;font-weight:800;">❌ ${e.message}</div>
+      <button onclick="renderTraineesPage()" class="btn-outline" style="margin-top:12px;font-size:10px;">↺ Retry</button>
+    </div>`;
+  }
+}
+
+
+// =============================================
 
 async function renderOperatives() {
   const container = $('operativesContent');
@@ -12836,19 +15510,21 @@ async function renderOperatives() {
       const tColor = teamColor(team);
       const teamIdClean = team.replace(/\s+/g, '');
       const totalAgents = data.active.length + data.leave.length + data.trainee.length;
+      const isDissolvedTeam = team === 'Team Muse' || team === 'Team Layover';
 
       html += `
-                <div class="archive-card team-op-section" style="border-top: 3px solid ${tColor}; padding:0; overflow:hidden;" data-team="${team}">
-                    
+                <div class="archive-card team-op-section" style="border-top: 3px solid ${tColor}; padding:0; overflow:hidden;${isDissolvedTeam ? 'opacity:0.4;filter:grayscale(0.6);' : ''}" data-team="${team}">
+
                     <!-- TEAM HEADER (Collapsible) -->
                     <div style="padding:16px; background:linear-gradient(135deg, ${tColor}11, transparent); display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="toggleNavGroup(this)">
                         <div class="battle-pfp-mid" style="border-color:${tColor}; margin:0; width:40px; height:40px;">
                             <img src="${teamPfp(team)}" alt="${team}">
                         </div>
                         <div style="flex:1;">
-                            <div style="font-family:var(--font-display); font-size:14px; font-weight:800; color:${tColor}; letter-spacing:1px; text-transform:uppercase;">
+                            <div style="font-family:var(--font-display); font-size:14px; font-weight:800; color:${tColor}; letter-spacing:1px; text-transform:uppercase; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                                 ${team.replace('Team ', '')}
-                                ${isMyTeam ? '<span style="font-size:8px; color:#fff; background:var(--red-core); padding:2px 6px; border-radius:4px; margin-left:6px; vertical-align:middle;">YOUR SQUAD</span>' : ''}
+                                ${isDissolvedTeam ? '<span style="font-size:7px;font-weight:900;letter-spacing:1.5px;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.2);padding:2px 6px;border-radius:4px;">DISSOLVED</span>' : ''}
+                                ${isMyTeam ? '<span style="font-size:8px; color:#fff; background:var(--red-core); padding:2px 6px; border-radius:4px; vertical-align:middle;">YOUR SQUAD</span>' : ''}
                             </div>
                             <div style="font-size:10px; color:var(--text-muted); font-family:var(--font-mono); margin-top:4px;">
                                 ${totalAgents} TOTAL • ${data.active.filter(a => !a.isTrainee).length} ACTIVE • ${data.leave.length} GHOST${data.active.filter(a => a.isTrainee).length ? ` • ${data.active.filter(a => a.isTrainee).length} 🎓` : ''}
@@ -12878,7 +15554,7 @@ async function renderOperatives() {
                         ${data.active.length > 0 ? `
                             <div style="font-size:10px; font-weight:800; color:var(--green); text-transform:uppercase; letter-spacing:2px; margin-bottom:8px; padding-left:4px;">🟢 Active Operatives</div>
                             <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:16px;">
-                                ${data.active.map(a => renderAgentRowModern(a, false, teamIdClean)).join('')}
+                                ${data.active.map(a => renderAgentRowModern(a, false, teamIdClean, !!a.isTrainee)).join('')}
                             </div>
                         ` : ''}
 
@@ -13255,7 +15931,8 @@ window.verifyPoliceAccessModern = async function () {
                                 <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:8px;">
                                     <div style="min-width:0; flex:1;">
                                         <div style="color:#fff; font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                                            ${sanitize(m.name || 'Agent')}
+                                            ${m.isTrainee ? '🎓 ' : ''}${sanitize(m.name || 'Agent')}
+                                            ${m.isTrainee ? '<span style="font-size:8px;font-weight:800;color:#f59e0b;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);padding:1px 6px;border-radius:10px;margin-left:6px;">NEW</span>' : ''}
                                         </div>
                                     </div>
                                     <div style="display:flex; gap:6px; flex-shrink:0; margin-left:8px;">
@@ -13822,6 +16499,9 @@ async function renderPlaylists() {
       Object.keys(CONFIG.TEAMS).forEach(teamName => {
         teamBreakdown[teamName] = { name: teamName, color: teamColor(teamName), goals: [], agentCount: 0 };
 
+        // Skip dissolved teams — their large gaps inflate global blueprint numbers
+        if (teamName === 'Team Muse' || teamName === 'Team Layover') return;
+
         // A. SMART UNIT MAPPING (Tracks + Teams) ────────────────
         const unit = unitData.units?.[teamName];
         if (unit) {
@@ -13845,8 +16525,9 @@ async function renderPlaylists() {
           if (!goals) return;
           Object.entries(goals).forEach(([name, info]) => {
             const prog = info.teams?.[teamName];
-            if (prog && (info.goal - prog.current > 0)) {
-              const gap = info.goal - prog.current;
+            const goalAmt = (prog?.goal ?? info.goal) || 0;   // per-team goal (targets differ per team)
+            if (prog && (goalAmt - prog.current > 0)) {
+              const gap = goalAmt - prog.current;
 
               // Math: (Total Gap / Active Agents) / Days Left
               const share = Math.ceil(gap / activeEst) + 1;
@@ -13964,6 +16645,7 @@ async function renderPlaylists() {
                 
                 <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:10px; margin-bottom:12px;">
                   ${Object.keys(CONFIG.TEAMS).map(teamName => {
+        if (isTeamDissolved(teamName)) return '';
         const unit = unitData.units?.[teamName];
         if (!unit || (unit.track1 === 'TBD' && unit.track2 === 'TBD')) return '';
         const tColor = teamColor(teamName);
@@ -14007,6 +16689,7 @@ async function renderPlaylists() {
               
               <div style="display:none; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:15px; padding-top:15px; text-align:left;">
                 ${Object.keys(CONFIG.TEAMS).map(teamName => {
+        if (isTeamDissolved(teamName)) return '';
         const team = teamBreakdown[teamName];
         const topGoals = team.goals.sort((a, b) => b.daily - a.daily).slice(0, 6);
 
@@ -14266,10 +16949,39 @@ async function renderPlaylists() {
     window._plSearch         = window._plSearch         || '';
     window.renderFilteredPlaylists();
     window._syncPlFilterChips();
+    if (typeof maybeShowPLMakerIntro === 'function') Timers.setTimeout('plmaker-intro', maybeShowPLMakerIntro, 700);
   } catch (e) {
     $('playlists-list').innerHTML = `<div style="text-align:center; padding:20px; color:var(--fail); font-size:11px;">Failed to load network.</div>`;
   }
 }
+
+/** One-time intro for PL makers about the new delete/swipe tools. */
+function maybeShowPLMakerIntro() {
+  if (typeof isPLMaker !== 'function' || !isPLMaker()) return;
+  if (localStorage.getItem('plmaker_tools_intro_v1') === '1') return;
+  localStorage.setItem('plmaker_tools_intro_v1', '1');
+
+  document.getElementById('plmaker-intro-overlay')?.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'plmaker-intro-overlay';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s ease;`;
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+  overlay.innerHTML = `
+    <div style="background:linear-gradient(160deg,#0f1a1e,#0a1422);border:1px solid rgba(74,144,164,0.4);border-radius:22px;max-width:380px;width:100%;padding:26px 24px;box-shadow:0 0 70px rgba(74,144,164,0.25);animation:promoSlideUp 0.4s ease;">
+      <div style="text-align:center;font-size:40px;margin-bottom:10px;">🎵</div>
+      <div style="text-align:center;font-size:9px;color:var(--wave-foam);font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;">Playlist Maker · New Tools</div>
+      <div style="text-align:center;font-size:17px;font-weight:900;color:#fff;margin-bottom:16px;">Keep your queue tidy 💜</div>
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:11px;color:rgba(255,255,255,0.85);line-height:1.6;">
+        <div style="display:flex;gap:10px;"><span style="font-size:16px;">✅</span><div><strong>Mark Done</strong> when you've made a request — then…</div></div>
+        <div style="display:flex;gap:10px;"><span style="font-size:16px;">✕</span><div><strong>Remove it</strong> with the ✕ button so the list doesn't pile up.</div></div>
+        <div style="display:flex;gap:10px;"><span style="font-size:16px;">👉</span><div><strong>Swipe right</strong> on a request to remove it quickly (mobile).</div></div>
+        <div style="display:flex;gap:10px;"><span style="font-size:16px;">🗑️</span><div>Added a playlist by mistake? <strong>Tap ✕</strong> on any playlist card to delete it.</div></div>
+      </div>
+      <button onclick="document.getElementById('plmaker-intro-overlay')?.remove()" style="width:100%;margin-top:18px;background:linear-gradient(135deg,#4a90a4,#2d6a7a);border:none;color:#fff;padding:13px;border-radius:12px;font-size:12px;font-weight:900;cursor:pointer;letter-spacing:0.5px;">Got it 💜</button>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+window.maybeShowPLMakerIntro = maybeShowPLMakerIntro;
 
 window.submitNewPlaylist = async function () {
   if (!isPLMaker()) { showToast('Not authorized', 'error'); return; }
@@ -14394,29 +17106,73 @@ window.loadPlaylistRequests = async function () {
     listEl.innerHTML = requests.map(r => {
       const isDone = r.status === 'done';
       return `
-        <div style="background:rgba(0,0,0,0.3); border:1px solid ${isDone ? 'rgba(255,255,255,0.06)' : 'rgba(74,144,164,0.3)'}; border-radius:8px; padding:12px; margin-bottom:8px; opacity:${isDone ? '0.5' : '1'};">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
-            <div style="flex:1; min-width:0;">
-              <div style="font-size:11px; font-weight:700; color:#fff; margin-bottom:4px;">${sanitize(r.requestText)}</div>
-              <div style="display:flex; gap:6px; font-size:9px; flex-wrap:wrap;">
-                <span style="color:var(--text-muted);">👤 ${sanitize(r.agentName || r.agentNo)}</span>
-                <span style="color:var(--text-muted);">•</span>
-                <span style="color:var(--text-muted);">${sanitize(r.team || '')}</span>
-                <span style="color:var(--wave-foam);">${sanitize(r.platform || 'Any')}</span>
+        <div class="pl-req-row" data-req-id="${r.id}" style="position:relative; overflow:hidden; border-radius:8px; margin-bottom:8px; touch-action:pan-y;">
+          <div class="pl-req-card" style="background:rgba(0,0,0,0.3); border:1px solid ${isDone ? 'rgba(255,255,255,0.06)' : 'rgba(74,144,164,0.3)'}; border-radius:8px; padding:12px; opacity:${isDone ? '0.55' : '1'}; transition:transform 0.2s ease;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+              <div style="flex:1; min-width:0;">
+                <div style="font-size:11px; font-weight:700; color:#fff; margin-bottom:4px;">${sanitize(r.requestText)}</div>
+                <div style="display:flex; gap:6px; font-size:9px; flex-wrap:wrap;">
+                  <span style="color:var(--text-muted);">👤 ${sanitize(r.agentName || r.agentNo)}</span>
+                  <span style="color:var(--text-muted);">•</span>
+                  <span style="color:var(--text-muted);">${sanitize(r.team || '')}</span>
+                  <span style="color:var(--wave-foam);">${sanitize(r.platform || 'Any')}</span>
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                ${isDone
+                  ? `<span style="font-size:8px; color:var(--green); font-weight:800; white-space:nowrap;">✅ Done</span>`
+                  : `<button onclick="window.resolveRequest('${r.id}')" style="font-size:8px; background:var(--wave-foam); color:#000; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-weight:800; white-space:nowrap;">Mark Done</button>`
+                }
+                <button onclick="window.deleteRequest('${r.id}')" title="Remove" style="font-size:11px; background:rgba(255,59,92,0.12); color:var(--fail); border:1px solid rgba(255,59,92,0.3); width:24px; height:24px; border-radius:6px; cursor:pointer; line-height:1; flex-shrink:0;">✕</button>
               </div>
             </div>
-            ${isDone
-              ? `<span style="font-size:8px; color:var(--green); font-weight:800; white-space:nowrap;">✅ Done</span>`
-              : `<button onclick="window.resolveRequest('${r.id}')" style="font-size:8px; background:var(--wave-foam); color:#000; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-weight:800; white-space:nowrap;">Mark Done</button>`
-            }
           </div>
         </div>
       `;
     }).join('');
+
+    // Swipe-right-to-remove on touch devices
+    if (typeof _attachReqSwipe === 'function') _attachReqSwipe();
   } catch (e) {
     if (listEl) listEl.innerHTML = `<div style="color:var(--fail); font-size:10px; padding:12px;">Failed to load requests.</div>`;
   }
 };
+
+/** Remove a request entirely (declutter the list). */
+window.deleteRequest = async function (id) {
+  try {
+    const r = await Api.call('deletePlaylistRequest', { agentNo: STATE.agentNo, requestId: id }, { dedupe: false, cache: false });
+    if (r?.success) {
+      document.querySelector(`.pl-req-row[data-req-id="${id}"]`)?.remove();
+    } else {
+      showToast(r?.error || 'Could not remove', 'error');
+    }
+  } catch (e) { showToast('Could not remove', 'error'); }
+};
+
+/** Swipe-right to remove a request (mobile). */
+function _attachReqSwipe() {
+  document.querySelectorAll('.pl-req-row').forEach(row => {
+    const card = row.querySelector('.pl-req-card');
+    const id = row.getAttribute('data-req-id');
+    let startX = 0, dx = 0, swiping = false;
+    row.addEventListener('touchstart', e => { startX = e.touches[0].clientX; dx = 0; swiping = true; }, { passive: true });
+    row.addEventListener('touchmove', e => {
+      if (!swiping) return;
+      dx = e.touches[0].clientX - startX;
+      if (dx > 0 && card) card.style.transform = `translateX(${Math.min(dx, 120)}px)`;
+    }, { passive: true });
+    row.addEventListener('touchend', () => {
+      swiping = false;
+      if (dx > 90) {                       // swiped far enough → remove
+        if (card) card.style.transform = 'translateX(110%)';
+        setTimeout(() => window.deleteRequest(id), 180);
+      } else if (card) {
+        card.style.transform = '';         // snap back
+      }
+    });
+  });
+}
 
 /** Mark a request as resolved */
 window.resolveRequest = async function (requestId) {
@@ -14517,6 +17273,7 @@ window.renderFilteredPlaylists = function () {
     const tColor   = team === 'All' ? 'var(--wave-foam)' : teamColor(team);
     const typeMeta = TYPE_META[plType] || TYPE_META['General'];
 
+    const canDelete = (typeof isPLMaker === 'function') && isPLMaker() && pl.id != null;
     return `
       <a href="${sanitize(link)}" target="_blank" style="text-decoration:none;">
         <div style="padding:11px 13px; display:flex; align-items:center; gap:12px;
@@ -14537,11 +17294,31 @@ window.renderFilteredPlaylists = function () {
               <span style="font-size:9px; color:var(--text-ghost);">${sanitize(platform)}</span>
             </div>
           </div>
-          <div style="color:rgba(255,255,255,0.2); font-size:14px; flex-shrink:0;">›</div>
+          ${canDelete
+            ? `<button onclick="window.deletePlaylistCard(event, '${pl.id}')" title="Delete playlist" style="background:rgba(255,59,92,0.12); color:var(--fail); border:1px solid rgba(255,59,92,0.3); width:26px; height:26px; border-radius:6px; cursor:pointer; font-size:12px; line-height:1; flex-shrink:0;">✕</button>`
+            : `<div style="color:rgba(255,255,255,0.2); font-size:14px; flex-shrink:0;">›</div>`
+          }
         </div>
       </a>
     `;
   }).join('');
+};
+
+/** PL maker deletes a wrongly-added playlist. */
+window.deletePlaylistCard = async function (ev, id) {
+  ev.preventDefault();
+  ev.stopPropagation();
+  if (!confirm('Delete this playlist? This removes it for everyone.')) return;
+  try {
+    const r = await Api.call('deletePlaylist', { agentNo: STATE.agentNo, playlistId: id }, { dedupe: false, cache: false });
+    if (r?.success) {
+      window._allPlaylists = (window._allPlaylists || []).filter(p => String(p.id) !== String(id));
+      window.renderFilteredPlaylists();
+      showToast('Playlist deleted', 'success');
+    } else {
+      showToast(r?.error || 'Could not delete', 'error');
+    }
+  } catch (e) { showToast('Network error', 'error'); }
 };
 
 /** Update filter chip and sort button visual state */
@@ -15107,8 +17884,11 @@ function renderMagicShip() {
 
   const collected = badgeStates.filter(b => b.passed).length;
   const total = badgeStates.length;
-  const isAwakened = total > 0 && collected === total;
-  const chargePercent = total > 0 ? Math.round((collected / total) * 100) : 0;
+  // June 13 (BTS Festa) — Magic Ship opens for everyone regardless of badge count
+  const kstNow = new Date(Date.now() + 9 * 3600000);
+  const isFesta = kstNow.getUTCMonth() === 5 && kstNow.getUTCDate() === 13;
+  const isAwakened = isFesta || (total > 0 && collected === total);
+  const chargePercent = isFesta ? 100 : (total > 0 ? Math.round((collected / total) * 100) : 0);
 
   // Build full page
   container.innerHTML = `
@@ -15328,6 +18108,18 @@ let strobeInterval;
 window.launchTheVoyage = function () {
   console.log("Magic Ship Portal Opening...");
 
+  // Silent internal tracking — not visible to agents
+  try {
+    const _kst = new Date(Date.now() + 9 * 3600000);
+    if (_kst.getUTCMonth() === 5 && _kst.getUTCDate() === 13) {
+      fetch(CONFIG.API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${CONFIG.SUPABASE_ANON_KEY}` },
+        body: JSON.stringify({ action: 'logFestaBoard', agentNo: STATE.agentNo }),
+      }).catch(() => {});
+    }
+  } catch (_) {}
+
   // 1. ✅ TARGET THE LIGHTSTICK AND TRIGGER FULL WAVE
   const lightstick = document.querySelector('.army-bomb-vessel') || document.querySelector('.ab-lightstick') || document.querySelector('.main-bomb');
   if (lightstick) {
@@ -15343,10 +18135,12 @@ window.launchTheVoyage = function () {
   root.id = 'voyage-overlay';
   root.className = 'vy-root';
   
+  const _isFesta = (function(){ const k=new Date(Date.now()+9*3600000); return k.getUTCMonth()===5&&k.getUTCDate()===13; })();
+
   root.innerHTML = `
     <div id="phase-1-ship" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 1s ease;">
         <div class="vy-arirang-ship" id="sailing-ship">
-            <div class="vy-arirang__hull"><div class="vy-arirang__hull-name">Arirang</div></div>
+            <div class="vy-arirang__hull"><div class="vy-arirang__hull-name">${_isFesta ? 'FESTA XIII' : 'Arirang'}</div></div>
             <div class="vy-arirang__sail vy-arirang__sail--g1"></div>
             <div class="vy-arirang__sail vy-arirang__sail--g2"></div>
             <div class="vy-arirang__sail vy-arirang__sail--g3"></div>
@@ -15371,8 +18165,8 @@ window.launchTheVoyage = function () {
         <div class="concert-dust" style="position: absolute; inset: 0; z-index: 4; pointer-events: none;"></div>
 
         <div id="fan-zone" style="position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; flex-direction: column; align-items: center;">
-            <div id="bomb-back-glow" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; background: #ef4444 !important; filter: blur(60px); opacity: 0.3; transition: background 0.8s ease;"></div>
-            <div class="cs-bomb anim-sway" id="my-army-bomb" style="--glow-color: #ef4444 !important; --wave-speed: 6s;">
+            <div id="bomb-back-glow" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; background: #a855f7 !important; filter: blur(60px); opacity: 0.3; transition: background 0.8s ease;"></div>
+            <div class="cs-bomb anim-sway" id="my-army-bomb" style="--glow-color: #a855f7 !important; --wave-speed: 6s;">
                 <div class="cs-sphere" style="width: 100px; height: 100px; box-shadow: 0 0 50px var(--glow-color), inset 0 0 30px var(--glow-color); background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.1) 40%, rgba(0,0,0,0.5)); backdrop-filter: blur(8px) brightness(1.2); mix-blend-mode: hard-light; border: 1.5px solid rgba(255,255,255,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 2;">
                     <span class="cs-logo" style="text-shadow: 0 0 20px var(--glow-color); color: #fff; font-size: 36px; font-weight: 900; opacity: 0.95;">⟭⟬</span>
                 </div>
@@ -15484,8 +18278,16 @@ window.launchTheVoyage = function () {
       flash.style.opacity = '1';
     }
     // Start YouTube player loading under cover of full-screen flash transition
-    // Look up this week's concert video; fall back to the original if not mapped
-    const weekVideoId = (CONFIG.CONCERT_VIDEOS || {})[STATE.week] || 'sj95YLW-7-g';
+    // June 13 Festa: play "One More Night" by BTS
+    const kstCheck = new Date(Date.now() + 9 * 3600000);
+    const isFestaNow = kstCheck.getUTCMonth() === 5 && kstCheck.getUTCDate() === 13;
+    const weekPlaylist = !isFestaNow && (CONFIG.CONCERT_PLAYLIST || {})[STATE.week];
+    const weekVideoId = isFestaNow
+      ? 'Kakq7u8WgZo'
+      : (weekPlaylist ? weekPlaylist[0] : ((CONFIG.CONCERT_VIDEOS || {})[STATE.week] || 'sj95YLW-7-g'));
+    // Sequential playlist state — null when only a single video plays
+    window._concertPlaylist = weekPlaylist || null;
+    window._concertPlaylistIdx = 0;
     window._concertCurrentSong = null; // reset so first song triggers banner
     initYouTubePlayer(weekVideoId);
   }, 4000);
@@ -15497,11 +18299,56 @@ window.launchTheVoyage = function () {
     const phase2 = document.getElementById('phase-2-concert');
     if (phase2) {
       phase2.style.opacity = '1';
-      phase2.style.pointerEvents = 'all'; 
+      phase2.style.pointerEvents = 'all';
 
-      // Sparkles Trail
+      // ── Mobile/tablet GPU relief ──────────────────────────────────────
+      // mix-blend-mode and backdrop-filter layers sitting over the video force
+      // the compositor to read back + blend the decoded video every frame,
+      // which saturates tablet GPUs and starves the decoder (constant buffering).
+      // Strip them on touch devices; desktop keeps the full cinematic look.
+      const _isMobileGPU = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+                           (navigator.maxTouchPoints > 1);
+      if (_isMobileGPU && !document.getElementById('concert-mobile-perf-css')) {
+        const perfCss = document.createElement('style');
+        perfCss.id = 'concert-mobile-perf-css';
+        perfCss.textContent = `
+          #ambient-glow { display: none !important; }
+          #fan-zone .cs-sphere { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; mix-blend-mode: normal !important; }
+          #bomb-back-glow { filter: blur(28px) !important; }
+          #fever-overlay { mix-blend-mode: normal !important; }
+          /* Clean full-width video, no zoom-crop (smaller composited surface,
+             normal-sized YouTube chrome). */
+          #youtube-player, #youtube-player.vy-player-normal,
+          #video-wrapper iframe, #video-wrapper iframe.vy-player-normal {
+            transform: none !important;
+            width: 100vw !important;
+            height: auto !important;
+            aspect-ratio: 16 / 9 !important;
+            max-height: 100vh !important;
+            transition: none !important;
+          }
+          /* Keep every effect, but minimal: the per-frame GPU cost is the
+             mix-blend-mode / box-shadow glows (they force a video readback +
+             reblend each frame). Strip those, keep the shapes & motion. */
+          .vy-laser { mix-blend-mode: normal !important; opacity: 0.5 !important; width: 1.5px !important; }
+          .concert-dust { mix-blend-mode: normal !important; opacity: 0.12 !important; }
+          .vy-star { box-shadow: none !important; opacity: 0.4 !important; }
+          .vy-crowd-dot { box-shadow: none !important; }
+        `;
+        document.head.appendChild(perfCss);
+      }
+      // ──────────────────────────────────────────────────────────────────
+
+      // Sparkles Trail — touchmove throttled to max 1 spark per 120ms on mobile
+      let _lastSparkT = 0;
       const handleMove = (e) => {
-          if (Math.random() > 0.4) return;
+          const now = Date.now();
+          if (e.type === 'touchmove') {
+            if (now - _lastSparkT < 120) return;
+          } else {
+            if (Math.random() > 0.4) return;
+          }
+          _lastSparkT = now;
           const x = e.clientX || (e.touches && e.touches[0].clientX);
           const y = e.clientY || (e.touches && e.touches[0].clientY);
           if (!x || !y) return;
@@ -15517,40 +18364,193 @@ window.launchTheVoyage = function () {
       phase2.addEventListener('mousemove', handleMove);
       phase2.addEventListener('touchmove', handleMove);
 
-      // Whalien 52
-      setInterval(() => {
-          const whale = document.createElement('div');
-          whale.className = 'magic-whale';
-          whale.innerText = '🐋';
-          whale.style.top = (20 + Math.random() * 40) + '%';
-          phase2.appendChild(whale);
-          setTimeout(() => whale.remove(), 28000);
-      }, 35000);
+      // ── Festa 13th Anniversary moment ─────────────────────────────
+      const kstFesta = new Date(Date.now() + 9 * 3600000);
+      if (kstFesta.getUTCMonth() === 5 && kstFesta.getUTCDate() === 13) {
+        if (!document.getElementById('festa-concert-css')) {
+          const css = document.createElement('style');
+          css.id = 'festa-concert-css';
+          css.textContent = `
+            @keyframes btflyDrift {
+              0%   { transform: translate(0,0) rotate(-6deg);  opacity:0; }
+              8%   { opacity:0.75; }
+              50%  { transform: translate(var(--bx),var(--by)) rotate(6deg); opacity:0.7; }
+              92%  { opacity:0.5; }
+              100% { transform: translate(var(--bx2),var(--by2)) rotate(-4deg); opacity:0; }
+            }
+            @keyframes btflyWing {
+              0%,100% { transform: scaleX(1); }
+              50%     { transform: scaleX(0.15); }
+            }
+            .festa-butterfly {
+              position:absolute; pointer-events:none; z-index:22;
+              animation: btflyDrift var(--bd) ease-in-out forwards;
+            }
+            .festa-butterfly .bw {
+              display:inline-block;
+              animation: btflyWing calc(var(--bd) / 8) ease-in-out infinite;
+              transform-origin: center;
+              font-size: var(--bs);
+              filter: drop-shadow(0 0 4px #c084fc) brightness(1.2);
+            }
+            @keyframes festaLineIn {
+              0%   { opacity:0; transform:translateY(8px); }
+              100% { opacity:1; transform:translateY(0); }
+            }
+            @keyframes festaGroupOut {
+              0%,80% { opacity:1; }
+              100%   { opacity:0; }
+            }
+            #festa-toast {
+              position:absolute; top:8%; left:50%; transform:translateX(-50%);
+              z-index:50; text-align:center; pointer-events:none;
+              animation: festaGroupOut 16s ease both;
+            }
+            .festa-line {
+              display:block; opacity:0; white-space:nowrap;
+              animation: festaLineIn 0.9s ease forwards;
+              text-shadow: 0 0 20px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.8);
+            }
+            #crowd-container.festa-purple .vy-crowd-dot {
+              background: #a855f7 !important;
+              box-shadow: 0 0 6px #a855f7 !important;
+            }
+          `;
+          document.head.appendChild(css);
+        }
 
-      // --- NEW: VIP INTERACTIVE FEATURES ---
-      
-      // 1. Generate Crowd
-      const crowd = document.getElementById('crowd-container');
-      for(let i=0; i<150; i++) {
-          const dot = document.createElement('div');
-          dot.className = 'vy-crowd-dot';
-          dot.style.left = Math.random() * 100 + '%';
-          dot.style.top = (60 + Math.random() * 40) + '%';
-          dot.style.opacity = 0.1 + Math.random() * 0.3;
-          crowd.appendChild(dot);
-      }
+        // Magical butterflies — small, minimal, purple-lit
+        const bfLayer = document.createElement('div');
+        bfLayer.style.cssText = 'position:absolute;inset:0;z-index:22;pointer-events:none;overflow:hidden;';
+        phase2.appendChild(bfLayer);
 
-      // 2. Generate Lasers
-      const laserCont = document.getElementById('laser-container');
-      const colors = ['#a855f7', '#3b82f6', '#ec4899'];
-      for(let i=0; i<6; i++) {
-          const laser = document.createElement('div');
-          laser.className = 'vy-laser vy-laser--active';
-          laser.style.left = (20 + i * 12) + '%';
-          laser.style.setProperty('--glow-color', colors[i % 3]);
-          laser.style.animationDelay = (i * 0.4) + 's';
-          laserCont.appendChild(laser);
+        let bfCount = 0;
+        const bfTimer = setInterval(() => {
+          if (bfCount++ >= 12) { clearInterval(bfTimer); return; }
+          const duration = 7 + Math.random() * 6;
+          const startX = Math.random() * 90;
+          const driftX = (Math.random() - 0.5) * 30;
+          const driftY = -(20 + Math.random() * 35);
+          const size = 10 + Math.random() * 8;
+          const bf = document.createElement('div');
+          bf.className = 'festa-butterfly';
+          bf.style.cssText = `left:${startX}%;top:${20 + Math.random()*35}%;--bd:${duration}s;--bx:${driftX}px;--by:${driftY}px;--bx2:${driftX*1.4}px;--by2:${driftY*1.8}px;--bs:${size}px;`;
+          bf.innerHTML = `<span class="bw">🦋</span>`;
+          bfLayer.appendChild(bf);
+          setTimeout(() => bf.remove(), (duration + 1) * 1000);
+        }, 2200);
+
+        // Anniversary banner — replaces the now-playing text for 10s
+        setTimeout(() => {
+          const np = document.getElementById('song-now-playing');
+          if (np) {
+            const orig = np.innerHTML;
+            np.innerHTML = `<span style="color:#a855f7;font-weight:900;letter-spacing:1px;">BTS</span><span style="color:rgba(255,255,255,0.5);margin:0 6px;">·</span><span style="color:#FFD700;font-weight:700;">13th Anniversary</span><span style="color:rgba(255,255,255,0.5);margin:0 6px;">·</span><span style="color:rgba(255,255,255,0.6);font-size:9px;">June 13, 2026</span>`;
+            setTimeout(() => { if (np) np.innerHTML = orig; }, 10000);
+          }
+        }, 800);
+
+        // Auto-wave — fires 3s after concert phase loads
+        setTimeout(() => {
+          if (typeof initiateOceanWave === 'function') initiateOceanWave();
+        }, 3000);
+
+        // Staggered anniversary message — fragments appear one by one from 3s in
+        setTimeout(() => {
+          const toast = document.createElement('div');
+          toast.id = 'festa-toast';
+          const lines = [
+            { text: '13 Years of BTS 💜',                                      css: 'font-size:13px;font-weight:900;color:#fff;letter-spacing:1.5px;margin-bottom:6px;' },
+            { text: 'We found music that healed us, words that gave us strength,', css: 'font-size:9px;color:rgba(255,255,255,0.6);' },
+            { text: 'and a fandom that felt like home.',                        css: 'font-size:9px;color:rgba(255,255,255,0.6);' },
+            { text: '13 years, and we are still here.',                         css: 'font-size:9px;color:rgba(255,255,255,0.6);margin-bottom:6px;' },
+            { text: 'ARMY, forever. Borahae 💜',                               css: 'font-size:10px;font-weight:700;color:#c084fc;' },
+          ];
+          lines.forEach((l, i) => {
+            const s = document.createElement('span');
+            s.className = 'festa-line';
+            s.textContent = l.text;
+            s.style.cssText = l.css + `animation-delay:${i * 1.3}s;`;
+            toast.appendChild(s);
+          });
+          phase2.appendChild(toast);
+          setTimeout(() => toast.remove(), 18000);
+        }, 3000);
       }
+      // ── End Festa moment ───────────────────────────────────────────
+
+      // Heavy visual effects (crowd, lasers, petals, whale) are deferred until
+      // the video fires its first PLAYING state — avoids competing with buffering.
+      window._startConcertEffects = (function() {
+        let _started = false;
+        return function() {
+          if (_started) return;
+          _started = true;
+          const ph2 = document.getElementById('phase-2-concert');
+
+          // Whalien 52
+          setInterval(() => {
+            if (!ph2) return;
+            const whale = document.createElement('div');
+            whale.className = 'magic-whale';
+            whale.innerText = '🐋';
+            whale.style.top = (20 + Math.random() * 40) + '%';
+            ph2.appendChild(whale);
+            setTimeout(() => whale.remove(), 28000);
+          }, 35000);
+
+          // Crowd dots
+          const crowd = document.getElementById('crowd-container');
+          if (crowd) {
+            const _crowdCount = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ? 60 : 150;
+            for (let i = 0; i < _crowdCount; i++) {
+              const dot = document.createElement('div');
+              dot.className = 'vy-crowd-dot';
+              dot.style.left = Math.random() * 100 + '%';
+              dot.style.top = (60 + Math.random() * 40) + '%';
+              dot.style.opacity = 0.1 + Math.random() * 0.3;
+              crowd.appendChild(dot);
+            }
+          }
+
+          // Lasers
+          const laserCont = document.getElementById('laser-container');
+          if (laserCont) {
+            const laserColors = ['#a855f7', '#3b82f6', '#ec4899'];
+            // Fewer beams on low-end/touch devices to ease compositing
+            const _lowEnd = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+                            (navigator.maxTouchPoints > 1) ||
+                            (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+            const _laserN = _lowEnd ? 3 : 6;
+            const _laserGap = _lowEnd ? 24 : 12;
+            for (let i = 0; i < _laserN; i++) {
+              const laser = document.createElement('div');
+              laser.className = 'vy-laser vy-laser--active';
+              laser.style.left = (20 + i * _laserGap) + '%';
+              laser.style.setProperty('--glow-color', laserColors[i % 3]);
+              laser.style.animationDelay = (i * 0.4) + 's';
+              laserCont.appendChild(laser);
+            }
+          }
+
+          // Falling Petals
+          const magicLayer = document.getElementById('magic-elements-layer');
+          if (magicLayer) {
+            const _petalMs = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ? 1800 : 1000;
+            setInterval(() => {
+              const petal = document.createElement('div');
+              petal.className = 'magic-petal';
+              petal.style.left = Math.random() * 100 + '%';
+              petal.style.width = (5 + Math.random() * 10) + 'px';
+              petal.style.height = petal.style.width;
+              petal.style.animationDuration = (5 + Math.random() * 5) + 's';
+              petal.style.setProperty('--rot', (Math.random() * 360) + 'deg');
+              magicLayer.appendChild(petal);
+              setTimeout(() => petal.remove(), 10000);
+            }, _petalMs);
+          }
+        };
+      })();
 
       // 3. Tap to Cheer & Fever Mode
       let tapCount = 0;
@@ -15572,20 +18572,6 @@ window.launchTheVoyage = function () {
               tapCount = 0;
           }
       });
-
-      // 4. Falling Petals
-      const magicLayer = document.getElementById('magic-elements-layer');
-      setInterval(() => {
-          const petal = document.createElement('div');
-          petal.className = 'magic-petal';
-          petal.style.left = Math.random() * 100 + '%';
-          petal.style.width = (5 + Math.random() * 10) + 'px';
-          petal.style.height = petal.style.width;
-          petal.style.animationDuration = (5 + Math.random() * 5) + 's';
-          petal.style.setProperty('--rot', (Math.random() * 360) + 'deg');
-          magicLayer.appendChild(petal);
-          setTimeout(() => petal.remove(), 10000);
-      }, 400);
 
       // 5. Ripple Effect on click
       phase2.addEventListener('click', (e) => {
@@ -15611,7 +18597,9 @@ window.launchTheVoyage = function () {
               const time = concertPlayer.getCurrentTime();
               const duration = concertPlayer.getDuration();
               console.log(`[CONCERT TIME] Current: ${time.toFixed(2)}s | Total: ${duration.toFixed(2)}s | Remaining: ${(duration - time).toFixed(2)}s`);
-              if (duration > 0 && (duration - time) < 13) {
+              // Skip finale if another playlist video follows — ENDED event handles the transition
+              const _hasPLNext = window._concertPlaylist && (window._concertPlaylistIdx || 0) + 1 < window._concertPlaylist.length;
+              if (!_hasPLNext && duration > 0 && (duration - time) < 13) {
                   clearInterval(finaleCheck);
                   window.triggerGrandFinale();
               }
@@ -15749,6 +18737,13 @@ function applyBPMSync(songData) {
   if (glow)     { glow.style.background = songData.color; }
   if (backGlow) { backGlow.style.background = songData.color; }
 
+  // ── Falling petals/confetti — tint to match the song so they don't clash ──
+  const petalColor = songData.petalColor || songData.laserColor || songData.color;
+  const petalLayer = document.getElementById('magic-elements-layer');
+  if (petalLayer) petalLayer.style.setProperty('--petal-color', petalColor);
+  // also set on the voyage root so any petals outside the layer inherit it
+  document.getElementById('voyage-overlay')?.style.setProperty('--petal-color', petalColor);
+
   // ── Lasers ──
   lasers.forEach((l, i) => {
     l.style.setProperty('--glow-color', songData.laserColor);
@@ -15756,12 +18751,9 @@ function applyBPMSync(songData) {
     l.style.animationDuration = `${(parseFloat(beatSec) * 6).toFixed(2)}s, ${beatSec}s`;
   });
 
-  // ── Now Playing banner ──
+  // ── Now Playing banner ── (song name only — BPM is for the army bomb, not shown)
   if (banner) {
-    const bpmLabel = songData.doubletime
-      ? `${songData.bpm} BPM  ⚡ ${songData.bpm * 2} DOUBLE TIME`
-      : `${songData.bpm} BPM`;
-    banner.textContent   = `♪  ${songData.song}  ·  ${bpmLabel}`;
+    banner.textContent   = `♪  ${songData.song}`;
     banner.style.borderColor = songData.color;
     banner.style.color       = '#fff';
     banner.style.opacity     = '1';
@@ -15773,6 +18765,44 @@ function applyBPMSync(songData) {
 
   console.log(`🎵 BPM Sync → ${songData.song} @ ${songData.bpm} BPM (${beatSec}s/beat)${songData.doubletime ? ' + double-time' : ''}`);
 }
+
+// iOS Safari blocks autoplay WITH sound — the video starts muted, then this
+// prompt lets the user enable audio with one tap (the tap satisfies iOS's
+// user-gesture requirement). Auto-removes once sound is on.
+window.showConcertSoundPrompt = function (player) {
+  if (document.getElementById('vy-sound-prompt')) return;
+  const host = document.getElementById('voyage-overlay') || document.body;
+
+  const btn = document.createElement('button');
+  btn.id = 'vy-sound-prompt';
+  btn.innerHTML = '🔊 Tap for sound';
+  btn.style.cssText = `
+    position:fixed; left:50%; bottom:130px; transform:translateX(-50%);
+    z-index:100001; padding:14px 30px; border:none; border-radius:30px;
+    background:linear-gradient(135deg,#7c3aed,#4f46e5); color:#fff;
+    font-size:15px; font-weight:900; letter-spacing:0.5px; cursor:pointer;
+    box-shadow:0 6px 28px rgba(124,58,237,0.6);
+    animation: vySoundPulse 1.4s ease-in-out infinite;
+  `;
+
+  if (!document.getElementById('vy-sound-prompt-style')) {
+    const s = document.createElement('style');
+    s.id = 'vy-sound-prompt-style';
+    s.textContent = `@keyframes vySoundPulse {0%,100%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.08);}}`;
+    document.head.appendChild(s);
+  }
+
+  const enableSound = () => {
+    try { player.unMute(); player.setVolume(100); player.playVideo(); } catch (_) {}
+    btn.remove();
+    document.removeEventListener('touchend', enableSound);
+  };
+  btn.addEventListener('click', enableSound);
+  // Any tap anywhere also enables sound (one-shot)
+  document.addEventListener('touchend', enableSound, { once: true });
+
+  host.appendChild(btn);
+};
 
 function initYouTubePlayer(videoId) {
   console.log("📺 initYouTubePlayer: Initiating load sequence for Video ID:", videoId);
@@ -15804,6 +18834,24 @@ function initYouTubePlayer(videoId) {
 
   console.log("🚀 initYouTubePlayer: YouTube Iframe API IS READY! Creating new YT.Player instance...");
 
+  // iOS Safari 14.5+ requires allow="autoplay" on the <iframe> element itself —
+  // the autoplay=1 URL param alone is not enough. The YT API inserts the iframe
+  // asynchronously, so we watch for it and patch the attributes immediately.
+  const _iosIframeObserver = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      for (const node of m.addedNodes) {
+        if (node.tagName === 'IFRAME') {
+          node.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; accelerometer; encrypted-media; gyroscope');
+          node.setAttribute('playsinline', '');
+          node.setAttribute('webkit-playsinline', '');
+          _iosIframeObserver.disconnect();
+          console.log('📱 iOS iframe patched: allow=autoplay set');
+        }
+      }
+    }
+  });
+  _iosIframeObserver.observe(target, { childList: true });
+
   // Pre-initialize the canvas engine early so it's armed and ready
   initFireworkCanvas();
 
@@ -15820,14 +18868,66 @@ function initYouTubePlayer(videoId) {
       'rel': 0,
       'showinfo': 0,
       'iv_load_policy': 3,
-      'playsinline': 1
+      'playsinline': 1,
+      'mute': 1,   // iOS only autoplays MUTED — we unmute right after (or on tap for iOS)
+      'start': (CONFIG.CONCERT_STARTS || {})[videoId] || 0   // begin mid-video when songs are deep in
     },
     events: {
-      'onReady': (event) => { 
+      'onReady': (event) => {
         console.log("🎉 initYouTubePlayer: YT Player successfully loaded & onReady event fired! Playing video...");
-        event.target.playVideo(); 
-        if (typeof event.target.setPlaybackQuality === 'function') {
-          event.target.setPlaybackQuality('highres');
+
+        // Backup: patch iframe allow attribute via getIframe() in case the
+        // MutationObserver above fired too late or was missed.
+        try {
+          const iframeEl = event.target.getIframe();
+          if (iframeEl) {
+            iframeEl.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; accelerometer; encrypted-media; gyroscope');
+            iframeEl.setAttribute('playsinline', '');
+            iframeEl.setAttribute('webkit-playsinline', '');
+          }
+        } catch (_) {}
+
+        // Muted autoplay loads reliably on every device (incl. iOS Safari).
+        try { event.target.mute(); } catch (_) {}
+        event.target.playVideo();
+
+        // iOS: retry playVideo() only if the video hasn't started yet.
+        // Unconditional retries were resetting the buffer on tablets (play 5s → stall).
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        if (isIOS) {
+          const retryPlay = (t) => setTimeout(() => {
+            try {
+              const s = event.target.getPlayerState();
+              // Only retry if not already playing (1) or buffering with content (3)
+              if (s !== 1 && s !== 3) event.target.playVideo();
+            } catch (_) {}
+          }, t);
+          retryPlay(800);
+          retryPlay(2500);
+        }
+
+        // Try to turn sound on. Desktop allows it immediately; iOS blocks until a tap.
+        const tryUnmute = () => { try { event.target.unMute(); event.target.setVolume(100); } catch (_) {} };
+        tryUnmute();
+        setTimeout(() => {
+          let stillMuted = true;
+          try { stillMuted = (typeof event.target.isMuted === 'function') ? event.target.isMuted() : true; } catch (_) {}
+          if (stillMuted && typeof window.showConcertSoundPrompt === 'function') {
+            window.showConcertSoundPrompt(event.target); // iOS → show "Tap for sound"
+          }
+        }, 900);
+        // Cap quality at 480p on mobile/tablet — lowers both decode load and
+        // bitrate (network margin) so the stream sustains without buffering.
+        const _isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+                                (navigator.maxTouchPoints > 1);
+        if (_isMobileDevice) {
+          try {
+            if (typeof event.target.setPlaybackQualityRange === 'function') {
+              event.target.setPlaybackQualityRange('small', 'large');
+            }
+            event.target.setPlaybackQuality('large');
+          } catch (_) {}
         }
 
         // Monitor play duration + BPM-sync army bomb to current song
@@ -15861,8 +18961,23 @@ function initYouTubePlayer(videoId) {
                   }
                 }
 
-                // Grand finale 10 s before the end
-                if (duration > 0 && (duration - currentTime <= 10)) {
+                // Early cutoff — stop before extra footage (e.g. talking sections)
+                const cutoff = (CONFIG.CONCERT_CUTOFFS || {})[videoId];
+                if (cutoff && currentTime >= cutoff) {
+                    clearInterval(window._vyProgressInterval);
+                    window._vyProgressInterval = null;
+                    try { concertPlayer.pauseVideo(); } catch (_) {}
+                    if (typeof window.triggerGrandFinale === 'function') {
+                        window.triggerGrandFinale();
+                    }
+                    return;
+                }
+
+                // Grand finale 10 s before the end — skip if another playlist video follows
+                const _pl = window._concertPlaylist;
+                const _plIdx = window._concertPlaylistIdx || 0;
+                const _hasNextVideo = _pl && _plIdx + 1 < _pl.length;
+                if (!_hasNextVideo && duration > 0 && (duration - currentTime <= 10)) {
                     clearInterval(window._vyProgressInterval);
                     window._vyProgressInterval = null;
                     if (typeof window.triggerGrandFinale === 'function') {
@@ -15874,9 +18989,21 @@ function initYouTubePlayer(videoId) {
       },
       'onStateChange': (event) => {
         console.log("📺 initYouTubePlayer: YT Player state changed to:", event.data);
-        // Explicitly route to window context to handle API isolation
+        // Release heavy visual effects only after video is actually playing —
+        // prevents crowd/lasers/petals from competing with initial buffering.
+        if (event.data === YT.PlayerState.PLAYING) {
+          if (typeof window._startConcertEffects === 'function') window._startConcertEffects();
+        }
         if (event.data === YT.PlayerState.ENDED) {
-          if (typeof window.triggerGrandFinale === 'function') {
+          const pl = window._concertPlaylist;
+          const idx = window._concertPlaylistIdx || 0;
+          if (pl && idx + 1 < pl.length) {
+            // More songs in this week's concert — play the next one
+            window._concertPlaylistIdx = idx + 1;
+            window._concertCurrentSong = null;
+            window._finaleTriggered = false; // reset so the last video can fire its own finale
+            initYouTubePlayer(pl[idx + 1]);
+          } else if (typeof window.triggerGrandFinale === 'function') {
             window.triggerGrandFinale();
           }
         }
@@ -15988,6 +19115,7 @@ window.toggleStrobe = function() {
 
 window.exitConcert = function() {
     const arena = document.getElementById('voyage-overlay');
+    document.getElementById('vy-sound-prompt')?.remove(); // clean up iOS sound button
     if (strobeInterval) clearInterval(strobeInterval);
     if (rainbowInterval) clearInterval(rainbowInterval);
     if (window._vyProgressInterval) {
@@ -16104,9 +19232,14 @@ function initFireworkCanvas() {
     };
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas(); // Set initial size
-    
-    requestAnimationFrame(updateFireworks);
+
+    // NOTE: the render loop is NOT started here. It only runs while there are
+    // particles to draw (kicked off by createFireworkBurst), then stops itself.
+    // A full-screen fixed canvas clearing every frame at 60fps was saturating
+    // the GPU compositor and starving the video decoder on tablets.
 }
+
+let _fwLoopRunning = false;
 
 function createFireworkBurst(x, y, color) {
     if (!fwCanvas) initFireworkCanvas();
@@ -16123,10 +19256,15 @@ function createFireworkBurst(x, y, color) {
             size: 1 + Math.random() * 2
         });
     }
+    // Start the render loop if it isn't already running
+    if (!_fwLoopRunning) {
+        _fwLoopRunning = true;
+        requestAnimationFrame(updateFireworks);
+    }
 }
 function updateFireworks() {
-    if (!fwCtx || !fwCanvas) return; // Guard clause
-    
+    if (!fwCtx || !fwCanvas) { _fwLoopRunning = false; return; } // Guard clause
+
     fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
     for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
@@ -16134,7 +19272,7 @@ function updateFireworks() {
         p.y += p.vy;
         p.vy += 0.05; // gravity
         p.alpha -= 0.015;
-        
+
         if (p.alpha <= 0) {
             particles.splice(i, 1);
         } else {
@@ -16148,6 +19286,13 @@ function updateFireworks() {
         }
     }
     fwCtx.shadowBlur = 0;
+
+    // Stop the loop when there's nothing left to draw — clear once and idle.
+    if (particles.length === 0) {
+        fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+        _fwLoopRunning = false;
+        return;
+    }
     requestAnimationFrame(updateFireworks);
 }
 
@@ -17370,7 +20515,7 @@ const VOYAGE_ARENA_CSS = `
     @keyframes oceanBreathe { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.02); filter: brightness(1.1) contrast(1.1); } }
 
     /* Magic Petals */
-    .magic-petal { position: absolute; top: -5%; background: #fca5a5; border-radius: 50% 0 50% 50%; opacity: 0.6; pointer-events: none; animation: petalFall linear forwards; }
+    .magic-petal { position: absolute; top: -5%; background: var(--petal-color, #fca5a5); border-radius: 50% 0 50% 50%; opacity: 0.6; pointer-events: none; animation: petalFall linear forwards; transition: background 0.6s ease; }
     @keyframes petalFall { 0% { transform: translateY(0) rotate(0deg) translateX(0); } 100% { transform: translateY(110vh) rotate(var(--rot)) translateX(50px); } }
 
     /* Magic Ripple */
@@ -17636,7 +20781,7 @@ async function adminFinalizeWeek() {
   if (!confirm(`⚠️ FINAL WARNING: Finalize ${STATE.week}?\nThis checks Side Missions, issues Police warnings, and locks the week.`)) return;
   Loading.show();
   try {
-    const d = await Api.call('finalizeWeek', { adminKey: 'BTSSYNC2024', week: STATE.week }, { dedupe: false, cache: false });
+    const d = await Api.call('finalizeWeek', { sessionToken: STATE.adminSession, week: STATE.week }, { dedupe: false, cache: false });
     if (d.success) {
       showToast('✅ Week successfully finalized!', 'success');
       Api.invalidate();
@@ -18168,7 +21313,7 @@ function renderMagicShipGame() {
   const TEAM_COLORS = {
     'Happy':     '#a855f7', 'MONO':  '#f59e0b', 'D-Day': '#3b82f6',
     'Muse':      '#10b981', 'Golden':'#ef4444', 'Hopeworld':'#ec4899',
-    'Layover':   '#06b6d4',
+    'Layover':   '#06b6d4', 'Friends':'#7C5CBF',
   };
   const RANK_MEDALS = ['👑','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣'];
   const myTeam = STATE?.data?.agent?.team || null;
@@ -18320,7 +21465,7 @@ function _buildBossUI(bossName, currentHp, maxHp, status, weekLabel, totalAttack
   const hpPct    = Math.max(0, Math.round((currentHp / maxHp) * 100));
   const defeated = status === 'defeated' || currentHp <= 0;
   const hpColor  = hpPct > 60 ? '#22c55e' : hpPct > 30 ? '#f59e0b' : '#ef4444';
-  const TEAM_COLORS = { 'Happy':'#a855f7','MONO':'#f59e0b','D-Day':'#3b82f6','Muse':'#10b981','Golden':'#ef4444','Hopeworld':'#ec4899','Layover':'#06b6d4' };
+  const TEAM_COLORS = { 'Happy':'#a855f7','MONO':'#f59e0b','D-Day':'#3b82f6','Muse':'#10b981','Golden':'#ef4444','Hopeworld':'#ec4899','Layover':'#06b6d4','Friends':'#7C5CBF' };
 
   ga.innerHTML = `
   <style>
@@ -18718,6 +21863,125 @@ window.triviaTimeout = triviaTimeout;
 // ══════════════════════════════════════════════════════════════════════
 
 let _bountyTimer = null;
+let _leaderboardTimer = null;   // live-rankings auto-refresh
+
+// Format remaining seconds as a human ticker: "23h 59m", "5h 02m", or "9m 04s" in the last hour
+function fmtBountyTime(secs) {
+  secs = Math.max(0, secs);
+  const h = Math.floor(secs / 3600), m = Math.floor((secs % 3600) / 60), s = secs % 60;
+  if (h > 0) return `${h}h ${m.toString().padStart(2,'0')}m`;
+  return `${m}m ${s.toString().padStart(2,'0')}s`;
+}
+
+// Treasure-chest reveal styles (injected with the won-state card)
+const POPOUT_CHEST_CSS = `
+.po-chest-wrap{position:relative;width:150px;height:116px;margin:0 auto 12px;cursor:pointer;user-select:none;}
+.po-chest{position:absolute;inset:0;}
+.po-chest:not(.open){animation:poChestNudge 1.8s ease-in-out infinite;}
+@keyframes poChestNudge{0%,90%,100%{transform:translateY(0) rotate(0);}93%{transform:translateY(-2px) rotate(-2.5deg);}96%{transform:translateY(0) rotate(2.5deg);}}
+.po-chest-body{position:absolute;bottom:0;left:14px;right:14px;height:58px;border-radius:6px 6px 9px 9px;
+  background:linear-gradient(180deg,#9a6630,#5c3a18);border:2px solid #e7c560;
+  box-shadow:inset 0 -8px 12px rgba(0,0,0,.45),0 6px 14px rgba(0,0,0,.4);z-index:2;}
+.po-chest-body::before{content:'';position:absolute;top:9px;left:-2px;right:-2px;height:5px;background:#e7c560;opacity:.65;}
+.po-chest-lock{position:absolute;bottom:34px;left:50%;width:15px;height:19px;transform:translateX(-50%);z-index:4;
+  background:linear-gradient(#ffe9a8,#caa033);border:1.5px solid #5c3a18;border-radius:3px;}
+.po-chest-lock::after{content:'';position:absolute;top:6px;left:50%;width:3px;height:7px;transform:translateX(-50%);background:#5c3a18;border-radius:2px;}
+.po-chest.open .po-chest-lock{opacity:0;transition:opacity .2s;}
+.po-chest-lid{position:absolute;bottom:56px;left:14px;right:14px;height:30px;border-radius:14px 14px 3px 3px;
+  background:linear-gradient(180deg,#b07636,#7a4d20);border:2px solid #e7c560;border-bottom:none;z-index:3;
+  transform-origin:bottom center;transition:transform .55s cubic-bezier(.34,1.4,.5,1);
+  box-shadow:inset 0 6px 10px rgba(255,220,140,.25);}
+.po-chest.open .po-chest-lid{transform:rotateX(122deg);}
+.po-chest-glow{position:absolute;left:50%;top:32px;width:72px;height:44px;transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,224,130,.95),rgba(255,224,130,0));opacity:0;transition:opacity .4s .25s;z-index:1;}
+.po-chest.open .po-chest-glow{opacity:1;animation:poGlow 1.8s ease-in-out .5s infinite;}
+@keyframes poGlow{0%,100%{opacity:.55;}50%{opacity:1;}}
+.po-chest-rays{position:absolute;left:50%;top:30px;width:130px;height:130px;transform:translate(-50%,-50%) scale(.32);z-index:0;
+  background:repeating-conic-gradient(from 0deg,rgba(255,224,130,.5) 0 6deg,transparent 6deg 26deg);
+  border-radius:50%;opacity:0;-webkit-mask:radial-gradient(closest-side,transparent 26%,#000 28%);mask:radial-gradient(closest-side,transparent 26%,#000 28%);}
+.po-chest.open .po-chest-rays{opacity:.5;animation:poRays 12s linear infinite;}
+@keyframes poRays{to{transform:translate(-50%,-50%) scale(.32) rotate(360deg);}}
+.po-reward{}
+.po-loot{display:flex;justify-content:center;gap:18px;margin-bottom:2px;}
+.po-loot-item{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.po-loot-item img{width:64px;height:64px;border-radius:11px;border:2px solid #e7c560;object-fit:cover;object-position:center 22%;background:#1a1a1a;
+  box-shadow:0 0 18px rgba(231,197,96,.55);opacity:0;transform:translateY(26px) scale(.5) rotate(-8deg);}
+.po-loot.show .po-loot-item img{animation:poLootRise .65s cubic-bezier(.34,1.56,.64,1) forwards;}
+.po-loot.show .po-loot-item:nth-child(2) img{animation-delay:.16s;}
+.po-loot-cap{font-size:9px;color:var(--text-muted);font-weight:700;opacity:0;}
+.po-loot.show .po-loot-cap{animation:poCapFade .4s ease .55s forwards;}
+@keyframes poLootRise{to{opacity:1;transform:translateY(0) scale(1) rotate(0);}}
+@keyframes poCapFade{to{opacity:1;}}
+@keyframes poRewardFade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes poSpark{from{opacity:1;transform:translate(-50%,-50%) scale(1);}to{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.4);}}
+`;
+
+// Golden Vinyl (MVP collectible) styles + renderers
+const GOLDEN_VINYL_CSS = `
+.gv-card{position:relative;width:300px;max-width:100%;margin:0 auto;padding:22px 20px 18px;border-radius:18px;text-align:center;
+  background:linear-gradient(160deg,#1a1410,#0d0b0e);overflow:hidden;border:1px solid rgba(231,197,96,.45);
+  box-shadow:0 0 40px rgba(231,197,96,.16),inset 0 0 26px rgba(231,197,96,.05);}
+.gv-card::before{content:'';position:absolute;top:-60%;left:-40%;width:55%;height:220%;
+  background:linear-gradient(115deg,transparent,rgba(255,255,255,.12),transparent);transform:rotate(18deg);animation:gvSweep 4.5s ease-in-out infinite;}
+@keyframes gvSweep{0%,100%{left:-40%;}50%{left:120%;}}
+.gv-rarity{display:inline-block;font-size:8px;letter-spacing:3px;font-weight:800;color:#0b0b0f;
+  background:linear-gradient(90deg,#e7c560,#fff3c4,#e7c560);padding:4px 12px;border-radius:20px;margin-bottom:14px;position:relative;}
+.gv-vinyl{position:relative;width:140px;height:140px;margin:0 auto 14px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,#2a2206 0 17%,transparent 17%),
+    repeating-radial-gradient(circle at 50% 50%,#b8932f 0 1.5px,#8a6f24 1.5px 3px),
+    conic-gradient(from 0deg,#d9b24a,#f6e6a8,#c9a23c,#f6e6a8,#b8932f,#f6e6a8,#d9b24a);
+  box-shadow:0 0 22px rgba(231,197,96,.5),inset 0 0 18px rgba(0,0,0,.6);animation:gvSpin 8s linear infinite;}
+@keyframes gvSpin{to{transform:rotate(360deg);}}
+.gv-vinyl::after{content:'';position:absolute;inset:34%;border-radius:50%;background:radial-gradient(circle,#1a1208,#2a1d0a);border:2px solid #e7c560;box-shadow:inset 0 0 9px rgba(0,0,0,.8);}
+.gv-vinyl .gv-hole{position:absolute;top:50%;left:50%;width:9px;height:9px;transform:translate(-50%,-50%);background:#0b0b0f;border-radius:50%;z-index:3;border:1px solid #e7c560;}
+.gv-vinyl .gv-note{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;font-size:20px;}
+.gv-title{font-family:var(--font-display,'Orbitron',sans-serif);font-size:20px;font-weight:900;letter-spacing:2px;
+  background:linear-gradient(90deg,#e7c560,#fff3c4,#caa033);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:2px;}
+.gv-serial{font-family:var(--font-mono,'Share Tech Mono',monospace);font-size:12px;color:#e7c560;letter-spacing:2px;margin-bottom:12px;}
+.gv-mvp{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:1px;color:#e7c560;
+  background:rgba(231,197,96,.1);border:1px solid rgba(231,197,96,.4);padding:6px 14px;border-radius:20px;margin-bottom:14px;}
+.gv-meta{border-top:1px solid rgba(231,197,96,.18);padding-top:12px;}
+.gv-who{font-size:13px;font-weight:800;color:#fff;margin-bottom:3px;}
+.gv-what{font-size:10px;color:var(--text-muted);font-family:var(--font-mono,monospace);line-height:1.6;}
+/* compact row for Hall of Fame / profile grid */
+.gv-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid rgba(231,197,96,.25);
+  border-radius:12px;background:rgba(231,197,96,.04);margin-bottom:8px;text-align:left;}
+.gv-mini{position:relative;flex-shrink:0;width:44px;height:44px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,#2a2206 0 18%,transparent 18%),
+    repeating-radial-gradient(circle at 50% 50%,#b8932f 0 1px,#8a6f24 1px 2.5px),
+    conic-gradient(from 0deg,#d9b24a,#f6e6a8,#c9a23c,#f6e6a8,#b8932f,#f6e6a8,#d9b24a);
+  box-shadow:0 0 10px rgba(231,197,96,.4);}
+.gv-mini::after{content:'';position:absolute;inset:36%;border-radius:50%;background:#1a1208;border:1px solid #e7c560;}
+`;
+
+function _gvDate(d){ try{ return d ? new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : ''; }catch(e){ return ''; } }
+
+function goldenVinylFull(v){
+  return `
+    <div class="gv-card">
+      <span class="gv-rarity">◆ ONE OF ONE ◆</span>
+      <div class="gv-vinyl"><span class="gv-note">🎵</span><span class="gv-hole"></span></div>
+      <div class="gv-title">GOLDEN VINYL</div>
+      <div class="gv-serial">No. ${String(v.serial||0).padStart(3,'0')}</div>
+      <div class="gv-mvp">👑 MVP · TOP STREAMER</div>
+      <div class="gv-meta">
+        <div class="gv-who">${sanitize(v.name||v.agentNo||'Agent')}${v.team?` · ${sanitize(v.team)}`:''}</div>
+        <div class="gv-what">Pop Out: "${sanitize(v.track||'')}" · ${fmt(v.streams||0)} streams<br>Unlocked ${_gvDate(v.date)}</div>
+      </div>
+    </div>`;
+}
+
+function goldenVinylRow(v){
+  return `
+    <div class="gv-row">
+      <div class="gv-mini"></div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:11px;font-weight:800;color:#fff;">${sanitize(v.name||v.agentNo||'Agent')}${v.team?` <span style="color:var(--text-ghost);font-weight:600;">· ${sanitize(v.team)}</span>`:''}</div>
+        <div style="font-size:9px;color:var(--text-muted);font-family:var(--font-mono,monospace);">"${sanitize(v.track||'')}" · ${fmt(v.streams||0)} streams · ${_gvDate(v.date)}</div>
+      </div>
+      <div style="flex-shrink:0;font-family:var(--font-mono,monospace);font-size:12px;font-weight:800;color:var(--vinyl-gold);">#${String(v.serial||0).padStart(3,'0')}</div>
+    </div>`;
+}
 
 async function renderFlashBounties() {
   const container = $('flashBountiesContent');
@@ -18726,42 +21990,196 @@ async function renderFlashBounties() {
   try {
     const d = await Api.call('getActiveBounty', { agentNo: STATE.agentNo }, { cache: false });
     if (_bountyTimer) { clearInterval(_bountyTimer); _bountyTimer = null; }
+    if (_leaderboardTimer) { clearInterval(_leaderboardTimer); _leaderboardTimer = null; }
     if (!d.success) { container.innerHTML = `<div style="color:var(--fail);font-size:12px;text-align:center;padding:40px;">${sanitize(d.error)}</div>`; return; }
     if (!d.bounty) {
       container.innerHTML = `
         <div class="glass-card" style="padding:24px;text-align:center;border:1px solid var(--border-subtle);">
           <div style="font-size:32px;margin-bottom:12px;">📡</div>
           <div style="font-size:13px;font-weight:800;color:var(--text-primary);margin-bottom:6px;">No Active Operation</div>
-          <div style="font-size:11px;color:var(--text-muted);line-height:1.6;">HQ drops a Pop Out twice a week when a track goal needs a push. Check back often — they only last 1–2 hours!</div>
+          <div style="font-size:11px;color:var(--text-muted);line-height:1.6;">HQ sets a song or album and opens a 6-hour window for all teams to push. Check back often — when one drops, every stream counts!</div>
         </div>`;
       return;
     }
     const b = d.bounty;
+
+    // ── WON → split by eligibility ────────────────────────────────
+    if (b.state === 'won') {
+      const opened = localStorage.getItem('popout_opened_' + b.id) === '1';
+      const qualified = b.qualified;
+      const myName = (STATE.data && STATE.data.agent && STATE.data.agent.profile && STATE.data.agent.profile.name) || 'You';
+
+      // Real badge art — deterministic hash of agentNo + bountyId
+      let hseed = 0x811c9dc5; const hstr = String(STATE.agentNo || 'X') + 'POPOUT' + b.id;
+      for (let i = 0; i < hstr.length; i++) { hseed ^= hstr.charCodeAt(i); hseed = Math.imul(hseed, 0x01000193) | 0; }
+      hseed = Math.abs(hseed);
+      const stdPool = (CONFIG.BADGE_POOL || []), clsPool = (CONFIG.TACTICAL_POOL || []);
+      const stdImg = stdPool.length ? stdPool[hseed % stdPool.length] : '';
+      const clsImg = clsPool.length ? clsPool[(hseed >> 3) % clsPool.length] : '';
+
+      // Always sync exact badge images to DB on every render (idempotent upsert on backend).
+      // Catches pre-fix opens, empty-pool saves, and keeps images in sync if pool changed.
+      if (qualified && stdImg && STATE.agentNo) {
+        Api.call('saveBountyBadge', {
+          agentNo: STATE.agentNo, bountyId: b.id, stdImageUrl: stdImg,
+          clsImageUrl: clsImg || null, trackName: b.trackName || '', isMvp: !!b.isMvp,
+        }, { cache: false, dedupe: false }).catch(() => {});
+      }
+
+      // ── MVP + save blocks (shared) ──
+      const mvpBlock = b.mvpAgentNo ? (b.isMvp
+        ? `<div style="margin-top:18px;">
+             <div style="font-size:10px;font-weight:900;color:var(--vinyl-gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">🏆 You're the MVP — Golden Vinyl earned!</div>
+             ${goldenVinylFull({ serial: b.mvpSerial, track: b.trackName, name: myName, team: '', streams: b.mvpStreams, date: b.activeUntil })}
+           </div>`
+        : `<div style="margin-top:16px;padding:11px 12px;background:rgba(231,197,96,0.06);border:1px solid rgba(231,197,96,0.25);border-radius:10px;">
+             <div style="font-size:10px;color:var(--vinyl-gold);font-weight:800;">👑 MVP: ${sanitize(b.mvpName||'')} · ${fmt(b.mvpStreams)} streams</div>
+             <div style="font-size:9px;color:var(--text-muted);margin-top:3px;">Bagged Golden Vinyl #${String(b.mvpSerial||0).padStart(3,'0')} 🏆 — stream more next time to claim it!</div>
+           </div>`) : '';
+      const saveBlock = b.isSaveWinner
+        ? `<div style="margin-top:14px;padding:13px;background:rgba(255,149,0,0.08);border:1px solid var(--courage-amber)55;border-radius:12px;">
+             <div style="font-size:24px;margin-bottom:4px;">🛟</div>
+             <div style="font-size:11px;font-weight:900;color:var(--courage-amber);letter-spacing:1px;">YOU'RE ONE OF THE 5 LUCKY AGENTS!</div>
+             <div style="font-size:10px;color:var(--text-muted);line-height:1.6;margin-top:5px;">You just won your team an <strong style="color:#fff;">extra Emergency Save</strong> this week 💜</div>
+           </div>`
+        : (b.saveWinnerCount > 0 ? `<div style="margin-top:14px;font-size:9px;color:var(--text-ghost);line-height:1.6;">🛟 ${b.saveWinnerCount} lucky agent${b.saveWinnerCount===1?'':'s'} across different teams won their team an extra Emergency Save</div>` : '');
+      const rankBtn = `<button type="button" onclick="toggleBountyLeaderboard('${b.id}', this)" class="btn-outline" style="width:100%;padding:10px;font-size:11px;font-weight:800;margin-top:14px;">📊 Final Rankings</button><div id="bountyLeaderboard" style="margin-top:10px;"></div>`;
+
+      // ── ❌ NOT JOINED — clean "missed it" card, no chest ───────────
+      if (!b.hasJoined) {
+        container.innerHTML = `
+          <style>${GOLDEN_VINYL_CSS}</style>
+          <div class="glass-card" style="padding:24px;border:1px solid var(--border-subtle);background:rgba(255,255,255,0.02);text-align:center;">
+            <div style="font-size:9px;font-weight:900;color:var(--text-muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;">✅ Target Smashed</div>
+            <div style="font-size:15px;font-weight:900;color:#fff;margin-bottom:18px;">${sanitize(b.trackName)}</div>
+            <div style="font-size:48px;margin-bottom:10px;filter:grayscale(1);opacity:0.35;">🎁</div>
+            <div style="font-size:14px;font-weight:900;color:#fff;margin-bottom:6px;">Squad smashed it! 🎉</div>
+            <div style="font-size:10px;color:var(--text-muted);line-height:1.7;margin-bottom:18px;">
+              This Pop Out wrapped up — you sat this one out.<br>
+              Jump in on the <strong style="color:#fff;">next drop</strong> to grab your share of the Magic Box! 💜
+            </div>
+            <div style="font-size:9px;color:var(--text-ghost);margin-bottom:14px;">${b.qualifierCount} agent${b.qualifierCount===1?'':'s'} shared the ${fmt(b.rewardXP)} XP pool</div>
+            ${mvpBlock}
+            ${rankBtn}
+          </div>`;
+        return;
+      }
+
+      // ── ⚠️ JOINED BUT NOT ELIGIBLE — sealed chest + immediate message ──
+      if (!qualified) {
+        container.innerHTML = `
+          <style>${POPOUT_CHEST_CSS}${GOLDEN_VINYL_CSS}</style>
+          <div class="glass-card" style="padding:24px;border:1px solid rgba(245,158,11,0.25);background:rgba(245,158,11,0.04);text-align:center;">
+            <div style="font-size:9px;font-weight:900;color:var(--courage-amber);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;">✅ Target Smashed</div>
+            <div style="font-size:15px;font-weight:900;color:#fff;margin-bottom:16px;">${sanitize(b.trackName)}</div>
+            <!-- Sealed/locked chest — greyed out, no tap -->
+            <div class="po-chest-wrap" style="opacity:0.35;cursor:default;pointer-events:none;margin-bottom:14px;">
+              <div class="po-chest">
+                <div class="po-chest-lid"><span class="po-chest-lock"></span></div>
+                <div class="po-chest-body"></div>
+              </div>
+            </div>
+            <div style="font-size:14px;font-weight:900;color:#fff;margin-bottom:6px;">So close! 😤</div>
+            <div style="font-size:10px;color:var(--text-muted);line-height:1.7;margin-bottom:14px;">
+              You had <strong style="color:#fff;">${b.myStreams}</strong> stream${b.myStreams===1?'':'s'} this round — needed
+              <strong style="color:var(--vinyl-gold);">${b.minStreamsForXP}</strong> to unlock the Magic Box loot.<br>
+              <span style="color:var(--courage-amber);font-weight:700;">Hit ${b.minStreamsForXP} streams on the next Pop Out to claim your badges! 💜</span>
+            </div>
+            <div style="font-size:9px;color:var(--text-ghost);margin-bottom:4px;">${b.qualifierCount} agent${b.qualifierCount===1?'':'s'} shared the ${fmt(b.rewardXP)} XP pool</div>
+            ${mvpBlock}
+            ${rankBtn}
+          </div>`;
+        return;
+      }
+
+      // ── ✅ QUALIFIED — tap-to-open Magic Box chest ─────────────────
+      container.innerHTML = `
+        <style>${POPOUT_CHEST_CSS}${GOLDEN_VINYL_CSS}</style>
+        <div class="glass-card" style="padding:24px;border:1px solid var(--green)55;background:rgba(46,213,115,0.06);text-align:center;">
+          <div style="font-size:9px;font-weight:900;color:var(--green);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;">✅ Target Smashed</div>
+          <div style="font-size:15px;font-weight:900;color:#fff;margin-bottom:16px;">${sanitize(b.trackName)}</div>
+
+          <div class="po-chest-wrap" onclick="openBountyTreasure('${b.id}','${stdImg}','${clsImg}','${sanitize(b.trackName).replace(/'/g,"&#39;")}','${b.isMvp?'1':'0'}')">
+            <div id="poChest" class="po-chest${opened ? ' open' : ''}">
+              <div class="po-chest-rays"></div>
+              <div class="po-chest-glow"></div>
+              <div class="po-chest-lid"><span class="po-chest-lock"></span></div>
+              <div class="po-chest-body"></div>
+            </div>
+          </div>
+
+          <div id="poTapHint" style="${opened ? 'display:none;' : ''}">
+            <button class="btn-red" onclick="openBountyTreasure('${b.id}','${stdImg}','${clsImg}','${sanitize(b.trackName).replace(/'/g,"&#39;")}','${b.isMvp?'1':'0'}')" style="padding:11px 24px;font-size:12px;margin-top:4px;">🔮 Tap to open the Magic Box</button>
+          </div>
+
+          <div id="treasureReward" class="po-reward" style="${opened ? '' : 'display:none;'}">
+            <div style="font-size:9px;font-weight:900;color:var(--vinyl-gold);letter-spacing:3px;text-transform:uppercase;margin:4px 0 14px;">✨ Magic Box Opened</div>
+            <div class="po-loot" id="poLoot">
+              ${stdImg ? `<div class="po-loot-item"><img src="${stdImg}" alt="Standard badge" onerror="this.parentElement.style.display='none'"><div class="po-loot-cap">🥈 Standard Badge</div></div>` : ''}
+              ${clsImg ? `<div class="po-loot-item"><img src="${clsImg}" alt="Classified badge" onerror="this.parentElement.style.display='none'"><div class="po-loot-cap">🥇 Classified Badge</div></div>` : ''}
+            </div>
+            <div style="font-size:30px;font-weight:900;color:var(--vinyl-gold);font-family:var(--font-mono);line-height:1;margin-top:10px;">+${fmt(b.myXP)} XP</div>
+            <div style="font-size:10px;color:var(--text-muted);line-height:1.6;margin-top:8px;">XP added to your weekly total — badges saved in your <strong style="color:var(--vinyl-gold);">Badge Drawer</strong> 💜</div>
+            <div style="font-size:9px;color:var(--text-ghost);line-height:1.6;margin-top:16px;">Squad smashed it · ${b.qualifierCount} agent${b.qualifierCount===1?'':'s'} shared the ${fmt(b.rewardXP)} XP pool (+${fmt(b.xpEach)} each)</div>
+            ${saveBlock}
+            ${mvpBlock}
+          </div>
+          ${rankBtn}
+        </div>`;
+      if (opened) { const lt = document.getElementById('poLoot'); if (lt) lt.classList.add('show'); }
+      return;
+    }
+
+    // ── EXPIRED → ⌛ failed op ─────────────────────────────────────
+    if (b.state === 'expired') {
+      container.innerHTML = `
+        <div class="glass-card" style="padding:24px;text-align:center;border:1px solid var(--border-subtle);">
+          <div style="font-size:32px;margin-bottom:10px;">⌛</div>
+          <div style="font-size:13px;font-weight:800;color:var(--text-primary);margin-bottom:6px;">Operation Expired</div>
+          <div style="font-size:11px;color:var(--text-muted);line-height:1.6;">"${sanitize(b.trackName)}" didn't hit its target in time — the Magic Box stayed sealed (${fmt(b.currentStreams)}/${fmt(b.targetStreams)} streams). Next one's yours! 💪</div>
+        </div>`;
+      return;
+    }
+
     const pct = b.progressPct;
-    const barColor = pct >= 100 ? 'var(--green)' : pct >= 60 ? 'var(--courage-amber)' : 'var(--fail)';
+    const minS = b.minStreamsForXP || 7;
+    const myS  = b.myStreams || 0;
+    const myPct = Math.min(100, Math.round((myS / minS) * 100));
+    const myBarColor = myS >= minS ? 'var(--green)' : myS >= Math.ceil(minS * 0.5) ? 'var(--courage-amber)' : 'var(--fail)';
+    const barColor   = pct >= 100 ? 'var(--green)' : pct >= 60 ? 'var(--courage-amber)' : 'var(--fail)';
+    const variantLinks = b.variants
+      ? b.variants.split(',').map(v => v.trim()).filter(Boolean)
+      : [];
+    const searchTerms = [b.trackName, ...variantLinks];
+    // Accurate seconds remaining (from the real end time, not floored minutes)
+    const initialSecs = Math.max(0, Math.floor((new Date(b.activeUntil).getTime() - Date.now()) / 1000));
     let html = `
       <div class="glass-card" style="padding:20px;border:1px solid var(--fail)55;background:rgba(232,58,93,0.06);margin-bottom:16px;text-align:center;">
-        <div style="font-size:9px;font-weight:900;color:var(--fail);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">🚨 Crisis Operation Active</div>
-        <div style="font-size:16px;font-weight:900;color:#fff;margin-bottom:8px;">${sanitize(b.trackName)}</div>
-        <div style="display:flex;justify-content:center;gap:8px;margin-bottom:12px;">
-          <a href="https://open.spotify.com/search/${encodeURIComponent(b.trackName + ' BTS')}" target="_blank" rel="noopener"
-            style="display:inline-flex;align-items:center;gap:5px;background:#1DB95422;border:1px solid #1DB95455;border-radius:20px;padding:5px 12px;color:#1DB954;font-size:9px;font-weight:800;text-decoration:none;letter-spacing:0.5px;">
-            <span style="font-size:12px;">🎵</span> Spotify
-          </a>
-          <a href="https://music.apple.com/search?term=${encodeURIComponent(b.trackName + ' BTS')}" target="_blank" rel="noopener"
-            style="display:inline-flex;align-items:center;gap:5px;background:#FC3C4422;border:1px solid #FC3C4455;border-radius:20px;padding:5px 12px;color:#FC3C44;font-size:9px;font-weight:800;text-decoration:none;letter-spacing:0.5px;">
-            <span style="font-size:12px;">🎵</span> Apple Music
-          </a>
+        <div style="font-size:9px;font-weight:900;color:var(--fail);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">🚨 Pop Out — All Teams Active</div>
+        <div style="font-size:16px;font-weight:900;color:#fff;margin-bottom:4px;">${sanitize(b.trackName)}</div>
+        ${variantLinks.length ? `<div style="font-size:9px;color:var(--text-muted);margin-bottom:8px;">Also counts: ${variantLinks.map(v => `<span style="color:var(--text-primary);">${sanitize(v)}</span>`).join(' · ')}</div>` : ''}
+        <div style="display:flex;justify-content:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+          ${searchTerms.slice(0,1).map(t => `
+            <a href="https://open.spotify.com/search/${encodeURIComponent(t + ' BTS')}" target="_blank" rel="noopener"
+              style="display:inline-flex;align-items:center;gap:5px;background:#1DB95422;border:1px solid #1DB95455;border-radius:20px;padding:5px 12px;color:#1DB954;font-size:9px;font-weight:800;text-decoration:none;letter-spacing:0.5px;">
+              <span style="font-size:12px;">🎵</span> Spotify
+            </a>
+            <a href="https://music.apple.com/search?term=${encodeURIComponent(t + ' BTS')}" target="_blank" rel="noopener"
+              style="display:inline-flex;align-items:center;gap:5px;background:#FC3C4422;border:1px solid #FC3C4455;border-radius:20px;padding:5px 12px;color:#FC3C44;font-size:9px;font-weight:800;text-decoration:none;letter-spacing:0.5px;">
+              <span style="font-size:12px;">🎵</span> Apple Music
+            </a>
+          `).join('')}
         </div>
-        <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;">Stream this track — every scrobble counts</div>
         <div style="font-size:8px;color:var(--text-ghost);margin-bottom:14px;">📡 Tracked automatically via your Last.fm syncs</div>
-        <div style="background:rgba(255,255,255,0.06);border-radius:6px;height:8px;overflow:hidden;margin-bottom:6px;">
+
+        <div style="background:rgba(255,255,255,0.06);border-radius:6px;height:6px;overflow:hidden;margin-bottom:4px;">
           <div style="width:${pct}%;height:100%;background:${barColor};border-radius:6px;transition:width 1s;"></div>
         </div>
-        <div style="font-size:10px;color:var(--text-muted);margin-bottom:12px;">${fmt(b.currentStreams)} / ${fmt(b.targetStreams)} streams · ${pct}% complete</div>
+        <div style="font-size:10px;color:var(--text-muted);margin-bottom:14px;">${fmt(b.currentStreams)} / ${fmt(b.targetStreams)} squad streams · ${pct}%</div>
+
         <div style="display:flex;justify-content:center;gap:20px;margin-bottom:14px;">
           <div style="text-align:center;">
-            <div style="font-size:20px;font-weight:900;color:var(--fail);font-family:var(--font-mono);" id="bountyTimer">${b.minutesLeft}m</div>
+            <div style="font-size:17px;font-weight:900;color:var(--fail);font-family:var(--font-mono);white-space:nowrap;" id="bountyTimer">${fmtBountyTime(initialSecs)}</div>
             <div style="font-size:8px;color:var(--text-ghost);text-transform:uppercase;letter-spacing:1px;">Time left</div>
           </div>
           <div style="text-align:center;">
@@ -18771,26 +22189,44 @@ async function renderFlashBounties() {
           <div style="text-align:center;">
             <div style="font-size:16px;font-weight:900;color:var(--vinyl-gold);font-family:var(--font-mono);">${fmt(b.rewardXP)}</div>
             <div style="font-size:8px;color:var(--text-ghost);text-transform:uppercase;letter-spacing:1px;">XP pool</div>
-            <div style="font-size:8px;color:var(--vinyl-gold);margin-top:1px;">÷ ${b.participantCount || '?'} agents</div>
+            <div style="font-size:8px;color:var(--vinyl-gold);margin-top:1px;">÷ agents ≥${minS} streams</div>
           </div>
         </div>
-        <div style="font-size:9px;color:var(--vinyl-gold);text-align:center;margin-bottom:10px;line-height:1.5;">
-          🎯 <strong style="color:#fff;">${fmt(b.rewardXP)} XP pool</strong> shared by the squad — bigger team = the goal smashes faster + your track goal moves with it 🌊
-        </div>
-        ${b.hasJoined
-          ? `<div style="font-size:11px;color:var(--green);font-weight:700;text-align:center;">✅ You're in — keep streaming! Your scrobbles are being counted.</div>`
-          : `<button class="btn-red" style="width:100%;padding:12px;" onclick="joinBounty('${b.id}')">🚨 Pop Out — Join the Push</button>`}
+
+        ${b.hasJoined ? `
+          <div style="margin-bottom:12px;">
+            <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">Your Streams</div>
+            <div style="background:rgba(255,255,255,0.06);border-radius:6px;height:8px;overflow:hidden;margin-bottom:4px;">
+              <div style="width:${myPct}%;height:100%;background:${myBarColor};border-radius:6px;transition:width 1s;"></div>
+            </div>
+            <div style="font-size:11px;font-weight:700;color:${myS >= minS ? 'var(--green)' : '#fff'};">
+              ${myS >= minS
+                ? `✅ ${myS} streams — you qualify for XP!`
+                : `${myS} / ${minS} streams needed to qualify`}
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--green);font-weight:700;">✅ You're in — keep streaming!</div>
+        ` : `<button class="btn-red" style="width:100%;padding:12px;" onclick="joinBounty('${b.id}')">🚨 Pop Out — Join the Push</button>`}
+
+        <button type="button" onclick="toggleBountyLeaderboard('${b.id}', this)" class="btn-outline"
+          style="width:100%;padding:10px;font-size:11px;font-weight:800;margin-top:12px;">📊 Live Rankings</button>
+        <div id="bountyLeaderboard" style="margin-top:10px;"></div>
+
+        ${b.rulesText ? `
+          <div style="margin-top:14px;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--border-subtle);border-radius:8px;text-align:left;">
+            <div style="font-size:8px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">📋 Rules</div>
+            <div style="font-size:10px;color:var(--text-muted);line-height:1.6;">${sanitize(b.rulesText)}</div>
+          </div>` : ''}
       </div>`;
     container.innerHTML = html;
-    // Live countdown
-    let secsLeft = b.minutesLeft * 60;
+    // Live countdown — shows hours for long ops (6h / 24h), ticks seconds in the final hour
+    let secsLeft = initialSecs;
     _bountyTimer = setInterval(() => {
       secsLeft--;
       const el = document.getElementById('bountyTimer');
       if (el) {
         if (secsLeft <= 0) { clearInterval(_bountyTimer); el.textContent = 'ENDED'; el.style.color = 'var(--fail)'; return; }
-        const m = Math.floor(secsLeft / 60), s = secsLeft % 60;
-        el.textContent = `${m}m ${s.toString().padStart(2,'0')}s`;
+        el.textContent = fmtBountyTime(secsLeft);
       } else { clearInterval(_bountyTimer); }
     }, 1000);
   } catch (e) {
@@ -18798,6 +22234,351 @@ async function renderFlashBounties() {
   }
 }
 window.renderFlashBounties = renderFlashBounties;
+
+// ── Pop Out "join now" invite popup ───────────────────────────────────────────
+async function maybeShowPopOutInvite() {
+  try {
+    if (!STATE.agentNo) return;
+    if (document.getElementById('popout-invite-overlay')) return;   // already showing
+    const d = await Api.call('getActiveBounty', { agentNo: STATE.agentNo }, { cache: false });
+    const b = d && d.bounty;
+    if (!b || b.state !== 'active' || b.hasJoined) return;          // only nag for live, un-joined ops
+    if (localStorage.getItem('popout_invite_dismissed_' + b.id) === '1') return;  // they said "later"
+    showPopOutInvite(b);
+  } catch (e) { /* silent */ }
+}
+window.maybeShowPopOutInvite = maybeShowPopOutInvite;
+
+// ── Magic Box ready nudge — fires on app load when qualified but box not yet opened ──
+async function maybeShowMagicBoxReady() {
+  try {
+    if (!STATE.agentNo) return;
+    if (document.getElementById('popout-invite-overlay')) return;   // don't stack on join invite
+    if (document.getElementById('magic-box-ready-overlay')) return; // already showing
+    const d = await Api.call('getActiveBounty', { agentNo: STATE.agentNo }, { cache: false });
+    const b = d && d.bounty;
+    if (!b || b.state !== 'won' || !b.qualified) return;
+    if (localStorage.getItem('popout_opened_' + b.id) === '1') return; // already opened
+    // Show once per session so it reappears next time they open the app
+    if (sessionStorage.getItem('popout_box_nudge_' + b.id) === '1') return;
+    sessionStorage.setItem('popout_box_nudge_' + b.id, '1');
+    showMagicBoxReady(b);
+  } catch (e) { /* silent */ }
+}
+window.maybeShowMagicBoxReady = maybeShowMagicBoxReady;
+
+function showMagicBoxReady(b) {
+  const overlay = document.createElement('div');
+  overlay.id = 'magic-box-ready-overlay';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,0.88);
+    backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;
+    padding:20px;animation:poInviteFade 0.35s ease;`;
+  overlay.innerHTML = `
+    <div style="max-width:340px;width:100%;padding:28px 22px;background:linear-gradient(160deg,#0d0a04,#0d0d0d);
+      border:1px solid rgba(231,197,96,0.45);border-top:4px solid var(--vinyl-gold);border-radius:18px;
+      text-align:center;box-shadow:0 0 60px rgba(231,197,96,0.2);
+      animation:poInvitePop 0.5s cubic-bezier(0.34,1.56,0.64,1);">
+      <div style="font-size:54px;line-height:1;margin-bottom:10px;">🎁</div>
+      <div style="font-family:var(--font-display);font-size:10px;font-weight:900;color:var(--vinyl-gold);
+        letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">Magic Box Ready</div>
+      <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:6px;">Your reward is waiting!</div>
+      <div style="font-size:10px;color:var(--text-muted);line-height:1.7;margin-bottom:18px;">
+        You qualified in the <strong style="color:#fff;">${sanitize(b.trackName)}</strong> Pop Out.<br>
+        Tap the Magic Box to claim your <strong style="color:var(--vinyl-gold);">+${fmt(b.myXP)} XP</strong> and badges 💜
+      </div>
+      <button onclick="document.getElementById('magic-box-ready-overlay')?.remove(); if(location.hash!=='#games'){location.hash='#games';} setTimeout(()=>renderFlashBounties(),200);"
+        style="width:100%;background:linear-gradient(135deg,#b8860b,#d4af37,#f5d06e,#d4af37);color:#000;
+          border:none;padding:14px;border-radius:12px;font-size:13px;font-weight:900;cursor:pointer;
+          letter-spacing:0.5px;margin-bottom:10px;">
+        🔮 Open My Magic Box
+      </button>
+      <button onclick="document.getElementById('magic-box-ready-overlay')?.remove();"
+        style="width:100%;padding:10px;background:transparent;border:1px solid var(--border-subtle);
+          color:var(--text-muted);border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;">
+        I'll open it later
+      </button>
+    </div>`;
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+window.showMagicBoxReady = showMagicBoxReady;
+
+// ══════════════════════════════════════════════════════════════════════
+// 🚀 FESTA MAGIC SHIP — June 13 only (BTS 13th Anniversary)
+// ══════════════════════════════════════════════════════════════════════
+
+function maybeShowFestaMagicShip() {
+  // Only June 13 KST
+  const kst = new Date(Date.now() + 9 * 3600000);
+  if (!(kst.getUTCMonth() === 5 && kst.getUTCDate() === 13)) return;
+  if (document.getElementById('festa-ship-overlay')) return;
+  // Once per session
+  if (sessionStorage.getItem('festa_ship_2026_seen') === '1') return;
+  sessionStorage.setItem('festa_ship_2026_seen', '1');
+  showFestaMagicShip();
+}
+window.maybeShowFestaMagicShip = maybeShowFestaMagicShip;
+
+function showFestaMagicShip() {
+  // Inject CSS once
+  if (!document.getElementById('festa-ship-css')) {
+    const s = document.createElement('style');
+    s.id = 'festa-ship-css';
+    s.textContent = `
+      @keyframes fsStar { 0%,100%{opacity:0.2;transform:scale(0.8);} 50%{opacity:1;transform:scale(1.2);} }
+      @keyframes fsFloat { 0%,100%{transform:translateY(0px);} 50%{transform:translateY(-8px);} }
+      @keyframes fsGlow  { 0%,100%{box-shadow:0 0 40px rgba(123,63,228,0.3),0 0 80px rgba(123,63,228,0.1);} 50%{box-shadow:0 0 60px rgba(123,63,228,0.6),0 0 120px rgba(123,63,228,0.25);} }
+      @keyframes fsFadeIn { from{opacity:0;} to{opacity:1;} }
+      @keyframes fsSlideUp { from{opacity:0;transform:translateY(50px) scale(0.95);} to{opacity:1;transform:translateY(0) scale(1);} }
+      @keyframes fsShimmer { 0%{background-position:200% center;} 100%{background-position:-200% center;} }
+      .fs-star { position:absolute; border-radius:50%; background:#fff; animation:fsStar ease-in-out infinite; pointer-events:none; }
+      .fs-lyric-line { animation:fsFadeIn 0.6s ease both; }
+    `;
+    document.head.appendChild(s);
+  }
+
+  // Generate star field
+  let stars = '';
+  const starData = [
+    [8,15,2,1.2],[15,72,1.5,2.1],[22,38,2.5,1.8],[28,91,1,2.5],[35,25,2,1.5],
+    [42,55,1.5,2.8],[48,12,2,1.1],[55,80,1,2.3],[62,44,2.5,1.7],[68,67,1.5,2.0],
+    [75,20,2,2.4],[82,88,1,1.6],[88,50,2.5,1.9],[92,33,1.5,2.7],[5,58,1,1.3],
+    [18,5,2,2.2],[32,75,1.5,1.4],[45,95,1,2.6],[60,10,2,1.8],[78,62,1.5,2.0],
+    [90,78,2,1.5],[12,45,1,2.9],[38,18,2.5,1.2],[52,88,1.5,2.1],[72,35,2,1.7],
+  ];
+  for (const [top, left, size, dur] of starData) {
+    stars += `<div class="fs-star" style="top:${top}%;left:${left}%;width:${size}px;height:${size}px;animation-duration:${dur}s;animation-delay:${(left/30).toFixed(1)}s;"></div>`;
+  }
+
+  const overlay = document.createElement('div');
+  overlay.id = 'festa-ship-overlay';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:999999;background:radial-gradient(ellipse at 50% 30%,#1a0a2e 0%,#0a0612 50%,#000 100%);overflow-y:auto;animation:fsFadeIn 0.5s ease;`;
+
+  overlay.innerHTML = `
+    ${stars}
+
+    <!-- Close -->
+    <button onclick="document.getElementById('festa-ship-overlay').remove()"
+      style="position:fixed;top:16px;right:16px;z-index:10;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:50%;width:38px;height:38px;font-size:18px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;">×</button>
+
+    <div style="max-width:480px;margin:0 auto;padding:40px 20px 60px;position:relative;z-index:2;animation:fsSlideUp 0.6s cubic-bezier(0.34,1.2,0.64,1) both;">
+
+      <!-- Anniversary badge -->
+      <div style="text-align:center;margin-bottom:24px;">
+        <div style="display:inline-block;padding:5px 16px;background:linear-gradient(135deg,#7b3fe4,#4f46e5);border-radius:20px;font-size:9px;font-weight:900;color:#fff;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">✨ BTS FESTA 2026</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:2px;">JUNE 13 · 13TH ANNIVERSARY</div>
+      </div>
+
+      <!-- Ship emoji floating -->
+      <div style="text-align:center;font-size:64px;margin-bottom:8px;animation:fsFloat 3s ease-in-out infinite;">🚀</div>
+      <div style="text-align:center;font-size:11px;color:rgba(167,139,250,0.8);letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;">Magic Ship has arrived</div>
+
+      <!-- Song title -->
+      <div style="text-align:center;margin-bottom:20px;">
+        <div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:1px;margin-bottom:4px;background:linear-gradient(135deg,#e9d5ff,#fff,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">One More Night</div>
+        <div style="font-size:11px;color:rgba(196,181,253,0.8);letter-spacing:2px;">BTS · ARIRANG · 117 BPM</div>
+      </div>
+
+      <!-- YouTube embed -->
+      <div style="border-radius:16px;overflow:hidden;margin-bottom:24px;border:1px solid rgba(123,63,228,0.4);box-shadow:0 0 40px rgba(123,63,228,0.25);animation:fsGlow 3s ease-in-out infinite;">
+        <div style="position:relative;padding-bottom:56.25%;height:0;">
+          <iframe
+            src="https://www.youtube.com/embed/Kakq7u8WgZo?autoplay=1&mute=1&rel=0&color=white"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowfullscreen
+            title="BTS - One More Night">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- Lyrics card -->
+      <div style="background:rgba(123,63,228,0.08);border:1px solid rgba(123,63,228,0.3);border-radius:16px;padding:22px;margin-bottom:20px;text-align:center;">
+        <div style="font-size:9px;color:rgba(196,181,253,0.7);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;">✨ Chorus</div>
+        <div style="line-height:2.2;font-size:13px;font-style:italic;color:rgba(255,255,255,0.9);">
+          <div class="fs-lyric-line" style="animation-delay:0.1s;">Fantasy</div>
+          <div class="fs-lyric-line" style="animation-delay:0.2s;color:#c4b5fd;">It's a fantasy</div>
+          <div class="fs-lyric-line" style="animation-delay:0.3s;">You're my fantasy</div>
+          <div class="fs-lyric-line" style="animation-delay:0.4s;color:#c4b5fd;">Let's repeat it one more night</div>
+          <div class="fs-lyric-line" style="animation-delay:0.5s;font-weight:800;font-size:15px;color:#fff;">Give me one more night 💜</div>
+        </div>
+      </div>
+
+      <!-- Anniversary message -->
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;margin-bottom:24px;text-align:center;">
+        <div style="font-size:12px;color:rgba(255,255,255,0.8);line-height:1.9;">
+          13 years of music, memories, and purple hearts 💜<br>
+          <span style="color:rgba(196,181,253,0.7);font-size:11px;">"One more night, Fallin'<br>You and the stars intricately embroidered"</span>
+        </div>
+      </div>
+
+      <!-- Stars row -->
+      <div style="text-align:center;font-size:24px;letter-spacing:8px;margin-bottom:24px;opacity:0.6;">⭐🌙⭐🌙⭐</div>
+
+      <!-- CTA -->
+      <button onclick="document.getElementById('festa-ship-overlay').remove();"
+        style="width:100%;padding:16px;background:linear-gradient(135deg,#7b3fe4,#4f46e5,#7c3aed);border:none;color:#fff;border-radius:14px;font-size:13px;font-weight:900;cursor:pointer;letter-spacing:1px;margin-bottom:10px;">
+        💜 Happy Festa, ARMY!
+      </button>
+      <div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:1px;">June 13, 2013 → June 13, 2026</div>
+    </div>`;
+
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+window.showFestaMagicShip = showFestaMagicShip;
+
+function showPopOutInvite(b) {
+  if (!document.getElementById('popout-invite-styles')) {
+    const s = document.createElement('style');
+    s.id = 'popout-invite-styles';
+    s.textContent = `
+      @keyframes poInviteFade { from{opacity:0;} to{opacity:1;} }
+      @keyframes poInvitePop { from{opacity:0;transform:translateY(40px) scale(0.92);} to{opacity:1;transform:translateY(0) scale(1);} }
+      @keyframes poSiren { 0%,100%{transform:scale(1);} 50%{transform:scale(1.12);} }
+    `;
+    document.head.appendChild(s);
+  }
+  const hrs = Math.floor(b.minutesLeft / 60), mins = b.minutesLeft % 60;
+  const timeLeft = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
+  const overlay = document.createElement('div');
+  overlay.id = 'popout-invite-overlay';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,0.85);
+    backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;
+    animation:poInviteFade 0.35s ease;padding:20px;`;
+  overlay.innerHTML = `
+    <div style="max-width:360px;width:100%;padding:28px 24px;background:linear-gradient(160deg,#140b0e,#0d0d0d);
+      border:1px solid var(--fail)66;border-top:4px solid var(--fail);border-radius:18px;text-align:center;
+      box-shadow:0 0 60px rgba(232,58,93,0.25);animation:poInvitePop 0.5s cubic-bezier(0.34,1.56,0.64,1);">
+      <div style="font-size:46px;line-height:1;margin-bottom:10px;animation:poSiren 1.1s ease-in-out infinite;">🚨</div>
+      <div style="font-family:var(--font-display);font-size:11px;font-weight:900;color:var(--fail);
+        letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;">Pop Out is LIVE</div>
+      <div style="font-size:19px;font-weight:900;color:#fff;margin-bottom:4px;">${sanitize(b.trackName)}</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">All teams · ${timeLeft} left to smash the target</div>
+      <div style="background:rgba(212,175,55,0.08);border:1px solid var(--vinyl-gold)44;border-radius:12px;
+        padding:14px;margin-bottom:20px;">
+        <div style="font-size:12px;color:#fff;font-weight:700;line-height:1.6;">
+          Stream <strong style="color:var(--vinyl-gold);">${sanitize(b.trackName)}</strong> with the squad —
+          smash the goal and the <strong style="color:var(--vinyl-gold);">🔮 Magic Box</strong> opens with surprise rewards!
+        </div>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:6px;">Just ${b.minStreamsForXP}+ streams to get in on it</div>
+      </div>
+      <button onclick="popOutInviteJoin('${b.id}', this)" class="btn-red" style="width:100%;padding:14px;font-size:14px;margin-bottom:8px;">
+        🚨 Join the Push
+      </button>
+      <button onclick="popOutInviteDismiss('${b.id}')" style="width:100%;padding:10px;background:transparent;
+        border:1px solid var(--border-subtle);color:var(--text-muted);border-radius:10px;font-size:11px;
+        font-weight:700;cursor:pointer;">Maybe later</button>
+    </div>`;
+  // Tap backdrop to dismiss
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) popOutInviteDismiss(b.id); });
+  document.body.appendChild(overlay);
+}
+
+async function popOutInviteJoin(bountyId, btn) {
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Joining…'; }
+  await joinBounty(bountyId);
+  const ov = document.getElementById('popout-invite-overlay');
+  if (ov) ov.remove();
+  // Jump them to the games section so they see their progress
+  if (location.hash !== '#games') location.hash = '#games';
+}
+window.popOutInviteJoin = popOutInviteJoin;
+
+function popOutInviteDismiss(bountyId) {
+  localStorage.setItem('popout_invite_dismissed_' + bountyId, '1');
+  const ov = document.getElementById('popout-invite-overlay');
+  if (ov) ov.remove();
+}
+window.popOutInviteDismiss = popOutInviteDismiss;
+
+async function showPopOutHallOfFame() {
+  // Build modal shell immediately
+  document.getElementById('gv-hof-overlay')?.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'gv-hof-overlay';
+  overlay.style.cssText = `position:fixed;inset:0;z-index:99997;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);
+    display:flex;align-items:center;justify-content:center;padding:20px;`;
+  overlay.innerHTML = `
+    <style>${GOLDEN_VINYL_CSS}</style>
+    <div style="max-width:420px;width:100%;max-height:85vh;overflow-y:auto;background:linear-gradient(160deg,#13110d,#0b0b0f);
+      border:1px solid rgba(231,197,96,0.4);border-radius:18px;padding:22px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="font-family:var(--font-display);font-size:14px;font-weight:900;color:var(--vinyl-gold);letter-spacing:2px;">🏆 GOLDEN VINYL</div>
+        <button onclick="document.getElementById('gv-hof-overlay').remove()" style="background:none;border:none;color:var(--text-muted);font-size:24px;cursor:pointer;line-height:1;">×</button>
+      </div>
+      <div style="font-size:10px;color:var(--text-muted);margin-bottom:16px;line-height:1.6;">One-of-one collectible awarded to the top streamer of every Pop Out.</div>
+      <div id="gv-hof-body"><div style="text-align:center;color:var(--text-muted);font-size:11px;padding:24px;">Loading the vault…</div></div>
+    </div>`;
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+
+  try {
+    const d = await Api.call('getPopOutHallOfFame', { agentNo: STATE.agentNo, limit: 25 }, { cache: false });
+    const body = document.getElementById('gv-hof-body');
+    if (!body) return;
+    const mine = d.mine || [];
+    const winners = d.winners || [];
+    let html = '';
+    if (mine.length) {
+      html += `<div style="font-size:9px;font-weight:800;color:var(--vinyl-gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Your Vinyls (${mine.length})</div>`;
+      html += goldenVinylFull(mine[0]);
+      if (mine.length > 1) html += `<div style="margin-top:10px;">${mine.slice(1).map(goldenVinylRow).join('')}</div>`;
+      html += `<div style="border-top:1px solid var(--border-subtle);margin:18px 0 14px;"></div>`;
+    }
+    html += `<div style="font-size:9px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Hall of Fame</div>`;
+    html += winners.length
+      ? winners.map(goldenVinylRow).join('')
+      : `<div style="text-align:center;color:var(--text-muted);font-size:11px;padding:20px;line-height:1.6;">No Golden Vinyls yet. Be the top streamer of the next Pop Out to claim #001! 🎵</div>`;
+    body.innerHTML = html;
+  } catch (e) {
+    const body = document.getElementById('gv-hof-body');
+    if (body) body.innerHTML = `<div style="text-align:center;color:var(--fail);font-size:11px;padding:20px;">Couldn't load the Hall of Fame.</div>`;
+  }
+}
+window.showPopOutHallOfFame = showPopOutHallOfFame;
+
+function popOutSparkle(host) {
+  if (!host) return;
+  const marks = ['✨','⭐','💫','🌟'];
+  for (let i = 0; i < 12; i++) {
+    const s = document.createElement('span');
+    s.textContent = marks[i % marks.length];
+    const ang = (Math.PI * 2) * (i / 12), dist = 38 + Math.random() * 46;
+    s.style.cssText = `position:absolute;left:50%;top:30%;font-size:${10 + Math.random()*10}px;pointer-events:none;z-index:5;transform:translate(-50%,-50%);animation:poSpark .9s ease-out forwards;`;
+    s.style.setProperty('--dx', (Math.cos(ang) * dist) + 'px');
+    s.style.setProperty('--dy', (-Math.abs(Math.sin(ang)) * dist - 14) + 'px');
+    host.appendChild(s);
+    setTimeout(() => s.remove(), 1000);
+  }
+}
+
+function openBountyTreasure(bountyId, stdImgUrl, clsImgUrl, trackName, isMvp) {
+  const chest  = document.getElementById('poChest');
+  const hint   = document.getElementById('poTapHint');
+  const reward = document.getElementById('treasureReward');
+  if (!chest || !reward) return;
+  if (chest.classList.contains('open')) return;   // already opened
+  localStorage.setItem('popout_opened_' + bountyId, '1');
+  chest.classList.add('open');                     // lid lifts + glow + rays
+  if (hint) hint.style.display = 'none';
+  popOutSparkle(chest.parentElement);              // sparkle burst
+  try { if (navigator.vibrate) navigator.vibrate([40,30,70]); } catch (e) {}
+  setTimeout(() => {
+    reward.style.display = 'block';
+    reward.style.animation = 'poRewardFade 0.5s ease-out';
+    const loot = document.getElementById('poLoot');
+    if (loot) loot.classList.add('show');          // badge images rise out
+  }, 470);
+  // Save the exact badge images the agent just saw — these are the real pool URLs
+  if (stdImgUrl && STATE.agentNo) {
+    Api.call('saveBountyBadge', {
+      agentNo: STATE.agentNo, bountyId, stdImageUrl: stdImgUrl,
+      clsImageUrl: clsImgUrl || null, trackName: trackName || '', isMvp: isMvp === '1',
+    }, { cache: false, dedupe: false }).catch(() => {});
+  }
+}
+window.openBountyTreasure = openBountyTreasure;
 
 async function joinBounty(bountyId) {
   if (!STATE.agentNo) { showToast('Log in first', 'error'); return; }
@@ -18811,6 +22592,85 @@ async function joinBounty(bountyId) {
   }
 }
 window.joinBounty = joinBounty;
+
+// ── Pop Out LIVE RANKINGS ──────────────────────────────────────────────────
+function toggleBountyLeaderboard(bountyId, btn) {
+  const host = document.getElementById('bountyLeaderboard');
+  if (!host) return;
+  if (host.dataset.open === '1') {
+    // close
+    host.dataset.open = ''; host.innerHTML = '';
+    if (_leaderboardTimer) { clearInterval(_leaderboardTimer); _leaderboardTimer = null; }
+    if (btn) btn.textContent = btn.dataset.label || '📊 Live Rankings';
+    return;
+  }
+  host.dataset.open = '1';
+  if (btn) { btn.dataset.label = btn.textContent; btn.textContent = '✕ Hide Rankings'; }
+  host.innerHTML = `<div style="font-size:10px;color:var(--text-muted);text-align:center;padding:12px;">Loading rankings…</div>`;
+  renderBountyLeaderboardInto(bountyId);
+  // Auto-refresh every 25s for a live feel (data updates as agents sync)
+  if (_leaderboardTimer) clearInterval(_leaderboardTimer);
+  _leaderboardTimer = setInterval(() => {
+    const h = document.getElementById('bountyLeaderboard');
+    if (!h || h.dataset.open !== '1') { clearInterval(_leaderboardTimer); _leaderboardTimer = null; return; }
+    renderBountyLeaderboardInto(bountyId);
+  }, 25000);
+}
+window.toggleBountyLeaderboard = toggleBountyLeaderboard;
+
+async function renderBountyLeaderboardInto(bountyId) {
+  const host = document.getElementById('bountyLeaderboard');
+  if (!host) return;
+  try {
+    const d = await Api.call('getBountyLeaderboard', { agentNo: STATE.agentNo, bountyId, limit: 25 }, { cache: false });
+    if (!host || host.dataset.open !== '1') return;
+    if (!d.success || !d.leaderboard) { host.innerHTML = `<div style="font-size:10px;color:var(--fail);text-align:center;">Couldn't load rankings.</div>`; return; }
+    const board = d.leaderboard;
+    if (!board.length) {
+      host.innerHTML = `<div style="font-size:10px;color:var(--text-muted);text-align:center;padding:14px;line-height:1.6;">No streams logged yet — be the first on the board! 🎵<br><span style="font-size:8px;color:var(--text-ghost);">(updates as agents sync)</span></div>`;
+      return;
+    }
+    const medal = (r) => r === 1 ? '🥇' : r === 2 ? '🥈' : r === 3 ? '🥉' : `<span style="color:var(--text-ghost);font-family:var(--font-mono);">${r}</span>`;
+    const meUp = String(STATE.agentNo || '').toUpperCase();
+    const row = (p) => {
+      const isMe = String(p.agentNo).toUpperCase() === meUp;
+      return `
+      <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-bottom:1px solid var(--border-subtle);
+        ${isMe ? 'background:rgba(124,58,237,0.12);' : ''}">
+        <div style="width:22px;text-align:center;font-size:13px;flex-shrink:0;">${medal(p.rank)}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:11px;font-weight:700;color:${isMe ? '#c4b5fd' : '#fff'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sanitize(p.name)}${isMe ? ' <span style="font-size:8px;color:#a78bfa;">(you)</span>' : ''}</div>
+          <div style="font-size:9px;color:${teamColor(p.team)};">${sanitize(p.team || '—')}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-size:13px;font-weight:800;font-family:var(--font-mono);color:${p.qualified ? 'var(--green)' : 'var(--text-muted)'};">${p.streams}${p.qualified ? ' ✓' : ''}</div>
+        </div>
+      </div>`;
+    };
+    // If "me" is ranked but outside the visible top list, append a pinned row
+    let mePinned = '';
+    if (d.me && !board.some(p => String(p.agentNo).toUpperCase() === meUp)) {
+      mePinned = `<div style="border-top:2px solid rgba(124,58,237,0.4);">${row(d.me)}</div>`;
+    }
+    host.innerHTML = `
+      <div style="background:rgba(0,0,0,0.25);border:1px solid var(--border-subtle);border-radius:10px;overflow:hidden;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:rgba(255,255,255,0.03);">
+          <span style="font-size:9px;font-weight:800;color:var(--fail);letter-spacing:1px;display:flex;align-items:center;gap:4px;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--fail);display:inline-block;animation:poLivePulse 1.4s ease-in-out infinite;"></span>LIVE · ${d.totalRanked} streaming
+          </span>
+          <span style="font-size:8px;color:var(--vinyl-gold);font-weight:700;">🏆 #1 wins the Golden Vinyl</span>
+        </div>
+        <div style="max-height:320px;overflow-y:auto;">${board.map(row).join('')}${mePinned}</div>
+        <div style="padding:6px 10px;font-size:8px;color:var(--text-ghost);text-align:center;background:rgba(0,0,0,0.2);line-height:1.5;">
+          Updated ${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'})} · reflects each agent's last sync
+        </div>
+      </div>
+      <style>@keyframes poLivePulse{0%,100%{opacity:1;}50%{opacity:0.25;}}</style>`;
+  } catch (e) {
+    if (host && host.dataset.open === '1') host.innerHTML = `<div style="font-size:10px;color:var(--fail);text-align:center;">Failed to load rankings.</div>`;
+  }
+}
+window.renderBountyLeaderboardInto = renderBountyLeaderboardInto;
 
 // ══════════════════════════════════════════════════════════════════════
 // GAME 2 — OPERATION: DEAD DROP
@@ -19195,6 +23055,13 @@ let _aliensState = null;
 async function renderAliens() {
   const container = $('aliensContent');
   if (!container) return;
+  container.innerHTML = `
+    <div class="glass-card" style="padding:24px;text-align:center;border:1px solid var(--border-subtle);background:rgba(255,255,255,0.02);">
+      <div style="font-size:36px;margin-bottom:10px;">🛸</div>
+      <div style="font-size:12px;font-weight:900;color:var(--text-primary);margin-bottom:6px;">Not Live Yet</div>
+      <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">Aliens: Rescue Mission is offline right now.<br>HQ will broadcast when the next operation launches 📡</div>
+    </div>`;
+  return;
   try {
     const d = await Api.call('aliensGetStatus', { agentNo: STATE.agentNo }, { cache: false });
     if (!d.success || !d.hasGame) {
@@ -19708,7 +23575,13 @@ window.renderGames = renderGames;
 async function renderCipherProtocol() {
   const container = $('cipherContent');
   if (!container) return;
-  container.innerHTML = `<div style="padding:30px;text-align:center;color:var(--text-muted);font-size:12px;">⏳ Loading today's cipher…</div>`;
+  container.innerHTML = `
+    <div class="glass-card" style="padding:24px;text-align:center;border:1px solid var(--border-subtle);background:rgba(255,255,255,0.02);">
+      <div style="font-size:36px;margin-bottom:10px;">🔐</div>
+      <div style="font-size:12px;font-weight:900;color:var(--text-primary);margin-bottom:6px;">Not Live Yet</div>
+      <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">Cipher Protocol is offline right now.<br>Daily ciphers will drop when HQ activates this module 🔒</div>
+    </div>`;
+  return;
   try {
     const d = await Api.call('getCipherStatus', { agentNo: STATE.agentNo }, { cache: false });
     if (!d.success) { container.innerHTML = `<div style="color:var(--fail);text-align:center;padding:20px;font-size:11px;">${sanitize(d.error)}</div>`; return; }
@@ -19761,7 +23634,13 @@ window.submitCipherAnswer = submitCipherAnswer;
 async function renderBalanceGame() {
   const container = $('balanceContent');
   if (!container) return;
-  container.innerHTML = `<div style="padding:30px;text-align:center;color:var(--text-muted);font-size:12px;">⏳ Loading today's dilemma…</div>`;
+  container.innerHTML = `
+    <div class="glass-card" style="padding:24px;text-align:center;border:1px solid var(--border-subtle);background:rgba(255,255,255,0.02);">
+      <div style="font-size:36px;margin-bottom:10px;">⚖️</div>
+      <div style="font-size:12px;font-weight:900;color:var(--text-primary);margin-bottom:6px;">Not Live Yet</div>
+      <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">Balance Game is offline right now.<br>Daily dilemmas will return when HQ flips the switch 💬</div>
+    </div>`;
+  return;
   try {
     const d = await Api.call('getBalanceStatus', { agentNo: STATE.agentNo }, { cache: false });
     if (!d.success) { container.innerHTML = `<div style="color:var(--fail);text-align:center;padding:20px;font-size:11px;">${sanitize(d.error)}</div>`; return; }
@@ -19837,7 +23716,13 @@ window.castBalanceVote = castBalanceVote;
 async function renderSignalChain() {
   const container = $('signalContent');
   if (!container) return;
-  container.innerHTML = `<div style="padding:30px;text-align:center;color:var(--text-muted);font-size:12px;">⏳ Loading today's chain…</div>`;
+  container.innerHTML = `
+    <div class="glass-card" style="padding:24px;text-align:center;border:1px solid var(--border-subtle);background:rgba(255,255,255,0.02);">
+      <div style="font-size:36px;margin-bottom:10px;">🔗</div>
+      <div style="font-size:12px;font-weight:900;color:var(--text-primary);margin-bottom:6px;">Not Live Yet</div>
+      <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">Eat This Life is offline right now.<br>Word relay chains will begin when HQ opens this module 🔗</div>
+    </div>`;
+  return;
   try {
     const team = STATE.data?.agent?.profile?.team;
     if (!team) { container.innerHTML = `<div style="color:var(--fail);text-align:center;padding:20px;font-size:11px;">Log in to access Signal Chain.</div>`; return; }
@@ -19914,7 +23799,13 @@ let _rfState = null;
 async function renderRapidFire() {
   const container = $('rapidFireContent');
   if (!container) return;
-  container.innerHTML = `<div style="padding:30px;text-align:center;color:var(--text-muted);font-size:12px;">⏳ Loading questions…</div>`;
+  container.innerHTML = `
+    <div class="glass-card" style="padding:24px;text-align:center;border:1px solid var(--border-subtle);background:rgba(255,255,255,0.02);">
+      <div style="font-size:36px;margin-bottom:10px;">⚡</div>
+      <div style="font-size:12px;font-weight:900;color:var(--text-primary);margin-bottom:6px;">Not Live Yet</div>
+      <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">That's Fire is offline right now.<br>Rapid-fire trivia rounds will ignite when HQ activates this module ⚡</div>
+    </div>`;
+  return;
   try {
     const d = await Api.call('getRapidFireQuestions', { agentNo: STATE.agentNo }, { cache: false });
     if (!d.success) { container.innerHTML = `<div style="color:var(--fail);text-align:center;padding:20px;font-size:11px;">${sanitize(d.error)}</div>`; return; }
@@ -20051,6 +23942,7 @@ const ROUTER_MAP = {
   'teams': renderTeams,
   'hangar': renderMagicShip,
   'operatives': renderOperatives,
+  'trainees':   renderTraineesPage,
   'comparison': renderComparison,
   'secretmissions': renderSecretMissions,
   'sotd': renderSongOfDay,
