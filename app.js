@@ -8858,7 +8858,7 @@ async function renderSpotifyBetaCard() { // kept name so existing call in render
 }
 
 async function previewLB() {
-  const input = document.getElementById('lb-username-input') as HTMLInputElement;
+  const input = document.getElementById('lb-username-input');
   const area = document.getElementById('lb-status-area');
   if (!input || !area) return;
 
