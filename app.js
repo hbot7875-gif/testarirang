@@ -8941,9 +8941,11 @@ function confirmSetStreamSource(pref) {
   const current = STATE.data?.agent?.profile?.streamSourcePref || 'lb';
   if (pref === current) return; // already selected
 
-  const label = pref === 'direct' ? 'ListenBrainz Instance' : 'ListenBrainz';
+  const label = pref === 'direct' ? 'Web Scrobbler / Pano' : pref === 'statsfm' ? 'Stats.fm (Spotify)' : 'ListenBrainz';
   const impact = pref === 'direct'
-    ? 'Only streams sent via Pano/WebScrobbler to the ListenBrainz instance will count. Any LB-only streams this week will be removed from your stats on next sync.'
+    ? 'Only streams sent via Web Scrobbler or Pano Scrobbler will count. Any LB-only streams this week will be removed from your stats on next sync.'
+    : pref === 'statsfm'
+    ? 'Spotify streams from your stats.fm account will count. Stats.fm fetches from the start of the week, so no streams will be lost. Your LB streams will stop counting from the next sync.'
     : 'All streams on your ListenBrainz account will count. This includes streams from other apps and battles.';
 
   document.querySelectorAll('.spy-modal-overlay').forEach(e => e.remove());
@@ -8979,7 +8981,9 @@ async function setStreamSource(pref) {
     if (!d?.success) { showToast(d?.error || 'Could not save', 'error'); return; }
     if (STATE.data?.agent?.profile) STATE.data.agent.profile.streamSourcePref = pref;
     renderSpotifyBetaCard();
-    showToast(pref === 'direct' ? 'Switched to ListenBrainz Instance' : 'Switched to ListenBrainz', 'success');
+    renderStatsFmCard();
+    const toastMsg = pref === 'direct' ? 'Switched to Web Scrobbler / Pano' : pref === 'statsfm' ? 'Switched to Stats.fm — syncs on next hourly update' : 'Switched to ListenBrainz';
+    showToast(toastMsg, 'success');
   } catch (_) { showToast('Could not save preference', 'error'); }
 }
 
@@ -9039,28 +9043,39 @@ async function renderSpotifyBetaCard() { // kept name so existing call in render
             border-radius:8px; color:rgba(235,116,59,0.6); font-size:9px; font-weight:700; cursor:pointer; margin-bottom:10px; letter-spacing:0.5px;">
           ✏️ Change Username
         </button>
-        ${savedPano ? `
+        ${(savedPano || STATE.data?.agent?.profile?.statsfmUsername) ? `
           <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:10px 14px; margin-bottom:10px;">
             <div style="font-size:9px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Stream Source for Battle Progress</div>
-            <div style="display:flex; gap:6px; margin-bottom:8px;">
+            <div style="display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap;">
               <button onclick="confirmSetStreamSource('lb')"
-                style="flex:1; padding:8px 6px; border-radius:7px; font-size:9px; font-weight:800; cursor:pointer; letter-spacing:0.5px; transition:all 0.15s;
+                style="flex:1; min-width:80px; padding:8px 6px; border-radius:7px; font-size:9px; font-weight:800; cursor:pointer; letter-spacing:0.5px; transition:all 0.15s;
                   background:${sourcePref === 'lb' ? 'rgba(235,116,59,0.2)' : 'transparent'};
                   border:1px solid ${sourcePref === 'lb' ? 'rgba(235,116,59,0.5)' : 'rgba(255,255,255,0.1)'};
                   color:${sourcePref === 'lb' ? '#eb743b' : 'var(--text-ghost)'};">
                 🌐 ListenBrainz
               </button>
+              ${savedPano ? `
               <button onclick="confirmSetStreamSource('direct')"
-                style="flex:1; padding:8px 6px; border-radius:7px; font-size:9px; font-weight:800; cursor:pointer; letter-spacing:0.5px; transition:all 0.15s;
+                style="flex:1; min-width:80px; padding:8px 6px; border-radius:7px; font-size:9px; font-weight:800; cursor:pointer; letter-spacing:0.5px; transition:all 0.15s;
                   background:${sourcePref === 'direct' ? 'rgba(34,197,94,0.15)' : 'transparent'};
                   border:1px solid ${sourcePref === 'direct' ? 'rgba(34,197,94,0.4)' : 'rgba(255,255,255,0.1)'};
                   color:${sourcePref === 'direct' ? '#22c55e' : 'var(--text-ghost)'};">
-                🎙️ ListenBrainz Instance
-              </button>
+                🎙️ Web Scrobbler
+              </button>` : ''}
+              ${STATE.data?.agent?.profile?.statsfmUsername ? `
+              <button onclick="confirmSetStreamSource('statsfm')"
+                style="flex:1; min-width:80px; padding:8px 6px; border-radius:7px; font-size:9px; font-weight:800; cursor:pointer; letter-spacing:0.5px; transition:all 0.15s;
+                  background:${sourcePref === 'statsfm' ? 'rgba(29,185,84,0.2)' : 'transparent'};
+                  border:1px solid ${sourcePref === 'statsfm' ? 'rgba(29,185,84,0.5)' : 'rgba(255,255,255,0.1)'};
+                  color:${sourcePref === 'statsfm' ? '#1db954' : 'var(--text-ghost)'};">
+                🎵 Stats.fm
+              </button>` : ''}
             </div>
             <div style="font-size:9px; color:var(--text-ghost); line-height:1.5;">
               ${sourcePref === 'direct'
-                ? '✅ Only streams pushed directly to Arirang via Pano/WebScrobbler count — other apps and battles won\'t affect your stats.'
+                ? '✅ Only streams via Web Scrobbler / Pano Scrobbler count.'
+                : sourcePref === 'statsfm'
+                ? '✅ Spotify streams from your stats.fm account count — synced every hour.'
                 : '✅ All streams on your ListenBrainz account count, including from other apps and battles.'}
             </div>
           </div>
@@ -9217,6 +9232,8 @@ function renderStatsFmCard() {
   if (!card) return;
   const SF_COLOR = '#1db954';
   const linked = STATE.data?.agent?.profile?.statsfmUsername || null;
+  const sourcePref = STATE.data?.agent?.profile?.streamSourcePref || 'lb';
+  const isActiveSource = sourcePref === 'statsfm' || (!STATE.data?.agent?.profile?.lbUsername && linked);
 
   card.innerHTML = `
     <div class="archive-card" style="border-color:rgba(29,185,84,0.35); background:rgba(29,185,84,0.03); margin-bottom:0;">
@@ -9226,6 +9243,7 @@ function renderStatsFmCard() {
           <div style="font-size:11px; font-weight:900; color:${SF_COLOR}; letter-spacing:1px;">
             STATS.FM
             <span style="font-size:8px; background:rgba(29,185,84,0.15); color:${SF_COLOR}; border:1px solid rgba(29,185,84,0.35); padding:1px 6px; border-radius:4px; margin-left:4px; letter-spacing:1.5px;">SPOTIFY</span>
+            ${isActiveSource && linked ? `<span style="font-size:8px; background:rgba(34,197,94,0.2); color:#4ade80; border:1px solid rgba(34,197,94,0.4); padding:1px 6px; border-radius:4px; margin-left:4px; letter-spacing:1.5px;">ACTIVE SOURCE</span>` : ''}
           </div>
           <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Pull your Spotify streams automatically via stats.fm — no ListenBrainz needed</div>
         </div>
@@ -9251,7 +9269,7 @@ function renderStatsFmCard() {
       `}
 
       <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px;">
-        <input id="statsfm-input" type="text" placeholder="e.g. himabindu (your stats.fm custom URL)"
+        <input id="statsfm-input" type="text" placeholder="e.g. bangtandidntraiseweakbitches (your stats.fm custom URL)"
           value="${sanitize(linked || '')}"
           style="flex:1; min-width:140px; background:rgba(255,255,255,0.05); border:1px solid rgba(29,185,84,0.3);
             border-radius:8px; padding:8px 12px; font-size:12px; color:#fff; outline:none; font-family:monospace;" />
