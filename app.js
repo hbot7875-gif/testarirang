@@ -9250,11 +9250,16 @@ function renderStatsFmCard() {
         </div>
       `}
 
-      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px;">
         <input id="statsfm-input" type="text" placeholder="Your stats.fm username"
           value="${sanitize(linked || '')}"
           style="flex:1; min-width:140px; background:rgba(255,255,255,0.05); border:1px solid rgba(29,185,84,0.3);
             border-radius:8px; padding:8px 12px; font-size:12px; color:#fff; outline:none; font-family:monospace;" />
+        <button onclick="previewStatsFm()"
+          style="background:rgba(29,185,84,0.15); border:1px solid rgba(29,185,84,0.4); border-radius:8px; color:${SF_COLOR};
+            font-size:11px; font-weight:700; padding:8px 14px; cursor:pointer; white-space:nowrap;">
+          🔍 Test
+        </button>
         <button onclick="linkStatsFm()"
           style="background:${SF_COLOR}; border:none; border-radius:8px; color:#000;
             font-size:11px; font-weight:900; padding:8px 16px; cursor:pointer; white-space:nowrap;">
@@ -9264,6 +9269,7 @@ function renderStatsFmCard() {
           style="background:transparent; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:var(--text-muted);
             font-size:11px; padding:8px 12px; cursor:pointer;">Unlink</button>` : ''}
       </div>
+      <div id="statsfm-preview-area"></div>
       <div id="statsfm-status" style="font-size:9px; color:var(--text-ghost); text-align:center; margin-top:8px;"></div>
     </div>`;
 }
@@ -9289,6 +9295,69 @@ async function linkStatsFm(unlink = false) {
     if (s) s.innerHTML = `<span style="color:#1db954;">${unlink ? 'Unlinked.' : '✅ Linked! Streams will sync on the next hourly update.'}</span>`;
   } catch (_) {
     if (status) status.innerHTML = `<span style="color:var(--fail);">Error — try again.</span>`;
+  }
+}
+
+async function previewStatsFm() {
+  const input = document.getElementById('statsfm-input');
+  const area = document.getElementById('statsfm-preview-area');
+  if (!area) return;
+
+  const username = (input?.value || '').trim() || (STATE.data?.agent?.profile?.statsfmUsername || '');
+  if (!username) { area.innerHTML = `<div style="font-size:10px;color:var(--fail);padding:6px 0;">Enter your stats.fm username first.</div>`; return; }
+
+  const SF_COLOR = '#1db954';
+  area.innerHTML = `<div style="font-size:10px; color:var(--text-muted); font-family:var(--font-mono); padding:8px 0;">Fetching from stats.fm…</div>`;
+
+  try {
+    const d = await Api.call('previewStatsFm', { statsfmUsername: username, weekLabel: STATE.week }, { cache: false });
+
+    if (!d?.success) {
+      area.innerHTML = `<div style="font-size:10px; color:var(--fail); padding:6px 0; line-height:1.6;">${sanitize(d?.error || 'Something went wrong.')}</div>`;
+      return;
+    }
+
+    const trackRows = (d.recentTracks || []).map(t => {
+      const ago = t.playedAt ? (() => {
+        const diff = Math.floor((Date.now() - new Date(t.playedAt).getTime()) / 1000);
+        if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+        if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+        return `${Math.floor(diff/86400)}d ago`;
+      })() : '';
+      const mins = t.playedMs ? `${Math.round(t.playedMs/60000)}m` : '';
+      return `
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
+          <div style="min-width:0; flex:1;">
+            <div style="font-size:11px; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${sanitize(t.track)}</div>
+            ${t.artist ? `<div style="font-size:9px; color:var(--text-ghost);">${sanitize(t.artist)}</div>` : ''}
+          </div>
+          <div style="text-align:right; flex-shrink:0; margin-left:8px;">
+            <div style="font-size:9px; color:${SF_COLOR}; font-weight:700;">${mins}</div>
+            <div style="font-size:9px; color:var(--text-ghost);">${ago}</div>
+          </div>
+        </div>`;
+    }).join('');
+
+    area.innerHTML = `
+      <div style="background:rgba(29,185,84,0.06); border:1px solid rgba(29,185,84,0.2); border-radius:10px; padding:12px 14px; margin-bottom:8px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div style="font-size:9px; color:${SF_COLOR}; font-weight:800; text-transform:uppercase; letter-spacing:1px;">This Week — ${sanitize(d.week)}</div>
+          <div style="font-size:18px; font-weight:900; color:${SF_COLOR}; font-family:var(--font-mono);">${d.totalStreams}
+            <span style="font-size:10px; color:var(--text-ghost); font-weight:400;">streams</span>
+          </div>
+        </div>
+        ${trackRows
+          ? `<div style="margin-bottom:8px;">${trackRows}</div>
+             <div style="font-size:9px; color:var(--text-ghost); margin-top:6px;">Showing ${Math.min(d.recentTracks?.length||0, 10)} most recent · skips under 30s excluded</div>`
+          : `<div style="font-size:10px; color:var(--text-ghost);">No Spotify streams found for this week yet — try streaming something and refresh.</div>`
+        }
+      </div>
+      ${d.totalStreams > 0 ? `
+        <div style="font-size:10px; color:#4ade80; padding:4px 0; text-align:center;">
+          ✅ Stats.fm is working! Click <strong>Link</strong> to save your username and start syncing.
+        </div>` : ''}`;
+  } catch (_) {
+    area.innerHTML = `<div style="font-size:10px; color:var(--text-muted); padding:6px 0;">Preview failed — check your username or try again.</div>`;
   }
 }
 
