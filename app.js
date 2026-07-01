@@ -9245,13 +9245,13 @@ function renderStatsFmCard() {
         </div>
       ` : `
         <div style="font-size:10px; color:var(--text-muted); line-height:1.7; margin-bottom:12px;">
-          Link your stats.fm account to pull Spotify streams automatically each hour. Your stats.fm profile must be set to <strong style="color:#fff;">Public</strong>.<br><br>
-          No account? Sign up free at <a href="https://stats.fm" target="_blank" style="color:${SF_COLOR};">stats.fm</a> — connect Spotify and it starts tracking immediately.
+          Link your stats.fm account to pull Spotify streams automatically each hour.<br><br>
+          Find your ID: go to <strong style="color:#fff;">stats.fm → Settings → Profile → Custom URL</strong> — enter the part after <span style="font-family:var(--font-mono); font-size:10px; color:${SF_COLOR};">stats.fm/</span>. Your stats.fm profile must also be set to <strong style="color:#fff;">Public</strong> (Settings → Privacy).
         </div>
       `}
 
       <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px;">
-        <input id="statsfm-input" type="text" placeholder="Your stats.fm username"
+        <input id="statsfm-input" type="text" placeholder="e.g. himabindu (your stats.fm custom URL)"
           value="${sanitize(linked || '')}"
           style="flex:1; min-width:140px; background:rgba(255,255,255,0.05); border:1px solid rgba(29,185,84,0.3);
             border-radius:8px; padding:8px 12px; font-size:12px; color:#fff; outline:none; font-family:monospace;" />
@@ -9355,7 +9355,12 @@ async function previewStatsFm() {
       ${d.totalStreams > 0 ? `
         <div style="font-size:10px; color:#4ade80; padding:4px 0; text-align:center;">
           ✅ Stats.fm is working! Click <strong>Link</strong> to save your username and start syncing.
-        </div>` : ''}`;
+        </div>` : ''}
+      ${d._debug ? `
+        <details style="margin-top:8px;">
+          <summary style="font-size:9px; color:var(--text-ghost); cursor:pointer;">🔧 Raw API structure (debug)</summary>
+          <pre style="font-size:8px; color:var(--text-ghost); background:rgba(0,0,0,0.3); padding:8px; border-radius:6px; overflow:auto; margin-top:4px; white-space:pre-wrap;">${sanitize(JSON.stringify(d._debug, null, 2))}</pre>
+        </details>` : ''}`;
   } catch (_) {
     area.innerHTML = `<div style="font-size:10px; color:var(--text-muted); padding:6px 0;">Preview failed — check your username or try again.</div>`;
   }
