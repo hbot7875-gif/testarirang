@@ -1752,6 +1752,10 @@ function initApp() {
     if (adminNav) adminNav.style.display = 'block';
   }
 
+  // Show BOTZ nav for all logged-in agents
+  const botzNav = document.getElementById('botzNavBtn');
+  if (botzNav) botzNav.style.display = 'flex';
+
   // 3. CHECK MISSION LOCK FIRST
   checkMissionLock();
 
@@ -1953,6 +1957,12 @@ const _RENDERERS = {};
  * Navigate to a , update nav highlight, render content.
  * @param {string}  —  name (matches id="page-{name}")
  */
+function goToBotz() {
+  const agentNo = STATE.agentNo || localStorage.getItem('agentNo') || ''
+  const url = 'botz.html' + (agentNo ? '?agent=' + encodeURIComponent(agentNo) : '')
+  window.location.href = url
+}
+
 function goTo(page) {
   // Close sidebar on navigation (mobile)
   if (typeof closeSidebar === 'function') {
@@ -2141,6 +2151,15 @@ async function loadDashboard() {
       const welcomed = await checkFriendsWelcome();
       if (!welcomed) checkPendingTeamChoice();
     }, 3500);
+
+    // ListenBrainz intro popup — shows once per agent (localStorage flag)
+    Timers.setTimeout('lb-intro-popup', () => {
+      const key = `lb_intro_seen_${STATE.agentNo}`;
+      if (!localStorage.getItem(key)) {
+        showLBIntroPopup();
+        localStorage.setItem(key, '1');
+      }
+    }, 5000);
 
     // Trainee promotion check (non-blocking, fires after 3s to not compete with load animations)
     if (d.agent?.isTrainee || d.agent?.status === 'trainee') {
@@ -2342,8 +2361,7 @@ async function syncData() {
   }
 
   try {
-    // Long timeout: a heavy streaming week (e.g. Festa/comeback) means many
-    // Last.fm pages to fetch — the backend self-limits, so wait it out.
+    // Long timeout: a heavy streaming week means many LB pages to fetch — backend self-limits.
     const d = await Api.call('refreshAgentStats', { agentNo: STATE.agentNo }, { dedupe: false, cache: false, timeout: 90_000 });
 
     // Cancel the "still working" hints so they can't overwrite the result text
@@ -2366,7 +2384,11 @@ async function syncData() {
       }
     } else {
       if (btn) btn.textContent = '✗ FAILED';
-      showToast(d.error || 'Sync failed', 'error');
+      if (d.errorType === 'lastfm_discontinued') {
+        showLastfmDeprecatedModal();
+      } else {
+        showToast(d.error || 'Sync failed', 'error');
+      }
     }
   } catch (e) {
     Timers.clearTimeout('sync-hint-1');
@@ -2378,8 +2400,39 @@ async function syncData() {
   // Reset button after 5s
   Timers.setTimeout('sync-btn-reset', () => {
     _syncInProgress = false;
-    if (btn) { btn.textContent = '⟳ Sync Last.fm'; btn.disabled = false; }
+    if (btn) { btn.textContent = '⟳ Sync'; btn.disabled = false; }
   }, 5000);
+}
+
+function showLastfmDeprecatedModal() {
+  document.querySelectorAll('.spy-modal-overlay').forEach(e => e.remove());
+  const modal = document.createElement('div');
+  modal.className = 'spy-modal-overlay';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);';
+  modal.innerHTML = `
+    <div style="background:var(--bg-card);border:1px solid var(--border-mid);border-radius:16px;max-width:360px;width:100%;overflow:hidden;">
+      <div style="padding:24px 24px 0;">
+        <div style="font-size:28px;margin-bottom:12px;text-align:center;">📻</div>
+        <div style="font-family:var(--font-display);font-size:13px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:2px;text-align:center;margin-bottom:8px;">Last.fm Sync Discontinued</div>
+        <div style="font-size:11px;color:var(--text-muted);line-height:1.7;text-align:center;margin-bottom:20px;">
+          We've stopped pulling scrobbles from Last.fm.<br>
+          To keep your streams counting, please create a free
+          <strong style="color:#eb743b;">ListenBrainz</strong> account and link it in your profile.<br><br>
+          <span style="font-size:10px;color:var(--text-ghost);">Your Pano Scrobbler account still works.</span>
+        </div>
+      </div>
+      <div style="padding:0 24px 24px;display:flex;flex-direction:column;gap:8px;">
+        <button onclick="goTo('profile');document.querySelector('.spy-modal-overlay')?.remove();"
+          style="width:100%;padding:12px;background:#eb743b;border:none;border-radius:8px;color:#000;font-size:11px;font-weight:900;cursor:pointer;letter-spacing:1px;">
+          → Link ListenBrainz in My Profile
+        </button>
+        <button onclick="document.querySelector('.spy-modal-overlay')?.remove();"
+          class="btn-outline" style="width:100%;font-size:10px;">
+          Dismiss
+        </button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
 }
 
 // Alias
@@ -4355,6 +4408,8 @@ function renderProfile() {
       ? rawLastfm
       : (rawLastfm ? [rawLastfm] : []);
     const hasLastfm = lastfmUsernames.length > 0;
+    const lbUsername = p.lbUsername || null;
+    const scrobblePin = p.scrobblePin || null;
 
     const weekDates = getWeekDates(STATE.week);
     const weekDatesObj = {
@@ -4507,58 +4562,46 @@ function renderProfile() {
       </div>
     `;
 
-    // --- 2.5. LAST.FM VERIFICATION ---
+    // --- 2.5. CONNECTED ACCOUNTS ---
     html += `
       <div style="display:flex; align-items:center; gap:12px; margin:0 0 16px 0;">
-        <div style="font-size:16px;">🎵</div>
-        <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Last.fm Account</div>
+        <div style="font-size:16px;">🔗</div>
+        <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--wave-foam);">Connected Accounts</div>
         <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(74,144,164,0.3), transparent);"></div>
       </div>
 
       <div class="glass-card" style="padding:16px; margin-bottom:24px;">
-        ${hasLastfm ? `
+        ${(lbUsername || scrobblePin) ? `
           <div style="display:flex; flex-direction:column; gap:8px;">
-            ${lastfmUsernames.map((u, i) => `
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:8px;">
+            ${lbUsername ? `
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(235,116,59,0.06); border:1px solid rgba(235,116,59,0.25); border-radius:8px;">
                 <div>
-                  <div style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:3px;">
-                    ${lastfmUsernames.length > 1 ? `Account ${i + 1}` : 'Linked Account'}
-                  </div>
-                  <div style="font-family:var(--font-mono); font-size:13px; color:#fff; font-weight:700;">
-                    ${sanitize(u)}
-                  </div>
+                  <div style="font-size:10px; font-weight:800; color:#eb743b; text-transform:uppercase; letter-spacing:1px; margin-bottom:3px;">ListenBrainz</div>
+                  <div style="font-family:var(--font-mono); font-size:13px; color:#fff; font-weight:700;">${sanitize(lbUsername)}</div>
                 </div>
-                <div style="display:flex; gap:6px; flex-shrink:0; margin-left:12px;">
-                  <a href="https://www.last.fm/user/${encodeURIComponent(u)}"
-                     target="_blank" rel="noopener"
-                     style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; background:var(--red-whisper); border:1px solid var(--red-border); border-radius:7px; color:var(--red-core); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; text-decoration:none; transition:all 0.2s; white-space:nowrap;"
-                     onmouseover="this.style.background='rgba(255,20,95,0.15)'; this.style.borderColor='var(--red-core)'"
-                     onmouseout="this.style.background='var(--red-whisper)'; this.style.borderColor='var(--red-border)'">
-                    🔗 Profile
-                  </a>
-                  ${weekDatesObj.start ? `
-                  <a href="https://www.last.fm/user/${encodeURIComponent(u)}/library?from=${weekDatesObj.start}&to=${weekDatesObj.end}"
-                     target="_blank" rel="noopener"
-                     style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; background:rgba(74,144,164,0.08); border:1px solid rgba(74,144,164,0.25); border-radius:7px; color:var(--wave-foam); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; text-decoration:none; transition:all 0.2s; white-space:nowrap;"
-                     onmouseover="this.style.background='rgba(74,144,164,0.15)'"
-                     onmouseout="this.style.background='rgba(74,144,164,0.08)'">
-                    📊 This Week
-                  </a>
-                  ` : ''}
-                </div>
+                <a href="https://listenbrainz.org/user/${encodeURIComponent(lbUsername)}/"
+                   target="_blank" rel="noopener"
+                   style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; background:rgba(235,116,59,0.12); border:1px solid rgba(235,116,59,0.35); border-radius:7px; color:#eb743b; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; text-decoration:none; white-space:nowrap;"
+                   onmouseover="this.style.background='rgba(235,116,59,0.22)'"
+                   onmouseout="this.style.background='rgba(235,116,59,0.12)'">
+                  🔗 Profile
+                </a>
               </div>
-            `).join('')}
-          </div>
-          <div style="margin-top:12px; padding:10px 14px; background:rgba(74,144,164,0.05); border:1px solid rgba(74,144,164,0.15); border-radius:8px; display:flex; align-items:flex-start; gap:10px;">
-            <span style="font-size:14px; flex-shrink:0;">ℹ️</span>
-            <span style="font-size:10px; color:var(--text-muted); line-height:1.5;">
-              This is the Last.fm account your streams are tracked from. Use <strong style="color:var(--wave-foam);">This Week</strong> to verify your scrobbles are counting. If something looks wrong, contact your team admin.
-            </span>
+            ` : ''}
+            ${scrobblePin ? `
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(34,197,94,0.06); border:1px solid rgba(34,197,94,0.25); border-radius:8px;">
+                <div>
+                  <div style="font-size:10px; font-weight:800; color:#22c55e; text-transform:uppercase; letter-spacing:1px; margin-bottom:3px;">Pano Scrobbler</div>
+                  <div style="font-family:var(--font-mono); font-size:13px; color:#fff; font-weight:700; letter-spacing:3px;">${sanitize(scrobblePin)}</div>
+                </div>
+                <div style="padding:7px 12px; background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.35); border-radius:7px; font-size:9px; font-weight:800; color:#22c55e; text-transform:uppercase; letter-spacing:1px; white-space:nowrap;">✓ Direct Push</div>
+              </div>
+            ` : ''}
           </div>
         ` : `
           <div style="text-align:center; padding:20px 0;">
             <div style="font-size:28px; margin-bottom:10px; opacity:0.4;">🎵</div>
-            <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">No Last.fm account linked</div>
+            <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">No accounts connected</div>
             <div style="font-size:10px; color:var(--text-ghost);">Contact your team admin to link your account</div>
           </div>
         `}
@@ -4647,6 +4690,10 @@ function renderProfile() {
 
     // --- 3.7 LISTENBRAINZ BETA ---
     html += `<div id="spotify-beta-card" style="margin-bottom:24px;"></div>`;
+    // --- 3.8 PANO SCROBBLER ---
+    html += `<div id="scrobbler-card" style="margin-bottom:24px;"></div>`;
+    // --- 3.9 STATS.FM ---
+    html += `<div id="statsfm-card" style="margin-bottom:24px;"></div>`;
 
     // --- 4. GHOST PROTOCOL (LEAVE) ---
     const leaveUsage = a.leaveUsage || {};
@@ -4730,6 +4777,8 @@ function renderProfile() {
     if (typeof loadCareerHistory === 'function') loadCareerHistory();
     if (typeof loadProfileStreak === 'function') loadProfileStreak();
     renderSpotifyBetaCard();
+    renderScrobblerCard();
+    renderStatsFmCard();
 
     // Load Pop Out XP + Golden Vinyls (MVP wins) to update badge drawer and profile
     Promise.all([
@@ -8817,6 +8866,128 @@ const TEAM_CHOICE_META = {
 };
 
 // Returns true if the welcome modal was shown (so the caller skips the choice check)
+async function saveLBUsername() {
+  const input = document.getElementById('lb-username-input');
+  const status = document.getElementById('lb-save-status');
+  const btn = document.querySelector('#lb-save-row button');
+  if (!input || !status) return;
+
+  const username = input.value.trim();
+  if (!username) { toast('Enter your ListenBrainz username first'); return; }
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+  status.textContent = '';
+
+  try {
+    const d = await Api.call('saveLBUsername', { agentNo: STATE.agentNo, lbUsername: username }, { cache: false });
+    if (!d?.success) {
+      status.innerHTML = `<span style="color:var(--fail);">${d?.error || 'Something went wrong'}</span>`;
+      if (btn) { btn.disabled = false; btn.textContent = '💾 Save as my official ListenBrainz username — start counting streams from today'; }
+      return;
+    }
+    // Update STATE so both cards re-render immediately
+    if (STATE.data?.agent?.profile) STATE.data.agent.profile.lbUsername = username;
+    renderSpotifyBetaCard();
+    // Refresh the profile scrobbler summary card if profile page is open
+    if (STATE.page === 'profile' && typeof renderProfile === 'function') renderProfile();
+  } catch (_) {
+    status.innerHTML = `<span style="color:var(--fail);">Could not save — try again</span>`;
+    if (btn) { btn.disabled = false; btn.textContent = '💾 Save as my official ListenBrainz username — start counting streams from today'; }
+  }
+}
+
+function changeLBUsername() {
+  // Swap the connected card to edit mode, pre-filled with current username
+  const card = document.getElementById('spotify-beta-card');
+  if (!card) return;
+  const current = STATE.data?.agent?.profile?.lbUsername || '';
+  card.innerHTML = `
+    <div class="archive-card" style="border-color:rgba(235,116,59,0.4); background:rgba(235,116,59,0.03); margin-bottom:0;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <span style="font-size:18px;">📻</span>
+        <div>
+          <div style="font-size:11px; font-weight:900; color:${LB_COLOR}; letter-spacing:1px;">
+            LISTENBRAINZ
+            <span style="font-size:8px; background:rgba(245,158,11,0.15); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); padding:1px 6px; border-radius:4px; margin-left:4px; letter-spacing:1.5px;">EDIT</span>
+          </div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Enter your new ListenBrainz username</div>
+        </div>
+      </div>
+      <div id="lb-input-row" style="display:flex; gap:8px; margin-bottom:10px;">
+        <input id="lb-username-input" type="text" placeholder="ListenBrainz username" value="${sanitize(current)}"
+          style="flex:1; padding:9px 12px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12);
+            border-radius:8px; color:#fff; font-size:11px; outline:none;"
+          onkeydown="if(event.key==='Enter') saveLBUsername()" />
+      </div>
+      <div id="lb-save-row" style="margin-bottom:8px;">
+        <button onclick="saveLBUsername()"
+          style="width:100%; padding:9px; background:${LB_COLOR}; border:none;
+            border-radius:8px; color:#fff; font-size:11px; font-weight:900; cursor:pointer;">
+          💾 Save New Username
+        </button>
+        <div id="lb-save-status" style="font-size:9px; color:var(--text-ghost); margin-top:4px; text-align:center;"></div>
+      </div>
+      <button onclick="renderSpotifyBetaCard()"
+        style="width:100%; padding:6px; background:transparent; border:1px solid rgba(255,255,255,0.08);
+          border-radius:8px; color:var(--text-ghost); font-size:9px; cursor:pointer;">
+        Cancel
+      </button>
+    </div>`;
+  // Focus the input
+  setTimeout(() => document.getElementById('lb-username-input')?.focus(), 50);
+}
+
+function confirmSetStreamSource(pref) {
+  const current = STATE.data?.agent?.profile?.streamSourcePref || 'lb';
+  if (pref === current) return; // already selected
+
+  const label = pref === 'direct' ? 'ListenBrainz Instance' : 'ListenBrainz';
+  const impact = pref === 'direct'
+    ? 'Only streams sent via Pano/WebScrobbler to the ListenBrainz instance will count. Any LB-only streams this week will be removed from your stats on next sync.'
+    : 'All streams on your ListenBrainz account will count. This includes streams from other apps and battles.';
+
+  document.querySelectorAll('.spy-modal-overlay').forEach(e => e.remove());
+  const modal = document.createElement('div');
+  modal.className = 'spy-modal-overlay';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);';
+  modal.innerHTML = `
+    <div style="background:var(--bg-card);border:1px solid var(--border-mid);border-radius:16px;max-width:340px;width:100%;overflow:hidden;">
+      <div style="padding:20px 20px 0;">
+        <div style="font-size:13px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Switch to ${sanitize(label)}?</div>
+        <div style="font-size:11px;color:var(--text-muted);line-height:1.7;margin-bottom:10px;">${impact}</div>
+        <div style="font-size:10px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:8px;padding:9px 12px;color:#f59e0b;line-height:1.6;margin-bottom:16px;">
+          ⚠️ Changing mid-week will retroactively affect your <strong>entire current week's</strong> stream count on the next sync.
+        </div>
+      </div>
+      <div style="padding:0 20px 20px;display:flex;flex-direction:column;gap:8px;">
+        <button onclick="setStreamSource('${pref}');document.querySelector('.spy-modal-overlay')?.remove();"
+          style="width:100%;padding:11px;background:var(--red-core);border:none;border-radius:8px;color:#fff;font-size:11px;font-weight:900;cursor:pointer;letter-spacing:0.5px;">
+          Yes, switch to ${sanitize(label)}
+        </button>
+        <button onclick="document.querySelector('.spy-modal-overlay')?.remove();"
+          class="btn-outline" style="width:100%;font-size:10px;">
+          Cancel
+        </button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+async function setStreamSource(pref) {
+  try {
+    const d = await Api.call('setStreamSourcePref', { agentNo: STATE.agentNo, pref }, { cache: false });
+    if (!d?.success) { showToast(d?.error || 'Could not save', 'error'); return; }
+    if (STATE.data?.agent?.profile) STATE.data.agent.profile.streamSourcePref = pref;
+    renderSpotifyBetaCard();
+    showToast(pref === 'direct' ? 'Switched to ListenBrainz Instance' : 'Switched to ListenBrainz', 'success');
+  } catch (_) { showToast('Could not save preference', 'error'); }
+}
+
+function showLBIntroPopup() {
+  const modal = document.getElementById('lbIntroModal');
+  if (modal) modal.hidden = false;
+}
+
 // ── LISTENBRAINZ BETA ─────────────────────────────────────────────────────────
 // No OAuth — agent just enters their ListenBrainz username.
 // Preview only, does not touch official scrobble tables.
@@ -8827,43 +8998,307 @@ async function renderSpotifyBetaCard() { // kept name so existing call in render
   const card = document.getElementById('spotify-beta-card');
   if (!card) return;
 
-  card.innerHTML = `
-    <div class="archive-card" style="border-color:rgba(235,116,59,0.4); background:rgba(235,116,59,0.03); margin-bottom:0;">
-      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
-        <span style="font-size:18px;">📻</span>
-        <div>
-          <div style="font-size:11px; font-weight:900; color:${LB_COLOR}; letter-spacing:1px;">
-            LISTENBRAINZ PREVIEW
-            <span style="font-size:8px; background:rgba(235,116,59,0.2); color:${LB_COLOR}; border:1px solid rgba(235,116,59,0.4); padding:1px 6px; border-radius:4px; margin-left:4px; letter-spacing:1.5px;">BETA</span>
+  const savedLB   = STATE.data?.agent?.profile?.lbUsername || null;
+  const savedPano = STATE.data?.agent?.profile?.scrobblePin || null;
+  const sourcePref = STATE.data?.agent?.profile?.streamSourcePref || 'lb';
+
+  if (savedLB) {
+    // Already linked — show compact connected state, no input or save button
+    card.innerHTML = `
+      <div class="archive-card" style="border-color:rgba(235,116,59,0.4); background:rgba(235,116,59,0.03); margin-bottom:0;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+          <span style="font-size:18px;">📻</span>
+          <div>
+            <div style="font-size:11px; font-weight:900; color:${LB_COLOR}; letter-spacing:1px;">
+              LISTENBRAINZ
+              <span style="font-size:8px; background:rgba(34,197,94,0.15); color:#4ade80; border:1px solid rgba(34,197,94,0.35); padding:1px 6px; border-radius:4px; margin-left:4px; letter-spacing:1.5px;">CONNECTED</span>
+            </div>
+            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Streams from this account count in your official weekly sync</div>
           </div>
-          <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Compare your ListenBrainz streams to this week's targets — preview only</div>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(34,197,94,0.06); border:1px solid rgba(34,197,94,0.25); border-radius:8px; margin-bottom:12px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:13px;">✅</span>
+            <div>
+              <div style="font-size:9px; color:#4ade80; font-weight:800; text-transform:uppercase; letter-spacing:1px;">Official Account</div>
+              <div style="font-family:var(--font-mono); font-size:13px; color:#fff; font-weight:700;">${sanitize(savedLB)}</div>
+            </div>
+          </div>
+          <a href="https://listenbrainz.org/user/${encodeURIComponent(savedLB)}/" target="_blank" rel="noopener"
+            style="font-size:9px; color:${LB_COLOR}; text-decoration:none; font-weight:800; white-space:nowrap; padding:5px 10px; border:1px solid rgba(235,116,59,0.3); border-radius:6px;">
+            🔗 Profile
+          </a>
+        </div>
+        <button onclick="previewLB()"
+          style="width:100%; padding:9px 16px; background:${LB_COLOR}; border:none; border-radius:8px;
+            color:#fff; font-size:11px; font-weight:900; cursor:pointer; margin-bottom:8px;">
+          📊 Preview this week's streams →
+        </button>
+        <button onclick="changeLBUsername()"
+          style="width:100%; padding:7px; background:transparent; border:1px solid rgba(235,116,59,0.2);
+            border-radius:8px; color:rgba(235,116,59,0.6); font-size:9px; font-weight:700; cursor:pointer; margin-bottom:10px; letter-spacing:0.5px;">
+          ✏️ Change Username
+        </button>
+        ${savedPano ? `
+          <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:10px 14px; margin-bottom:10px;">
+            <div style="font-size:9px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Stream Source for Battle Progress</div>
+            <div style="display:flex; gap:6px; margin-bottom:8px;">
+              <button onclick="confirmSetStreamSource('lb')"
+                style="flex:1; padding:8px 6px; border-radius:7px; font-size:9px; font-weight:800; cursor:pointer; letter-spacing:0.5px; transition:all 0.15s;
+                  background:${sourcePref === 'lb' ? 'rgba(235,116,59,0.2)' : 'transparent'};
+                  border:1px solid ${sourcePref === 'lb' ? 'rgba(235,116,59,0.5)' : 'rgba(255,255,255,0.1)'};
+                  color:${sourcePref === 'lb' ? '#eb743b' : 'var(--text-ghost)'};">
+                🌐 ListenBrainz
+              </button>
+              <button onclick="confirmSetStreamSource('direct')"
+                style="flex:1; padding:8px 6px; border-radius:7px; font-size:9px; font-weight:800; cursor:pointer; letter-spacing:0.5px; transition:all 0.15s;
+                  background:${sourcePref === 'direct' ? 'rgba(34,197,94,0.15)' : 'transparent'};
+                  border:1px solid ${sourcePref === 'direct' ? 'rgba(34,197,94,0.4)' : 'rgba(255,255,255,0.1)'};
+                  color:${sourcePref === 'direct' ? '#22c55e' : 'var(--text-ghost)'};">
+                🎙️ ListenBrainz Instance
+              </button>
+            </div>
+            <div style="font-size:9px; color:var(--text-ghost); line-height:1.5;">
+              ${sourcePref === 'direct'
+                ? '✅ Only streams pushed directly to Arirang via Pano/WebScrobbler count — other apps and battles won\'t affect your stats.'
+                : '✅ All streams on your ListenBrainz account count, including from other apps and battles.'}
+            </div>
+          </div>
+        ` : ''}
+        <div id="lb-status-area"></div>
+      </div>`;
+  } else {
+    // Not linked — show input + save flow
+    card.innerHTML = `
+      <div class="archive-card" style="border-color:rgba(235,116,59,0.4); background:rgba(235,116,59,0.03); margin-bottom:0;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+          <span style="font-size:18px;">📻</span>
+          <div>
+            <div style="font-size:11px; font-weight:900; color:${LB_COLOR}; letter-spacing:1px;">
+              LISTENBRAINZ PREVIEW
+              <span style="font-size:8px; background:rgba(235,116,59,0.2); color:${LB_COLOR}; border:1px solid rgba(235,116,59,0.4); padding:1px 6px; border-radius:4px; margin-left:4px; letter-spacing:1.5px;">BETA</span>
+            </div>
+            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Compare your ListenBrainz streams to this week's targets — preview only</div>
+          </div>
+        </div>
+        <div id="lb-input-row" style="display:flex; gap:8px; margin-bottom:10px;">
+          <input id="lb-username-input" type="text" placeholder="Your ListenBrainz username"
+            style="flex:1; padding:9px 12px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12);
+              border-radius:8px; color:#fff; font-size:11px; outline:none;"
+            onkeydown="if(event.key==='Enter') previewLB()" />
+          <button onclick="previewLB()"
+            style="padding:9px 16px; background:${LB_COLOR}; border:none; border-radius:8px;
+              color:#fff; font-size:11px; font-weight:900; cursor:pointer; white-space:nowrap;">
+            Check →
+          </button>
+        </div>
+        <div id="lb-save-row" style="margin-bottom:10px;">
+          <button onclick="saveLBUsername()"
+            style="width:100%; padding:8px; background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.3);
+              border-radius:8px; color:#4ade80; font-size:10px; font-weight:900; cursor:pointer;">
+            💾 Save as my official ListenBrainz username — start counting streams from today
+          </button>
+          <div id="lb-save-status" style="font-size:9px; color:var(--text-ghost); margin-top:4px; text-align:center;"></div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:flex-start; background:rgba(235,116,59,0.07); border:1px solid rgba(235,116,59,0.2); border-radius:8px; padding:9px 12px; margin-bottom:10px;">
+          <span style="font-size:14px; flex-shrink:0;">⏳</span>
+          <div style="font-size:10px; color:var(--text-secondary); line-height:1.6;">
+            <strong style="color:${LB_COLOR};">First time?</strong> It can take up to <strong style="color:#fff;">1 hour</strong> for your streams to appear after connecting Spotify. Come back and check later if counts show 0.
+          </div>
+        </div>
+        <div id="lb-status-area"></div>
+        <div style="font-size:9px; color:var(--text-ghost); margin-top:10px; line-height:1.5;">
+          Don't have ListenBrainz? It's free at <strong style="color:${LB_COLOR};">listenbrainz.org</strong> — same scrobbler apps work for both Last.fm and ListenBrainz simultaneously.
+          <a href="listenbrainz-guide.html" target="_blank" style="color:${LB_COLOR}; text-decoration:underline; margin-left:4px;">Setup Guide →</a>
+        </div>
+      </div>`;
+  }
+}
+
+
+function renderScrobblerCard() {
+  const card = document.getElementById('scrobbler-card');
+  if (!card) return;
+  const pin = STATE.data?.agent?.profile?.scrobblePin || null;
+  const agentNo = STATE.agentNo || '';
+  const ENDPOINT = CONFIG.API_URL;
+  const PANO_COLOR = '#e8282b';
+
+  card.innerHTML = `
+    <div class="archive-card" style="border-color:rgba(245,158,11,0.4); background:rgba(245,158,11,0.03); margin-bottom:0;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <span style="font-size:18px;">🎙️</span>
+        <div>
+          <div style="font-size:11px; font-weight:900; color:#e8282b; letter-spacing:1px;">
+            WEB SCROBBLER
+            <span style="font-size:8px; background:rgba(232,40,43,0.15); color:#e8282b; border:1px solid rgba(232,40,43,0.35); padding:1px 6px; border-radius:4px; margin-left:4px; letter-spacing:1.5px;">DIRECT</span>
+          </div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Scrobble from your browser or phone directly to Hope Tracker — no ListenBrainz needed</div>
         </div>
       </div>
-      <div id="lb-input-row" style="display:flex; gap:8px; margin-bottom:10px;">
-        <input id="lb-username-input" type="text" placeholder="Your ListenBrainz username"
-          style="flex:1; padding:9px 12px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12);
-            border-radius:8px; color:#fff; font-size:11px; outline:none;"
-          onkeydown="if(event.key==='Enter') previewLB()" />
-        <button onclick="previewLB()"
-          style="padding:9px 16px; background:${LB_COLOR}; border:none; border-radius:8px;
-            color:#fff; font-size:11px; font-weight:900; cursor:pointer; white-space:nowrap;">
-          Check →
+
+      ${pin ? `
+        <div style="background:rgba(34,197,94,0.06); border:1px solid rgba(34,197,94,0.25); border-radius:8px; padding:12px 14px; margin-bottom:12px;">
+          <div style="font-size:9px; color:#4ade80; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Your Connection Details</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:10px; color:var(--text-muted);">Username</span>
+            <span style="font-family:var(--font-mono); font-size:12px; color:#fff; font-weight:700;">${sanitize(agentNo)}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:10px; color:var(--text-muted);">PIN (password)</span>
+            <span style="font-family:var(--font-mono); font-size:13px; color:${PANO_COLOR}; font-weight:900; letter-spacing:2px;">${sanitize(pin)}</span>
+          </div>
+        </div>
+        <div style="background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px;">
+          <div style="font-size:9px; color:${PANO_COLOR}; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">Pano Scrobbler (Phone)</div>
+          <div style="font-size:10px; color:var(--text-secondary); line-height:1.8;">
+            1. Open Pano Scrobbler → <strong style="color:#fff;">Add Service</strong><br>
+            2. Select <strong style="color:#fff;">ListenBrainz-like instance</strong><br>
+            3. URL: <span style="font-family:var(--font-mono); font-size:9px; color:${PANO_COLOR}; word-break:break-all;">${ENDPOINT}</span><br>
+            4. Token: <strong style="color:#fff;">${sanitize(pin)}</strong>
+          </div>
+        </div>
+        <div style="background:rgba(232,40,43,0.07); border:1px solid rgba(232,40,43,0.25); border-radius:8px; padding:10px 12px; margin-bottom:12px;">
+          <div style="font-size:9px; color:#e8282b; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">Web Scrobbler (Browser / PC)</div>
+          <div style="font-size:10px; color:var(--text-secondary); line-height:1.8; margin-bottom:8px;">
+            1. Install <strong style="color:#fff;">Web Scrobbler</strong> extension in Chrome, Firefox, or Edge<br>
+            2. Open Web Scrobbler → <strong style="color:#fff;">Options → Accounts → Webhook</strong><br>
+            3. Set API URL to your webhook URL below<br>
+            4. Click <strong style="color:#fff;">Add Webhook</strong> — done!
+          </div>
+          <div style="font-size:9px; color:rgba(255,255,255,0.35); font-weight:700; letter-spacing:0.5px; margin-bottom:4px;">YOUR WEBHOOK URL</div>
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <span style="font-family:var(--font-mono); font-size:9px; color:#e8282b; word-break:break-all; flex:1;">${ENDPOINT}?pin=${sanitize(pin)}</span>
+            <button onclick="navigator.clipboard.writeText('${ENDPOINT}?pin=${sanitize(pin)}').then(()=>{const b=document.getElementById('ws-copy-btn');b.textContent='Copied!';setTimeout(()=>b.textContent='Copy',2000)})"
+              id="ws-copy-btn"
+              style="background:rgba(232,40,43,0.15); border:1px solid rgba(232,40,43,0.35); color:#e8282b; font-size:9px; font-weight:700; padding:4px 10px; border-radius:5px; cursor:pointer; white-space:nowrap; flex-shrink:0;">
+              Copy
+            </button>
+          </div>
+          <a href="webscrobbler-guide.html" target="_blank" style="display:inline-block; margin-top:8px; font-size:9px; color:#e8282b; text-decoration:underline; letter-spacing:0.3px;">Full setup guide →</a>
+        </div>
+        <button onclick="generateScrobblePin()"
+          style="width:100%; padding:8px; background:transparent; border:1px solid rgba(245,158,11,0.3);
+            border-radius:8px; color:${PANO_COLOR}; font-size:10px; font-weight:700; cursor:pointer;">
+          🔄 Regenerate PIN
         </button>
-      </div>
-      <div id="lb-status-area"></div>
-      <div style="font-size:9px; color:var(--text-ghost); margin-top:8px; line-height:1.5;">
-        Don't have ListenBrainz? It's free at <strong style="color:${LB_COLOR};">listenbrainz.org</strong> — same scrobbler apps work for both Last.fm and ListenBrainz simultaneously.
-        <a href="listenbrainz-guide.html" target="_blank" style="color:${LB_COLOR}; text-decoration:underline; margin-left:4px;">Setup Guide →</a>
-      </div>
+      ` : `
+        <div style="font-size:10px; color:var(--text-secondary); line-height:1.6; margin-bottom:12px;">
+          Generate a PIN to connect Pano Scrobbler. Every stream you play — on any platform — will count automatically.
+        </div>
+        <button onclick="generateScrobblePin()"
+          style="width:100%; padding:10px; background:${PANO_COLOR}; border:none;
+            border-radius:8px; color:#000; font-size:11px; font-weight:900; cursor:pointer;">
+          🎙️ Generate Webhook PIN
+        </button>
+      `}
+      <div id="scrobbler-status" style="font-size:9px; color:var(--text-ghost); text-align:center; margin-top:8px;"></div>
     </div>`;
+}
+
+async function generateScrobblePin() {
+  const status = document.getElementById('scrobbler-status');
+  if (status) status.innerHTML = `<span style="color:var(--text-muted);">Generating…</span>`;
+  try {
+    const d = await Api.call('generateScrobblePin', { agentNo: STATE.agentNo }, { cache: false });
+    if (!d?.success) {
+      if (status) status.innerHTML = `<span style="color:var(--fail);">${d?.error || 'Error'}</span>`;
+      return;
+    }
+    if (STATE.data?.agent?.profile) STATE.data.agent.profile.scrobblePin = d.pin;
+    renderScrobblerCard();
+  } catch (_) {
+    if (status) status.innerHTML = `<span style="color:var(--fail);">Error — try again.</span>`;
+  }
+}
+
+function renderStatsFmCard() {
+  const card = document.getElementById('statsfm-card');
+  if (!card) return;
+  const SF_COLOR = '#1db954';
+  const linked = STATE.data?.agent?.profile?.statsfmUsername || null;
+
+  card.innerHTML = `
+    <div class="archive-card" style="border-color:rgba(29,185,84,0.35); background:rgba(29,185,84,0.03); margin-bottom:0;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <span style="font-size:18px;">🎵</span>
+        <div>
+          <div style="font-size:11px; font-weight:900; color:${SF_COLOR}; letter-spacing:1px;">
+            STATS.FM
+            <span style="font-size:8px; background:rgba(29,185,84,0.15); color:${SF_COLOR}; border:1px solid rgba(29,185,84,0.35); padding:1px 6px; border-radius:4px; margin-left:4px; letter-spacing:1.5px;">SPOTIFY</span>
+          </div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Pull your Spotify streams automatically via stats.fm — no ListenBrainz needed</div>
+        </div>
+      </div>
+
+      ${linked ? `
+        <div style="background:rgba(29,185,84,0.07); border:1px solid rgba(29,185,84,0.25); border-radius:8px; padding:10px 14px; margin-bottom:10px;">
+          <div style="font-size:9px; color:${SF_COLOR}; font-weight:800; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px;">Linked Account</div>
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span style="font-family:var(--font-mono); font-size:13px; color:#fff; font-weight:700;">${sanitize(linked)}</span>
+            <a href="https://stats.fm/u/${encodeURIComponent(linked)}" target="_blank"
+              style="font-size:9px; color:${SF_COLOR}; text-decoration:underline;">View profile ↗</a>
+          </div>
+        </div>
+        <div style="font-size:10px; color:var(--text-muted); line-height:1.7; margin-bottom:10px;">
+          Spotify streams sync automatically every hour. Make sure your stats.fm profile is set to <strong style="color:#fff;">Public</strong> in stats.fm Settings → Privacy.
+        </div>
+      ` : `
+        <div style="font-size:10px; color:var(--text-muted); line-height:1.7; margin-bottom:12px;">
+          Link your stats.fm account to pull Spotify streams automatically each hour. Your stats.fm profile must be set to <strong style="color:#fff;">Public</strong>.<br><br>
+          No account? Sign up free at <a href="https://stats.fm" target="_blank" style="color:${SF_COLOR};">stats.fm</a> — connect Spotify and it starts tracking immediately.
+        </div>
+      `}
+
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <input id="statsfm-input" type="text" placeholder="Your stats.fm username"
+          value="${sanitize(linked || '')}"
+          style="flex:1; min-width:140px; background:rgba(255,255,255,0.05); border:1px solid rgba(29,185,84,0.3);
+            border-radius:8px; padding:8px 12px; font-size:12px; color:#fff; outline:none; font-family:monospace;" />
+        <button onclick="linkStatsFm()"
+          style="background:${SF_COLOR}; border:none; border-radius:8px; color:#000;
+            font-size:11px; font-weight:900; padding:8px 16px; cursor:pointer; white-space:nowrap;">
+          ${linked ? '🔄 Update' : '🔗 Link'}
+        </button>
+        ${linked ? `<button onclick="linkStatsFm(true)"
+          style="background:transparent; border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:var(--text-muted);
+            font-size:11px; padding:8px 12px; cursor:pointer;">Unlink</button>` : ''}
+      </div>
+      <div id="statsfm-status" style="font-size:9px; color:var(--text-ghost); text-align:center; margin-top:8px;"></div>
+    </div>`;
+}
+
+async function linkStatsFm(unlink = false) {
+  const status = document.getElementById('statsfm-status');
+  const input = document.getElementById('statsfm-input');
+  if (status) status.innerHTML = `<span style="color:var(--text-muted);">${unlink ? 'Unlinking…' : 'Verifying…'}</span>`;
+  try {
+    const username = unlink ? '' : (input?.value || '').trim();
+    if (!unlink && !username) {
+      if (status) status.innerHTML = `<span style="color:var(--fail);">Enter your stats.fm username</span>`;
+      return;
+    }
+    const d = await Api.call('linkStatsFm', { agentNo: STATE.agentNo, statsfmUsername: username }, { cache: false });
+    if (!d?.success) {
+      if (status) status.innerHTML = `<span style="color:var(--fail);">${d?.error || 'Error — try again'}</span>`;
+      return;
+    }
+    if (STATE.data?.agent?.profile) STATE.data.agent.profile.statsfmUsername = d.statsfmUsername || null;
+    renderStatsFmCard();
+    const s = document.getElementById('statsfm-status');
+    if (s) s.innerHTML = `<span style="color:#1db954;">${unlink ? 'Unlinked.' : '✅ Linked! Streams will sync on the next hourly update.'}</span>`;
+  } catch (_) {
+    if (status) status.innerHTML = `<span style="color:var(--fail);">Error — try again.</span>`;
+  }
 }
 
 async function previewLB() {
   const input = document.getElementById('lb-username-input');
   const area = document.getElementById('lb-status-area');
-  if (!input || !area) return;
+  if (!area) return;
 
-  const username = input.value.trim();
+  // In connected state there's no input — fall back to the saved username in STATE
+  const username = input ? input.value.trim() : (STATE.data?.agent?.profile?.lbUsername || '');
   if (!username) { toast('Enter your ListenBrainz username'); return; }
 
   area.innerHTML = `<div style="font-size:10px; color:var(--text-muted); font-family:var(--font-mono); padding:6px 0;">Fetching from ListenBrainz…</div>`;
@@ -8891,19 +9326,57 @@ async function previewLB() {
         Scanned last <strong style="color:${LB_COLOR};">${d.listensScanned}</strong> listens for <strong style="color:#fff;">${sanitize(d.lbUsername)}</strong>
       </div>
       <div style="margin-bottom:12px;">${rows || '<div style="font-size:10px;color:var(--text-ghost);">No matching streams found in recent listens.</div>'}</div>
-      <div style="display:flex; gap:8px; align-items:center; background:rgba(235,116,59,0.08); border:1px solid rgba(235,116,59,0.2); border-radius:8px; padding:10px 12px;">
-        <span style="font-size:16px;">👀</span>
-        <div style="font-size:10px; color:var(--text-secondary); line-height:1.5;">
-          Does this look right? This is a <strong style="color:${LB_COLOR};">preview only</strong> — your official record still comes from Last.fm.
+      <div style="background:rgba(235,116,59,0.08); border:1px solid rgba(235,116,59,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px;">
+        <div style="font-size:10px; color:var(--text-secondary); line-height:1.5; margin-bottom:8px;">
+          👀 <strong style="color:#fff;">Does this look correct?</strong> This is a preview only — your official record is still from your scrobbler.
         </div>
+        <div style="display:flex; gap:8px;" id="lb-feedback-row">
+          <button onclick="submitLBFeedback('yes')"
+            style="flex:1; padding:7px; background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.35);
+              border-radius:7px; color:#4ade80; font-size:11px; font-weight:900; cursor:pointer;">
+            ✅ Yes, looks right
+          </button>
+          <button onclick="submitLBFeedback('no')"
+            style="flex:1; padding:7px; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.25);
+              border-radius:7px; color:#f87171; font-size:11px; font-weight:900; cursor:pointer;">
+            ❌ No, something's off
+          </button>
+        </div>
+        <div id="lb-feedback-thanks" style="display:none; font-size:10px; color:var(--text-ghost); text-align:center; margin-top:6px;"></div>
       </div>
       <button onclick="previewLB()"
-        style="width:100%; margin-top:10px; padding:9px; background:transparent; border:1px solid rgba(235,116,59,0.3);
+        style="width:100%; padding:9px; background:transparent; border:1px solid rgba(235,116,59,0.3);
           border-radius:8px; color:${LB_COLOR}; font-size:10px; font-weight:700; cursor:pointer;">
         ↺ Refresh
       </button>`;
   } catch (_) {
     area.innerHTML = `<div style="font-size:10px; color:var(--text-muted); padding:6px 0;">ListenBrainz preview unavailable.</div>`;
+  }
+}
+
+async function submitLBFeedback(answer) {
+  const row = document.getElementById('lb-feedback-row');
+  const thanks = document.getElementById('lb-feedback-thanks');
+  if (!row || !thanks) return;
+  row.style.display = 'none';
+  thanks.style.display = 'block';
+  thanks.innerHTML = `<span style="color:var(--text-ghost);">Saving…</span>`;
+
+  const lbUsername = document.getElementById('lb-username-input')?.value?.trim()
+    || STATE.data?.agent?.profile?.lbUsername || '';
+  try {
+    await Api.call('submitLBFeedback', {
+      agentNo: STATE.agentNo,
+      lbUsername,
+      weekLabel: STATE.week,
+      feedback: answer,
+    }, { cache: false });
+  } catch (_) {}
+
+  if (answer === 'yes') {
+    thanks.innerHTML = `<span style="color:#4ade80;">💜 Thank you! Glad it's working correctly.</span>`;
+  } else {
+    thanks.innerHTML = `<span style="color:#f87171;">Thank you for letting us know. Please reach out to your team admin with your username so we can investigate.</span>`;
   }
 }
 
@@ -11791,7 +12264,7 @@ function renderAdminPopOutTab(container) {
       <div class="archive-card" style="padding:20px;">
         <div style="font-size:12px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;">🔄 SYNC POP OUT PARTICIPANTS</div>
         <div style="font-size:10px;color:var(--text-muted);margin-bottom:16px;line-height:1.6;">
-          Force a Last.fm sync for every agent who joined a Pop Out. Use this when agents forgot to sync and their streams weren't counted.
+          Force a sync for every agent who joined a Pop Out. Use this when agents forgot to sync and their streams weren't counted.
         </div>
 
         <div style="margin-bottom:14px;">
@@ -13008,7 +13481,7 @@ function renderAdminDiagnosticsTab(container) {
                 🕵️‍♂️ AGENT DIAGNOSTICS
             </div>
             <p style="font-size:11px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">
-                Investigate "0 Scrobble" issues or stuck counters. This forces a live bypass fetch from Last.fm and displays the raw intelligence stream.
+                Investigate "0 Scrobble" issues or stuck counters. This forces a live sync and displays the raw intelligence stream.
             </p>
             
             <div style="display:flex; gap:12px; margin-bottom:24px;">
